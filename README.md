@@ -1,12 +1,9 @@
-# dami
-Local Procedure Call
+# Dami (Local Procedure Call)
 
-为多插件（或模块）之间解耦而设计。
+本地过程调用框架，为本地多模块之间通讯解耦而设计。可适于任何 java 开发环境，零依赖，仅五个类。
 
 
-原始需求来自 hotplug 的应用需要：在 classloader 隔离下，现有的 EventBus 不能满足需求（因为强类型，会形成 clas 依赖）
-
-demo
+示例：
 
 ```java
 public class DemoApp {
