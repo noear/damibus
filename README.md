@@ -40,13 +40,13 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 ### 与常见的 EventBus 的区别
 
-* 相同
+* 相同（都有）
 
-都有：发送（send）与监听（listen）接口
+发送（send）与监听（listen）接口
 
-* 不同 
+* 不同（多了）
 
-多了：请求并等响应（requestAndResponse）、请求并等回调（requestAndCallback）、响应（response）接口
+请求并等响应（requestAndResponse）、请求并等回调（requestAndCallback）、响应（response）接口
 
 ### 代码演示
 
