@@ -17,7 +17,7 @@ public class TopicRouter {
     /**
      * 添加监听
      */
-    public synchronized void add(String topic, TopicListener<Payload> listener) {
+    public void add(String topic, TopicListener<Payload> listener) {
         add(topic, 0, listener);
     }
 
