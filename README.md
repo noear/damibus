@@ -38,7 +38,14 @@
 
 Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块、隔离模块）。适用于任何 java 开发环境。（有可能会推出多语言版本）
 
-### 示例
+### 与 EventBus 的区别
+
+* 相同
+  * 都有发送（send）与监听（listen）接口
+* 不同 
+  * 多了请求并等待响应（requestAndResponse）、请求并等回调（requestAndCallback）、响应（response）接口
+
+### 代码演示
 
 * 依赖配置
 
