@@ -1,6 +1,42 @@
-# Dami (Local Procedure Call)
+<h1 align="center" style="text-align:center;">
+  Dami
+</h1>
+<p align="center">
+	<strong>Local Procedure Call Framework</strong>
+</p>
 
-本地过程调用框架，为本地多模块之间通讯解耦而设计。可适于任何 java 开发环境，零依赖，仅五个类。（有可能会推出多语言版本）
+<p align="center">
+    <a target="_blank" href="https://search.maven.org/artifact/org.noear/dami">
+        <img src="https://img.shields.io/maven-central/v/org.noear/dami.svg?label=Maven%20Central" alt="Maven" />
+    </a>
+    <a target="_blank" href="https://www.apache.org/licenses/LICENSE-2.0.txt">
+		<img src="https://img.shields.io/:license-Apache2-blue.svg" alt="Apache 2" />
+	</a>
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-8+-green.svg" alt="jdk-8+" />
+	</a>
+    <br />
+    <a target="_blank" href='https://gitee.com/noear/dami/stargazers'>
+        <img src='https://gitee.com/noear/dami/badge/star.svg' alt='gitee star'/>
+    </a>
+    <a target="_blank" href='https://github.com/noear/dami/stargazers'>
+        <img src="https://img.shields.io/github/stars/noear/dami.svg?logo=github" alt="github star"/>
+    </a>
+</p>
+
+<br/>
+<p align="center">
+	<a href="https://jq.qq.com/?_wv=1027&k=kjB5JNiC">
+	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
+</p>
+
+
+<hr />
+
+
+
+
+Dami（本地过程调用框架），专为本地多模块之间通讯解耦而设计，尤其是未知模块、隔离模块。适用于任何 java 开发环境，零依赖、五个类。（有可能会推出多语言版本）
 
 
 示例：
