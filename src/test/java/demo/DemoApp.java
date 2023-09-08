@@ -7,14 +7,15 @@ import org.noear.dami.DamiBus;
  * @since 1.0
  */
 public class DemoApp {
-    static  String demo_topic = "demo.user.created";
-    public static void main(String[] args) throws Throwable{
+    static String demo_topic = "demo.user.created";
+
+    public static void main(String[] args) throws Throwable {
         listen();
         send();
     }
 
     //监听
-    private static void listen(){
+    private static void listen() {
         DamiBus.global().listen(demo_topic, payload -> {
             System.out.println(payload);
             //接收
@@ -26,13 +27,19 @@ public class DemoApp {
     }
 
     //发送
-    private static void send(){
+    private static void send() {
         //普通发送
         DamiBus.global().send(demo_topic, "{user:'noear'}");
 
 
         //请求并等响应
-        String rst2 = DamiBus.global().requestAndResponse(demo_topic, "{user:'dami'}");//要用 stringify，不要用 serialize
-        System.out.println("响应返回: " + rst2);
+        String rst1 = DamiBus.global().requestAndResponse(demo_topic, "{user:'dami'}");
+        System.out.println("响应返回: " + rst1);
+
+        //请求并等回调
+        DamiBus.global().requestAndCallback(demo_topic, "{user:'solon'}", (rst2) -> {
+            System.out.println("响应回调: " + rst2);
+        });
+
     }
 }
