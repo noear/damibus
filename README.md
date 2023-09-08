@@ -38,8 +38,21 @@
 
 Dami（本地过程调用框架），专为本地多模块之间通讯解耦而设计，尤其是未知模块、隔离模块。适用于任何 java 开发环境，零依赖、五个类。（有可能会推出多语言版本）
 
+### 示例
 
-示例：
+* 依赖配置
+
+```xml
+<dependency>
+    <groupId>org.noear</groupId>
+    <artifactId>dami</artifactId>
+    <version>0.1</version>
+</dependency>
+```
+
+如果涉及类加载器隔离：请在主程序标为编译，在其它模块标为可选。
+
+* 代码
 
 ```java
 public class DemoApp {
