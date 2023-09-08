@@ -46,7 +46,7 @@ Dami（本地过程调用框架），专为本地多模块之间通讯解耦而�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
 </dependency>
 ```
 
