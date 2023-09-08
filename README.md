@@ -2,7 +2,7 @@
   Dami
 </h1>
 <p align="center">
-	<strong>Local Procedure Call Framework</strong>
+	<strong>本地过程调用框架</strong>
 </p>
 
 <p align="center">
@@ -36,7 +36,7 @@
 
 
 
-Dami（本地过程调用框架），专为本地多模块之间通讯解耦而设计，尤其是未知模块、隔离模块。适用于任何 java 开发环境，零依赖、五个类。（有可能会推出多语言版本）
+Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块、隔离模块）。适用于任何 java 开发环境。（有可能会推出多语言版本）
 
 ### 示例
 
