@@ -1,14 +1,11 @@
-# dami
-Local Procedure Call
+package demo;
 
-为多插件（或模块）之间解耦而设计。
+import org.noear.dami.DamiBus;
 
-
-原始需求来自 hotplug 的应用需要：在 classloader 隔离下，现有的 EventBus 不能满足需求（因为强类型，会形成 clas 依赖）
-
-demo
-
-```java
+/**
+ * @author noear
+ * @since 1.0
+ */
 public class DemoApp {
     static  String demo_topic = "demo.user.created";
     public static void main(String[] args) throws Throwable{
@@ -39,4 +36,3 @@ public class DemoApp {
         System.out.println("响应返回: " + rst2);
     }
 }
-```
