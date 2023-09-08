@@ -17,14 +17,14 @@ public class TopicRouter {
     /**
      * 添加监听
      */
-    public void add(String topic, TopicListener<Payload> listener) {
+    public synchronized void add(String topic, TopicListener<Payload> listener) {
         add(topic, 0, listener);
     }
 
     /**
      * 添加监听
      */
-    public void add(String topic, int index, TopicListener<Payload> listener) {
+    public synchronized void add(String topic, int index, TopicListener<Payload> listener) {
         assertTopic(topic);
 
         TopicListenPipeline<Payload> pipeline = pipelineMap.get(topic);
@@ -39,7 +39,7 @@ public class TopicRouter {
     /**
      * 移除监听
      */
-    public void remove(String topic, TopicListener<Payload> listener) {
+    public synchronized void remove(String topic, TopicListener<Payload> listener) {
         assertTopic(topic);
 
         TopicListenPipeline<Payload> pipeline = pipelineMap.get(topic);
