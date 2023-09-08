@@ -84,12 +84,12 @@ public class DamiBusImpl implements DamiBus {
     /**
      * 响应
      */
-    public void response(Payload payload, String content) {
-        if (payload.future == null) {
+    public void response(Payload request, String content) {
+        if (request.future == null) {
             throw new IllegalStateException("This payload does not support a response");
         }
 
-        payload.future.complete(content);
+        request.future.complete(content);
     }
 
 
@@ -98,6 +98,14 @@ public class DamiBusImpl implements DamiBus {
      */
     public void listen(String topic, TopicListener<Payload> listener) {
         router.add(topic, listener);
+    }
+
+    /**
+     * 监听
+     */
+    @Override
+    public void listen(String topic, int index, TopicListener<Payload> listener) {
+        router.add(topic, index, listener);
     }
 
     /**
