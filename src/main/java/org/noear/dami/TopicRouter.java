@@ -24,7 +24,7 @@ public class TopicRouter {
     /**
      * 添加监听
      */
-    public void add(String topic, int index, TopicListener<Payload> listener) {
+    public synchronized void add(String topic, int index, TopicListener<Payload> listener) {
         assertTopic(topic);
 
         TopicListenPipeline<Payload> pipeline = pipelineMap.get(topic);
