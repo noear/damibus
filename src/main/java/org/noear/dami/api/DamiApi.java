@@ -32,4 +32,12 @@ public interface DamiApi {
      * @param listenerObj  监听器实现类
      */
     void registerListener(String topicMapping, Object listenerObj);
+
+    /**
+     * 取消注册监听者实例
+     *
+     * @param topicMapping 主题映射
+     * @param listenerObj  监听器实现类
+     */
+    void unregisterListener(String topicMapping, Object listenerObj);
 }

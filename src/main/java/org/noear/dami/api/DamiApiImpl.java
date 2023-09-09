@@ -4,6 +4,8 @@ import org.noear.dami.Dami;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author noear
@@ -36,6 +38,8 @@ public class DamiApiImpl implements DamiApi {
         return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(topicMapping, coder));
     }
 
+    Map<Method, MethodTopicListener> listenerMap = new HashMap<>();
+
     /**
      * 注册监听者实例
      *
@@ -47,8 +51,32 @@ public class DamiApiImpl implements DamiApi {
         Method[] methods = listenerObj.getClass().getDeclaredMethods();
 
         for (Method m1 : methods) {
+            MethodTopicListener listener = listenerMap.get(m1);
+            if (listener == null) {
+                listener = new MethodTopicListener(listenerObj, m1, coder);
+                listenerMap.put(m1, listener);
+            }
             String topic = topicMapping + "." + m1.getName();
-            Dami.objBus().listen(topic, new MethodTopicListener(listenerObj, m1, coder));
+            Dami.objBus().listen(topic, listener);
+        }
+    }
+
+    /**
+     * 取消注册监听者实例
+     *
+     * @param topicMapping 主题映射
+     * @param listenerObj  监听器实现类
+     */
+    @Override
+    public void unregisterListener(String topicMapping, Object listenerObj) {
+        Method[] methods = listenerObj.getClass().getDeclaredMethods();
+
+        for (Method m1 : methods) {
+            MethodTopicListener listener = listenerMap.get(m1);
+            if (listener != null) {
+                String topic = topicMapping + "." + m1.getName();
+                Dami.objBus().unlisten(topic, listener);
+            }
         }
     }
 }
