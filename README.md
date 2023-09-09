@@ -82,7 +82,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.9</version>
+    <version>0.10</version>
 </dependency>
 ```
 
@@ -90,7 +90,10 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 #### 2、接口风格示例
 
-通过自定义编码器，可适用于任何场景。
+配合自定义编码器，可适用于任何场景。如果是类隔离的场景，可以：
+
+* a) 发送器 与 监听器，不要有依赖关系；使用基础类型做为参数或返回
+* b) 发送器 与 监听器，不要有依赖关系；使用自定义编码解（比如 json 序列化），可支持任何类型的参数或返回
 
 ```java
 public interface UserEventSender {

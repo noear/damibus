@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.9</version>
+    <version>0.10</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
