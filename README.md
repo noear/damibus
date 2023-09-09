@@ -48,6 +48,14 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 请求并等响应（requestAndResponse）、请求并等回调（requestAndCallback）、响应（response）接口
 
+###  特性介绍
+
+* 结合 Bus 与 RPC 的理念。可以分发事件，可以有响应和回调
+* 提供了两个全局实例，也可以自己实例化总线
+  * DamiBus.str() 提供弱类型支持（适合类隔离的场景）
+  * DamiBus.str() 提供泛型、强类型支持
+* 零依赖，12k 代码
+
 ### 代码演示
 
 * 依赖配置
@@ -56,7 +64,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.4</version>
+    <version>0.5</version>
 </dependency>
 ```
 
