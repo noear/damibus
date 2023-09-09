@@ -1,7 +1,7 @@
 package org.noear.dami.impl;
 
 import java.io.Serializable;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -14,6 +14,8 @@ public class Payload<C, R> implements Serializable {
     private final String guid;
     private final String topic;
     private final C content;
+
+    private Map<String, Object> attachments;
 
     protected transient CompletableFuture<R> future;
 
@@ -29,8 +31,30 @@ public class Payload<C, R> implements Serializable {
     }
 
     /**
+     * 获取附件
+     */
+    public <T> T getAttachment(String name) {
+        if (attachments == null) {
+            return null;
+        }
+
+        return (T) attachments.get(name);
+    }
+
+    /**
+     * 设置附件
+     */
+    public <T> void setAttachment(String name, T value) {
+        if (attachments == null) {
+            attachments = new HashMap<>();
+        }
+
+        attachments.put(name, value);
+    }
+
+    /**
      * 是否为请求（是的话，需要响应）
-     * */
+     */
     public boolean isRequest() {
         return future != null;
     }
@@ -61,7 +85,8 @@ public class Payload<C, R> implements Serializable {
         return "Payload{" +
                 "guid='" + guid + '\'' +
                 ", topic='" + topic + '\'' +
-                ", content='" + content + '\'' +
+                ", content=" + content +
+                ", attachments=" + attachments +
                 '}';
     }
 }
