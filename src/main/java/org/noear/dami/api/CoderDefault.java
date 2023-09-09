@@ -6,12 +6,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 编码器默认实现
+ * 编码器默认实现（Map）
  *
  * @author noear
  * @since 1.0
  */
 public class CoderDefault implements Coder{
+    /**
+     * 编码
+     *
+     * @param method 方法
+     * @param args   参数
+     */
     @Override
     public Object encode(Method method, Object[] args) {
         Map<String, Object> map = new LinkedHashMap<>();
@@ -27,6 +33,12 @@ public class CoderDefault implements Coder{
         return map;
     }
 
+    /**
+     * 解码
+     *
+     * @param method  方法
+     * @param content 内容
+     */
     @Override
     public Object[] decode(Method method, Object content) {
         Map<String, Object> map = (Map<String, Object>) content;
