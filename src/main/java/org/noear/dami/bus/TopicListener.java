@@ -1,4 +1,4 @@
-package org.noear.dami;
+package org.noear.dami.bus;
 
 import java.io.Serializable;
 

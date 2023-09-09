@@ -1,6 +1,4 @@
-package org.noear.dami;
-
-import org.noear.dami.bus.Payload;
+package org.noear.dami.bus;
 
 /**
  * 主题路由器

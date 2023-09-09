@@ -1,7 +1,6 @@
 package org.noear.dami.api;
 
-import org.noear.dami.DamiApi;
-import org.noear.dami.DamiBus;
+import org.noear.dami.Dami;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -12,6 +11,20 @@ import java.lang.reflect.Proxy;
  */
 public class DamiApiImpl implements DamiApi {
 
+    Coder coder = new CoderDefault();
+
+    @Override
+    public Coder getCoder() {
+        return coder;
+    }
+
+    @Override
+    public void setCoder(Coder coder) {
+        if (coder != null) {
+            this.coder = coder;
+        }
+    }
+
     /**
      * 创建发送器代理
      *
@@ -20,7 +33,7 @@ public class DamiApiImpl implements DamiApi {
      */
     @Override
     public <T> T createSender(String topicMapping, Class<T> senderClz) {
-        return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(topicMapping));
+        return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(topicMapping, coder));
     }
 
     /**
@@ -35,7 +48,7 @@ public class DamiApiImpl implements DamiApi {
 
         for (Method m1 : methods) {
             String topic = topicMapping + "." + m1.getName();
-            DamiBus.obj().listen(topic, new MethodTopicListener(listenerObj, m1));
+            Dami.objBus().listen(topic, new MethodTopicListener(listenerObj, m1, coder));
         }
     }
 }

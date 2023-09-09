@@ -1,12 +1,10 @@
 package org.noear.dami.api;
 
-import org.noear.dami.DamiBus;
-import org.noear.dami.TopicListener;
+import org.noear.dami.Dami;
+import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.Payload;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.Map;
 
 /**
  * @author noear
@@ -15,30 +13,25 @@ import java.util.Map;
 public class MethodTopicListener implements TopicListener<Payload<Object,Object>> {
     private Object target;
     private Method method;
+    private Coder coder;
 
-    public MethodTopicListener(Object target, Method method) {
+    public MethodTopicListener(Object target, Method method, Coder coder) {
         this.target = target;
         this.method = method;
+        this.coder = coder;
     }
 
     @Override
     public void onEvent(Payload payload) throws Throwable {
-        Map<String, Object> content = (Map<String, Object>) payload.getContent();
-
-        //构建执行参数
-        Object[] args = new Object[method.getParameterCount()];
-        Parameter[] parameters = method.getParameters();
-
-        for (int i = 0, len = method.getParameterCount(); i < len; i++) {
-            args[i] = content.get(parameters[i].getName());
-        }
+        //解码
+        Object[] args = coder.decode(method, payload.getContent());
 
         //执行
         Object rst = method.invoke(target, args);
 
         if (payload.isRequest()) {
             //响应
-            DamiBus.obj().response(payload, rst);
+            Dami.objBus().response(payload, rst);
         }
     }
 }

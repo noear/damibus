@@ -2,7 +2,7 @@ package demo_api;
 
 import demo_api.mod1.UserEventListenerImpl;
 import demo_api.mod2.UserEventSender;
-import org.noear.dami.DamiApi;
+import org.noear.dami.api.DamiApi;
 import org.noear.dami.api.DamiApiImpl;
 
 public class AppDemo {

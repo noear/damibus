@@ -1,12 +1,22 @@
-package org.noear.dami;
+package org.noear.dami.api;
 
-import java.util.function.Supplier;
+import org.noear.dami.api.Coder;
 
 /**
  * @author noear
  * @since 1.0
  */
 public interface DamiApi {
+    /**
+     * 获取编码器
+     */
+    Coder getCoder();
+
+    /**
+     * 设置编码器
+     */
+    void setCoder(Coder coder);
+
     /**
      * 创建发送器代理
      *

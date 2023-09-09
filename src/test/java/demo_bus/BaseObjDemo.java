@@ -1,7 +1,7 @@
 package demo_bus;
 
-import org.noear.dami.DamiBus;
-import org.noear.dami.TopicListener;
+import org.noear.dami.Dami;
+import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.Payload;
 
 import java.util.Arrays;
@@ -16,13 +16,13 @@ public class BaseObjDemo {
         TopicListener<Payload<User, User>> listener = createListener();
 
         //监听
-        DamiBus.<User, User>obj().listen(demo_topic, listener);
+        Dami.<User, User>objBus().listen(demo_topic, listener);
 
         //发送测试
         sendTest();
 
         //取消监听
-        DamiBus.<User, User>obj().unlisten(demo_topic, listener);
+        Dami.<User, User>objBus().unlisten(demo_topic, listener);
     }
 
     //创建监听器
@@ -34,7 +34,7 @@ public class BaseObjDemo {
             if (payload.isRequest()) {
                 final User content = payload.getContent().sing("你太美");
                 //如果是请求载体，再响应一下
-                DamiBus.<User, User>obj().response(payload, content);
+                Dami.<User, User>objBus().response(payload, content);
             }
         };
     }
@@ -43,18 +43,18 @@ public class BaseObjDemo {
     private static void sendTest() {
         final User user = new User().name("kk").age(2.5).hobby(new String[]{"唱", "跳", "rap", "打篮球"});
         //普通发送
-        DamiBus.<User, Void>obj().send(demo_topic, user);
+        Dami.<User, Void>objBus().send(demo_topic, user);
 
         //普通发送,自定义构建参数
-        DamiBus.<User, Void>obj().send(new Payload<>("123", demo_topic, user));
+        Dami.<User, Void>objBus().send(new Payload<>("123", demo_topic, user));
 
         //请求并等响应
-        User rst1 = DamiBus.<User, User>obj().requestAndResponse(demo_topic, user);
+        User rst1 = Dami.<User, User>objBus().requestAndResponse(demo_topic, user);
         System.out.println("响应返回: " + rst1);
 
         user.sing("ai kun");
         //请求并等回调
-        DamiBus.<User, User>obj().requestAndCallback(demo_topic, user, rst2 -> {
+        Dami.<User, User>objBus().requestAndCallback(demo_topic, user, rst2 -> {
             System.out.println("响应回调: " + rst2);
         });
     }

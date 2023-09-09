@@ -1,12 +1,9 @@
 package org.noear.dami.api;
 
-import org.noear.dami.DamiBus;
+import org.noear.dami.Dami;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * 接送者接口调用代理
@@ -15,30 +12,24 @@ import java.util.Map;
  * @since 1.0
  */
 public class SenderInvocationHandler implements InvocationHandler {
-    String topicMapping;
+    private String topicMapping;
+    private Coder coder;
 
-    public SenderInvocationHandler(String topicMapping) {
+    public SenderInvocationHandler(String topicMapping, Coder coder) {
         this.topicMapping = topicMapping;
+        this.coder = coder;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         String topic = topicMapping + "." + method.getName();
-        Map<String, Object> content = new LinkedHashMap<>();
-
-        //构建内容
-        if (method.getParameterCount() > 0) {
-            Parameter[] parameters = method.getParameters();
-            for (int i = 0, len = method.getParameterCount(); i < len; i++) {
-                content.put(parameters[i].getName(), args[i]);
-            }
-        }
+        Object content = coder.encode(method, args);
 
         if (method.getReturnType() == Void.class) {
-            DamiBus.obj().send(topic, content);
+            Dami.objBus().send(topic, content);
             return null;
         } else {
-            return DamiBus.obj().requestAndResponse(topic, content);
+            return Dami.objBus().requestAndResponse(topic, content);
         }
     }
 }
