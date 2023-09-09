@@ -115,6 +115,12 @@ public class ApiDemo {
     public static void main(String[] args) {
         //设定编码器
         //Dami.api().setCoder(new CoderDefault());
+
+        //添加拦截器
+        Dami.intercept((payload, chain) -> {
+            System.out.println("拦截：" + payload.toString());
+            chain.doIntercept(payload);
+        });
         
         UserEventListenerImpl userEventListener = new UserEventListenerImpl();
         //注册监听器
