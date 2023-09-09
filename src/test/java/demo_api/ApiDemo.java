@@ -3,9 +3,13 @@ package demo_api;
 import demo_api.mod1.UserEventListenerImpl;
 import demo_api.mod2.UserEventSender;
 import org.noear.dami.Dami;
+import org.noear.dami.api.CoderDefault;
 
 public class ApiDemo {
     public static void main(String[] args) {
+        //设定编码器
+        //Dami.api().setCoder(new CoderDefault());
+
         UserEventListenerImpl userEventListener = new UserEventListenerImpl();
         //注册监听器
         Dami.api().registerListener("demo.user", userEventListener);
