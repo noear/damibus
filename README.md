@@ -90,6 +90,8 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 #### 2、接口风格示例
 
+通过自定义编码器，可适用于任何场景。
+
 ```java
 public interface UserEventSender {
     long created(long userId, String name);
@@ -108,6 +110,9 @@ public class UserEventListenerImpl {
 
 public class ApiDemo {
     public static void main(String[] args) {
+        //设定编码器
+        //Dami.api().setCoder(new CoderDefault());
+        
         UserEventListenerImpl userEventListener = new UserEventListenerImpl();
         //注册监听器
         Dami.api().registerListener("demo.user", userEventListener);
@@ -126,7 +131,9 @@ public class ApiDemo {
 }
 ```
 
-#### 3、弱类型总线风格示例（适合类隔离的场景）
+#### 3、弱类型总线风格示例
+
+适合类隔离的场景
 
 ```java
 public class StringDemo {
