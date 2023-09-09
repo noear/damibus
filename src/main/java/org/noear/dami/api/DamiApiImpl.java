@@ -40,7 +40,7 @@ public class DamiApiImpl implements DamiApi {
 
     /**
      * 监听器缓存（注销时用）
-     * */
+     */
     Map<Method, MethodTopicListener> listenerMap = new HashMap<>();
 
     /**
@@ -51,6 +51,18 @@ public class DamiApiImpl implements DamiApi {
      */
     @Override
     public void registerListener(String topicMapping, Object listenerObj) {
+        registerListener(topicMapping, 0, listenerObj);
+    }
+
+    /**
+     * 注册监听者实例
+     *
+     * @param topicMapping 主题映射
+     * @param index        顺序位
+     * @param listenerObj  监听器实现类
+     */
+    @Override
+    public void registerListener(String topicMapping, int index, Object listenerObj) {
         Method[] methods = listenerObj.getClass().getDeclaredMethods();
 
         for (Method m1 : methods) {
@@ -60,7 +72,7 @@ public class DamiApiImpl implements DamiApi {
                 listenerMap.put(m1, listener);
             }
             String topic = topicMapping + "." + m1.getName();
-            Dami.objBus().listen(topic, listener);
+            Dami.objBus().listen(topic, index, listener);
         }
     }
 
