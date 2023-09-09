@@ -8,13 +8,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-/**
- * 注意发送也接收的类型
- *
- * @author kongweiguang
- * @since 1.0
- */
-public class ObjDemo {
+
+public class BaseObjDemo {
     static String demo_topic = "demo.user.info";
 
     public static void main(String[] args) {

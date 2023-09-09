@@ -4,13 +4,8 @@ import org.noear.dami.DamiBus;
 import org.noear.dami.TopicListener;
 import org.noear.dami.impl.Payload;
 
-/**
- * 不需要判断发送和接受类型，直接用string就行
- *
- * @author noear
- * @since 1.0
- */
-public class StringDemo {
+
+public class BaseStringDemo {
     static String demo_topic = "demo.user.created";
 
     public static void main(String[] args) {
