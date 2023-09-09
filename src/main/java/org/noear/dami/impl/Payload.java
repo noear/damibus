@@ -19,9 +19,7 @@ public class Payload<C, R> implements Serializable {
 
 
     public Payload(final String topic, final C content) {
-        this.guid = UUID.randomUUID().toString();
-        this.topic = topic;
-        this.content = content;
+        this(UUID.randomUUID().toString(), topic, content);
     }
 
     public Payload(final String guid, final String topic, final C content) {
@@ -30,7 +28,9 @@ public class Payload<C, R> implements Serializable {
         this.content = content;
     }
 
-
+    /**
+     * 是否为请求（是的话，需要响应）
+     * */
     public boolean isRequest() {
         return future != null;
     }

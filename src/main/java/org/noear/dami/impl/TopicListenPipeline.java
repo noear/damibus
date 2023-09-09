@@ -17,6 +17,8 @@ public final class TopicListenPipeline<Event> implements TopicListener<Event> {
 
     /**
      * 添加监听
+     *
+     * @param listener 监听器
      */
     public void add(final TopicListener<Event> listener) {
         add(0, listener);

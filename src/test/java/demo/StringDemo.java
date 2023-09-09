@@ -17,13 +17,13 @@ public class StringDemo {
         TopicListener<Payload<String, String>> listener = createListener();
 
         //监听
-        DamiBus.<String, String>global().listen(demo_topic, listener);
+        DamiBus.str().listen(demo_topic, listener);
 
         //发送测试
         sendTest();
 
         //取消监听
-        DamiBus.<String, String>global().unlisten(demo_topic, listener);
+        DamiBus.str().unlisten(demo_topic, listener);
     }
 
     //创建监听器
@@ -34,7 +34,7 @@ public class StringDemo {
 
             if (payload.isRequest()) {
                 //如果是请求载体，再响应一下
-                DamiBus.<String, String>global().response(payload, "你发了：" + payload.getContent());
+                DamiBus.str().response(payload, "你发了：" + payload.getContent());
             }
         };
     }
@@ -42,14 +42,14 @@ public class StringDemo {
     //发送测试
     private static void sendTest() {
         //普通发送
-        DamiBus.<String, Void>global().send(demo_topic, "{user:'noear'}");
+        DamiBus.str().send(demo_topic, "{user:'noear'}");
 
         //请求并等响应
-        String rst1 = DamiBus.<String, String>global().requestAndResponse(demo_topic, "{user:'dami'}");
+        String rst1 = DamiBus.str().requestAndResponse(demo_topic, "{user:'dami'}");
         System.out.println("响应返回: " + rst1);
 
         //请求并等回调
-        DamiBus.<String, String>global().requestAndCallback(demo_topic, "{user:'solon'}", (rst2) -> {
+        DamiBus.str().requestAndCallback(demo_topic, "{user:'solon'}", (rst2) -> {
             System.out.println("响应回调: " + rst2);
         });
     }

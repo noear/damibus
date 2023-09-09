@@ -16,13 +16,19 @@ import java.util.function.Consumer;
  */
 public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
 
-    private static final class GlobalHolder {
-        static final DamiBus global = new DamiBusImpl<>();
+    static final class GlobalHolder {
+        static final DamiBus<String, String> str = new DamiBusImpl<>();
+        static final DamiBus obj = new DamiBusImpl<>();
     }
 
-    public static <C, R> DamiBus<C, R> global() {
-        return GlobalHolder.global;
+    public static DamiBus<String, String> str() {
+        return GlobalHolder.str;
     }
+
+    public static DamiBus obj() {
+        return GlobalHolder.obj;
+    }
+
 
     /**
      * 路由器

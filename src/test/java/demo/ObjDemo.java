@@ -19,13 +19,13 @@ public class ObjDemo {
         TopicListener<Payload<User, User>> listener = createListener();
 
         //监听
-        DamiBus.<User, User>global().listen(demo_topic, listener);
+        DamiBus.<User, User>obj().listen(demo_topic, listener);
 
         //发送测试
         sendTest();
 
         //取消监听
-        DamiBus.<User, User>global().unlisten(demo_topic, listener);
+        DamiBus.<User, User>obj().unlisten(demo_topic, listener);
     }
 
     //创建监听器
@@ -37,7 +37,7 @@ public class ObjDemo {
             if (payload.isRequest()) {
                 final User content = payload.getContent().setSing("鸡你太美");
                 //如果是请求载体，再响应一下
-                DamiBus.<User, User>global().response(payload, content);
+                DamiBus.<User, User>obj().response(payload, content);
             }
         };
     }
@@ -46,18 +46,18 @@ public class ObjDemo {
     private static void sendTest() {
         final User user = new User().setName("kk").setAge(2.5).setHobby(new String[]{"唱", "跳", "rap", "打篮球"});
         //普通发送
-        DamiBus.<User, Void>global().send(demo_topic, user);
+        DamiBus.<User, Void>obj().send(demo_topic, user);
 
         //普通发送,自定义构建参数
-        DamiBus.<User, Void>global().send(new Payload<>("123", demo_topic, user));
+        DamiBus.<User, Void>obj().send(new Payload<>("123", demo_topic, user));
 
         //请求并等响应
-        User rst1 = DamiBus.<User, User>global().requestAndResponse(demo_topic, user);
+        User rst1 = DamiBus.<User, User>obj().requestAndResponse(demo_topic, user);
         System.out.println("响应返回: " + rst1);
 
         user.setSing("ai kun");
         //请求并等回调
-        DamiBus.<User, User>global().requestAndCallback(demo_topic, user, rst2 -> {
+        DamiBus.<User, User>obj().requestAndCallback(demo_topic, user, rst2 -> {
             System.out.println("响应回调: " + rst2);
         });
     }

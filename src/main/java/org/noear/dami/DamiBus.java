@@ -12,8 +12,18 @@ import java.util.function.Consumer;
  * @since 1.0
  */
 public interface DamiBus<C, R> {
-    static <C, R> DamiBus<C, R> global() {
-        return DamiBusImpl.global();
+    /**
+     * 弱类型实例（适合类隔离的场景）
+     * */
+    static DamiBus<String, String> str() {
+        return DamiBusImpl.str();
+    }
+
+    /**
+     * 泛型、强类型实例
+     * */
+    static <C, R> DamiBus<C, R> obj() {
+        return DamiBusImpl.obj();
     }
 
     /**
