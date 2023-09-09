@@ -1,5 +1,8 @@
 package org.noear.dami;
 
+import org.noear.dami.impl.DamiBusImpl;
+import org.noear.dami.impl.Payload;
+
 import java.util.function.Consumer;
 
 /**
@@ -8,8 +11,8 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  */
-public interface DamiBus {
-    static DamiBus global() {
+public interface DamiBus<C, R> {
+    static <C, R> DamiBus<C, R> global() {
         return DamiBusImpl.global();
     }
 
@@ -23,7 +26,7 @@ public interface DamiBus {
      *
      * @param timeout 超时
      */
-    void setTimeout(long timeout);
+    void setTimeout(final long timeout);
 
     /**
      * 发送（不需要响应）
@@ -31,7 +34,14 @@ public interface DamiBus {
      * @param topic   主题
      * @param content 内容
      */
-    void send(String topic, String content);
+    void send(final String topic, final C content);
+
+    /**
+     * 发送（不需要响应）,自定义载体
+     *
+     * @param payload 发送载体
+     */
+    void send(final Payload<C, R> payload);
 
     /**
      * 请求并等待响应
@@ -39,7 +49,14 @@ public interface DamiBus {
      * @param topic   主题
      * @param content 内容
      */
-    String requestAndResponse(String topic, String content);
+    R requestAndResponse(final String topic, final C content);
+
+    /**
+     * 请求并等待响应,自定义载体
+     *
+     * @param payload 发送载体
+     */
+    R requestAndResponse(final Payload<C, R> payload, final Consumer<R> callback);
 
     /**
      * 请求并等待回调
@@ -48,7 +65,14 @@ public interface DamiBus {
      * @param content  内容
      * @param callback 回调函数
      */
-    void requestAndCallback(String topic, String content, Consumer<String> callback);
+    void requestAndCallback(final String topic, final C content, final Consumer<R> callback);
+
+    /**
+     * 请求并等待回调,自定义载体
+     *
+     * @param payload 发送载体
+     */
+    void requestAndCallback(final Payload<C, R> payload, final Consumer<R> callback);
 
     /**
      * 响应
@@ -56,7 +80,7 @@ public interface DamiBus {
      * @param request 请求装载
      * @param content 响应内容
      */
-    void response(Payload request, String content);
+    void response(final Payload<C, R> request, final R content);
 
     /**
      * 监听
@@ -64,7 +88,7 @@ public interface DamiBus {
      * @param topic    主题
      * @param listener 监听
      */
-    void listen(String topic, TopicListener<Payload> listener);
+    void listen(final String topic, final TopicListener<Payload<C, R>> listener);
 
     /**
      * 监听
@@ -73,7 +97,7 @@ public interface DamiBus {
      * @param index    顺序位
      * @param listener 监听
      */
-    void listen(String topic, int index, TopicListener<Payload> listener);
+    void listen(final String topic, final int index, final TopicListener<Payload<C, R>> listener);
 
     /**
      * 取消监听
@@ -81,5 +105,5 @@ public interface DamiBus {
      * @param topic    主题
      * @param listener 监听
      */
-    void unlisten(String topic, TopicListener<Payload> listener);
+    void unlisten(final String topic, final TopicListener<Payload<C, R>> listener);
 }

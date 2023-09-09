@@ -1,4 +1,6 @@
-package org.noear.dami;
+package org.noear.dami.impl;
+
+import org.noear.dami.TopicListener;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -10,13 +12,13 @@ import java.util.List;
  * @author noear
  * @since 1.0
  */
-public class TopicListenPipeline<Event> implements TopicListener<Event> {
-    private List<EH> list = new ArrayList<>();
+public final class TopicListenPipeline<Event> implements TopicListener<Event> {
+    private final List<EH<Event>> list = new ArrayList<>();
 
     /**
      * 添加监听
      */
-    public void add(TopicListener<Event> listener) {
+    public void add(final TopicListener<Event> listener) {
         add(0, listener);
     }
 
@@ -26,8 +28,8 @@ public class TopicListenPipeline<Event> implements TopicListener<Event> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public void add(int index, TopicListener<Event> listener) {
-        list.add(new EH(index, listener));
+    public void add(final int index, final TopicListener<Event> listener) {
+        list.add(new EH<>(index, listener));
         list.sort(Comparator.comparing(EH::getIndex));
     }
 
@@ -36,25 +38,20 @@ public class TopicListenPipeline<Event> implements TopicListener<Event> {
      *
      * @param listener 监听器
      */
-    public void remove(TopicListener<Event> listener) {
-        for (int i = 0; i < list.size(); i++) {
-            if (listener.equals(list.get(i).listener)) {
-                list.remove(i);
-                i--;
-            }
-        }
+    public void remove(final TopicListener<Event> listener) {
+        list.removeIf(e -> e.listener.equals(listener));
     }
 
     @Override
-    public void onEvent(Event event) throws Throwable {
-        for (EH h : list) {
+    public void onEvent(final Event event) throws Throwable {
+        for (EH<Event> h : list) {
             h.listener.onEvent(event);
         }
     }
 
-    static class EH<Event> {
-        int index;
-        TopicListener<Event> listener;
+    private final static class EH<Event> {
+        final int index;
+        final TopicListener<Event> listener;
 
         EH(int index, TopicListener<Event> listener) {
             this.index = index;

@@ -1,4 +1,4 @@
-package org.noear.dami;
+package org.noear.dami.impl;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -10,42 +10,49 @@ import java.util.concurrent.CompletableFuture;
  * @author noear
  * @since 1.0
  */
-public class Payload implements Serializable {
-    private String guid;
-    private String topic;
-    private String content;
+public class Payload<C, R> implements Serializable {
+    private final String guid;
+    private final String topic;
+    private final C content;
 
-    protected transient CompletableFuture<String> future;
+    protected transient CompletableFuture<R> future;
 
 
-    public Payload(String topic, String content) {
+    public Payload(final String topic, final C content) {
         this.guid = UUID.randomUUID().toString();
         this.topic = topic;
         this.content = content;
     }
 
-    public boolean isRequest(){
+    public Payload(final String guid, final String topic, final C content) {
+        this.guid = guid;
+        this.topic = topic;
+        this.content = content;
+    }
+
+
+    public boolean isRequest() {
         return future != null;
     }
 
     /**
      * 唯一性id
-     * */
+     */
     public String getGuid() {
         return guid;
     }
 
     /**
      * 主题
-     * */
+     */
     public String getTopic() {
         return topic;
     }
 
     /**
      * 内容
-     * */
-    public String getContent() {
+     */
+    public C getContent() {
         return content;
     }
 
