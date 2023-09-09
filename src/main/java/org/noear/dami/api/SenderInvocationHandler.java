@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
- * 接送者接口调用代理
+ * 发送者接口的调用代理
  *
  * @author noear
  * @since 1.0

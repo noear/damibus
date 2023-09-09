@@ -9,6 +9,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
+ * 基于方案包装的主题监听器
+ *
  * @author noear
  * @since 1.0
  */
