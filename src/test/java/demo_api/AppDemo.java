@@ -5,9 +5,6 @@ import demo_api.mod2.UserEventSender;
 import org.noear.dami.DamiApi;
 import org.noear.dami.api.DamiApiImpl;
 
-/**
- * @author noear 2023/9/9 created
- */
 public class AppDemo {
     public static void main(String[] args) {
         DamiApi damiApi = new DamiApiImpl();
