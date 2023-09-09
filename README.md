@@ -82,7 +82,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.13</version>
+    <version>0.14</version>
 </dependency>
 ```
 
@@ -111,7 +111,7 @@ public class UserEventListenerImpl {
     }
 }
 
-public class ApiDemo {
+public class ApiStyleDemo {
     public static void main(String[] args) {
         //设定编码器
         //Dami.api().setCoder(new CoderDefault());
@@ -145,7 +145,7 @@ public class ApiDemo {
 适合类隔离的场景
 
 ```java
-public class StringDemo {
+public class BusStringStyleDemo {
     static String demo_topic = "demo.user.created";
 
     public static void main(String[] args) {
@@ -195,7 +195,7 @@ public class StringDemo {
 
 
 ```java
-public class ObjDemo {
+public class BusObjStyleDemo {
     static String demo_topic = "demo.user.info";
 
     public static void main(String[] args) {
