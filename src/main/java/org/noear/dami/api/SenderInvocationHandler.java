@@ -24,6 +24,8 @@ public class SenderInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        //暂不支持默认函数与Object函数
+
         String topic = topicMapping + "." + method.getName();
         Object content = coder.encode(method, args);
 

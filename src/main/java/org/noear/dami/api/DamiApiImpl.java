@@ -82,6 +82,7 @@ public class DamiApiImpl implements DamiApi {
      */
     @Override
     public void registerListener(String topicMapping, int index, Object listenerObj) {
+        //只用自己申明的方法（不支持承断）
         Method[] methods = listenerObj.getClass().getDeclaredMethods();
 
         for (Method m1 : methods) {
