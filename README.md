@@ -61,6 +61,9 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 请求并等响应（requestAndResponse）、请求并等回调（requestAndCallback）、响应（response）接口
 
+* 还有
+
+提供 Bus 接口之外，还提供了 Api 风格的操作界面（像 dubbo、feign 一样使用）
 
 ### 代码演示
 
