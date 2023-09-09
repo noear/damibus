@@ -38,6 +38,9 @@ public class DamiApiImpl implements DamiApi {
         return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(topicMapping, coder));
     }
 
+    /**
+     * 监听器缓存（注销时用）
+     * */
     Map<Method, MethodTopicListener> listenerMap = new HashMap<>();
 
     /**
