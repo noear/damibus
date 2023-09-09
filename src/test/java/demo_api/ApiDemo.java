@@ -14,7 +14,8 @@ public class ApiDemo {
         UserEventSender userEventSender = Dami.api().createSender("demo.user", UserEventSender.class);
 
         //发送测试
-        userEventSender.created(1, "noear");
+        long rst = userEventSender.created(1, "noear");
+        System.out.println("收到返回：" + rst);
         userEventSender.updated(2, "dami");
 
         //注销监听器
