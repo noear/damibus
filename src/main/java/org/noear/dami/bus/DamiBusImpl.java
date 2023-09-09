@@ -66,15 +66,11 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
      */
     @Override
     public R requestAndResponse(final String topic, final C content) {
-        return r(new Payload<>(topic, content));
+        return requestAndResponse(new Payload<>(topic, content));
     }
 
     @Override
-    public R requestAndResponse(final Payload<C, R> payload, final Consumer<R> callback) {
-        return r(payload);
-    }
-
-    private R r(final Payload<C, R> payload) {
+    public R requestAndResponse(final Payload<C, R> payload) {
         payload.future = new CompletableFuture<>();
 
         router.handle(payload);
@@ -91,15 +87,11 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
      */
     @Override
     public void requestAndCallback(final String topic, final C content, final Consumer<R> callback) {
-        c(new Payload<>(topic, content), callback);
+        requestAndCallback(new Payload<>(topic, content), callback);
     }
 
     @Override
     public void requestAndCallback(final Payload<C, R> payload, final Consumer<R> callback) {
-        c(payload, callback);
-    }
-
-    private void c(final Payload<C, R> payload, final Consumer<R> callback) {
         payload.future = new CompletableFuture<>();
         payload.future.thenAccept(callback);
 

@@ -57,7 +57,7 @@ public interface DamiBus<C, R> {
      *
      * @param payload 发送载体
      */
-    R requestAndResponse(final Payload<C, R> payload, final Consumer<R> callback);
+    R requestAndResponse(final Payload<C, R> payload);
 
     /**
      * 请求并等待回调
