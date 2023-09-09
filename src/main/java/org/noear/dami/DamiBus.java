@@ -16,14 +16,14 @@ public interface DamiBus<C, R> {
      * 弱类型实例（适合类隔离的场景）
      * */
     static DamiBus<String, String> str() {
-        return GlobalHolder.str();
+        return GlobalHolder.global();
     }
 
     /**
      * 泛型、强类型实例
      * */
     static <C, R> DamiBus<C, R> obj() {
-        return GlobalHolder.obj();
+        return GlobalHolder.global();
     }
 
     /**

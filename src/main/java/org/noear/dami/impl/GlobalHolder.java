@@ -9,15 +9,12 @@ import org.noear.dami.DamiBus;
  * @since 1.0
  */
 public class GlobalHolder {
-    static final DamiBus<String, String> str = new DamiBusImpl<>();
-    static final DamiBus obj = new DamiBusImpl<>();
+    static final DamiBus global = new DamiBusImpl<>();
 
-
-    public static DamiBus<String, String> str() {
-        return GlobalHolder.str;
-    }
-
-    public static DamiBus obj() {
-        return GlobalHolder.obj;
+    /**
+     * 获取全局实例
+     */
+    public static DamiBus global() {
+        return GlobalHolder.global;
     }
 }
