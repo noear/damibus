@@ -32,24 +32,29 @@ public class Payload<C, R> implements Serializable {
 
     /**
      * 获取附件
+     *
+     * @param key 关键字
      */
-    public <T> T getAttachment(String name) {
+    public <T> T getAttachment(String key) {
         if (attachments == null) {
             return null;
         }
 
-        return (T) attachments.get(name);
+        return (T) attachments.get(key);
     }
 
     /**
      * 设置附件
+     *
+     * @param key   关键字
+     * @param value 值
      */
-    public <T> void setAttachment(String name, T value) {
+    public <T> void setAttachment(String key, T value) {
         if (attachments == null) {
             attachments = new HashMap<>();
         }
 
-        attachments.put(name, value);
+        attachments.put(key, value);
     }
 
     /**
