@@ -1,8 +1,8 @@
 package org.noear.dami.api;
 
-import org.noear.dami.api.Coder;
-
 /**
+ * 大米接口（提供 Local Procedure Call 服务）
+ *
  * @author noear
  * @since 1.0
  */
