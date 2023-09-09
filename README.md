@@ -1,8 +1,8 @@
 <h1 align="center" style="text-align:center;">
-  DamiBus
+  Dami
 </h1>
 <p align="center">
-	<strong>本地过程调用框架</strong>
+	<strong>基于事件的本地过程调用框架</strong>
 </p>
 
 <p align="center">
@@ -36,7 +36,7 @@
 
 
 
-DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模块、类隔离模块）。零依赖，12k 大小。
+Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块、类隔离模块）。特别适合 DDD；零依赖，12k 大小。
 
 ###  特点
 
