@@ -62,34 +62,34 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 如果涉及类加载器隔离：请在主程序标为编译，在其它模块标为可选。
 
-* 代码
+* 弱类型代码示例（适合类隔离的场景）
 
 ```java
-public class DemoApp {
+public class StringDemo {
     static String demo_topic = "demo.user.created";
 
-    public static void main(String[] args) throws Throwable {
-        TopicListener<Payload> listener = createListener();
+    public static void main(String[] args) {
+        TopicListener<Payload<String, String>> listener = createListener();
 
         //监听
-        DamiBus.global().listen(demo_topic,listener);
+        DamiBus.str().listen(demo_topic, listener);
 
         //发送测试
         sendTest();
 
         //取消监听
-        DamiBus.global().unlisten(demo_topic,listener);
+        DamiBus.str().unlisten(demo_topic, listener);
     }
 
     //创建监听器
-    private static TopicListener<Payload> createListener() {
+    private static TopicListener<Payload<String, String>> createListener() {
         return payload -> {
             //接收处理
             System.out.println(payload);
 
             if (payload.isRequest()) {
                 //如果是请求载体，再响应一下
-                DamiBus.global().response(payload, "你发了：" + payload.getContent());
+                DamiBus.str().response(payload, "你发了：" + payload.getContent());
             }
         };
     }
@@ -97,14 +97,70 @@ public class DemoApp {
     //发送测试
     private static void sendTest() {
         //普通发送
-        DamiBus.global().send(demo_topic, "{user:'noear'}");
+        DamiBus.str().send(demo_topic, "{user:'noear'}");
 
         //请求并等响应
-        String rst1 = DamiBus.global().requestAndResponse(demo_topic, "{user:'dami'}");
+        String rst1 = DamiBus.str().requestAndResponse(demo_topic, "{user:'dami'}");
         System.out.println("响应返回: " + rst1);
 
         //请求并等回调
-        DamiBus.global().requestAndCallback(demo_topic, "{user:'solon'}", (rst2) -> {
+        DamiBus.str().requestAndCallback(demo_topic, "{user:'solon'}", (rst2) -> {
+            System.out.println("响应回调: " + rst2);
+        });
+    }
+}
+```
+
+* 泛型、强类型代码示例
+
+
+```java
+public class ObjDemo {
+    static String demo_topic = "demo.user.info";
+
+    public static void main(String[] args) {
+        TopicListener<Payload<User, User>> listener = createListener();
+
+        //监听
+        DamiBus.<User, User>obj().listen(demo_topic, listener);
+
+        //发送测试
+        sendTest();
+
+        //取消监听
+        DamiBus.<User, User>obj().unlisten(demo_topic, listener);
+    }
+
+    //创建监听器
+    private static TopicListener<Payload<User, User>> createListener() {
+        return payload -> {
+            //接收处理
+            System.out.println(payload);
+
+            if (payload.isRequest()) {
+                final User content = payload.getContent().sing("你太美");
+                //如果是请求载体，再响应一下
+                DamiBus.<User, User>obj().response(payload, content);
+            }
+        };
+    }
+
+    //发送测试
+    private static void sendTest() {
+        final User user = new User().name("kk").age(2.5).hobby(new String[]{"唱", "跳", "rap", "打篮球"});
+        //普通发送
+        DamiBus.<User, Void>obj().send(demo_topic, user);
+
+        //普通发送,自定义构建参数
+        DamiBus.<User, Void>obj().send(new Payload<>("123", demo_topic, user));
+
+        //请求并等响应
+        User rst1 = DamiBus.<User, User>obj().requestAndResponse(demo_topic, user);
+        System.out.println("响应返回: " + rst1);
+
+        user.sing("ai kun");
+        //请求并等回调
+        DamiBus.<User, User>obj().requestAndCallback(demo_topic, user, rst2 -> {
             System.out.println("响应回调: " + rst2);
         });
     }
