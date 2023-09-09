@@ -3,10 +3,8 @@ package demo_api;
 import demo_api.mod1.UserEventListenerImpl;
 import demo_api.mod2.UserEventSender;
 import org.noear.dami.Dami;
-import org.noear.dami.api.DamiApi;
-import org.noear.dami.api.DamiApiImpl;
 
-public class AppDemo {
+public class ApiDemo {
     public static void main(String[] args) {
         UserEventListenerImpl userEventListener = new UserEventListenerImpl();
         //注册监听器
