@@ -12,9 +12,13 @@ public class AppDemo {
     public static void main(String[] args) {
         DamiApi damiApi = new DamiApiImpl();
 
+        //注册监听器
         damiApi.registerListener("demo.user", new UserEventListenerImpl());
+
+        //创建发送器
         UserEventSender userEventSender = damiApi.createSender("demo.user", UserEventSender.class);
 
+        //发送测试
         userEventSender.created(1,"noear");
         userEventSender.updated(2, "dami");
     }

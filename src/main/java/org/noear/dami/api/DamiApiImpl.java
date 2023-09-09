@@ -13,10 +13,10 @@ import java.lang.reflect.Proxy;
 public class DamiApiImpl implements DamiApi {
 
     /**
-     * 创建发送者代理
+     * 创建发送器代理
      *
      * @param topicMapping 主题映射
-     * @param senderClz    发送接口类
+     * @param senderClz    发送器接口类
      */
     @Override
     public <T> T createSender(String topicMapping, Class<T> senderClz) {
@@ -27,7 +27,7 @@ public class DamiApiImpl implements DamiApi {
      * 注册监听者实例
      *
      * @param topicMapping 主题映射
-     * @param listenerObj  监听实现类
+     * @param listenerObj  监听器实现类
      */
     @Override
     public void registerListener(String topicMapping, Object listenerObj) {
