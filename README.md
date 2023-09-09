@@ -69,7 +69,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 * Dami.strBus() 提供弱类型操作的界面（适合类隔离的场景）
 * Dami.objBus() 提供泛型、强类型操作的界面
 * 
-* Dami.api() 提供RPC风格的操作界面（像 dubbo、feign 一样使用事件总线）
+* Dami.api() 提供 RPC 风格的操作界面（像 dubbo、feign 一样使用事件总线）
 
 
 #### 1、添加依赖配置
