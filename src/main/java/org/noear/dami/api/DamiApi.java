@@ -22,24 +22,6 @@ public interface DamiApi {
     void setCoder(Coder coder);
 
     /**
-     * 拦截
-     *
-     * @param interceptor 拦截器
-     */
-    default void intercept(Interceptor interceptor) {
-        intercept(0, interceptor);
-    }
-
-    /**
-     * 拦截
-     *
-     * @param index       顺序位
-     * @param interceptor 拦截器
-     */
-    void intercept(int index, Interceptor interceptor);
-
-
-    /**
      * 创建发送器代理
      *
      * @param topicMapping 主题映射

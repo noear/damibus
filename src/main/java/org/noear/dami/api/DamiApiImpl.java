@@ -37,17 +37,6 @@ public class DamiApiImpl implements DamiApi {
     }
 
     /**
-     * 拦截
-     *
-     * @param index       顺序位
-     * @param interceptor 拦截器
-     */
-    @Override
-    public void intercept(int index, Interceptor interceptor) {
-        Dami.objBus().intercept(index, interceptor);
-    }
-
-    /**
      * 创建发送器代理
      *
      * @param topicMapping 主题映射

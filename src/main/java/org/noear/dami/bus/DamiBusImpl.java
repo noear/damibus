@@ -37,12 +37,16 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
         this.timeout = timeout;
     }
 
-
+    /**
+     * 拦截
+     *
+     * @param index       顺序位
+     * @param interceptor 拦截器
+     */
     @Override
     public void intercept(int index, Interceptor interceptor) {
         router.addInterceptor(index, interceptor);
     }
-
 
     /**
      * 发送（不需要响应）

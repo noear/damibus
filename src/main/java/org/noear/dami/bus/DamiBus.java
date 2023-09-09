@@ -24,15 +24,6 @@ public interface DamiBus<C, R> {
     /**
      * 拦截
      *
-     * @param interceptor 拦截器
-     */
-    default void intercept(Interceptor interceptor) {
-        intercept(0, interceptor);
-    }
-
-    /**
-     * 拦截
-     *
      * @param index       顺序位
      * @param interceptor 拦截器
      */

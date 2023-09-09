@@ -7,7 +7,7 @@ public class AttachmentDemo {
 
     public static void main(String[] args) {
         //添加拦截器
-        Dami.strBus().intercept((payload, chain) -> {
+        Dami.intercept((payload, chain) -> {
             System.out.println("拦截：" + payload.toString());
             chain.doIntercept(payload);
         });

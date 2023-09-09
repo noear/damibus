@@ -11,7 +11,7 @@ public class ApiDemo {
         //Dami.api().setCoder(new CoderDefault());
 
         //添加拦截器
-        Dami.api().intercept((payload, chain) -> {
+        Dami.intercept((payload, chain) -> {
             System.out.println("拦截：" + payload.toString());
             chain.doIntercept(payload);
         });
