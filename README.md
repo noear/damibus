@@ -73,7 +73,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 * Dami.strBus() 提供弱类型总线操作的界面（适合类隔离的场景）
 * Dami.objBus() 提供泛型、强类型总线操作的界面
 * 
-* Dami.api() 提供 RPC 风格的操作界面（像 dubbo、feign 一样使用事件总线）
+* Dami.api() 提供 RPC 风格的操作界面（像 dubbo、feign 一样使用事件总线；支持自定义编解码）
 
 
 #### 1、添加依赖配置
@@ -88,7 +88,45 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 如果涉及类加载器隔离：请在主程序标为编译，在其它模块标为可选。
 
-#### 2、弱类型总线风格示例（适合类隔离的场景）
+#### 2、接口风格示例
+
+```java
+public interface UserEventSender {
+    long created(long userId, String name);
+    void updated(long userId, String name);
+}
+
+public class UserEventListenerImpl {
+    public long created(long userId, String name) {
+        System.err.println("created: userId=" + userId + ", name=" + name);
+        return userId;
+    }
+    public void updated(long userId, String name) {
+        System.err.println("updated: userId=" + userId + ", name=" + name);
+    }
+}
+
+public class ApiDemo {
+    public static void main(String[] args) {
+        UserEventListenerImpl userEventListener = new UserEventListenerImpl();
+        //注册监听器
+        Dami.api().registerListener("demo.user", userEventListener);
+
+        //创建发送器
+        UserEventSender userEventSender = Dami.api().createSender("demo.user", UserEventSender.class);
+
+        //发送测试
+        long rst = userEventSender.created(1, "noear");
+        System.out.println("收到返回：" + rst);
+        userEventSender.updated(2, "dami");
+
+        //注销监听器
+        Dami.api().unregisterListener("demo.user", userEventListener);
+    }
+}
+```
+
+#### 3、弱类型总线风格示例（适合类隔离的场景）
 
 ```java
 public class StringDemo {
@@ -137,7 +175,7 @@ public class StringDemo {
 }
 ```
 
-#### 3、泛型、强类型总线风格示例
+#### 4、泛型、强类型总线风格示例
 
 
 ```java
