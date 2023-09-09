@@ -42,7 +42,7 @@ public class StringDemo {
     //发送测试
     private static void sendTest() {
         //普通发送
-        DamiBus.<String, String>global().send(demo_topic, "{user:'noear'}");
+        DamiBus.<String, Void>global().send(demo_topic, "{user:'noear'}");
 
         //请求并等响应
         String rst1 = DamiBus.<String, String>global().requestAndResponse(demo_topic, "{user:'dami'}");
