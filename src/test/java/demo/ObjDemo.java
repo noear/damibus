@@ -9,6 +9,8 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
+ * 注意发送也接收的类型
+ *
  * @author kongweiguang
  * @since 1.0
  */
@@ -35,7 +37,7 @@ public class ObjDemo {
             System.out.println(payload);
 
             if (payload.isRequest()) {
-                final User content = payload.getContent().setSing("鸡你太美");
+                final User content = payload.getContent().sing("你太美");
                 //如果是请求载体，再响应一下
                 DamiBus.<User, User>obj().response(payload, content);
             }
@@ -44,7 +46,7 @@ public class ObjDemo {
 
     //发送测试
     private static void sendTest() {
-        final User user = new User().setName("kk").setAge(2.5).setHobby(new String[]{"唱", "跳", "rap", "打篮球"});
+        final User user = new User().name("kk").age(2.5).hobby(new String[]{"唱", "跳", "rap", "打篮球"});
         //普通发送
         DamiBus.<User, Void>obj().send(demo_topic, user);
 
@@ -55,7 +57,7 @@ public class ObjDemo {
         User rst1 = DamiBus.<User, User>obj().requestAndResponse(demo_topic, user);
         System.out.println("响应返回: " + rst1);
 
-        user.setSing("ai kun");
+        user.sing("ai kun");
         //请求并等回调
         DamiBus.<User, User>obj().requestAndCallback(demo_topic, user, rst2 -> {
             System.out.println("响应回调: " + rst2);
@@ -72,7 +74,7 @@ public class ObjDemo {
             return sing;
         }
 
-        public User setSing(final String sing) {
+        public User sing(final String sing) {
             this.sing = sing;
             return this;
         }
@@ -81,7 +83,7 @@ public class ObjDemo {
             return name;
         }
 
-        public User setName(final String name) {
+        public User name(final String name) {
             this.name = name;
             return this;
         }
@@ -90,7 +92,7 @@ public class ObjDemo {
             return age;
         }
 
-        public User setAge(final Double age) {
+        public User age(final Double age) {
             this.age = age;
             return this;
         }
@@ -99,7 +101,7 @@ public class ObjDemo {
             return hobby;
         }
 
-        public User setHobby(final String[] hobby) {
+        public User hobby(final String[] hobby) {
             this.hobby = hobby;
             return this;
         }
