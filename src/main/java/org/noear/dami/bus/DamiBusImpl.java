@@ -1,4 +1,4 @@
-package org.noear.dami.impl;
+package org.noear.dami.bus;
 
 import org.noear.dami.DamiBus;
 import org.noear.dami.TopicListener;

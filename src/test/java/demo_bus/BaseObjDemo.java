@@ -1,8 +1,8 @@
-package demo;
+package demo_bus;
 
 import org.noear.dami.DamiBus;
 import org.noear.dami.TopicListener;
-import org.noear.dami.impl.Payload;
+import org.noear.dami.bus.Payload;
 
 import java.util.Arrays;
 import java.util.Objects;

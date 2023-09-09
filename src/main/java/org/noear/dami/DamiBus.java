@@ -1,7 +1,7 @@
 package org.noear.dami;
 
-import org.noear.dami.impl.GlobalHolder;
-import org.noear.dami.impl.Payload;
+import org.noear.dami.bus.GlobalHolder;
+import org.noear.dami.bus.Payload;
 
 import java.util.function.Consumer;
 

@@ -1,42 +1,37 @@
-package demo;
+package demo_bus;
 
 import org.noear.dami.DamiBus;
+import org.noear.dami.TopicListener;
+import org.noear.dami.bus.Payload;
 
-public class AttachmentDemo {
+
+public class BaseStringDemo {
     static String demo_topic = "demo.user.created";
 
     public static void main(String[] args) {
+        TopicListener<Payload<String, String>> listener = createListener();
+
         //监听
-        listen();
+        DamiBus.str().listen(demo_topic, listener);
 
         //发送测试
         sendTest();
+
+        //取消监听
+        DamiBus.str().unlisten(demo_topic, listener);
     }
 
-    //监听
-    private static void listen() {
-        DamiBus.str().listen(demo_topic, 0, payload -> {
+    //创建监听器
+    private static TopicListener<Payload<String, String>> createListener() {
+        return payload -> {
             //接收处理
             System.out.println(payload);
-
-            //设置附件
-            payload.setAttachment("name", "node1");
-        });
-
-
-        DamiBus.str().listen(demo_topic, 1, payload -> {
-            //接收处理
-            System.out.println(payload);
-
-            //打印附件
-            String name = payload.getAttachment("name");
-            System.out.println(name);
 
             if (payload.isRequest()) {
                 //如果是请求载体，再响应一下
                 DamiBus.str().response(payload, "你发了：" + payload.getContent());
             }
-        });
+        };
     }
 
     //发送测试
