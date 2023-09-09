@@ -2,7 +2,7 @@
   Dami
 </h1>
 <p align="center">
-	<strong>基于事件的本地过程调用框架</strong>
+	<strong>基于事件总线的本地过程调用框架</strong>
 </p>
 
 <p align="center">
@@ -56,7 +56,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 * 相同（都有）
 
-发送（send）与监听（listen）接口
+发送（send）与监听（listen）接口。//大家名字取得可能略有不同
 
 * 不同（多了）
 
