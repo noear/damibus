@@ -51,10 +51,12 @@ DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模�
 ###  特性介绍
 
 * 结合 Bus 与 RPC 的理念。可以分发事件，可以有响应和回调
+* 支持事务传导（同步分布、异常透传）
+* 支持附件传导（多个监听者之间，可通过附件传递信息）
+* 支持事件跟踪Id
 * 提供了两个全局实例，也可以自己实例化总线
   * DamiBus.str() 提供弱类型支持（适合类隔离的场景）
   * DamiBus.obj() 提供泛型、强类型支持
-* 支持事务传导（同步分布、异常透传）
 * 零依赖，12k 大小（小得要紧，有什么东西瞬眼可看透）
 
 ### 代码演示
@@ -65,7 +67,7 @@ DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.5</version>
+    <version>0.6</version>
 </dependency>
 ```
 
