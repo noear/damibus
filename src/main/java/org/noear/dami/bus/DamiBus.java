@@ -22,6 +22,23 @@ public interface DamiBus<C, R> {
     void setTimeout(final long timeout);
 
     /**
+     * 拦截
+     *
+     * @param interceptor 拦截器
+     */
+    default void intercept(Interceptor interceptor) {
+        intercept(0, interceptor);
+    }
+
+    /**
+     * 拦截
+     *
+     * @param index       顺序位
+     * @param interceptor 拦截器
+     */
+    void intercept(int index, Interceptor interceptor);
+
+    /**
      * 发送（不需要响应）
      *
      * @param topic   主题

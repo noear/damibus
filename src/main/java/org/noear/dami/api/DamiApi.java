@@ -1,5 +1,7 @@
 package org.noear.dami.api;
 
+import org.noear.dami.bus.Interceptor;
+
 /**
  * 大米接口（提供 Local Procedure Call 服务）
  *
@@ -14,8 +16,28 @@ public interface DamiApi {
 
     /**
      * 设置编码器
+     *
+     * @param coder 编码器
      */
     void setCoder(Coder coder);
+
+    /**
+     * 拦截
+     *
+     * @param interceptor 拦截器
+     */
+    default void intercept(Interceptor interceptor) {
+        intercept(0, interceptor);
+    }
+
+    /**
+     * 拦截
+     *
+     * @param index       顺序位
+     * @param interceptor 拦截器
+     */
+    void intercept(int index, Interceptor interceptor);
+
 
     /**
      * 创建发送器代理

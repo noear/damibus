@@ -1,6 +1,7 @@
 package org.noear.dami.api;
 
 import org.noear.dami.Dami;
+import org.noear.dami.bus.Interceptor;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -13,18 +14,37 @@ import java.util.Map;
  */
 public class DamiApiImpl implements DamiApi {
 
-    Coder coder = new CoderDefault();
+    private Coder coder = new CoderDefault();
 
+    /**
+     * 获取编码器
+     */
     @Override
     public Coder getCoder() {
         return coder;
     }
 
+    /**
+     * 设置编码器
+     *
+     * @param coder 编码器
+     */
     @Override
     public void setCoder(Coder coder) {
         if (coder != null) {
             this.coder = coder;
         }
+    }
+
+    /**
+     * 拦截
+     *
+     * @param index       顺序位
+     * @param interceptor 拦截器
+     */
+    @Override
+    public void intercept(int index, Interceptor interceptor) {
+        Dami.objBus().intercept(index, interceptor);
     }
 
     /**

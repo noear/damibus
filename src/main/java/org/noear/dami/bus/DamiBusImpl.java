@@ -38,6 +38,12 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     }
 
 
+    @Override
+    public void intercept(int index, Interceptor interceptor) {
+        router.addInterceptor(index, interceptor);
+    }
+
+
     /**
      * 发送（不需要响应）
      */

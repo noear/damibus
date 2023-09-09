@@ -6,6 +6,12 @@ public class AttachmentDemo {
     static String demo_topic = "demo.user.created";
 
     public static void main(String[] args) {
+        //添加拦截器
+        Dami.strBus().intercept((payload, chain) -> {
+            System.out.println("拦截：" + payload.toString());
+            chain.doIntercept(payload);
+        });
+
         //监听
         listen();
 

@@ -9,15 +9,12 @@ package org.noear.dami.bus;
  */
 public interface TopicRouter<C, R> {
     /**
-     * 断言主题是否为空
+     * 添加拦截器
      *
-     * @param topic
+     * @param index       顺序位
+     * @param interceptor 拦截器
      */
-    default void assertTopic(final String topic) {
-        if (topic == null || topic.isEmpty()) {
-            throw new IllegalArgumentException("The topic cannot be empty");
-        }
-    }
+    void addInterceptor(int index, Interceptor interceptor);
 
     /**
      * 添加监听
