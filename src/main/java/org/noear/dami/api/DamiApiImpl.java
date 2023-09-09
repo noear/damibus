@@ -1,7 +1,6 @@
 package org.noear.dami.api;
 
-import org.noear.dami.Dami;
-import org.noear.dami.bus.Interceptor;
+import org.noear.dami.bus.DamiBus;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -13,8 +12,24 @@ import java.util.Map;
  * @since 2.1
  */
 public class DamiApiImpl implements DamiApi {
+    /**
+     * 监听器缓存（注销时用）
+     */
+    private Map<Method, MethodTopicListener> listenerMap = new HashMap<>();
 
+    /**
+     * 编码解器
+     */
     private Coder coder = new CoderDefault();
+
+    /**
+     * 总线
+     */
+    private final DamiBus bus;
+
+    public DamiApiImpl(DamiBus bus) {
+        this.bus = bus;
+    }
 
     /**
      * 获取编码器
@@ -44,13 +59,8 @@ public class DamiApiImpl implements DamiApi {
      */
     @Override
     public <T> T createSender(String topicMapping, Class<T> senderClz) {
-        return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(topicMapping, coder));
+        return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(bus, topicMapping, coder));
     }
-
-    /**
-     * 监听器缓存（注销时用）
-     */
-    Map<Method, MethodTopicListener> listenerMap = new HashMap<>();
 
     /**
      * 注册监听者实例
@@ -77,11 +87,11 @@ public class DamiApiImpl implements DamiApi {
         for (Method m1 : methods) {
             MethodTopicListener listener = listenerMap.get(m1);
             if (listener == null) {
-                listener = new MethodTopicListener(listenerObj, m1, coder);
+                listener = new MethodTopicListener(bus, listenerObj, m1, coder);
                 listenerMap.put(m1, listener);
             }
             String topic = topicMapping + "." + m1.getName();
-            Dami.objBus().listen(topic, index, listener);
+            bus.listen(topic, index, listener);
         }
     }
 
@@ -99,7 +109,7 @@ public class DamiApiImpl implements DamiApi {
             MethodTopicListener listener = listenerMap.get(m1);
             if (listener != null) {
                 String topic = topicMapping + "." + m1.getName();
-                Dami.objBus().unlisten(topic, listener);
+                bus.unlisten(topic, listener);
             }
         }
     }

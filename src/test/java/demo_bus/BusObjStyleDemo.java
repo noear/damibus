@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 
-public class BaseObjDemo {
+public class BusObjStyleDemo {
     static String demo_topic = "demo.user.info";
 
     public static void main(String[] args) {

@@ -5,7 +5,7 @@ import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.Payload;
 
 
-public class BaseStringDemo {
+public class BusStringStyleDemo {
     static String demo_topic = "demo.user.created";
 
     public static void main(String[] args) {

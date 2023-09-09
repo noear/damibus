@@ -1,7 +1,5 @@
 package org.noear.dami.api;
 
-import org.noear.dami.bus.Interceptor;
-
 /**
  * 大米接口（提供 Local Procedure Call 服务）
  *
