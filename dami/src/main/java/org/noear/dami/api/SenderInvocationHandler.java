@@ -10,8 +10,8 @@ import java.lang.reflect.Method;
  * @since 1.0
  */
 public class SenderInvocationHandler implements InvocationHandler {
-    private DamiApi damiApi;
-    private String topicMapping;
+    private final DamiApi damiApi;
+    private final String topicMapping;
 
     public SenderInvocationHandler(DamiApi damiApi, String topicMapping) {
         this.damiApi = damiApi;
