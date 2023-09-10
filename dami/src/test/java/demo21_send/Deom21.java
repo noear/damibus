@@ -1,4 +1,4 @@
-package demo21_event;
+package demo21_send;
 
 import org.noear.dami.Dami;
 
