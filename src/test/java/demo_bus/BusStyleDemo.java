@@ -9,20 +9,20 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 
-public class BusObjStyleDemo {
+public class BusStyleDemo {
     static String demo_topic = "demo.user.info";
 
     public static void main(String[] args) {
         TopicListener<Payload<User, User>> listener = createListener();
 
         //监听
-        Dami.<User, User>objBus().listen(demo_topic, listener);
+        Dami.<User, User>bus().listen(demo_topic, listener);
 
         //发送测试
         sendTest();
 
         //取消监听
-        Dami.<User, User>objBus().unlisten(demo_topic, listener);
+        Dami.<User, User>bus().unlisten(demo_topic, listener);
     }
 
     //创建监听器
@@ -34,7 +34,7 @@ public class BusObjStyleDemo {
             if (payload.isRequest()) {
                 final User content = payload.getContent().sing("你太美");
                 //如果是请求载体，再响应一下
-                Dami.<User, User>objBus().response(payload, content);
+                Dami.<User, User>bus().response(payload, content);
             }
         };
     }
@@ -43,18 +43,18 @@ public class BusObjStyleDemo {
     private static void sendTest() {
         final User user = new User().name("kk").age(2.5).hobby(new String[]{"唱", "跳", "rap", "打篮球"});
         //普通发送
-        Dami.<User, Void>objBus().send(demo_topic, user);
+        Dami.<User, Void>bus().send(demo_topic, user);
 
         //普通发送,自定义构建参数
-        Dami.<User, Void>objBus().send(new Payload<>("123", demo_topic, user));
+        Dami.<User, Void>bus().send(new Payload<>("123", demo_topic, user));
 
         //请求并等响应
-        User rst1 = Dami.<User, User>objBus().requestAndResponse(demo_topic, user);
+        User rst1 = Dami.<User, User>bus().requestAndResponse(demo_topic, user);
         System.out.println("响应返回: " + rst1);
 
         user.sing("ai kun");
         //请求并等回调
-        Dami.<User, User>objBus().requestAndCallback(demo_topic, user, rst2 -> {
+        Dami.<User, User>bus().requestAndCallback(demo_topic, user, rst2 -> {
             System.out.println("响应回调: " + rst2);
         });
     }

@@ -21,7 +21,7 @@ public class AttachmentDemo {
 
     //监听
     private static void listen() {
-        Dami.strBus().listen(demo_topic, 0, payload -> {
+        Dami.busStr().listen(demo_topic, 0, payload -> {
             //接收处理
             System.out.println(payload);
 
@@ -30,7 +30,7 @@ public class AttachmentDemo {
         });
 
 
-        Dami.strBus().listen(demo_topic, 1, payload -> {
+        Dami.busStr().listen(demo_topic, 1, payload -> {
             //接收处理
             System.out.println(payload);
 
@@ -40,7 +40,7 @@ public class AttachmentDemo {
 
             if (payload.isRequest()) {
                 //如果是请求载体，再响应一下
-                Dami.strBus().response(payload, "你发了：" + payload.getContent());
+                Dami.busStr().response(payload, "你发了：" + payload.getContent());
             }
         });
     }
@@ -48,14 +48,14 @@ public class AttachmentDemo {
     //发送测试
     private static void sendTest() {
         //普通发送
-        Dami.strBus().send(demo_topic, "{user:'noear'}");
+        Dami.busStr().send(demo_topic, "{user:'noear'}");
 
         //请求并等响应
-        String rst1 = Dami.strBus().requestAndResponse(demo_topic, "{user:'dami'}");
+        String rst1 = Dami.busStr().requestAndResponse(demo_topic, "{user:'dami'}");
         System.out.println("响应返回: " + rst1);
 
         //请求并等回调
-        Dami.strBus().requestAndCallback(demo_topic, "{user:'solon'}", (rst2) -> {
+        Dami.busStr().requestAndCallback(demo_topic, "{user:'solon'}", (rst2) -> {
             System.out.println("响应回调: " + rst2);
         });
     }

@@ -16,25 +16,26 @@ public class Dami {
     static final DamiBus bus = new DamiBusImpl<>();
     static final DamiApi api = new DamiApiImpl(bus);
 
+
     /**
-     * 接口界面
+     * 泛型、强类型总线界面
      */
-    public static DamiApi api() {
-        return api;
+    public static <C, R> DamiBus<C, R> bus() {
+        return bus;
     }
 
     /**
      * 弱类型总线界面（适合类隔离的场景）
      */
-    public static DamiBus<String, String> strBus() {
+    public static DamiBus<String, String> busStr() {
         return bus;
     }
 
     /**
-     * 泛型、强类型总线界面
+     * 接口界面
      */
-    public static <C, R> DamiBus<C, R> objBus() {
-        return bus;
+    public static DamiApi api() {
+        return api;
     }
 
     /**
