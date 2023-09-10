@@ -99,8 +99,8 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 ```java
 public interface UserEventSender {
-    long created(long userId, String name);
-    void updated(long userId, String name);
+    long created(long userId, String name); //方法的主题= topicMapping + "." + method.getName() 
+    void updated(long userId, String name); //方法名字，不能重复
 }
 
 //通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口）
@@ -149,8 +149,8 @@ public class ApiStyleDemo {
 ```java
 @Dami(topicMapping = "demo.user")
 public interface UserEventSender {
-    long created(long userId, String name);
-    void updated(long userId, String name);
+    long created(long userId, String name); //方法的主题= topicMapping + "." + method.getName() 
+    void updated(long userId, String name); //方法名字，不能重复
 }
 
 //通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口）
