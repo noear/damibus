@@ -5,6 +5,5 @@ package demo31_api.module2;
  * */
 public interface UserEventSender {
     void onCreated(Long userId, String name);
-    void onUpdated(Long userId, String name);
     Long getUserId(String name);
 }
