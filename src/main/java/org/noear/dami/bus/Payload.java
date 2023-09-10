@@ -3,6 +3,7 @@ package org.noear.dami.bus;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /**
  * 事件装载
@@ -17,8 +18,7 @@ public class Payload<C, R> implements Serializable {
 
     private Map<String, Object> attachments;
 
-    protected transient CompletableFuture<R> future;
-
+    protected transient Consumer<R> callback;
 
     public Payload(final String topic, final C content) {
         this(UUID.randomUUID().toString(), topic, content);
@@ -61,7 +61,7 @@ public class Payload<C, R> implements Serializable {
      * 是否为请求（是的话，需要响应）
      */
     public boolean isRequest() {
-        return future != null;
+        return  callback != null;
     }
 
     /**

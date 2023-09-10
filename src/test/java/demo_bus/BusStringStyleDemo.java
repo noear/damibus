@@ -30,6 +30,7 @@ public class BusStringStyleDemo {
             if (payload.isRequest()) {
                 //如果是请求载体，再响应一下
                 Dami.busStr().response(payload, "你发了：" + payload.getContent());
+                Dami.busStr().response(payload, "你发了(*)：" + payload.getContent());
             }
         };
     }
@@ -39,7 +40,7 @@ public class BusStringStyleDemo {
         //普通发送
         Dami.busStr().send(demo_topic, "{user:'noear'}");
 
-        //请求并等响应
+        //请求并等响应,如果有多次响应只会回应第一次响应
         String rst1 = Dami.busStr().requestAndResponse(demo_topic, "{user:'dami'}");
         System.out.println("响应返回: " + rst1);
 
