@@ -95,7 +95,6 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 * a) 发送器 与 监听器，不要有依赖关系；使用基础类型做为参数或返回
 * b) 发送器 与 监听器，不要有依赖关系；使用自定义编码解（比如 json 序列化），可支持任何类型的参数或返回
 
-手动使用风格
 
 ```java
 public interface UserEventSender {
@@ -143,46 +142,6 @@ public class ApiStyleDemo {
 }
 ```
 
-在 IOC 容器下的使用示例
-
-
-```java
-@Dami(topicMapping = "demo.user")
-public interface UserEventSender {
-    long created(long userId, String name); //方法的主题= topicMapping + "." + method.getName() 
-    void updated(long userId, String name); //方法名字，不能重复
-}
-
-//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口）
-@Dami(topicMapping = "demo.user")
-public class UserEventListenerImpl {
-    public long created(long userId, String name) {
-        System.err.println("created: userId=" + userId + ", name=" + name);
-        return userId;
-    }
-    public void updated(long userId, String name) {
-        System.err.println("updated: userId=" + userId + ", name=" + name);
-    }
-}
-
-@Component
-public class ApiStyleDemo {
-    @Inject
-    UserEventSender userEventSender;
-
-    @Init
-    public void test(){
-        //发送测试
-        long rst = userEventSender.created(1, "noear");
-        System.out.println("收到返回：" + rst);
-        userEventSender.updated(2, "dami");
-    }
-
-    public static void main(String[] args) {
-        Solon.start(ApiStyleDemo.class, args);
-    }
-}
-```
 
 #### 3、弱类型总线风格示例
 

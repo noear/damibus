@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * 大米组件
  *
  * @author noear
- * @since 2.5
+ * @since 1.0
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

@@ -10,7 +10,7 @@ import java.util.List;
  * @author noear
  * @since 1.0
  */
-public final class TopicListenPipeline<Event> implements TopicListener<Event> {
+public final class TopicListenPipeline<Event extends Payload> implements TopicListener<Event> {
     private final List<EH<Event>> list = new ArrayList<>();
 
     /**
@@ -50,7 +50,7 @@ public final class TopicListenPipeline<Event> implements TopicListener<Event> {
         }
     }
 
-    private final static class EH<Event> {
+    private final static class EH<Event extends Payload> {
         final int index;
         final TopicListener<Event> listener;
 

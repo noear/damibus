@@ -1,7 +1,5 @@
 package org.noear.dami.bus;
 
-import java.io.Serializable;
-
 /**
  * 主题监听器
  *
@@ -9,7 +7,7 @@ import java.io.Serializable;
  * @since 1.0
  */
 @FunctionalInterface
-public interface TopicListener<Event> extends Serializable {
+public interface TopicListener<Event extends Payload> {
     /**
      * 处理监听事件
      *
