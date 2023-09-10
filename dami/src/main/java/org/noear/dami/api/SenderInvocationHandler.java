@@ -25,7 +25,7 @@ public class SenderInvocationHandler implements InvocationHandler {
         String topic = topicMapping + "." + method.getName();
         Object content = damiApi.getCoder().encode(method, args);
 
-        if (method.getReturnType() == Void.class) {
+        if (method.getReturnType() == void.class) { //不能用大写的 Void.class（不然对不上）
             damiApi.getBus().send(topic, content);
             return null;
         } else {
