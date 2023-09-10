@@ -66,7 +66,7 @@ public class DamiBeanDefinitionScanner extends ClassPathBeanDefinitionScanner {
             DamiTopic damiTopic = beanClass.getAnnotation(DamiTopic.class);
             beanDefinition.setInstanceSupplier(() -> Dami.api().createSender(damiTopic.topicMapping(), beanClass));
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(String.format("beanClass is Not Find name:[%s]", beanClassName), e);
+            throw new RuntimeException(String.format("beanClass is NotFound beanClassName:[%s]", beanClassName), e);
         }
     }
 
