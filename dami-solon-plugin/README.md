@@ -12,8 +12,6 @@
 ### 示例代码
 
 ```java
-import org.noear.solon.annotation.Inject;
-
 @DamiTopic("demo.user")
 public interface UserEventSender {
     void onCreated(long userId, String name); //方法的主题 = topicMapping + "." + method.getName() 
