@@ -67,7 +67,7 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     public R requestAndResponse(final Payload<C, R> payload) {
 
         CompletableFuture<R> future = new CompletableFuture<>();
-        payload.callback = future::complete;
+        payload.future = future::complete;
         router.handle(payload);
 
         try {
@@ -84,7 +84,7 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
      */
     @Override
     public void requestAndCallback(final Payload<C, R> payload, final Consumer<R> callback) {
-        payload.callback = callback;
+        payload.future = callback;
 
         router.handle(payload);
     }
@@ -101,7 +101,7 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
             throw new IllegalStateException("This payload does not support a response");
         }
 
-        CompletableFuture.completedFuture(content).thenAccept(request.callback);
+        CompletableFuture.completedFuture(content).thenAccept(request.future);
     }
 
     /**
