@@ -53,7 +53,7 @@ public class Demo92 {
     @Autowired
     UserDemandSender userDemandSender;
 
-    @Autowired
+    @PostConstruct
     public void test() {
         userEventSender.onCreated(1,"noear");
         User user = userDemandSender.getUser(1);
