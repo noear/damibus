@@ -1,7 +1,7 @@
 
-## dami-solon-plugin 示例
+## 1、dami-solon-plugin 示例
 
-### 添加依赖配置
+#### 依赖配置
 
 ```xml
 <dependency>
@@ -11,7 +11,7 @@
 </dependency>
 ```
 
-### 示例代码
+#### 代码
 
 ```java
 @DamiTopic("demo.user")
@@ -65,7 +65,7 @@ public class ApiStyleDemo {
 }
 ```
 
-### 如果需要拦截？
+#### 如果需要拦截？
 
 ```java
 

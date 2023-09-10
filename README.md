@@ -90,7 +90,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 ### 示例
 
-更多的示例请参考：example-dami 模块。
+更多的示例请参考：[example-dami](/noear/dami/tree/main/example-dami) 模块。
 
 #### demo11_event
 
