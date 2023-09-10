@@ -70,8 +70,8 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 提供了三个操作界面（也可以自己包装界面），下面会分别演示
 
-* Dami.strBus() 提供弱类型总线操作的界面（适合类隔离的场景）
-* Dami.objBus() 提供泛型、强类型总线操作的界面
+* Dami.busStr() 提供弱类型总线操作的界面（适合类隔离的场景）
+* Dami.bus() 提供泛型、强类型总线操作的界面
 * 
 * Dami.api() 提供 RPC 风格的操作界面（像 dubbo、feign 一样使用事件总线；支持自定义编解码）
 
@@ -82,7 +82,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.15</version>
+    <version>0.16</version>
 </dependency>
 ```
 
@@ -153,13 +153,13 @@ public class BusStringStyleDemo {
         TopicListener<Payload<String, String>> listener = createListener();
 
         //监听
-        Dami.strBus().listen(demo_topic, listener);
+        Dami.busStr().listen(demo_topic, listener);
 
         //发送测试
         sendTest();
 
         //取消监听
-        Dami.strBus().unlisten(demo_topic, listener);
+        Dami.busStr().unlisten(demo_topic, listener);
     }
 
     //创建监听器
@@ -170,7 +170,7 @@ public class BusStringStyleDemo {
 
             if (payload.isRequest()) {
                 //如果是请求载体，再响应一下
-                Dami.strBus().response(payload, "你发了：" + payload.getContent());
+                Dami.busStr().response(payload, "你发了：" + payload.getContent());
             }
         };
     }
@@ -178,14 +178,14 @@ public class BusStringStyleDemo {
     //发送测试
     private static void sendTest() {
         //普通发送
-        Dami.strBus().send(demo_topic, "{user:'noear'}");
+        Dami.busStr().send(demo_topic, "{user:'noear'}");
 
         //请求并等响应
-        String rst1 = Dami.strBus().requestAndResponse(demo_topic, "{user:'dami'}");
+        String rst1 = Dami.busStr().requestAndResponse(demo_topic, "{user:'dami'}");
         System.out.println("响应返回: " + rst1);
 
         //请求并等回调
-        Dami.strBus().requestAndCallback(demo_topic, "{user:'solon'}", (rst2) -> {
+        Dami.busStr().requestAndCallback(demo_topic, "{user:'solon'}", (rst2) -> {
             System.out.println("响应回调: " + rst2);
         });
     }
@@ -196,20 +196,20 @@ public class BusStringStyleDemo {
 
 
 ```java
-public class BusObjStyleDemo {
+public class BusStyleDemo {
     static String demo_topic = "demo.user.info";
 
     public static void main(String[] args) {
         TopicListener<Payload<User, User>> listener = createListener();
 
         //监听
-        Dami.<User, User>objBus().listen(demo_topic, listener);
+        Dami.<User, User>bus().listen(demo_topic, listener);
 
         //发送测试
         sendTest();
 
         //取消监听
-        Dami.<User, User>objBus().unlisten(demo_topic, listener);
+        Dami.<User, User>bus().unlisten(demo_topic, listener);
     }
 
     //创建监听器
@@ -221,7 +221,7 @@ public class BusObjStyleDemo {
             if (payload.isRequest()) {
                 final User content = payload.getContent().sing("你太美");
                 //如果是请求载体，再响应一下
-                Dami.<User, User>objBus().response(payload, content);
+                Dami.<User, User>bus().response(payload, content);
             }
         };
     }
@@ -230,18 +230,18 @@ public class BusObjStyleDemo {
     private static void sendTest() {
         final User user = new User().name("kk").age(2.5).hobby(new String[]{"唱", "跳", "rap", "打篮球"});
         //普通发送
-        Dami.<User, Void>objBus().send(demo_topic, user);
+        Dami.<User, Void>bus().send(demo_topic, user);
 
         //普通发送,自定义构建参数
-        Dami.<User, Void>objBus().send(new Payload<>("123", demo_topic, user));
+        Dami.<User, Void>bus().send(new Payload<>("123", demo_topic, user));
 
         //请求并等响应
-        User rst1 = Dami.<User, User>objBus().requestAndResponse(demo_topic, user);
+        User rst1 = Dami.<User, User>bus().requestAndResponse(demo_topic, user);
         System.out.println("响应返回: " + rst1);
 
         user.sing("ai kun");
         //请求并等回调
-        Dami.<User, User>objBus().requestAndCallback(demo_topic, user, rst2 -> {
+        Dami.<User, User>bus().requestAndCallback(demo_topic, user, rst2 -> {
             System.out.println("响应回调: " + rst2);
         });
     }
