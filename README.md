@@ -166,6 +166,15 @@ public class UserEventListenerImpl {
 }
 
 @Component
+public class ApiInterceptor implements Interceptor {
+    @Override
+    public void doIntercept(Payload payload, InterceptorChain chain) {
+        System.out.println("拦截：" + payload.toString());
+        chain.doIntercept(payload);
+    }
+}
+
+@Component
 public class ApiStyleDemo {
     @Inject
     UserEventSender userEventSender;
