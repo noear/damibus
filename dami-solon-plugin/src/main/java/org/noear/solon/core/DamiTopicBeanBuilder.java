@@ -18,7 +18,6 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
         if (clz.isInterface()) {
             Object raw = Dami.api().createSender(anno.value(), clz);
             bw.rawSet(raw);
-            bw.tagSet(anno.value());
         } else {
             if (TopicListener.class.isAssignableFrom(clz)) {
                 Dami.bus().listen(anno.value(), bw.raw());
@@ -26,7 +25,6 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
                 Dami.api().registerListener(anno.value(), bw.raw());
             }
 
-            bw.tagSet(anno.value());
             lifecycleWrap(bw, anno);
         }
     }
