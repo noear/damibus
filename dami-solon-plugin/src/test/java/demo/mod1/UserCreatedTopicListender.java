@@ -2,11 +2,11 @@ package demo.mod1;
 
 import org.noear.dami.bus.Payload;
 import org.noear.dami.bus.TopicListener;
-import org.noear.dami.solon.annotation.Dami;
+import org.noear.dami.solon.annotation.DamiTopic;
 
 import java.util.Map;
 
-@Dami(topicMapping = "demo.user.created")
+@DamiTopic("demo.user.created")
 public class UserCreatedTopicListender implements TopicListener<Payload<Map<String,Object>,Long>> {
 
     @Override

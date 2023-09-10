@@ -1,8 +1,9 @@
 package org.noear.solon.core;
 
+import org.noear.dami.Dami;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.solon.ListenerLifecycleWrap;
-import org.noear.dami.solon.annotation.Dami;
+import org.noear.dami.solon.annotation.DamiTopic;
 import org.noear.solon.Solon;
 
 /**
@@ -11,21 +12,21 @@ import org.noear.solon.Solon;
  * @author noear
  * @since 1.0
  */
-public class DamiBeanBuilder implements BeanBuilder<Dami> {
+public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
     @Override
-    public void doBuild(Class<?> clz, BeanWrap bw, Dami anno) throws Throwable {
+    public void doBuild(Class<?> clz, BeanWrap bw, DamiTopic anno) throws Throwable {
         if (clz.isInterface()) {
-            Object raw = org.noear.dami.Dami.api().createSender(anno.topicMapping(), clz);
+            Object raw = Dami.api().createSender(anno.value(), clz);
             bw.rawSet(raw);
-            bw.tagSet(anno.topicMapping());
+            bw.tagSet(anno.value());
         } else {
             if (TopicListener.class.isAssignableFrom(clz)) {
-                org.noear.dami.Dami.bus().listen(anno.topicMapping(), bw.raw());
+                Dami.bus().listen(anno.value(), bw.raw());
             } else {
-                org.noear.dami.Dami.api().registerListener(anno.topicMapping(), bw.raw());
+                Dami.api().registerListener(anno.value(), bw.raw());
             }
 
-            bw.tagSet(anno.topicMapping());
+            bw.tagSet(anno.value());
             lifecycleWrap(bw, anno);
         }
     }
@@ -33,7 +34,7 @@ public class DamiBeanBuilder implements BeanBuilder<Dami> {
     /**
      * 包装生命周期
      */
-    private void lifecycleWrap(BeanWrap bw, Dami anno) {
+    private void lifecycleWrap(BeanWrap bw, DamiTopic anno) {
         if (Solon.context() != bw.context()) {
             //如果不是根容器，则停止时自动注销
             ListenerLifecycleWrap lifecycleWrap = (ListenerLifecycleWrap) bw.context().getAttrs().get(ListenerLifecycleWrap.class);
@@ -44,7 +45,7 @@ public class DamiBeanBuilder implements BeanBuilder<Dami> {
                 bw.context().lifecycle(lifecycleWrap);
             }
 
-            lifecycleWrap.add(anno.topicMapping(), bw.raw());
+            lifecycleWrap.add(anno.value(), bw.raw());
         }
     }
 }

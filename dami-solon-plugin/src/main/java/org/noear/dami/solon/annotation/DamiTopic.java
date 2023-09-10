@@ -11,9 +11,9 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Dami {
+public @interface DamiTopic {
     /**
      * 主题映射
      * */
-    String topicMapping();
+    String value();
 }
