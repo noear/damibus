@@ -1,7 +1,5 @@
 package org.noear.dami.api;
 
-import org.noear.dami.api.marker.Listener;
-import org.noear.dami.api.marker.Sender;
 import org.noear.dami.bus.DamiBus;
 
 import java.lang.reflect.Method;
@@ -60,7 +58,7 @@ public class DamiApiImpl implements DamiApi {
      * @param senderClz    发送器接口类
      */
     @Override
-    public <T extends Sender> T createSender(String topicMapping, Class<T> senderClz) {
+    public <T> T createSender(String topicMapping, Class<T> senderClz) {
         return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(bus, topicMapping, coder));
     }
 
@@ -72,7 +70,7 @@ public class DamiApiImpl implements DamiApi {
      * @param listenerObj  监听器实现类
      */
     @Override
-    public synchronized <T extends Listener> void registerListener(String topicMapping, int index, T listenerObj) {
+    public synchronized void registerListener(String topicMapping, int index, Object listenerObj) {
         //只用自己申明的方法（不支持承断）
         Method[] methods = listenerObj.getClass().getDeclaredMethods();
 
@@ -94,7 +92,7 @@ public class DamiApiImpl implements DamiApi {
      * @param listenerObj  监听器实现类
      */
     @Override
-    public synchronized <T extends Listener> void unregisterListener(String topicMapping, T listenerObj) {
+    public synchronized void unregisterListener(String topicMapping, Object listenerObj) {
         Method[] methods = listenerObj.getClass().getDeclaredMethods();
 
         for (Method m1 : methods) {
