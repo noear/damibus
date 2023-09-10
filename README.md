@@ -82,7 +82,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.16</version>
+    <version>0.17</version>
 </dependency>
 ```
 
@@ -101,7 +101,7 @@ public interface UserEventSender {
     void updated(long userId, String name);
 }
 
-//保持与 Sender 相同的接口定义
+//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口）
 public class UserEventListenerImpl {
     public long created(long userId, String name) {
         System.err.println("created: userId=" + userId + ", name=" + name);
