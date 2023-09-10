@@ -60,7 +60,7 @@ public class Demo82 {
     }
 
     public static void main(String[] args) {
-        Solon.start(ApiStyleDemo.class, args);
+        Solon.start(Demo82.class, args);
     }
 }
 ```

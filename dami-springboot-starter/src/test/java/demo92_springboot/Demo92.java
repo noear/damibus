@@ -34,6 +34,6 @@ public class Demo92 {
     }
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(Demo92.class);
+        SpringApplication.run(Demo92.class);
     }
 }

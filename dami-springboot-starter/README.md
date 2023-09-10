@@ -60,7 +60,7 @@ public class Demo92 {
     }
 
     public static void main(String[] args) {
-        Solon.start(ApiStyleDemo.class, args);
+        SpringApplication.run(Demo92.class);
     }
 }
 ```
