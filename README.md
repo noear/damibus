@@ -76,7 +76,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 * Dami.api() 提供 RPC 风格的操作界面（像 dubbo、feign 一样使用事件总线；支持自定义编解码）
 
 
-### Maven 依赖配置
+### 依赖配置
 
 ```xml
 <dependency>
@@ -90,7 +90,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 ### 示例
 
-更多的示例请参考：[example-dami](/noear/dami/tree/main/example-dami) 模块。
+更多的示例请参考：[example-dami](example-dami) 模块。
 
 #### demo11_event
 
