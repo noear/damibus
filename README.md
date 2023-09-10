@@ -2,7 +2,7 @@
   Dami
 </h1>
 <p align="center">
-	<strong>基于事件总线的本地过程调用框架</strong>
+	<strong>基于总线的本地过程调用框架</strong>
 </p>
 
 <p align="center">
