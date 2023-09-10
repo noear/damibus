@@ -12,5 +12,6 @@ public class DamiTest {
         UserEventSender bean = context.getBean(UserEventSender.class);
         long rst = bean.created(1, "kamo");
         System.out.println("收到返回：" + rst);
+        bean.updated(2,"akino");
     }
 }
