@@ -2,7 +2,6 @@ package org.noear.dami.bus;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * 事件装载
@@ -17,7 +16,7 @@ public class Payload<C, R> implements Serializable {
 
     private Map<String, Object> attachments;
 
-    protected transient CompletableFuture<R> future;
+    protected transient PayloadFuture<R> future;
 
 
     public Payload(final String topic, final C content) {
