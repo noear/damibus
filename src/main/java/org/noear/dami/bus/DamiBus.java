@@ -35,7 +35,9 @@ public interface DamiBus<C, R> {
      * @param topic   主题
      * @param content 内容
      */
-    void send(final String topic, final C content);
+    default void send(final String topic, final C content) {
+        send(new Payload<>(topic, content));
+    }
 
     /**
      * 发送（不需要响应）,自定义载体
@@ -50,7 +52,9 @@ public interface DamiBus<C, R> {
      * @param topic   主题
      * @param content 内容
      */
-    R requestAndResponse(final String topic, final C content);
+    default R requestAndResponse(final String topic, final C content) {
+        return requestAndResponse(new Payload<>(topic, content));
+    }
 
     /**
      * 请求并等待响应,自定义载体
@@ -66,7 +70,9 @@ public interface DamiBus<C, R> {
      * @param content  内容
      * @param callback 回调函数
      */
-    void requestAndCallback(final String topic, final C content, final Consumer<R> callback);
+    default void requestAndCallback(final String topic, final C content, final Consumer<R> callback) {
+        requestAndCallback(new Payload<>(topic, content), callback);
+    }
 
     /**
      * 请求并等待回调,自定义载体
@@ -89,7 +95,9 @@ public interface DamiBus<C, R> {
      * @param topic    主题
      * @param listener 监听
      */
-    void listen(final String topic, final TopicListener<Payload<C, R>> listener);
+    default void listen(final String topic, final TopicListener<Payload<C, R>> listener) {
+        listen(topic, 0, listener);
+    }
 
     /**
      * 监听

@@ -1,5 +1,8 @@
 package org.noear.dami.api;
 
+import org.noear.dami.api.marker.Listener;
+import org.noear.dami.api.marker.Sender;
+
 /**
  * 大米接口（提供 Local Procedure Call 服务）
  *
@@ -25,7 +28,7 @@ public interface DamiApi {
      * @param topicMapping 主题映射
      * @param senderClz    发送器接口类
      */
-    <T> T createSender(String topicMapping, Class<T> senderClz);
+    <T extends Sender> T createSender(String topicMapping, Class<T> senderClz);
 
     /**
      * 注册监听者实例
@@ -33,7 +36,9 @@ public interface DamiApi {
      * @param topicMapping 主题映射
      * @param listenerObj  监听器实现类
      */
-    void registerListener(String topicMapping, Object listenerObj);
+    default <T extends Listener> void registerListener(String topicMapping, T listenerObj) {
+        registerListener(topicMapping, 0, listenerObj);
+    }
 
     /**
      * 注册监听者实例
@@ -42,7 +47,7 @@ public interface DamiApi {
      * @param index        顺序位
      * @param listenerObj  监听器实现类
      */
-    void registerListener(String topicMapping, int index, Object listenerObj);
+    <T extends Listener> void registerListener(String topicMapping, int index, T listenerObj);
 
     /**
      * 取消注册监听者实例
@@ -50,5 +55,5 @@ public interface DamiApi {
      * @param topicMapping 主题映射
      * @param listenerObj  监听器实现类
      */
-    void unregisterListener(String topicMapping, Object listenerObj);
+    <T extends Listener> void unregisterListener(String topicMapping, T listenerObj);
 }

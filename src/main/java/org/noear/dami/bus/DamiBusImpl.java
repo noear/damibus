@@ -49,26 +49,20 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     }
 
     /**
-     * 发送（不需要响应）
+     * 发送（不需要响应）,自定义载体
+     *
+     * @param payload 发送载体
      */
-    @Override
-    public void send(final String topic, final C content) {
-        send(new Payload<>(topic, content));
-    }
-
     @Override
     public void send(final Payload<C, R> payload) {
         router.handle(payload);
     }
 
     /**
-     * 请求并等待响应
+     * 请求并等待响应,自定义载体
+     *
+     * @param payload 发送载体
      */
-    @Override
-    public R requestAndResponse(final String topic, final C content) {
-        return requestAndResponse(new Payload<>(topic, content));
-    }
-
     @Override
     public R requestAndResponse(final Payload<C, R> payload) {
         payload.future = new CompletableFuture<>();
@@ -83,13 +77,10 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     }
 
     /**
-     * 请求并等待回调
+     * 请求并等待回调,自定义载体
+     *
+     * @param payload 发送载体
      */
-    @Override
-    public void requestAndCallback(final String topic, final C content, final Consumer<R> callback) {
-        requestAndCallback(new Payload<>(topic, content), callback);
-    }
-
     @Override
     public void requestAndCallback(final Payload<C, R> payload, final Consumer<R> callback) {
         payload.future = new CompletableFuture<>();
@@ -100,6 +91,9 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
 
     /**
      * 响应
+     *
+     * @param request 请求装载
+     * @param content 响应内容
      */
     @Override
     public void response(final Payload<C, R> request, final R content) {
@@ -110,17 +104,12 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
         request.future.complete(content);
     }
 
-
     /**
      * 监听
-     */
-    @Override
-    public void listen(final String topic, final TopicListener<Payload<C, R>> listener) {
-        listen(topic, 0, listener);
-    }
-
-    /**
-     * 监听
+     *
+     * @param topic    主题
+     * @param index    顺序位
+     * @param listener 监听
      */
     @Override
     public void listen(final String topic, final int index, final TopicListener<Payload<C, R>> listener) {
@@ -129,6 +118,9 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
 
     /**
      * 取消监听
+     *
+     * @param topic    主题
+     * @param listener 监听
      */
     @Override
     public void unlisten(final String topic, final TopicListener<Payload<C, R>> listener) {
