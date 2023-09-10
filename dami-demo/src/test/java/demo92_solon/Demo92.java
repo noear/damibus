@@ -1,15 +1,14 @@
-package demo;
+package demo92_solon;
 
-import demo.orderModule.OrderService;
-import demo.userModule.UserService;
-import demo.userModule.event.UserEventSender;
+import demo92_solon.orderModule.OrderService;
+import demo92_solon.userModule.UserService;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 
 @Component
-public class ApiStyleDemo {
+public class Demo92 {
     @Inject
     UserService userService;
 
@@ -32,6 +31,6 @@ public class ApiStyleDemo {
     }
 
     public static void main(String[] args) {
-        Solon.start(ApiStyleDemo.class, args);
+        Solon.start(Demo92.class, args);
     }
 }

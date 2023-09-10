@@ -1,6 +1,6 @@
-package demo.orderModule.event;
+package demo92_solon.orderModule.event;
 
-import demo.baseModule.model.User;
+import demo92_solon.baseModule.model.User;
 import org.noear.dami.solon.annotation.DamiTopic;
 
 @DamiTopic("demo.user")

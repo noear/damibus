@@ -1,8 +1,8 @@
-package demo.orderModule;
+package demo92_solon.orderModule;
 
-import demo.baseModule.model.User;
-import demo.orderModule.event.OrderEventSender;
-import demo.orderModule.event.UserDemandSender;
+import demo92_solon.baseModule.model.User;
+import demo92_solon.orderModule.event.OrderEventSender;
+import demo92_solon.orderModule.event.UserDemandSender;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.annotation.Tran;

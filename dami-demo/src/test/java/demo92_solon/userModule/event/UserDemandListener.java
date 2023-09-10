@@ -1,6 +1,6 @@
-package demo.userModule.event;
+package demo92_solon.userModule.event;
 
-import demo.baseModule.model.User;
+import demo92_solon.baseModule.model.User;
 import org.noear.dami.solon.annotation.DamiTopic;
 
 //用户需求监听器

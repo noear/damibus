@@ -19,5 +19,17 @@
             <groupId>org.noear</groupId>
             <artifactId>dami</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>dami-solon-plugin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <version>${solon.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
