@@ -11,7 +11,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.ClassUtils;
 
 /**
- * Dami发送者扫描器
+ * Dami 发送者扫描器
  *
  * @author kamosama
  * @since 1.0
@@ -64,7 +64,7 @@ public class DamiBeanDefinitionScanner extends ClassPathBeanDefinitionScanner {
             Class<?> beanClass = ClassUtils.forName(beanClassName, ClassUtils.getDefaultClassLoader());
             beanDefinition.setBeanClass(beanClass);
             DamiTopic damiTopic = beanClass.getAnnotation(DamiTopic.class);
-            beanDefinition.setInstanceSupplier(() -> Dami.api().createSender(damiTopic.topicMapping(), beanClass));
+            beanDefinition.setInstanceSupplier(() -> Dami.api().createSender(damiTopic.value(), beanClass));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(String.format("beanClass is Not Find name:[%s]", beanClassName), e);
         }
