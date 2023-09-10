@@ -1,7 +1,5 @@
 package org.noear.dami.api;
 
-import org.noear.dami.bus.DamiBus;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -12,14 +10,12 @@ import java.lang.reflect.Method;
  * @since 1.0
  */
 public class SenderInvocationHandler implements InvocationHandler {
-    private final DamiBus bus;
-    private final String topicMapping;
-    private final Coder coder;
+    private DamiApi damiApi;
+    private String topicMapping;
 
-    public SenderInvocationHandler(DamiBus bus, String topicMapping, Coder coder) {
-        this.bus = bus;
+    public SenderInvocationHandler(DamiApi damiApi, String topicMapping) {
+        this.damiApi = damiApi;
         this.topicMapping = topicMapping;
-        this.coder = coder;
     }
 
     @Override
@@ -34,13 +30,13 @@ public class SenderInvocationHandler implements InvocationHandler {
         }
 
         String topic = topicMapping + "." + method.getName();
-        Object content = coder.encode(method, args);
+        Object content = damiApi.getCoder().encode(method, args);
 
-        if (method.getReturnType() == Void.class) {
-            bus.send(topic, content);
+        if (method.getReturnType() == void.class) { //不能用大写的 Void.class（不然对不上）
+            damiApi.getBus().send(topic, content);
             return null;
         } else {
-            return bus.requestAndResponse(topic, content);
+            return damiApi.getBus().requestAndResponse(topic, content);
         }
     }
 

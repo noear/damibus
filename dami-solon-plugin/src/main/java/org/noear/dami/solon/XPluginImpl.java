@@ -1,10 +1,11 @@
 package org.noear.dami.solon;
 
+import org.noear.dami.Dami;
 import org.noear.dami.api.Coder;
 import org.noear.dami.bus.Interceptor;
-import org.noear.dami.solon.annotation.Dami;
+import org.noear.dami.solon.annotation.DamiTopic;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.DamiBeanBuilder;
+import org.noear.solon.core.DamiTopicBeanBuilder;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -14,14 +15,14 @@ import org.noear.solon.core.Plugin;
 public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
-        context.beanBuilderAdd(Dami.class, new DamiBeanBuilder());
+        context.beanBuilderAdd(DamiTopic.class, new DamiTopicBeanBuilder());
 
         context.subWrapsOfType(Interceptor.class, wrap -> {
-            org.noear.dami.Dami.intercept(wrap.index(), wrap.raw());
+            Dami.intercept(wrap.index(), wrap.raw());
         });
 
         context.getBeanAsync(Coder.class, bean -> {
-            org.noear.dami.Dami.api().setCoder(bean);
+            Dami.api().setCoder(bean);
         });
     }
 }
