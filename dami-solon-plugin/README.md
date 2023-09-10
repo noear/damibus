@@ -1,5 +1,5 @@
 
-## 1、dami-solon-plugin 示例
+## dami-solon-plugin 示例
 
 #### 依赖配置
 

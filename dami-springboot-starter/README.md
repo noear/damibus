@@ -1,13 +1,13 @@
 
-## 1、dami-solon-plugin 示例
+## dami-springboot-starter 示例
 
 #### 依赖配置
 
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>dami-solon-plugin</artifactId>
     <artifactId>dami-springboot-starter</artifactId>
+    <version>0.19.3</version>
 </dependency>
 ```
 
