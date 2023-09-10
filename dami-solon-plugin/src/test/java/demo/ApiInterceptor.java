@@ -12,7 +12,7 @@ import org.noear.solon.annotation.Component;
 public class ApiInterceptor implements Interceptor {
     @Override
     public void doIntercept(Payload payload, InterceptorChain chain) {
-        System.out.println("拦截：" + payload.toString());
+        System.out.println("拦截：" + payload);
         chain.doIntercept(payload);
     }
 }

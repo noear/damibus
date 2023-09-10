@@ -1,6 +1,8 @@
 package demo;
 
-import demo.mod2.UserEventSender;
+import demo.orderModule.OrderService;
+import demo.userModule.UserService;
+import demo.userModule.event.UserEventSender;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
@@ -9,14 +11,24 @@ import org.noear.solon.annotation.Inject;
 @Component
 public class ApiStyleDemo {
     @Inject
-    UserEventSender userEventSender;
+    UserService userService;
+
+    @Inject
+    OrderService orderService;
 
     @Init
     public void test(){
-        //发送测试
-        long rst = userEventSender.created(1, "noear");
-        System.out.println("收到返回：" + rst);
-        userEventSender.updated(2, "dami");
+        /**
+         * 场景描述：
+         * 1.添加用户；互动那边会有监听打印
+         * 2.修改用户；互动那边会有监听打印
+         * 3.添加订单；会获取用户（通过事件）；互动那边会有监听打印
+         * */
+
+        userService.addUser("noear");
+        userService.updateUser(999, "dami");
+
+        orderService.addOrder(1010);
     }
 
     public static void main(String[] args) {
