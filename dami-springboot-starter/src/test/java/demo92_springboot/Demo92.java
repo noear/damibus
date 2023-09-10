@@ -5,11 +5,12 @@ import demo92_springboot.orderModule.OrderService;
 import demo92_springboot.userModule.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+@SpringBootApplication
 @Component
 public class Demo92 {
     @Autowired
