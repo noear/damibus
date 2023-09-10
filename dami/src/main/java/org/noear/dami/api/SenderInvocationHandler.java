@@ -11,10 +11,12 @@ import java.lang.reflect.Method;
  */
 public class SenderInvocationHandler implements InvocationHandler {
     private final DamiApi damiApi;
+    private Class<?> interfaceClz;
     private final String topicMapping;
 
-    public SenderInvocationHandler(DamiApi damiApi, String topicMapping) {
+    public SenderInvocationHandler(DamiApi damiApi, Class<?> interfaceClz, String topicMapping) {
         this.damiApi = damiApi;
+        this.interfaceClz = interfaceClz;
         this.topicMapping = topicMapping;
     }
 
@@ -22,11 +24,11 @@ public class SenderInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         //暂不支持默认函数与Object函数
         if (method.getDeclaringClass().equals(Object.class)) {
-           return method.invoke(this,args);
+            return invokeObject(proxy, method, args);
         }
 
-        if (method.isDefault()){
-            throw new IllegalStateException("Default functions are not currently supported");
+        if (method.isDefault()) {
+            return MethodHandlerUtils.invokeDefault(proxy, method, args);
         }
 
         String topic = topicMapping + "." + method.getName();
@@ -40,10 +42,26 @@ public class SenderInvocationHandler implements InvocationHandler {
         }
     }
 
+    private Object invokeObject(Object proxy, Method method, Object[] args) throws Throwable {
+        String name = method.getName();
+
+        switch (name) {
+            case "toString":
+                return interfaceClz.getName() + ".$Proxy{topicMapping='" + topicMapping + "'}";
+            case "hashCode":
+                return System.identityHashCode(proxy);
+            case "equals":
+                return proxy == args[0];
+            default:
+                return method.invoke(this, args);
+        }
+    }
+
     @Override
     public String toString() {
         return "SenderInvocationHandler{" +
-                "topicMapping='" + topicMapping + '\'' +
+                "interfaceClz=" + interfaceClz +
+                ", topicMapping='" + topicMapping + '\'' +
                 '}';
     }
 }

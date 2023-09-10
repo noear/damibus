@@ -1,4 +1,4 @@
-package org.noear.dami.utils;
+package org.noear.dami.api;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
@@ -13,15 +13,39 @@ import java.lang.reflect.Method;
  */
 public class MethodHandlerUtils {
     /**
+     * Java 版本号
+     */
+    public static final int JAVA_MAJOR_VERSION;
+
+    /**
      * java16+ 支持调用default method的方法
      */
     private static Method invokeDefaultMethod = null;
 
     static {
-        //
-        //JDK16+ 新增InvocationHandler.invokeDefault()
-        //
-        if (JavaUtils.JAVA_MAJOR_VERSION >= 16) {
+        /*
+         * 获取 Java 版本号
+         * http://openjdk.java.net/jeps/223
+         * 1.8.x  = 8
+         * 11.x   = 11
+         * 17.x   = 17
+         */
+        int majorVersion;
+        try {
+            String version = System.getProperty("java.specification.version");
+            if (version.startsWith("1.")) {
+                version = version.substring(2);
+            }
+            majorVersion = Integer.parseInt(version);
+        } catch (Throwable ignored) {
+            majorVersion = 8;
+        }
+        JAVA_MAJOR_VERSION = majorVersion;
+
+        /**
+         * JDK16+ 新增InvocationHandler.invokeDefault()
+         * */
+        if (JAVA_MAJOR_VERSION >= 16) {
             // https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8253870
             Method[] ms = InvocationHandler.class.getMethods();
 
@@ -32,8 +56,8 @@ public class MethodHandlerUtils {
                 }
             }
             if (invokeDefaultMethod == null) {
-                //不可能发生
-                throw new UnsupportedOperationException("The current java " + JavaUtils.JAVA_MAJOR_VERSION + " is not found: invokeDefault");
+                //应该不可能发生
+                throw new UnsupportedOperationException("The current java " + JAVA_MAJOR_VERSION + " is not found: invokeDefault");
             }
         }
     }
@@ -42,7 +66,7 @@ public class MethodHandlerUtils {
      * 在代理模式下调用接口的默认的函数
      */
     public static Object invokeDefault(Object proxy, Method method, Object[] args) throws Throwable {
-        if (JavaUtils.JAVA_MAJOR_VERSION <= 15) {
+        if (JAVA_MAJOR_VERSION <= 15) {
             final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class
                     .getDeclaredConstructor(Class.class);
             constructor.setAccessible(true);
@@ -56,24 +80,6 @@ public class MethodHandlerUtils {
         } else {
             Method invoke = invokeDefaultMethod;
             return invoke.invoke(null, proxy, method, args);
-        }
-    }
-
-    /**
-     * 在代理模式下调用 Object 的默认的函数
-     */
-    public static Object invokeObject(Class<?> interfaceClz, Object proxy, Method method, Object[] args) {
-        String name = method.getName();
-
-        switch (name) {
-            case "toString":
-                return interfaceClz.getName() + ".$Proxy";
-            case "hashCode":
-                return System.identityHashCode(proxy);
-            case "equals":
-                return proxy == args[0];
-            default:
-                throw new UnsupportedOperationException("Unsupported operation: " + interfaceClz.getName() + "::" + method.getName());
         }
     }
 }
