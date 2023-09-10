@@ -45,6 +45,7 @@ public interface UserDemandSender {
     User getUser(long userId);
 }
 
+@SpringBootApplication
 @Component
 public class Demo92 {
     @Autowired

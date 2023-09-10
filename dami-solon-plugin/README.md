@@ -45,6 +45,7 @@ public interface UserDemandSender {
     User getUser(long userId);
 }
 
+@SolonMain
 @Component
 public class Demo82 {
     @Inject

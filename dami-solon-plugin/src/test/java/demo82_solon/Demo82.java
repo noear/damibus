@@ -6,7 +6,9 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.SolonMain;
 
+@SolonMain
 @Component
 public class Demo82 {
     @Inject
