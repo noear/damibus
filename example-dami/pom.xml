@@ -11,7 +11,7 @@
         <relativePath>../dami-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>dami-example</artifactId>
+    <artifactId>example-dami</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
