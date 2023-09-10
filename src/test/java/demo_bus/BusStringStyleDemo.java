@@ -44,7 +44,7 @@ public class BusStringStyleDemo {
         String rst1 = Dami.busStr().requestAndResponse(demo_topic, "{user:'dami'}");
         System.out.println("响应返回: " + rst1);
 
-        //请求并等回调
+        //请求并等回调,如果有多次响应都会调用回调响应
         Dami.busStr().requestAndCallback(demo_topic, "{user:'solon'}", (rst2) -> {
             System.out.println("响应回调: " + rst2);
         });
