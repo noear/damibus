@@ -1,5 +1,7 @@
 package org.noear.dami.api;
 
+import org.noear.dami.bus.DamiBus;
+
 /**
  * 大米接口（提供 Local Procedure Call 服务）
  *
@@ -18,6 +20,11 @@ public interface DamiApi {
      * @param coder 编码器
      */
     void setCoder(Coder coder);
+
+    /**
+     * 获取关联总线
+     * */
+    DamiBus getBus();
 
     /**
      * 创建发送器代理

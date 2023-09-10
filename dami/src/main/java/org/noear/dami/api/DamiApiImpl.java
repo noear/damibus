@@ -51,6 +51,11 @@ public class DamiApiImpl implements DamiApi {
         }
     }
 
+    @Override
+    public DamiBus getBus() {
+        return bus;
+    }
+
     /**
      * 创建发送器代理
      *
@@ -59,7 +64,7 @@ public class DamiApiImpl implements DamiApi {
      */
     @Override
     public <T> T createSender(String topicMapping, Class<T> senderClz) {
-        return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(bus, topicMapping, coder));
+        return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(this, topicMapping));
     }
 
     /**
@@ -77,7 +82,7 @@ public class DamiApiImpl implements DamiApi {
         for (Method m1 : methods) {
             MethodTopicListener listener = listenerMap.get(m1);
             if (listener == null) {
-                listener = new MethodTopicListener(bus, listenerObj, m1, coder);
+                listener = new MethodTopicListener(this, listenerObj, m1);
                 listenerMap.put(m1, listener);
             }
             String topic = topicMapping + "." + m1.getName();
