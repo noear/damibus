@@ -1,7 +1,5 @@
 package org.noear.dami.spring.boot.annotation;
 
-import org.springframework.stereotype.Component;
-
 import java.lang.annotation.*;
 
 /**

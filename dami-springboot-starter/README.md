@@ -15,6 +15,7 @@
 
 ```java
 @DamiTopic("demo.user")
+@Component
 public interface UserEventSender {
     void onCreated(long userId, String name); //方法的主题 = topicMapping + "." + method.getName() 
 
@@ -22,6 +23,7 @@ public interface UserEventSender {
 }
 
 @DamiTopic("demo.user")
+@Component
 public class UserDemandListener {
     public User getUser(long userId) {
         return new User(userId);
@@ -30,6 +32,7 @@ public class UserDemandListener {
 
 //通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口）
 @DamiTopic("demo.user")
+@Component
 public class UserEventListenerOfLive {
     public void onCreated(long userId, String name) {
         System.err.println("LIve:User:onCreated: userId=" + userId + ", name=" + name);
@@ -41,6 +44,7 @@ public class UserEventListenerOfLive {
 }
 
 @DamiTopic("demo.user")
+@Component
 public interface UserDemandSender {
     User getUser(long userId);
 }
