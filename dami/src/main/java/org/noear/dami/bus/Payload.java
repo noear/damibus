@@ -81,7 +81,7 @@ public class Payload<C, R> implements Serializable {
 
 
     /**
-     * 唯一性id
+     * 唯一标识
      */
     public String getGuid() {
         return guid;
