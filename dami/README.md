@@ -12,21 +12,23 @@
 </dependency>
 ```
 
-#### demo11_send
+
+#### demo21_send
 
 ```java
+//泛型总线风格。<C,R>bus()
 public class Deom11 {
     static String topic = "demo.hello";
 
     public static void main(String[] args) {
         //监听事件
-        Dami.busStr().listen(topic, payload -> {
+        Dami.<String,Long>bus().listen(topic, payload -> {
             System.err.println(payload);
         });
 
 
         //发送事件
-        Dami.busStr().send(topic, "world");
+        Dami.<String,Long>bus().send(topic, "world");
     }
 }
 ```
@@ -34,6 +36,7 @@ public class Deom11 {
 #### demo12_request
 
 ```java
+//字符串总线风格。busStr() = <String,String>bus()
 public class Demo12 {
     static String topic = "demo.hello";
 
@@ -43,7 +46,7 @@ public class Demo12 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                payload.reply("hi nihao!");
+                payload.reply("hi nihao!"); // sendAndResponse 只接收第一个
                 payload.reply("* hi nihao!");
                 payload.reply("** hi nihao!");
             }
@@ -61,44 +64,18 @@ public class Demo12 {
 }
 ```
 
-#### demo22_request
-
-```java
-public class Demo22 {
-    static String topic = "demo.hello";
-
-    public static void main(String[] args) {
-        //监听事件
-        Dami.<Long, String>bus().listen(topic, payload -> {
-            System.err.println(payload);
-
-            if (payload.isRequest()) {
-                payload.reply("hi nihao!");
-                payload.reply("* hi nihao!");
-                payload.reply("** hi nihao!");
-            }
-        });
-
-
-        //发送事件
-        String rst1 = Dami.<Long, String>bus().sendAndResponse(topic, 2L);
-        System.out.println(rst1);
-
-        Dami.<Long, String>bus().sendAndCallback(topic, 3L, rst2 -> {
-            System.out.println(rst2); //callback 可不限返回
-        });
-    }
-}
-```
-
 #### demo31_api
 
+使用 ioc 适配版本更简便，详情：[dami-solon-plugin](../dami-solon-plugin)、[dami-springboot-starter](../dami-springboot-starter)
+
 ```java
+//接口风格
 public interface UserEventSender {
     void onCreated(Long userId, String name);
     Long getUserId(String name);
 }
 
+//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，但会带来依赖关系）
 public class UserEventListenerImpl {
     public void onCreated(Long userId, String name) {
         System.err.println("onCreated: userId=" + userId + ", name=" + name);
