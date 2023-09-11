@@ -3,8 +3,7 @@ package features.demo92_springboot;
 
 import features.demo92_springboot.orderModule.OrderService;
 import features.demo92_springboot.userModule.UserService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,7 +1,6 @@
 package features.demo21_send;
 
-import org.junit.Test;
-import org.noear.dami.Dami;
+import org.junit.jupiter.api.Test;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
 
