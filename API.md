@@ -90,12 +90,6 @@ public interface DamiApi {
 * 接口字典
 
 ```java
-/**
- * 事件装载
- *
- * @author noear
- * @since 1.0
- */
 public class Payload<C, R> implements Serializable {
     //获取附件
     public <T> T getAttachment(String key) {}
