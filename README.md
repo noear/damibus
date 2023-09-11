@@ -73,7 +73,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 ### 示例
 
 
-#### demo11_send
+#### demo21_send
 
 ```java
 public class Deom11 {
@@ -81,13 +81,13 @@ public class Deom11 {
 
     public static void main(String[] args) {
         //监听事件
-        Dami.busStr().listen(topic, payload -> {
+        Dami.<String,String>bus().listen(topic, payload -> {
             System.err.println(payload);
         });
 
 
         //发送事件
-        Dami.busStr().send(topic, "world");
+        Dami.<String,String>bus().send(topic, "world");
     }
 }
 ```
