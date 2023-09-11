@@ -1,4 +1,4 @@
-package demo31_api.module1;
+package features.demo31_api.module1;
 
 /**
  * 通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口）
@@ -9,6 +9,6 @@ public class UserEventListenerOfModule1 {
     }
 
     public Long getUserId(String name) {
-        return Long.valueOf(name.hashCode());
+        return 99L;
     }
 }

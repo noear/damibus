@@ -13,4 +13,13 @@
 
     <artifactId>dami</artifactId>
     <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit4.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
