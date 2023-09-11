@@ -1,5 +1,7 @@
 package org.noear.dami.bus;
 
+import org.noear.dami.exception.DamiIllegalStateException;
+
 import java.util.*;
 
 /**
@@ -97,7 +99,7 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R> , Intercep
             try {
                 pipeline.onEvent(payload);
             } catch (Throwable e) {
-                throw new IllegalStateException(e);
+                throw new DamiIllegalStateException(e);
             }
         }
     }
