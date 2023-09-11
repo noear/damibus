@@ -1,4 +1,4 @@
-package demo41_api_exception.module1;
+package demo32_api_exception.module1;
 
 /**
  * 通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口）

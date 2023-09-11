@@ -1,6 +1,6 @@
 package org.noear.dami.bus;
 
-import org.noear.dami.exception.DamiIllegalStateException;
+import org.noear.dami.exception.DamiException;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -74,7 +74,7 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
         try {
             return future.get(timeout, TimeUnit.MILLISECONDS);
         } catch (Throwable e) {
-            throw new DamiIllegalStateException(e);
+            throw new DamiException(e);
         }
     }
 
@@ -99,7 +99,7 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     @Override
     public void response(final Payload<C, R> request, final R content) {
         if (request.isRequest() == false) {
-            throw new DamiIllegalStateException("This payload does not support a response");
+            throw new DamiException("This payload does not support a response");
         }
 
         request.future.accept(content);

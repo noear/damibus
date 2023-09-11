@@ -1,14 +1,11 @@
-package demo41_api_exception;
+package demo32_api_exception;
 
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
-import demo41_api_exception.module1.UserEventListenerOfModule1;
-import demo41_api_exception.module2.UserEventSender;
+import demo32_api_exception.module1.UserEventListenerOfModule1;
+import demo32_api_exception.module2.UserEventSender;
 import org.noear.dami.Dami;
-import org.noear.dami.exception.DamiIllegalStateException;
+import org.noear.dami.exception.DamiException;
 
-public class Demo41Ex {
-    private static Logger logger = LoggerFactory.getLogger(Demo41Ex.class);
+public class Demo32 {
     public static void main(String[] args) {
         //注册监听器
         UserEventListenerOfModule1 userEventListener = new UserEventListenerOfModule1();
@@ -20,9 +17,10 @@ public class Demo41Ex {
         //发送测试
         try {
             userEventSender.onCreated(1L, "noear");
-        }catch (DamiIllegalStateException e){
-            Throwable rootCause = e.getRootCause();
-            logger.error("捕获到异常：", rootCause);
+        }catch (DamiException e){
+            Throwable rootCause = e.getCause();
+            System.out.println("捕获到异常：");
+            rootCause.printStackTrace();
         }
 
         //注销监听器

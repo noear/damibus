@@ -1,7 +1,9 @@
 package org.noear.dami.bus;
 
-import org.noear.dami.exception.DamiIllegalStateException;
+import org.noear.dami.exception.DamiException;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.*;
 
 /**
@@ -10,18 +12,18 @@ import java.util.*;
  * @author noear
  * @since 1.0
  */
-public final class TopicRouterImpl<C, R> implements TopicRouter<C, R> , Interceptor<C,R>{
+public final class TopicRouterImpl<C, R> implements TopicRouter<C, R> , Interceptor<C,R> {
     /**
      * 主题监听管道
-     * */
+     */
     private final Map<String, TopicListenPipeline<Payload<C, R>>> pipelineMap = new LinkedHashMap<>();
 
     /**
      * 拦截器
-     * */
+     */
     private final List<InterceptorEntity> interceptors = new ArrayList<>();
 
-    public TopicRouterImpl(){
+    public TopicRouterImpl() {
         interceptors.add(new InterceptorEntity(Integer.MAX_VALUE, this));
     }
 
@@ -82,13 +84,13 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R> , Intercep
      */
     @Override
     public void handle(final Payload<C, R> payload) {
-        new InterceptorChain<C,R>(interceptors).doIntercept(payload);
+        new InterceptorChain<C, R>(interceptors).doIntercept(payload);
     }
 
 
     /**
      * 事件拦截并路由分发
-     * */
+     */
     @Override
     public void doIntercept(Payload<C, R> payload, InterceptorChain chain) {
         assertTopic(payload.getTopic());
@@ -98,8 +100,12 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R> , Intercep
         if (pipeline != null) {
             try {
                 pipeline.onEvent(payload);
+            } catch (InvocationTargetException e) {
+                throw new DamiException(e.getTargetException());
+            } catch (UndeclaredThrowableException e) {
+                throw new DamiException(e.getUndeclaredThrowable());
             } catch (Throwable e) {
-                throw new DamiIllegalStateException(e);
+                throw new DamiException(e);
             }
         }
     }
@@ -111,7 +117,7 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R> , Intercep
      */
     protected void assertTopic(final String topic) {
         if (topic == null || topic.isEmpty()) {
-            throw new IllegalArgumentException("The topic cannot be empty");
+            throw new DamiException("The topic cannot be empty");
         }
     }
 }
