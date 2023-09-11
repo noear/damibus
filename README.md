@@ -126,6 +126,8 @@ public class Demo12 {
 
 #### demo31_api
 
+使用 ioc 适配版本更简便，说情：[dami-solon-plugin](dami-solon-plugin)、[dami-springboot-starter](dami-springboot-starter)
+
 ```java
 //接口风格
 public interface UserEventSender {
