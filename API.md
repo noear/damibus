@@ -1,7 +1,7 @@
 
-## Mami，入口主类
+## 1、Mami，入口主类
 
-接口字典
+* 接口字典
 
 ```java
 public class Dami {
@@ -20,9 +20,9 @@ public class Dami {
 }
 ```
 
-## DamiBus<C, R>，总线模式接口
+## 2、DamiBus<C, R>，总线模式接口
 
-接口字典
+* 接口字典
 
 ```java
 public interface DamiBus<C, R> {
@@ -53,9 +53,18 @@ public interface DamiBus<C, R> {
 }
 ```
 
-## DamiApi，接口模式接口
+* Payload::reply，答复后的情况说明
 
-接口字典
+| 用例              | 答复说明             | 说明                        |
+|-----------------|------------------|---------------------------|
+| send() | 会出异常，提示当前挂载不支持答复 | payload.isRequest()=false |
+| sendAndResponse()  | 第一条答复有效          | payload.isRequest()=true  |
+| sendAndCallback()  | 可以无限次答复          | payload.isRequest()=true  |
+
+
+## 3、DamiApi，接口模式接口
+
+* 接口字典
 
 ```java
 public interface DamiApi {
@@ -76,9 +85,9 @@ public interface DamiApi {
 }
 ```
 
-Dami.api().createSender，发送者接口被代理后的情况说明
+* Dami.api()::createSender，发送者接口被代理后的情况说明
 
-| 示例             | 对应总线接口                   | 说明              |
-|----------------|--------------------------|-----------------|
+| 用例               | 对应总线接口                   | 说明              |
+|------------------|--------------------------|-----------------|
 | void onCreated() | 返回为空的，send 发送            | 没有监听，不会出错       |
-| User getUser() | 返回类型的，sendAndResponse 发送 | 没有监听，会出错。必须要有答复 |
+| User getUser()   | 返回类型的，sendAndResponse 发送 | 没有监听，会出错。必须要有答复 |
