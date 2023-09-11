@@ -1,5 +1,5 @@
 
-## Mami，大米主类
+## Mami，入口主类
 
 接口字典
 
@@ -20,7 +20,7 @@ public class Dami {
 }
 ```
 
-## DamiBus<C, R>，大米总线模式接口
+## DamiBus<C, R>，总线模式接口
 
 接口字典
 
@@ -55,7 +55,7 @@ public interface DamiBus<C, R> {
 }
 ```
 
-## DamiApi，大米接口模式接口
+## DamiApi，接口模式接口
 
 接口字典
 
