@@ -80,7 +80,7 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R> , Intercep
     /**
      * 接收事件
      *
-     * @param payload 事件装载
+     * @param payload 事件负载
      */
     @Override
     public void handle(final Payload<C, R> payload) {

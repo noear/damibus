@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * 事件装载
+ * 事件负载
  *
  * @author noear
  * @since 1.0

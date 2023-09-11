@@ -10,7 +10,7 @@ public interface Interceptor<C, R> {
     /**
      * 拦截
      *
-     * @param payload 事件装载
+     * @param payload 事件负载
      * @param chain   拦截链
      */
     void doIntercept(Payload<C, R> payload, InterceptorChain chain);
