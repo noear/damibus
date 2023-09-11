@@ -6,12 +6,13 @@ import demo92_springboot.userModule.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
-@Component
 public class Demo92 {
     @Autowired
     UserService userService;
@@ -19,8 +20,8 @@ public class Demo92 {
     @Autowired
     OrderService orderService;
 
-    @PostConstruct
-    public void test(){
+    @EventListener
+    public void test(ContextRefreshedEvent event){
         /**
          * 场景描述：
          * 1.添加用户；互动那边会有监听打印
