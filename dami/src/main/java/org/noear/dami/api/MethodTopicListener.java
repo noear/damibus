@@ -4,8 +4,6 @@ import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.Payload;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 /**
  * 方法主题监听器
@@ -34,19 +32,7 @@ public class MethodTopicListener implements TopicListener<Payload<Object,Object>
 
         if (payload.isRequest()) {
             //答复
-            if (rst instanceof CompletableFuture) {
-                //响应式回调
-                ((CompletableFuture) rst).thenAccept(rst2 -> {
-                    damiApi.getBus().reply(payload, rst2);
-                });
-            } else if (rst instanceof Future) {
-                //等待回调
-                Object rst2 = ((Future) rst).get();
-                damiApi.getBus().reply(payload, rst2);
-            } else {
-                //返回
-                damiApi.getBus().reply(payload, rst);
-            }
+            damiApi.getBus().reply(payload, rst);
         }
     }
 }
