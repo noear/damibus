@@ -111,11 +111,12 @@ public class UserEventListenerImpl {
 
 public class Demo31 {
     public static void main(String[] args) {
-        UserEventListenerOfModule1 userEventListener = new UserEventListenerOfModule1();
-        UserEventSender userEventSender = Dami.api().createSender("demo.user", UserEventSender.class);
-
         //注册监听器
+        UserEventListenerOfModule1 userEventListener = new UserEventListenerOfModule1();
         Dami.api().registerListener("demo.user", userEventListener);
+
+        //生成发送器
+        UserEventSender userEventSender = Dami.api().createSender("demo.user", UserEventSender.class);
 
         //发送测试
         userEventSender.onCreated(1L, "noear");
