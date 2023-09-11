@@ -1,5 +1,5 @@
 
-## dami-springboot-starter 示例
+## dami-springboot-starter 示例 （支持 v2.x 和 v3.x）
 
 更多详情，请查看 [src/test/java/features](src/test/java/features)
 
