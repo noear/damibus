@@ -104,7 +104,7 @@ public class Demo12 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                Dami.busStr().response(payload, "hi nihao!");
+                Dami.busStr().response(payload, "hi nihao!"); // requestAndResponse 只接收第一个
                 Dami.busStr().response(payload, "* hi nihao!");
                 Dami.busStr().response(payload, "** hi nihao!");
             }
