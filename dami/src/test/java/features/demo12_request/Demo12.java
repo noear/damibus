@@ -21,9 +21,9 @@ public class Demo12 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                busStr.reply(payload, "hi!");
-                busStr.reply(payload, "* hi nihao!");
-                busStr.reply(payload, "** hi nihao!");
+                payload.reply("hi!");
+                payload.reply("* hi nihao!");
+                payload.reply("** hi nihao!");
             }
         });
 

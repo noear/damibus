@@ -1,5 +1,7 @@
 package org.noear.dami.bus;
 
+import org.noear.dami.exception.DamiException;
+
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.Consumer;
@@ -60,8 +62,23 @@ public class Payload<C, R> implements Serializable {
      * 是否为请求（是的话，需要答复）
      */
     public boolean isRequest() {
-        return  future != null;
+        return future != null;
     }
+
+
+    /**
+     * 答复
+     *
+     * @param content 内容
+     */
+    public void reply(final R content) {
+        if (isRequest() == false) {
+            throw new DamiException("This payload does not support a response");
+        }
+
+        future.accept(content);
+    }
+
 
     /**
      * 唯一性id

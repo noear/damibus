@@ -91,21 +91,6 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     }
 
     /**
-     * 答复
-     *
-     * @param request 请求装载
-     * @param content 答复内容
-     */
-    @Override
-    public void reply(final Payload<C, R> request, final R content) {
-        if (request.isRequest() == false) {
-            throw new DamiException("This payload does not support a response");
-        }
-
-        request.future.accept(content);
-    }
-
-    /**
      * 监听
      *
      * @param topic    主题

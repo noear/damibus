@@ -43,9 +43,9 @@ public class Demo12 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                Dami.busStr().reply(payload, "hi nihao!");
-                Dami.busStr().reply(payload, "* hi nihao!");
-                Dami.busStr().reply(payload, "** hi nihao!");
+                payload.reply("hi nihao!");
+                payload.reply("* hi nihao!");
+                payload.reply("** hi nihao!");
             }
         });
 
@@ -73,9 +73,9 @@ public class Demo22 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                Dami.<Long, String>bus().reply(payload, "hi nihao!");
-                Dami.<Long, String>bus().reply(payload, "* hi nihao!");
-                Dami.<Long, String>bus().reply(payload, "** hi nihao!");
+                payload.reply("hi nihao!");
+                payload.reply("* hi nihao!");
+                payload.reply("** hi nihao!");
             }
         });
 

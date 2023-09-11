@@ -20,9 +20,9 @@ public class Demo22 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                bus.reply(payload, "hi!");
-                bus.reply(payload, "* hi nihao!");
-                bus.reply(payload, "** hi nihao!");
+                payload.reply("hi!");
+                payload.reply("* hi nihao!");
+                payload.reply("** hi nihao!");
             }
         });
 

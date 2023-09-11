@@ -81,13 +81,6 @@ public interface DamiBus<C, R> {
      */
     void sendAndCallback(final Payload<C, R> payload, final Consumer<R> callback);
 
-    /**
-     * 答复
-     *
-     * @param request 请求装载
-     * @param content 答复内容
-     */
-    void reply(final Payload<C, R> request, final R content);
 
     /**
      * 监听

@@ -32,7 +32,7 @@ public class MethodTopicListener implements TopicListener<Payload<Object,Object>
 
         if (payload.isRequest()) {
             //答复
-            damiApi.getBus().reply(payload, rst);
+            payload.reply(rst);
         }
     }
 }
