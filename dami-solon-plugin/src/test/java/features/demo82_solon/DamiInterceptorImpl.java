@@ -1,4 +1,4 @@
-package demo82_solon;
+package features.demo82_solon;
 
 import org.noear.dami.bus.Interceptor;
 import org.noear.dami.bus.InterceptorChain;

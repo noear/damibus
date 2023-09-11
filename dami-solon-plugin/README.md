@@ -1,7 +1,7 @@
 
 ## dami-solon-plugin 示例
 
-更多详情，请查看 [src/test/java](src/test/java)
+更多详情，请查看 [src/test/java/features](src/test/java/features)
 
 #### 依赖配置
 

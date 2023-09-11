@@ -1,15 +1,13 @@
-package demo82_solon;
+package features.demo82_solon;
 
-import demo82_solon.orderModule.OrderService;
-import demo82_solon.userModule.UserService;
-import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Init;
+import features.demo82_solon.orderModule.OrderService;
+import features.demo82_solon.userModule.UserService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.SolonMain;
+import org.noear.solon.test.SolonJUnit4ClassRunner;
 
-@SolonMain
-@Component
+@RunWith(SolonJUnit4ClassRunner.class)
 public class Demo82 {
     @Inject
     UserService userService;
@@ -17,8 +15,8 @@ public class Demo82 {
     @Inject
     OrderService orderService;
 
-    @Init
-    public void test(){
+    @Test
+    public void main(){
         /**
          * 场景描述：
          * 1.添加用户；互动那边会有监听打印
@@ -29,10 +27,8 @@ public class Demo82 {
         userService.addUser("noear");
         userService.updateUser(999, "dami");
 
-        orderService.addOrder(1010);
-    }
+        long orderId = orderService.addOrder(1010);
 
-    public static void main(String[] args) {
-        Solon.start(Demo82.class, args);
+        assert orderId == 1010 *10;
     }
 }

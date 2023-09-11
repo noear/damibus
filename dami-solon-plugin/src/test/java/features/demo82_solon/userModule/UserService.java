@@ -1,6 +1,6 @@
-package demo82_solon.userModule;
+package features.demo82_solon.userModule;
 
-import demo82_solon.userModule.event.UserEventSender;
+import features.demo82_solon.userModule.event.UserEventSender;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 

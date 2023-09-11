@@ -1,8 +1,8 @@
-package demo82_solon.orderModule;
+package features.demo82_solon.orderModule;
 
-import demo82_solon.baseModule.model.User;
-import demo82_solon.orderModule.event.OrderEventSender;
-import demo82_solon.orderModule.event.UserDemandSender;
+import features.demo82_solon.baseModule.model.User;
+import features.demo82_solon.orderModule.event.OrderEventSender;
+import features.demo82_solon.orderModule.event.UserDemandSender;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 
@@ -13,7 +13,7 @@ public class OrderService {
     @Inject
     OrderEventSender orderEventSender;
 
-    public void addOrder(long userId) {
+    public long addOrder(long userId) {
         //获取用户
         User user = userDemandSender.getUser(userId);
         System.err.println("Order:User:getUser: " + user);
@@ -23,5 +23,7 @@ public class OrderService {
 
         //发送事件
         orderEventSender.onCreated(orderId);
+
+        return user.getUserId() * 10;
     }
 }

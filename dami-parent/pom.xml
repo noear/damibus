@@ -40,6 +40,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <dami.version>0.20.1</dami.version>
+        <junit4.version>4.13.2</junit4.version>
+        <junit5.version>5.9.1</junit5.version>
         <solon.version>2.5.4</solon.version>
         <spring-boot.version>2.7.11</spring-boot.version>
     </properties>

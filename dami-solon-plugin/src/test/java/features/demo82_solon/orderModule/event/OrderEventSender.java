@@ -1,4 +1,4 @@
-package demo82_solon.orderModule.event;
+package features.demo82_solon.orderModule.event;
 
 import org.noear.dami.solon.annotation.DamiTopic;
 
