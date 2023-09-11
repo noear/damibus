@@ -30,7 +30,7 @@ public class UserDemandListener {
     }
 }
 
-//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口）
+//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，这个会带来依赖关系）
 @DamiTopic("demo.user")
 @Component
 public class UserEventListenerOfLive {
