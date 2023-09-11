@@ -1,7 +1,7 @@
 package features.demo92_springboot.userModule.event;
 
 
-import features.demo92_springboot.baseModule.model.User;
+import features.demo92_springboot.baseModule.User;
 import org.noear.dami.spring.boot.annotation.DamiTopic;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package features.demo92_springboot.orderModule;
 
 
-import features.demo92_springboot.baseModule.model.User;
+import features.demo92_springboot.baseModule.User;
 import features.demo92_springboot.orderModule.event.OrderEventSender;
 import features.demo92_springboot.orderModule.event.UserDemandSender;
 import org.springframework.beans.factory.annotation.Autowired;

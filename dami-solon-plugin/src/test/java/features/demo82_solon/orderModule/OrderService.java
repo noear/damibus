@@ -1,8 +1,6 @@
 package features.demo82_solon.orderModule;
 
-import features.demo82_solon.baseModule.model.User;
-import features.demo82_solon.orderModule.event.OrderEventSender;
-import features.demo82_solon.orderModule.event.UserDemandSender;
+import features.demo82_solon.baseModule.User;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 

@@ -1,10 +1,8 @@
-package features.demo92_springboot.liveModule.event;
+package features.demo82_solon.liveModule;
 
-import org.noear.dami.spring.boot.annotation.DamiTopic;
-import org.springframework.stereotype.Component;
+import org.noear.dami.solon.annotation.DamiTopic;
 
 @DamiTopic("demo.order")
-@Component
 public class OrderEventListenerOfLive {
     public void onCreated(long orderId) {
         System.err.println("LIve:Order:onCreated: orderId=" + orderId);

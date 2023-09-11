@@ -1,4 +1,4 @@
-package features.demo82_solon.userModule.event;
+package features.demo82_solon.userModule;
 
 import org.noear.dami.solon.annotation.DamiTopic;
 
