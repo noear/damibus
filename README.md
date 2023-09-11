@@ -53,7 +53,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 |    | Dami | EventBus | ApiBean | Dami 的情况说明                                      |
 |----|------|----------|---------|-------------------------------------------------|
 | 广播 | 有    | 有        | 无       | 发送（send）+ 监听（listen）<br/>以及 Api 模式              |
-| 应签 | 有    | 无        | 有       | 请求并等响应（requestAndResponse）+ 响应（response）<br/>以及 Api 模式 |
+| 应答 | 有    | 无        | 有       | 请求并等响应（requestAndResponse）+ 响应（response）<br/>以及 Api 模式 |
 | 回调 | 有    | 无        | 无       | 请求并等回调（requestAndCallback）+ 响应（response）        |
 | 耦合 | 弱-   | 弱+       | 强       |                                                 |
 
