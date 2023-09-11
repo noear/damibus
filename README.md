@@ -142,7 +142,7 @@ public class UserEventListenerImpl {
 
 public class Demo31 {
     public static void main(String[] args) {
-        UserEventListenerImpl userEventListener = new UserEventListenerImpl();
+        UserEventListenerOfModule1 userEventListener = new UserEventListenerOfModule1();
         UserEventSender userEventSender = Dami.api().createSender("demo.user", UserEventSender.class);
 
         //注册监听器
