@@ -30,6 +30,7 @@ public interface DamiBus<C, R> {
     void setTimeout(final long timeout);
     //拦截
     void intercept(int index, Interceptor interceptor);
+    
     //发送（不需要答复）
     default void send(final String topic, final C content) { send(new Payload<>(topic, content)); }
     //发送（不需要答复）,自定义载体
@@ -42,6 +43,7 @@ public interface DamiBus<C, R> {
     default void sendAndCallback(final String topic, final C content, final Consumer<R> callback) { sendAndCallback(new Payload<>(topic, content), callback); }
     //发送并等待回调,自定义载体
     void sendAndCallback(final Payload<C, R> payload, final Consumer<R> callback);
+    
     //监听
     default void listen(final String topic, final TopicListener<Payload<C, R>> listener) { listen(topic, 0, listener); }
     //监听
@@ -63,8 +65,10 @@ public interface DamiApi {
     void setCoder(Coder coder);
     //获取关联总线
     DamiBus getBus();
+    
     //创建发送器代理
     <T> T createSender(String topicMapping, Class<T> senderClz);
+    
     //注册监听者实例（一个监听类，只能监听一个主题）
     default void registerListener(String topicMapping, Object listenerObj) { registerListener(topicMapping, 0, listenerObj); }
     //注册监听者实例（一个监听类，只能监听一个主题）
