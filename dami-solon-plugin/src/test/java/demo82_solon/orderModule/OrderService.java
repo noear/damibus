@@ -5,7 +5,6 @@ import demo82_solon.orderModule.event.OrderEventSender;
 import demo82_solon.orderModule.event.UserDemandSender;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.data.annotation.Tran;
 
 @Component
 public class OrderService {
@@ -14,7 +13,6 @@ public class OrderService {
     @Inject
     OrderEventSender orderEventSender;
 
-    @Tran
     public void addOrder(long userId) {
         //获取用户
         User user = userDemandSender.getUser(userId);
