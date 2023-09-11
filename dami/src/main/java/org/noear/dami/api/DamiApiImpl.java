@@ -1,10 +1,13 @@
 package org.noear.dami.api;
 
 import org.noear.dami.bus.DamiBus;
+import org.noear.dami.exception.DamiException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,7 +18,7 @@ public class DamiApiImpl implements DamiApi {
     /**
      * 监听器缓存（注销时用）
      */
-    private Map<Method, MethodTopicListener> listenerMap = new HashMap<>();
+    private Map<Class<?>, List<MethodTopicListenerRecord>> listenerMap = new HashMap<>();
 
     /**
      * 编码解器
@@ -68,7 +71,7 @@ public class DamiApiImpl implements DamiApi {
     }
 
     /**
-     * 注册监听者实例
+     * 注册监听者实例（一个监听类，只能监听一个主题）
      *
      * @param topicMapping 主题映射
      * @param index        顺序位
@@ -76,18 +79,27 @@ public class DamiApiImpl implements DamiApi {
      */
     @Override
     public synchronized void registerListener(String topicMapping, int index, Object listenerObj) {
-        //只用自己申明的方法（不支持承断）
-        Method[] methods = listenerObj.getClass().getDeclaredMethods();
+        Class<?> listenerClz = listenerObj.getClass();
 
-        for (Method m1 : methods) {
-            MethodTopicListener listener = listenerMap.get(m1);
-            if (listener == null) {
-                listener = new MethodTopicListener(this, listenerObj, m1);
-                listenerMap.put(m1, listener);
-            }
-            String topic = topicMapping + "." + m1.getName();
-            bus.listen(topic, index, listener);
+        //防止重复注册
+        if (listenerMap.containsKey(listenerClz)) {
+            throw new DamiException("This listener is registered: " + listenerClz.getName());
         }
+
+        //开始注册
+        List<MethodTopicListenerRecord> listenerRecords = new ArrayList<>();
+
+        for (Method m1 : getMethods(listenerClz)) {
+            String topic = getMethodTopic(topicMapping, m1.getName());
+            MethodTopicListener listener = new MethodTopicListener(this, listenerObj, m1);
+
+            listenerRecords.add(new MethodTopicListenerRecord(topic, listener));
+            bus.listen(topic, index, listener);
+
+        }
+
+        //为了注销时，移掉对应的实例
+        listenerMap.put(listenerClz, listenerRecords);
     }
 
     /**
@@ -98,14 +110,27 @@ public class DamiApiImpl implements DamiApi {
      */
     @Override
     public synchronized void unregisterListener(String topicMapping, Object listenerObj) {
-        Method[] methods = listenerObj.getClass().getDeclaredMethods();
+        List<MethodTopicListenerRecord> tmp = listenerMap.remove(listenerObj.getClass());
 
-        for (Method m1 : methods) {
-            MethodTopicListener listener = listenerMap.remove(m1);
-            if (listener != null) {
-                String topic = topicMapping + "." + m1.getName();
-                bus.unlisten(topic, listener);
+        if (tmp != null) {
+            for (MethodTopicListenerRecord r1 : tmp) {
+                bus.unlisten(r1.getTopic(), r1.getListener());
             }
         }
+    }
+
+    /**
+     * 获取方法
+     */
+    protected Method[] getMethods(Class<?> listenerClz) {
+        //只用自己申明的方法（不支持承断）
+        return listenerClz.getDeclaredMethods();
+    }
+
+    /**
+     * 获取方法的主题
+     */
+    protected String getMethodTopic(String topicMapping, String methodName) {
+        return topicMapping + "." + methodName;
     }
 }

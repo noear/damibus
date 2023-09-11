@@ -35,7 +35,7 @@ public interface DamiApi {
     <T> T createSender(String topicMapping, Class<T> senderClz);
 
     /**
-     * 注册监听者实例
+     * 注册监听者实例（一个监听类，只能监听一个主题）
      *
      * @param topicMapping 主题映射
      * @param listenerObj  监听器实现类
@@ -45,7 +45,7 @@ public interface DamiApi {
     }
 
     /**
-     * 注册监听者实例
+     * 注册监听者实例（一个监听类，只能监听一个主题）
      *
      * @param topicMapping 主题映射
      * @param index        顺序位
