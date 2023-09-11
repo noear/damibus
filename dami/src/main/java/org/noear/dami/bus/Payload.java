@@ -73,7 +73,7 @@ public class Payload<C, R> implements Serializable {
      */
     public void reply(final R content) {
         if (isRequest() == false) {
-            throw new DamiException("This payload does not support a response");
+            throw new DamiException("This payload does not support a reply");
         }
 
         future.accept(content);
