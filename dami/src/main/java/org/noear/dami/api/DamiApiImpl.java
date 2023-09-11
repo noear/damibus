@@ -64,7 +64,7 @@ public class DamiApiImpl implements DamiApi {
      */
     @Override
     public <T> T createSender(String topicMapping, Class<T> senderClz) {
-        return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(this, topicMapping));
+        return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(this, senderClz, topicMapping));
     }
 
     /**

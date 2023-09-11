@@ -7,15 +7,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Dami自动配置类
+ * Dami 自动配置类
  *
  * @author kamosama
  * @since 1.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(Dami.class)
-@Import({DamiImportBeanDefinitionRegistrar.class,DamiBeanPostProcessor.class})
+@Import({DamiImportBeanDefinitionRegistrar.class, DamiBeanPostProcessor.class})
 public class DamiAutoConfiguration {
-
 
 }

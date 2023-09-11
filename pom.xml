@@ -18,6 +18,5 @@
     
     <modules>
         <module>dami-parent</module>
-        <module>example-dami</module>
     </modules>
 </project>

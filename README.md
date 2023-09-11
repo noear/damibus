@@ -43,37 +43,19 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 结合 Bus 与 RPC 的概念，可作事件分发，可作接口调用，可作异步响应。
 
 * 支持事务传导（同步分发、异常透传）
-* 支持附件传导（多个监听者之间，可通过附件传递信息）
-* 支持事件跟踪标识
-* 支持监听者排序
-* 支持纯弱类型总线通讯（支持类隔离的场景）
-* 支持泛型、强类型总线
-* 支持 RPC 风格的接口体验（支持自定义编解码）
-* 支持拦截器
+* 支持事件标识、拦截器（方便跟踪）
+* 支持监听者排序、附件传递（多监听时，可相互合作）
+* 支持 Bus 和 Api 两种体验风格
 
 
-### 与常见的 EventBus 的区别
+### 与常见的 EventBus、ApiBean 的区别
 
-* 相同（都有）
-
-发送（send）与监听（listen）接口。//大家名字取得可能略有不同
-
-* 不同（多了）
-
-请求并等响应（requestAndResponse）、请求并等回调（requestAndCallback）、响应（response）接口
-
-* 还有
-
-提供 Bus 接口之外，还提供了 Api 风格的操作界面（像 dubbo、feign 一样使用）
-
-### 很酷的代码演示（创意满满）
-
-提供了三个操作界面（也可以自己包装界面），下面会分别演示
-
-* Dami.busStr() 提供弱类型总线操作的界面（适合类隔离的场景）
-* Dami.bus() 提供泛型、强类型总线操作的界面
-* 
-* Dami.api() 提供 RPC 风格的操作界面（像 dubbo、feign 一样使用事件总线；支持自定义编解码）
+|    | Dami | EventBus | ApiBean | Dami 的情况说明                                      |
+|----|------|----------|---------|-------------------------------------------------|
+| 广播 | 有    | 有        | 无       | 发送（send）+ 监听（listen）<br/>以及 Api 模式              |
+| 应答 | 有    | 无        | 有       | 请求并等响应（requestAndResponse）+ 响应（response）<br/>以及 Api 模式 |
+| 回调 | 有+   | 无        | 有-      | 请求并等回调（requestAndCallback）+ 响应（response）        |
+| 耦合 | 弱-   | 弱+       | 强++     |                                                 |
 
 
 ### 依赖配置
@@ -82,7 +64,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.19.3</version>
+    <version>0.19.4</version>
 </dependency>
 ```
 
@@ -90,9 +72,8 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 ### 示例
 
-更多的示例请参考：[example-dami](example-dami) 模块。
 
-#### demo11_event
+#### demo11_send
 
 ```java
 public class Deom11 {
@@ -123,7 +104,7 @@ public class Demo12 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                Dami.busStr().response(payload, "hi nihao!");
+                Dami.busStr().response(payload, "hi nihao!"); // requestAndResponse 只接收第一个
                 Dami.busStr().response(payload, "* hi nihao!");
                 Dami.busStr().response(payload, "** hi nihao!");
             }
@@ -161,7 +142,7 @@ public class UserEventListenerImpl {
 
 public class Demo31 {
     public static void main(String[] args) {
-        UserEventListenerImpl userEventListener = new UserEventListenerImpl();
+        UserEventListenerOfModule1 userEventListener = new UserEventListenerOfModule1();
         UserEventSender userEventSender = Dami.api().createSender("demo.user", UserEventSender.class);
 
         //注册监听器

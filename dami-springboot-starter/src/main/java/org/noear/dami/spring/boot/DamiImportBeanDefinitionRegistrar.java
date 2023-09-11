@@ -1,7 +1,7 @@
 package org.noear.dami.spring.boot;
 
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
@@ -11,14 +11,14 @@ import org.springframework.core.type.AnnotationMetadata;
 import java.util.List;
 
 /**
- * Dami发送着注册器
+ * Dami 发送着注册器
  *
  * @author kamosama
  * @since 1.0
  */
 public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar {
 
-    protected static final Logger logger = LoggerFactory.getLogger(DamiImportBeanDefinitionRegistrar.class);
+    protected static final Log logger = LogFactory.getLog(DamiImportBeanDefinitionRegistrar.class);
 
     private final BeanFactory beanFactory;
 
@@ -37,12 +37,10 @@ public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRe
 
         List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
         if (logger.isDebugEnabled()) {
-            packages.forEach(pkg -> logger.debug("Using auto-configuration base package '{}'", pkg));
+            packages.forEach(pkg -> logger.debug("Using auto-configuration base package '" + pkg + "'"));
         }
 
         DamiBeanDefinitionScanner scanner = new DamiBeanDefinitionScanner(registry);
         scanner.scan(packages.toArray(new String[0]));
-
     }
-
 }

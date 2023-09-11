@@ -1,8 +1,11 @@
 package org.noear.dami.spring.boot.annotation;
 
+import org.springframework.stereotype.Component;
+
 import java.lang.annotation.*;
+
 /**
- * 大米标识
+ * 大米组件
  *
  * @author kamosama
  * @since 1.0
@@ -11,5 +14,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface DamiTopic  {
-    String topicMapping();
+    String value();
 }
