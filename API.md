@@ -53,14 +53,6 @@ public interface DamiBus<C, R> {
 }
 ```
 
-* Payload::reply，答复后的情况说明
-
-| 用例              | 答复说明             | 说明                        |
-|-----------------|------------------|---------------------------|
-| send() | 会出异常，提示当前挂载不支持答复 | payload.isRequest()=false |
-| sendAndResponse()  | 第一条答复有效          | payload.isRequest()=true  |
-| sendAndCallback()  | 可以无限次答复          | payload.isRequest()=true  |
-
 
 ## 3、DamiApi，接口模式接口
 
@@ -91,3 +83,44 @@ public interface DamiApi {
 |------------------|--------------------------|-----------------|
 | void onCreated() | 返回为空的，send 发送            | 没有监听，不会出错       |
 | User getUser()   | 返回类型的，sendAndResponse 发送 | 没有监听，会出错。必须要有答复 |
+
+
+## 4、Payload<C, R>，事件装载接口
+
+* 接口字典
+
+```java
+/**
+ * 事件装载
+ *
+ * @author noear
+ * @since 1.0
+ */
+public class Payload<C, R> implements Serializable {
+    //获取附件
+    public <T> T getAttachment(String key) {}
+    //设置附件
+    public <T> void setAttachment(String key, T value) {}
+    //是否为请求（是的话，需要答复）
+    public boolean isRequest() { }
+    //答复
+    public void reply(final R content) {}
+    
+    //唯一标识
+    public String getGuid() {}
+    //主题
+    public String getTopic() {}
+    //内容
+    public C getContent() {}
+}
+
+```
+
+* Payload::reply，答复后的情况说明
+
+| 用例              | 答复说明             | 说明                        |
+|-----------------|------------------|---------------------------|
+| send() | 会出异常，提示当前挂载不支持答复 | payload.isRequest()=false |
+| sendAndResponse()  | 第一条答复有效          | payload.isRequest()=true  |
+| sendAndCallback()  | 可以无限次答复          | payload.isRequest()=true  |
+
