@@ -86,7 +86,7 @@ DamiApi::createSender，发送者接口代理情况说明
 | User getUser()   | 返回类型的，sendAndResponse 发送 | 没有监听，会异常。且必须要有答复 |
 
 
-## 4、Payload<C, R>，事件装载接口
+## 4、Payload<C, R>，事件负载接口
 
 
 ```java
