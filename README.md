@@ -76,18 +76,19 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 #### demo21_send
 
 ```java
+//泛型总线风格。<C,R>bus()
 public class Deom11 {
     static String topic = "demo.hello";
 
     public static void main(String[] args) {
         //监听事件
-        Dami.<String,String>bus().listen(topic, payload -> {
+        Dami.<String,Long>bus().listen(topic, payload -> {
             System.err.println(payload);
         });
 
 
         //发送事件
-        Dami.<String,String>bus().send(topic, "world");
+        Dami.<String,Long>bus().send(topic, "world");
     }
 }
 ```
@@ -95,6 +96,7 @@ public class Deom11 {
 #### demo12_request
 
 ```java
+//字符串总线风格。busStr() = <String,String>bus()
 public class Demo12 {
     static String topic = "demo.hello";
 
@@ -125,11 +127,13 @@ public class Demo12 {
 #### demo31_api
 
 ```java
+//接口风格
 public interface UserEventSender {
     void onCreated(Long userId, String name);
     Long getUserId(String name);
 }
 
+//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，但会带来依赖关系）
 public class UserEventListenerImpl {
     public void onCreated(Long userId, String name) {
         System.err.println("onCreated: userId=" + userId + ", name=" + name);
