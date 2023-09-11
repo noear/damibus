@@ -115,7 +115,7 @@ Payload::reply，答复情况说明
 | sendAndCallback() | 可以无限次答复有效       | payload.isRequest() = true  |
 
 
-## 5、TopicListener<E>，主题监听接口
+## 5、TopicListener<Event>，主题监听接口
 
 ```java
 public interface TopicListener<Event extends Payload> {
