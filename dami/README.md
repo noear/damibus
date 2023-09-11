@@ -8,7 +8,7 @@
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.20.2</version>
+    <version>0.21</version>
 </dependency>
 ```
 
@@ -51,10 +51,10 @@ public class Demo12 {
 
 
         //发送事件
-        String rst1 = Dami.busStr().requestAndResponse(topic, "world");
+        String rst1 = Dami.busStr().sendAndResponse(topic, "world");
         System.out.println(rst1);
 
-        Dami.busStr().requestAndCallback(topic, "world", rst2 -> {
+        Dami.busStr().sendAndCallback(topic, "world", rst2 -> {
             System.out.println(rst2); //callback 可不限返回
         });
     }
@@ -81,10 +81,10 @@ public class Demo22 {
 
 
         //发送事件
-        String rst1 = Dami.<Long, String>bus().requestAndResponse(topic, 2L);
+        String rst1 = Dami.<Long, String>bus().sendAndResponse(topic, 2L);
         System.out.println(rst1);
 
-        Dami.<Long, String>bus().requestAndCallback(topic, 3L, rst2 -> {
+        Dami.<Long, String>bus().sendAndCallback(topic, 3L, rst2 -> {
             System.out.println(rst2); //callback 可不限返回
         });
     }

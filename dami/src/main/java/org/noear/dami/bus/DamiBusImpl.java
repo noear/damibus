@@ -51,7 +51,7 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     }
 
     /**
-     * 发送（不需要响应）,自定义载体
+     * 发送（不需要答复）,自定义载体
      *
      * @param payload 发送载体
      */
@@ -61,12 +61,12 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     }
 
     /**
-     * 请求并等待响应,自定义载体
+     * 发送并等待响应,自定义载体
      *
      * @param payload 发送载体
      */
     @Override
-    public R requestAndResponse(final Payload<C, R> payload) {
+    public R sendAndResponse(final Payload<C, R> payload) {
         CompletableFuture<R> future = new CompletableFuture<>();
         payload.future = future::complete;
         router.handle(payload);
@@ -79,25 +79,25 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     }
 
     /**
-     * 请求并等待回调,自定义载体
+     * 发送并等待回调,自定义载体
      *
      * @param payload 发送载体
      */
     @Override
-    public void requestAndCallback(final Payload<C, R> payload, final Consumer<R> callback) {
+    public void sendAndCallback(final Payload<C, R> payload, final Consumer<R> callback) {
         payload.future = callback;
 
         router.handle(payload);
     }
 
     /**
-     * 响应
+     * 答复
      *
      * @param request 请求装载
-     * @param content 响应内容
+     * @param content 答复内容
      */
     @Override
-    public void response(final Payload<C, R> request, final R content) {
+    public void reply(final Payload<C, R> request, final R content) {
         if (request.isRequest() == false) {
             throw new DamiException("This payload does not support a response");
         }

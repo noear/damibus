@@ -33,19 +33,19 @@ public class MethodTopicListener implements TopicListener<Payload<Object,Object>
         Object rst = method.invoke(target, args);
 
         if (payload.isRequest()) {
-            //响应
+            //答复
             if (rst instanceof CompletableFuture) {
                 //响应式回调
                 ((CompletableFuture) rst).thenAccept(rst2 -> {
-                    damiApi.getBus().response(payload, rst2);
+                    damiApi.getBus().reply(payload, rst2);
                 });
             } else if (rst instanceof Future) {
                 //等待回调
                 Object rst2 = ((Future) rst).get();
-                damiApi.getBus().response(payload, rst2);
+                damiApi.getBus().reply(payload, rst2);
             } else {
                 //返回
-                damiApi.getBus().response(payload, rst);
+                damiApi.getBus().reply(payload, rst);
             }
         }
     }

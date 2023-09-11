@@ -50,12 +50,12 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 
 ### 与常见的 EventBus、ApiBean 的区别
 
-|    | Dami | EventBus | ApiBean | Dami 的情况说明                                      |
-|----|------|----------|---------|-------------------------------------------------|
-| 广播 | 有    | 有        | 无       | 发送（send）+ 监听（listen）<br/>以及 Api 模式              |
-| 应答 | 有    | 无        | 有       | 请求并等响应（requestAndResponse）+ 响应（response）<br/>以及 Api 模式 |
-| 回调 | 有+   | 无        | 有-      | 请求并等回调（requestAndCallback）+ 响应（response）        |
-| 耦合 | 弱-   | 弱+       | 强++     |                                                 |
+|    | Dami | EventBus | ApiBean | Dami 的情况说明                                       |
+|----|------|----------|---------|--------------------------------------------------|
+| 广播 | 有    | 有        | 无       | 发送（send）+ 监听（listen）<br/>以及 Api 模式               |
+| 应答 | 有    | 无        | 有       | 发送并等响应（sendAndResponse）+ 答复（reply）<br/>以及 Api 模式 |
+| 回调 | 有+   | 无        | 有-      | 发送并等回调（sendAndCallback）+ 答复（reply）               |
+| 耦合 | 弱-   | 弱+       | 强++     |                                                  |
 
 
 ### 依赖配置
@@ -64,7 +64,7 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.20.2</version>
+    <version>0.21</version>
 </dependency>
 ```
 
@@ -104,7 +104,7 @@ public class Demo12 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                Dami.busStr().response(payload, "hi nihao!"); // requestAndResponse 只接收第一个
+                Dami.busStr().response(payload, "hi nihao!"); // sendAndResponse 只接收第一个
                 Dami.busStr().response(payload, "* hi nihao!");
                 Dami.busStr().response(payload, "** hi nihao!");
             }
@@ -112,10 +112,10 @@ public class Demo12 {
 
 
         //发送事件
-        String rst1 = Dami.busStr().requestAndResponse(topic, "world");
+        String rst1 = Dami.busStr().sendAndResponse(topic, "world");
         System.out.println(rst1);
 
-        Dami.busStr().requestAndCallback(topic, "world", rst2 -> {
+        Dami.busStr().sendAndCallback(topic, "world", rst2 -> {
             System.out.println(rst2); //callback 可不限返回
         });
     }

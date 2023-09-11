@@ -30,7 +30,7 @@ public interface DamiBus<C, R> {
     void intercept(int index, Interceptor interceptor);
 
     /**
-     * 发送（不需要响应）
+     * 发送（不需要答复）
      *
      * @param topic   主题
      * @param content 内容
@@ -40,54 +40,54 @@ public interface DamiBus<C, R> {
     }
 
     /**
-     * 发送（不需要响应）,自定义载体
+     * 发送（不需要答复）,自定义载体
      *
      * @param payload 发送载体
      */
     void send(final Payload<C, R> payload);
 
     /**
-     * 请求并等待响应
+     * 发送并等待响应
      *
      * @param topic   主题
      * @param content 内容
      */
-    default R requestAndResponse(final String topic, final C content) {
-        return requestAndResponse(new Payload<>(topic, content));
+    default R sendAndResponse(final String topic, final C content) {
+        return sendAndResponse(new Payload<>(topic, content));
     }
 
     /**
-     * 请求并等待响应,自定义载体
+     * 发送并等待响应,自定义载体
      *
      * @param payload 发送载体
      */
-    R requestAndResponse(final Payload<C, R> payload);
+    R sendAndResponse(final Payload<C, R> payload);
 
     /**
-     * 请求并等待回调
+     * 发送并等待回调
      *
      * @param topic    主题
      * @param content  内容
      * @param callback 回调函数
      */
-    default void requestAndCallback(final String topic, final C content, final Consumer<R> callback) {
-        requestAndCallback(new Payload<>(topic, content), callback);
+    default void sendAndCallback(final String topic, final C content, final Consumer<R> callback) {
+        sendAndCallback(new Payload<>(topic, content), callback);
     }
 
     /**
-     * 请求并等待回调,自定义载体
+     * 发送并等待回调,自定义载体
      *
      * @param payload 发送载体
      */
-    void requestAndCallback(final Payload<C, R> payload, final Consumer<R> callback);
+    void sendAndCallback(final Payload<C, R> payload, final Consumer<R> callback);
 
     /**
-     * 响应
+     * 签复
      *
      * @param request 请求装载
-     * @param content 响应内容
+     * @param content 签复内容
      */
-    void response(final Payload<C, R> request, final R content);
+    void reply(final Payload<C, R> request, final R content);
 
     /**
      * 监听

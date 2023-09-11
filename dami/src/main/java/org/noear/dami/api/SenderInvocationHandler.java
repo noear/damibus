@@ -38,7 +38,7 @@ public class SenderInvocationHandler implements InvocationHandler {
             damiApi.getBus().send(topic, content);
             return null;
         } else {
-            return damiApi.getBus().requestAndResponse(topic, content);
+            return damiApi.getBus().sendAndResponse(topic, content);
         }
     }
 

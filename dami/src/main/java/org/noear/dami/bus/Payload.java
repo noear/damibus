@@ -57,7 +57,7 @@ public class Payload<C, R> implements Serializable {
     }
 
     /**
-     * 是否为请求（是的话，需要响应）
+     * 是否为请求（是的话，需要答复）
      */
     public boolean isRequest() {
         return  future != null;

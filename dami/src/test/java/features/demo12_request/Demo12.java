@@ -21,20 +21,20 @@ public class Demo12 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                busStr.response(payload, "hi!");
-                busStr.response(payload, "* hi nihao!");
-                busStr.response(payload, "** hi nihao!");
+                busStr.reply(payload, "hi!");
+                busStr.reply(payload, "* hi nihao!");
+                busStr.reply(payload, "** hi nihao!");
             }
         });
 
         System.out.println(Thread.currentThread());
 
         //发送事件
-        String rst1 = busStr.requestAndResponse(topic, "world");
+        String rst1 = busStr.sendAndResponse(topic, "world");
         System.out.println(rst1);
         assert "hi!".equals(rst1);
 
-        busStr.requestAndCallback(topic, "world", rst2 -> {
+        busStr.sendAndCallback(topic, "world", rst2 -> {
             System.out.println(Thread.currentThread());
             System.out.println(rst2); //callback 可不限返回
             testObserver.incrementAndGet();
