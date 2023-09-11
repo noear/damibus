@@ -44,8 +44,6 @@ public interface DamiBus<C, R> {
     default void sendAndCallback(final String topic, final C content, final Consumer<R> callback) { sendAndCallback(new Payload<>(topic, content), callback); }
     //发送并等待回调,自定义载体
     void sendAndCallback(final Payload<C, R> payload, final Consumer<R> callback);
-    //答复
-    void reply(final Payload<C, R> request, final R content);
     //监听
     default void listen(final String topic, final TopicListener<Payload<C, R>> listener) { listen(topic, 0, listener); }
     //监听
