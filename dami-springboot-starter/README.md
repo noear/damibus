@@ -1,6 +1,8 @@
 
 ## dami-springboot-starter 示例
 
+更多详情，请查看 [src/test/java](src/test/java)
+
 #### 依赖配置
 
 ```xml
