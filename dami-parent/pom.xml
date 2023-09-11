@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>dami-parent</artifactId>
-    <version>0.20.1</version>
+    <version>0.20.2</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -39,11 +39,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <dami.version>0.20.1</dami.version>
+        <dami.version>0.20.2</dami.version>
         <junit4.version>4.13.2</junit4.version>
         <junit5.version>5.9.1</junit5.version>
         <solon.version>2.5.4</solon.version>
-        <spring-boot.version>2.4.0</spring-boot.version>
+        <spring-boot.version>2.7.1</spring-boot.version>
     </properties>
 
     <modules>
