@@ -1,4 +1,4 @@
-package demo92_springboot;
+package features.demo92_springboot;
 
 import org.noear.dami.api.Coder;
 import org.noear.dami.api.CoderDefault;

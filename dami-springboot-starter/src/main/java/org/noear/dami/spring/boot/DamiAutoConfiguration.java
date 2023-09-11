@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
  * @author kamosama
  * @since 1.0
  */
-@Configuration(proxyBeanMethods = false)
+@Configuration
 @ConditionalOnClass(Dami.class)
 @Import({DamiImportBeanDefinitionRegistrar.class, DamiBeanPostProcessor.class})
 public class DamiAutoConfiguration {

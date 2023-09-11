@@ -1,7 +1,7 @@
-package demo92_springboot.userModule;
+package features.demo92_springboot.userModule;
 
 
-import demo92_springboot.userModule.event.UserEventSender;
+import features.demo92_springboot.userModule.event.UserEventSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

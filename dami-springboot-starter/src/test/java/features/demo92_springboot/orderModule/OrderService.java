@@ -1,9 +1,9 @@
-package demo92_springboot.orderModule;
+package features.demo92_springboot.orderModule;
 
 
-import demo92_springboot.baseModule.model.User;
-import demo92_springboot.orderModule.event.OrderEventSender;
-import demo92_springboot.orderModule.event.UserDemandSender;
+import features.demo92_springboot.baseModule.model.User;
+import features.demo92_springboot.orderModule.event.OrderEventSender;
+import features.demo92_springboot.orderModule.event.UserDemandSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ public class OrderService {
     @Autowired
     OrderEventSender orderEventSender;
 
-    public void addOrder(long userId) {
+    public long addOrder(long userId) {
         //获取用户
         User user = userDemandSender.getUser(userId);
         System.err.println("Order:User:getUser: " + user);
@@ -24,5 +24,7 @@ public class OrderService {
 
         //发送事件
         orderEventSender.onCreated(orderId);
+
+        return user.getUserId() * 10;
     }
 }

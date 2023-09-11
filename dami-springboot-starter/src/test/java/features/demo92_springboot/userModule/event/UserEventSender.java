@@ -1,4 +1,4 @@
-package demo92_springboot.userModule.event;
+package features.demo92_springboot.userModule.event;
 
 
 import org.noear.dami.spring.boot.annotation.DamiTopic;

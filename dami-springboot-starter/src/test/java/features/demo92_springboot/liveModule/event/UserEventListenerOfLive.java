@@ -1,4 +1,4 @@
-package demo92_springboot.liveModule.event;
+package features.demo92_springboot.liveModule.event;
 
 import org.noear.dami.spring.boot.annotation.DamiTopic;
 import org.springframework.stereotype.Component;

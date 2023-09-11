@@ -43,7 +43,7 @@
         <junit4.version>4.13.2</junit4.version>
         <junit5.version>5.9.1</junit5.version>
         <solon.version>2.5.4</solon.version>
-        <spring-boot.version>2.7.11</spring-boot.version>
+        <spring-boot.version>2.0.4.RELEASE</spring-boot.version>
     </properties>
 
     <modules>
@@ -67,15 +67,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-autoconfigure</artifactId>
-                <version>${spring-boot.version}</version>
+                <groupId>org.noear</groupId>
+                <artifactId>dami-springboot-starter</artifactId>
+                <version>${dami.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

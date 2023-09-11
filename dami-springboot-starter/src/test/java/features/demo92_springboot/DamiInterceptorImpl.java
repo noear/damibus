@@ -1,4 +1,4 @@
-package demo92_springboot;
+package features.demo92_springboot;
 
 import org.noear.dami.bus.Interceptor;
 import org.noear.dami.bus.InterceptorChain;
