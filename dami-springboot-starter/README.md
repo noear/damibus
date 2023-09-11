@@ -54,8 +54,8 @@ public class Demo92 {
     @Autowired
     UserDemandSender userDemandSender;
 
-    @PostConstruct
-    public void test() {
+    @EventListener
+    public void test(ContextRefreshedEvent event) {
         userEventSender.onCreated(1,"noear");
         User user = userDemandSender.getUser(1);
     }
