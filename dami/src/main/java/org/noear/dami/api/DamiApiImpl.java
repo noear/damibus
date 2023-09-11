@@ -89,7 +89,7 @@ public class DamiApiImpl implements DamiApi {
         //开始注册
         List<MethodTopicListenerRecord> listenerRecords = new ArrayList<>();
 
-        for (Method m1 : getMethods(listenerClz)) {
+        for (Method m1 : findMethods(listenerClz)) {
             String topic = getMethodTopic(topicMapping, m1.getName());
             MethodTopicListener listener = new MethodTopicListener(this, listenerObj, m1);
 
@@ -122,7 +122,7 @@ public class DamiApiImpl implements DamiApi {
     /**
      * 获取方法
      */
-    protected Method[] getMethods(Class<?> listenerClz) {
+    protected Method[] findMethods(Class<?> listenerClz) {
         //只用自己申明的方法（不支持承断）
         return listenerClz.getDeclaredMethods();
     }
