@@ -3,7 +3,10 @@ package features.demo82_solon.orderModule;
 import features.demo82_solon.baseModule.User;
 import org.noear.dami.solon.annotation.DamiTopic;
 
-@DamiTopic("demo.user")
-public interface UserDemandSender {
+/**
+ * 基于事件的，用户服务（要向别人拿的）
+ * */
+@DamiTopic("event.user")
+public interface EventUserService {
     User getUser(long userId);
 }

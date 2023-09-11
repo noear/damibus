@@ -7,20 +7,20 @@ import org.noear.solon.annotation.Inject;
 @Component
 public class OrderService {
     @Inject
-    UserDemandSender userDemandSender;
+    EventUserService eventUserService;
     @Inject
-    OrderEventSender orderEventSender;
+    EventOrderBroadcast eventOrderBroadcast;
 
     public long addOrder(long userId) {
         //获取用户
-        User user = userDemandSender.getUser(userId);
+        User user = eventUserService.getUser(userId);
         System.err.println("Order:User:getUser: " + user);
 
         //创建订单
         long orderId = System.currentTimeMillis();
 
         //发送事件
-        orderEventSender.onCreated(orderId);
+        eventOrderBroadcast.onCreated(orderId);
 
         return user.getUserId() * 10;
     }

@@ -36,11 +36,11 @@ public class UserDemandListener {
 @DamiTopic("demo.user")
 public class UserEventListenerOfLive {
     public void onCreated(long userId, String name) {
-        System.err.println("LIve:User:onCreated: userId=" + userId + ", name=" + name);
+        System.err.println("Live:User:onCreated: userId=" + userId + ", name=" + name);
     }
 
     public void onUpdated(long userId, String name) {
-        System.err.println("LIve:User:onUpdated: userId=" + userId + ", name=" + name);
+        System.err.println("Live:User:onUpdated: userId=" + userId + ", name=" + name);
     }
 }
 

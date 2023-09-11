@@ -3,11 +3,10 @@ package features.demo82_solon.userModule;
 import org.noear.dami.solon.annotation.DamiTopic;
 
 /**
- * 提示：需要要支持类隔离的环境，请使用基本类型做为参数与返回
+ * 基于事件的，用户广播（要告知别人的）
  * */
-//用户事件发送器
-@DamiTopic("demo.user")
-public interface UserEventSender {
+@DamiTopic("event.user")
+public interface EventUserBroadcast {
     void onCreated(long userId, String name);
     void onUpdated(long userId, String name);
 }
