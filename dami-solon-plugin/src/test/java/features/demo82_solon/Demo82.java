@@ -2,12 +2,13 @@ package features.demo82_solon;
 
 import features.demo82_solon.orderModule.OrderService;
 import features.demo82_solon.userModule.UserService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
 
-@RunWith(SolonJUnit4ClassRunner.class)
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.test.SolonJUnit5Extension;
+
+@ExtendWith(SolonJUnit5Extension.class)
 public class Demo82 {
     @Inject
     UserService userService;

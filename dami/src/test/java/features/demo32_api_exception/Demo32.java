@@ -2,7 +2,8 @@ package features.demo32_api_exception;
 
 import features.demo32_api_exception.module1.UserEventListenerOfModule1;
 import features.demo32_api_exception.module2.UserEventSender;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import org.noear.dami.api.DamiApi;
 import org.noear.dami.api.DamiApiImpl;
 import org.noear.dami.bus.DamiBus;
