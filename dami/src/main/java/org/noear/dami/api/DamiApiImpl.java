@@ -101,7 +101,7 @@ public class DamiApiImpl implements DamiApi {
         Method[] methods = listenerObj.getClass().getDeclaredMethods();
 
         for (Method m1 : methods) {
-            MethodTopicListener listener = listenerMap.get(m1);
+            MethodTopicListener listener = listenerMap.remove(m1);
             if (listener != null) {
                 String topic = topicMapping + "." + m1.getName();
                 bus.unlisten(topic, listener);
