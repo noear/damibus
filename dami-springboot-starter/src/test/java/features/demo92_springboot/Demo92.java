@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootTest(classes = Demo92.class)
 @EnableAutoConfiguration
+@SpringBootTest(classes = Demo92.class)
 @ComponentScan("features.demo92_springboot")
 public class Demo92 {
     @Autowired

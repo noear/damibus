@@ -17,12 +17,11 @@
 
 ```java
 @DamiTopic("event.user")
-public interface EventUserBroadcast {
-    void onCreated(long userId, String name); //方法的主题 = topicMapping + "." + method.getName() 
-
-    void onUpdated(long userId, String name); //方法名字，不能重复
+public interface EventUserService {
+    User getUser(long userId); //方法的主题 = topicMapping + "." + method.getName() //方法不能重名
 }
 
+//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，这个会带来依赖关系）
 @DamiTopic("event.user")
 public class EventUserServiceListener {
     public User getUser(long userId) {
@@ -30,40 +29,17 @@ public class EventUserServiceListener {
     }
 }
 
-//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，这个会带来依赖关系）
-@DamiTopic("event.user")
-public class EventUserBroadcastListener  {
-    public void onCreated(long userId, String name) {
-        System.err.println("Live:User:onCreated: userId=" + userId + ", name=" + name);
-    }
-
-    public void onUpdated(long userId, String name) {
-        System.err.println("Live:User:onUpdated: userId=" + userId + ", name=" + name);
-    }
-}
-
-@DamiTopic("event.user")
-public interface EventUserService {
-    User getUser(long userId);
-}
-
-@SpringBootApplication
-@Component
+@EnableAutoConfiguration
+@SpringBootTest(classes = Demo92.class)
+@ComponentScan("features.demo92_springboot")
 public class Demo92 {
-    @Autowired
-    EventUserBroadcast eventUserBroadcast;
-
     @Autowired
     EventUserService eventUserService;
 
-    @EventListener
-    public void test(ContextRefreshedEvent event) {
-        eventUserBroadcast.onCreated(1,"noear");
-        User user = eventUserService.getUser(1);
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(Demo92.class);
+    @Test
+    public void test(){
+        User user = eventUserService.getUser(99);
+        assert user.getUserId() == 99;
     }
 }
 ```
