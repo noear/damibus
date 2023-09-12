@@ -21,7 +21,7 @@ public class Demo12 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                payload.reply("hi!");
+                payload.reply("hi!"); // sendAndResponse 只接收第一个
                 payload.reply("* hi nihao!");
                 payload.reply("** hi nihao!");
             }
@@ -36,7 +36,7 @@ public class Demo12 {
 
         busStr.sendAndCallback(topic, "world", rst2 -> {
             System.out.println(Thread.currentThread());
-            System.out.println(rst2); //callback 可不限返回
+            System.out.println(rst2); //callback 不限回调次数
             testObserver.incrementAndGet();
         });
 
