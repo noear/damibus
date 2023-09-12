@@ -72,13 +72,13 @@ public class Demo12 {
 
 ```java
 //接口风格
-public interface UserEventSender {
+public interface EventUser {
     void onCreated(Long userId, String name);
     Long getUserId(String name);
 }
 
 //通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，但会带来依赖关系）
-public class UserEventListenerImpl {
+public class EventUserListenerOfModule1 {
     public void onCreated(Long userId, String name) {
         System.err.println("onCreated: userId=" + userId + ", name=" + name);
     }
@@ -91,19 +91,19 @@ public class UserEventListenerImpl {
 public class Demo31 {
     public static void main(String[] args) {
         //注册监听器
-        UserEventListenerOfModule1 userEventListener = new UserEventListenerOfModule1();
-        Dami.api().registerListener("demo.user", userEventListener);
+        EventUserListenerOfModule1 userEventListener = new EventUserListenerOfModule1();
+        api.registerListener(topicMapping, userEventListener);
 
         //生成发送器
-        UserEventSender userEventSender = Dami.api().createSender("demo.user", UserEventSender.class);
+        EventUser eventUser = api.createSender(topicMapping, EventUser.class);
 
         //发送测试
-        userEventSender.onCreated(1L, "noear");
-        Long userId = userEventSender.getUserId( "dami");
+        eventUser.onCreated(1L, "noear");
+        Long userId = eventUser.getUserId("dami");
         System.err.println("收到：响应：userId：" + userId);
 
         //注销监听器
-        Dami.api().unregisterListener("demo.user", userEventListener);
+        api.unregisterListener(topicMapping, userEventListener);
     }
 }
 ```

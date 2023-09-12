@@ -1,7 +1,7 @@
 package features.demo32_api_exception;
 
-import features.demo32_api_exception.module1.UserEventListenerOfModule1;
-import features.demo32_api_exception.module2.UserEventSender;
+import features.demo32_api_exception.module1.EventUserListenerOfModule1;
+import features.demo32_api_exception.module2.EventUser;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.api.DamiApi;
@@ -21,15 +21,15 @@ public class Demo32 {
         Throwable testObserver = null;
 
         //注册监听器
-        UserEventListenerOfModule1 userEventListener = new UserEventListenerOfModule1();
+        EventUserListenerOfModule1 userEventListener = new EventUserListenerOfModule1();
         api.registerListener(topicMapping, userEventListener);
 
         //生成发送器
-        UserEventSender userEventSender = api.createSender(topicMapping, UserEventSender.class);
+        EventUser eventUser = api.createSender(topicMapping, EventUser.class);
 
         //发送测试
         try {
-            userEventSender.onCreated(1L, "noear");
+            eventUser.onCreated(1L, "noear");
         } catch (DamiException e) {
             testObserver = e.getCause();
             System.out.println("捕获到异常：");

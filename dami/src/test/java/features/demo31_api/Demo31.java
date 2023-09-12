@@ -1,7 +1,7 @@
 package features.demo31_api;
 
-import features.demo31_api.module1.UserEventListenerOfModule1;
-import features.demo31_api.module2.UserEventSender;
+import features.demo31_api.module1.EventUserListenerOfModule1;
+import features.demo31_api.module2.EventUser;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.api.DamiApi;
@@ -18,15 +18,15 @@ public class Demo31 {
     @Test
     public void main() {
         //注册监听器
-        UserEventListenerOfModule1 userEventListener = new UserEventListenerOfModule1();
+        EventUserListenerOfModule1 userEventListener = new EventUserListenerOfModule1();
         api.registerListener(topicMapping, userEventListener);
 
         //生成发送器
-        UserEventSender userEventSender = api.createSender(topicMapping, UserEventSender.class);
+        EventUser eventUser = api.createSender(topicMapping, EventUser.class);
 
         //发送测试
-        userEventSender.onCreated(1L, "noear");
-        Long userId = userEventSender.getUserId("dami");
+        eventUser.onCreated(1L, "noear");
+        Long userId = eventUser.getUserId("dami");
         System.err.println("收到：响应：userId：" + userId);
 
         //注销监听器
