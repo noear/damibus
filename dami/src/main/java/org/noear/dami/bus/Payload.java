@@ -4,7 +4,7 @@ import org.noear.dami.exception.DamiException;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * 事件负载
@@ -19,7 +19,7 @@ public class Payload<C, R> implements Serializable {
 
     private Map<String, Object> attachments;
 
-    protected transient Consumer<R> future;
+    protected transient Predicate<R> future;
 
     public Payload(final String topic, final C content) {
         this(UUID.randomUUID().toString(), topic, content);
@@ -71,12 +71,12 @@ public class Payload<C, R> implements Serializable {
      *
      * @param content 内容
      */
-    public void reply(final R content) {
+    public boolean reply(final R content) {
         if (isRequest() == false) {
             throw new DamiException("This payload does not support a reply");
         }
 
-        future.accept(content);
+        return future.test(content);
     }
 
 

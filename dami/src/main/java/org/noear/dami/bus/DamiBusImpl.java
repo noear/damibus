@@ -85,7 +85,10 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
      */
     @Override
     public void sendAndCallback(final Payload<C, R> payload, final Consumer<R> callback) {
-        payload.future = callback;
+        payload.future = (r) -> {
+            callback.accept(r);
+            return true;
+        };
 
         router.handle(payload);
     }
