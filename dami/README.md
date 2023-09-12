@@ -8,7 +8,7 @@
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.22</version>
+    <version>0.23</version>
 </dependency>
 ```
 
@@ -23,7 +23,9 @@ public class Deom11 {
     public static void main(String[] args) {
         //监听事件
         Dami.<String,Long>bus().listen(topic, payload -> {
-            System.err.println(payload);
+            CompletableFuture.runAsync(()-> { //也可以异步消费
+                System.err.println(payload);
+            });
         });
 
 
@@ -43,15 +45,13 @@ public class Demo12 {
     public static void main(String[] args) {
         //监听事件
         Dami.busStr().listen(topic, payload -> {
-            CompletableFuture.runAsync(()->{ //也可以异步消费
-                System.err.println(payload);
+            System.err.println(payload);
 
-                if (payload.isRequest()) {
-                    payload.reply("hi!"); // sendAndResponse 只接收第一个
-                    payload.reply("* hi nihao!");
-                    payload.reply("** hi nihao!");
-                }
-            });
+            if (payload.isRequest()) {
+                payload.reply("hi!"); // sendAndResponse 只接收第一个
+                payload.reply("* hi nihao!");
+                payload.reply("** hi nihao!");
+            }
         });
 
 
