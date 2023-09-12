@@ -1,6 +1,7 @@
 package org.noear.dami.spring.boot;
 
 import org.noear.dami.Dami;
+import org.noear.dami.exception.DamiException;
 import org.noear.dami.spring.boot.annotation.DamiTopic;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -64,6 +65,8 @@ public class DamiBeanDefinitionScanner extends ClassPathBeanDefinitionScanner {
             Class<?> beanClass = ClassUtils.forName(beanClassName, ClassUtils.getDefaultClassLoader());
             beanDefinition.setBeanClass(beanClass);
             DamiTopic damiTopic = beanClass.getAnnotation(DamiTopic.class);
+            assertTopicMapping(damiTopic);
+
             String topicMapping = damiTopic.value()[0];
 
             beanDefinition.setInstanceSupplier(() -> Dami.api().createSender(topicMapping, beanClass));
@@ -72,4 +75,18 @@ public class DamiBeanDefinitionScanner extends ClassPathBeanDefinitionScanner {
         }
     }
 
+    /**
+     * 断言主题是否为空
+     *
+     * @param anno 注解
+     */
+    protected void assertTopicMapping(final DamiTopic anno) {
+        if (anno.value().length == 0) {
+            throw new DamiException("The topic cannot be empty");
+        }
+
+        if (anno.value().length != 1) {
+            throw new DamiException("There can only be one topic");
+        }
+    }
 }
