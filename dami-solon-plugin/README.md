@@ -18,23 +18,23 @@
 #### 代码
 
 ```java
-@DamiTopic("demo.user")
-public interface UserEventSender {
+@DamiTopic("event.user")
+public interface EventUserBroadcast {
     void onCreated(long userId, String name); //方法的主题 = topicMapping + "." + method.getName() 
 
     void onUpdated(long userId, String name); //方法名字，不能重复
 }
 
-@DamiTopic("demo.user")
-public class UserDemandListener {
+@DamiTopic("event.user")
+public class EventUserServiceListener {
     public User getUser(long userId) {
         return new User(userId);
     }
 }
 
-//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，这个会带来依赖关系）
-@DamiTopic("demo.user")
-public class UserEventListenerOfLive {
+//通过约定保持与 Sender 相同的接口定义（或者实现 EventUserBroadcast 接口，这个会带来依赖关系）
+@DamiTopic("event.user")
+public class EventUserBroadcastListener  {
     public void onCreated(long userId, String name) {
         System.err.println("Live:User:onCreated: userId=" + userId + ", name=" + name);
     }
@@ -44,8 +44,8 @@ public class UserEventListenerOfLive {
     }
 }
 
-@DamiTopic("demo.user")
-public interface UserDemandSender {
+@DamiTopic("event.user")
+public interface EventUserService {
     User getUser(long userId);
 }
 
@@ -53,15 +53,15 @@ public interface UserDemandSender {
 @Component
 public class Demo82 {
     @Inject
-    UserEventSender userEventSender;
+    EventUserBroadcast eventUserBroadcast;
 
     @Inject
-    UserDemandSender userDemandSender;
+    EventUserService eventUserService;
 
     @Init
     public void test() {
-        userEventSender.onCreated(1,"noear");
-        User user = userDemandSender.getUser(1);
+        eventUserBroadcast.onCreated(1,"noear");
+        User user = eventUserService.getUser(1);
     }
 
     public static void main(String[] args) {

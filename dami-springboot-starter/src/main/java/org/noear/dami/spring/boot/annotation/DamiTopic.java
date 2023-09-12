@@ -15,5 +15,8 @@ import java.lang.annotation.*;
 @Component
 @Documented
 public @interface DamiTopic  {
+    /**
+     * 仅第一个有效（用数组是为了打断 @Component::value 的关联）
+     * */
     String[] value();
 }
