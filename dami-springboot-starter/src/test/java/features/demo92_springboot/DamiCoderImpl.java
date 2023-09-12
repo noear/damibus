@@ -6,9 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-/**
- * @author noear 2023/9/11 created
- */
 @Component
 public class DamiCoderImpl implements Coder {
     Coder coder = new CoderDefault();
