@@ -32,12 +32,12 @@ public class EventUserServiceListener {
 }
 
 @ExtendWith(SolonJUnit5Extension.class)
-public class Demo82 {
+public class Demo81 {
     @Inject
     EventUserService eventUserService;
 
     @Test
-    public void test() {
+    public void main(){
         User user = eventUserService.getUser(99);
         assert user.getUserId() == 99;
     }

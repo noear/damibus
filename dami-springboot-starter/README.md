@@ -30,18 +30,19 @@ public class EventUserServiceListener {
 }
 
 @EnableAutoConfiguration
-@SpringBootTest(classes = Demo92.class)
-@ComponentScan("features.demo92_springboot")
-public class Demo92 {
+@SpringBootTest(classes = Demo91.class)
+@ComponentScan("features.demo91_springboot")
+public class Demo91 {
     @Autowired
     EventUserService eventUserService;
 
     @Test
-    public void test(){
+    public void main(){
         User user = eventUserService.getUser(99);
         assert user.getUserId() == 99;
     }
 }
+
 ```
 
 #### 如果需要拦截？
