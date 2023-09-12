@@ -3,7 +3,7 @@ package org.noear.dami.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 大米组件
+ * 大米主题组件
  *
  * @author noear
  * @since 1.0
