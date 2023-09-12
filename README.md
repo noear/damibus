@@ -103,13 +103,15 @@ public class Demo12 {
     public static void main(String[] args) {
         //监听事件
         Dami.busStr().listen(topic, payload -> {
-            System.err.println(payload);
+            CompletableFuture.runAsync(()->{ //也可以异步消费
+                System.err.println(payload);
 
-            if (payload.isRequest()) {
-                payload.reply("hi nihao!"); // sendAndResponse 只接收第一个
-                payload.reply("* hi nihao!");
-                payload.reply("** hi nihao!");
-            }
+                if (payload.isRequest()) {
+                    payload.reply("hi!"); // sendAndResponse 只接收第一个
+                    payload.reply("* hi nihao!");
+                    payload.reply("** hi nihao!");
+                }
+            });
         });
 
 
@@ -118,7 +120,7 @@ public class Demo12 {
         System.out.println(rst1);
 
         Dami.busStr().sendAndCallback(topic, "world", rst2 -> {
-            System.out.println(rst2); //callback 可不限返回
+            System.out.println(rst2); //callback 不限回调次数
         });
     }
 }
