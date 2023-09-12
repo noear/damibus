@@ -23,6 +23,9 @@ public class Deom11 {
     public static void main(String[] args) {
         //监听事件
         Dami.<String,Long>bus().listen(topic, payload -> {
+            System.err.println(payload); //可以有多个订阅
+        });
+        Dami.<String,Long>bus().listen(topic, payload -> {
             CompletableFuture.runAsync(()-> { //也可以异步消费
                 System.err.println(payload);
             });
@@ -56,7 +59,7 @@ public class Demo12 {
 
 
         //发送事件
-        String rst1 = Dami.busStr().sendAndResponse(topic, "world");
+        String rst1 = Dami.busStr().sendAndResponse(topic, "world"); //要求有返回值
         System.out.println(rst1);
 
         Dami.busStr().sendAndCallback(topic, "world", rst2 -> {
