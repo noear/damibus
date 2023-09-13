@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  */
-public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
+public class DamiBusImpl<C, R> implements DamiBus<C, R> {
     /**
      * 路由器
      */

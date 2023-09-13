@@ -1,6 +1,5 @@
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.bus.Payload;
 import org.noear.dami.bus.TopicListener;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.List;
  * @author noear
  * @since 1.0
  */
-public final class TopicListenPipeline<Event extends Payload> implements TopicListener<Event> {
+public final class TopicListenPipeline<Event> implements TopicListener<Event> {
     private final List<EH<Event>> list = new ArrayList<>();
 
     /**
@@ -53,7 +52,7 @@ public final class TopicListenPipeline<Event extends Payload> implements TopicLi
         }
     }
 
-    private final static class EH<Event extends Payload> {
+    private final static class EH<Event> {
         final int index;
         final TopicListener<Event> listener;
 

@@ -5,6 +5,9 @@ import org.noear.dami.api.DamiApiImpl;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
 import org.noear.dami.bus.Interceptor;
+import org.noear.dami.bus.plus.DamiBusPlus;
+import org.noear.dami.bus.plus.DamiBusPlusImpl;
+import org.noear.dami.bus.plus.DamiBusSml;
 
 /**
  * 大米，本地过程调用框架
@@ -13,7 +16,7 @@ import org.noear.dami.bus.Interceptor;
  * @since 1.0
  */
 public class Dami {
-    static final DamiBus bus = new DamiBusImpl<>();
+    static final DamiBusPlus bus = new DamiBusPlusImpl<>();
     static final DamiApi api = new DamiApiImpl(bus);
 
 
@@ -28,6 +31,13 @@ public class Dami {
      * 弱类型总线界面（适合类隔离的场景）
      */
     public static DamiBus<String, String> busStr() {
+        return bus;
+    }
+
+    /**
+     * 简化总线界面
+     * */
+    public DamiBusSml busSml(){
         return bus;
     }
 

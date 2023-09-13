@@ -7,7 +7,7 @@ package org.noear.dami.bus;
  * @since 1.0
  */
 @FunctionalInterface
-public interface TopicListener<Event extends Payload> {
+public interface TopicListener<Event> {
     /**
      * 处理监听事件
      *
