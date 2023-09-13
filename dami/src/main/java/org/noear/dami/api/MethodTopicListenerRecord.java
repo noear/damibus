@@ -15,10 +15,16 @@ public class MethodTopicListenerRecord {
         this.listener = listener;
     }
 
+    /**
+     * 主题
+     * */
     public String getTopic() {
         return topic;
     }
 
+    /**
+     * 方法主题监听器
+     * */
     public MethodTopicListener getListener() {
         return listener;
     }
