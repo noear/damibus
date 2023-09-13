@@ -1,5 +1,6 @@
-package org.noear.dami.bus;
+package org.noear.dami.bus.impl;
 
+import org.noear.dami.bus.*;
 import org.noear.dami.exception.DamiException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +13,7 @@ import java.util.*;
  * @author noear
  * @since 1.0
  */
-public final class TopicRouterImpl<C, R> implements TopicRouter<C, R> , Interceptor<C,R> {
+public final class TopicRouterImpl<C, R> implements TopicRouter<C, R>, Interceptor<C,R> {
     /**
      * 主题监听管道
      */

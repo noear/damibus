@@ -1,5 +1,9 @@
 package org.noear.dami.bus;
 
+import org.noear.dami.bus.impl.PayloadImpl;
+import org.noear.dami.bus.impl.ReplyCallback;
+import org.noear.dami.bus.impl.ReplyResponse;
+import org.noear.dami.bus.impl.TopicRouterImpl;
 import org.noear.dami.exception.DamiException;
 
 import java.util.concurrent.CompletableFuture;
@@ -51,24 +55,26 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     }
 
     /**
-     * 发送（不需要答复）,自定义载体
+     * 发送（不需要答复）
      *
-     * @param payload 发送载体
+     * @param topic   主题
+     * @param content 内容
      */
     @Override
-    public void send(final Payload<C, R> payload) {
-        router.handle(payload);
+    public void send(final String topic, final C content) {
+        router.handle(new PayloadImpl<>(topic, content, null));
     }
 
     /**
-     * 发送并等待响应,自定义载体
+     * 发送并等待响应
      *
-     * @param payload 发送载体
+     * @param topic   主题
+     * @param content 内容
      */
     @Override
-    public R sendAndResponse(final Payload<C, R> payload) {
+    public R sendAndResponse(final String topic, final C content) {
         CompletableFuture<R> future = new CompletableFuture<>();
-        payload.future = future::complete;
+        PayloadImpl<C,R> payload = new PayloadImpl<>(topic, content, new ReplyResponse<>(future));
         router.handle(payload);
 
         try {
@@ -79,16 +85,15 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     }
 
     /**
-     * 发送并等待回调,自定义载体
+     * 发送并等待回调
      *
-     * @param payload 发送载体
+     * @param topic    主题
+     * @param content  内容
+     * @param callback 回调函数
      */
     @Override
-    public void sendAndCallback(final Payload<C, R> payload, final Consumer<R> callback) {
-        payload.future = (r) -> {
-            callback.accept(r);
-            return true;
-        };
+    public void sendAndCallback(final String topic, final C content, final Consumer<R> callback) {
+        PayloadImpl<C,R> payload = new PayloadImpl<>(topic, content, new ReplyCallback<>(callback));
 
         router.handle(payload);
     }
