@@ -1,5 +1,6 @@
-package org.noear.dami.api;
+package org.noear.dami.api.impl;
 
+import org.noear.dami.api.DamiApi;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.Payload;
 

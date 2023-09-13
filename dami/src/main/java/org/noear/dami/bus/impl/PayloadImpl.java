@@ -21,9 +21,14 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
 
     //附件
     private Map<String, Object> attachments;
-    //答复接收人
+    //答复接收器
     private transient Acceptor<R> acceptor;
 
+    /**
+     * @param topic 主题
+     * @param content 内容
+     * @param acceptor 答复接收器
+     * */
     public PayloadImpl(final String topic, final C content, Acceptor<R> acceptor) {
         this.guid = UUID.randomUUID().toString();
         this.topic = topic;
@@ -36,6 +41,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
      *
      * @param key 关键字
      */
+    @Override
     public <T> T getAttachment(String key) {
         if (attachments == null) {
             return null;
@@ -50,6 +56,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
      * @param key   关键字
      * @param value 值
      */
+    @Override
     public <T> void setAttachment(String key, T value) {
         if (attachments == null) {
             attachments = new HashMap<>();
@@ -61,6 +68,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
     /**
      * 是否为请求（是的话，需要答复）
      */
+    @Override
     public boolean isRequest() {
         //如果有接收人，且未结束接收
         return acceptor != null;
@@ -72,6 +80,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
      *
      * @param content 内容
      */
+    @Override
     public boolean reply(final R content) {
         if (isRequest() == false) {
             throw new DamiException("This payload does not support a reply");
@@ -88,6 +97,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
     /**
      * 唯一标识
      */
+    @Override
     public String getGuid() {
         return guid;
     }
@@ -95,6 +105,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
     /**
      * 主题
      */
+    @Override
     public String getTopic() {
         return topic;
     }
@@ -102,6 +113,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
     /**
      * 内容
      */
+    @Override
     public C getContent() {
         return content;
     }

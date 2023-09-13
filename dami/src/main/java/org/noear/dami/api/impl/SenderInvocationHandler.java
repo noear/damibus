@@ -1,4 +1,6 @@
-package org.noear.dami.api;
+package org.noear.dami.api.impl;
+
+import org.noear.dami.api.DamiApi;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
