@@ -31,8 +31,9 @@ public interface Payload<C, R> {
      * 答复
      *
      * @param content 内容
+     * @return 答复成功
      */
-    void reply(final R content);
+    boolean reply(final R content);
 
     /**
      * 唯一标识

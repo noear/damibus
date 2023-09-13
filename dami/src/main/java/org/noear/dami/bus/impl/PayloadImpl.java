@@ -72,16 +72,16 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
      *
      * @param content 内容
      */
-    public void reply(final R content) {
+    public boolean reply(final R content) {
         if (isRequest() == false) {
             throw new DamiException("This payload does not support a reply");
         }
 
-        if(acceptor.isDone()){
-            throw new DamiException("This payload has completed the reply");
+        if (acceptor.isDone()) {
+            return false;
         }
 
-        acceptor.accept(content);
+        return acceptor.accept(content);
     }
 
 
