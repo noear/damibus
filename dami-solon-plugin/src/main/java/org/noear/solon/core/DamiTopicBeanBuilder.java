@@ -25,25 +25,19 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
                 Dami.api().registerListener(anno.value(), bw.raw());
             }
 
-            lifecycleWrap(bw, anno);
+            lifecycleWrap(bw, anno.value());
         }
     }
 
     /**
      * 包装生命周期
      */
-    private void lifecycleWrap(BeanWrap bw, DamiTopic anno) {
+    private void lifecycleWrap(BeanWrap bw, String topicMapping) {
         if (Solon.context() != bw.context()) {
             //如果不是根容器，则停止时自动注销
-            ListenerLifecycleWrap lifecycleWrap = (ListenerLifecycleWrap) bw.context().getAttrs().get(ListenerLifecycleWrap.class);
+            ListenerLifecycleWrap lifecycleWrap = ListenerLifecycleWrap.getOf(bw.context());
 
-            if (lifecycleWrap == null) {
-                lifecycleWrap = new ListenerLifecycleWrap();
-                bw.context().getAttrs().put(ListenerLifecycleWrap.class, lifecycleWrap);
-                bw.context().lifecycle(lifecycleWrap);
-            }
-
-            lifecycleWrap.add(anno.value(), bw.raw());
+            lifecycleWrap.add(topicMapping, bw.raw());
         }
     }
 }

@@ -3,11 +3,10 @@ package org.noear.dami;
 import org.noear.dami.api.DamiApi;
 import org.noear.dami.api.DamiApiImpl;
 import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
 import org.noear.dami.bus.Interceptor;
 import org.noear.dami.bus.plus.DamiBusPlus;
 import org.noear.dami.bus.plus.DamiBusPlusImpl;
-import org.noear.dami.bus.plus.DamiBusSml;
+import org.noear.dami.bus.plus.DamiBusTyped;
 
 /**
  * 大米，本地过程调用框架
@@ -35,9 +34,9 @@ public class Dami {
     }
 
     /**
-     * 简化总线界面
+     * 类化版总线界面（内容类型直接做为主题，适合做广播）
      * */
-    public DamiBusSml busSml(){
+    public static DamiBusTyped busTyped(){
         return bus;
     }
 

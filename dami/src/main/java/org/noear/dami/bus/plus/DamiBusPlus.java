@@ -8,6 +8,6 @@ import org.noear.dami.bus.DamiBus;
  * @author noear
  * @since 1.0
  */
-public interface DamiBusPlus<C,R> extends DamiBus<C,R>, DamiBusSml {
+public interface DamiBusPlus<C,R> extends DamiBus<C,R>, DamiBusTyped {
 
 }

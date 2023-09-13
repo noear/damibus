@@ -1,30 +1,28 @@
-package features.demo01_send;
+package features.demo41_send_typed;
 
 import org.junit.jupiter.api.Test;
-import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
 import org.noear.dami.bus.plus.DamiBusPlusImpl;
-import org.noear.dami.bus.plus.DamiBusSml;
+import org.noear.dami.bus.plus.DamiBusTyped;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Demo01 {
-    //定义实例，避免单测干扰 //开发时用：Dami.busSml()
-    DamiBusSml busSml = new DamiBusPlusImpl<>();
+public class Demo41 {
+    //定义实例，避免单测干扰 //开发时用：Dami.busTyped()
+    DamiBusTyped busTyped = new DamiBusPlusImpl<>();
 
     @Test
     public void main() throws Exception {
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        busSml.listen(User.class, user -> {
+        busTyped.listen(User.class, user -> {
             System.err.println(user);
             testObserver.incrementAndGet();
         });
 
 
         //发送事件
-        busSml.send(new User("noear"));
+        busTyped.send(new User("noear"));
 
         assert testObserver.get() == 1;
     }

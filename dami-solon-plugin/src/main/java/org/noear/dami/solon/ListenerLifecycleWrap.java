@@ -3,7 +3,10 @@ package org.noear.dami.solon;
 import org.noear.dami.Dami;
 import org.noear.dami.bus.Payload;
 import org.noear.dami.bus.TopicListener;
+import org.noear.dami.bus.plus.TopicContentListener;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.bean.LifecycleBean;
+import org.noear.solon.core.util.GenericUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +35,27 @@ public class ListenerLifecycleWrap implements LifecycleBean {
         for (ListenerRecord r1 : listenerRecords) {
             if (r1.getListenerObj() instanceof TopicListener) {
                 Dami.bus().unlisten(r1.getTopicMapping(), (TopicListener<Payload<Object, Object>>) r1.getListenerObj());
+            } else if (r1.getListenerObj() instanceof TopicContentListener) {
+                Class<?>[] targs = GenericUtil.resolveTypeArguments(r1.getListenerObj().getClass(), TopicContentListener.class);
+                Dami.busTyped().unlisten(targs[0], (TopicContentListener) r1.getListenerObj());
             } else {
                 Dami.api().unregisterListener(r1.getTopicMapping(), r1.getListenerObj());
             }
         }
+    }
+
+    /**
+     * 获取实例
+     * */
+    public static ListenerLifecycleWrap getOf(AppContext context){
+        ListenerLifecycleWrap lifecycleWrap = (ListenerLifecycleWrap) context.getAttrs().get(ListenerLifecycleWrap.class);
+
+        if (lifecycleWrap == null) {
+            lifecycleWrap = new ListenerLifecycleWrap();
+            context.getAttrs().put(ListenerLifecycleWrap.class, lifecycleWrap);
+            context.lifecycle(lifecycleWrap);
+        }
+
+        return lifecycleWrap;
     }
 }

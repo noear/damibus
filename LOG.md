@@ -2,7 +2,7 @@
 
 * Payload::reply 增加返回是否成功
 * api 模式的监听者，参数可与发送者略有不同（比如增加 Payload 参数）
-* 添加简化版操控界面 Dami.busSml()
+* 添加类化版操控界面 Dami.busTyped()，不支持答复，适合快速做广播
 
 #### 0.23
 

@@ -110,3 +110,22 @@ public class Demo31 {
     }
 }
 ```
+
+#### demo41_send_typed
+
+```java
+//类化版总线风格（内容类型直接做主题，仅适合做广播）。busTyped()
+public class Demo01 {
+    @Test
+    public void main() throws Exception {
+        //监听事件
+        Dami.busTyped().listen(User.class, user -> {
+            System.err.println(user);
+        });
+
+
+        //发送事件
+        Dami.busTyped().send(new User("noear"));
+    }
+}
+```
