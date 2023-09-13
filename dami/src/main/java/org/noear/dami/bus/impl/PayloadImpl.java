@@ -63,7 +63,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
      */
     public boolean isRequest() {
         //如果有接收人，且未结束接收
-        return acceptor != null && acceptor.isDone() == false;
+        return acceptor != null;
     }
 
 
