@@ -3,15 +3,15 @@ package org.noear.dami.bus.impl;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * 响应签复
+ * 响应签复接收人
  *
  * @author noear
  * @since 1.0
  */
-public class ReplyResponse<R> implements Reply<R> {
+public class AcceptorResponse<R> implements Acceptor<R> {
     CompletableFuture<R> future;
 
-    public ReplyResponse(CompletableFuture<R> future) {
+    public AcceptorResponse(CompletableFuture<R> future) {
         this.future = future;
     }
 
@@ -21,7 +21,7 @@ public class ReplyResponse<R> implements Reply<R> {
     }
 
     @Override
-    public void accept(R value) {
-        future.complete(value);
+    public boolean accept(R value) {
+        return future.complete(value);
     }
 }

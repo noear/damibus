@@ -1,12 +1,12 @@
 package org.noear.dami.bus.impl;
 
 /**
- * 答复
+ * 答复接收人
  *
  * @author noear
  * @since 1.0
  */
-public interface Reply<R> {
+public interface Acceptor<R> {
     /**
      * 是否结束接收
      * */
@@ -15,5 +15,5 @@ public interface Reply<R> {
     /**
      * 接收
      * */
-    void accept(R value);
+    boolean accept(R value);
 }

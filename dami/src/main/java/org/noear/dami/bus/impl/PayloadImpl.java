@@ -19,15 +19,16 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
     private final String topic;
     private final C content;
 
+    //附件
     private Map<String, Object> attachments;
+    //答复接收人
+    private transient Acceptor<R> acceptor;
 
-    private transient Reply<R> future;
-
-    public PayloadImpl(final String topic, final C content, Reply<R> future) {
+    public PayloadImpl(final String topic, final C content, Acceptor<R> acceptor) {
         this.guid = UUID.randomUUID().toString();
         this.topic = topic;
         this.content = content;
-        this.future = future;
+        this.acceptor = acceptor;
     }
 
     /**
@@ -61,7 +62,8 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
      * 是否为请求（是的话，需要答复）
      */
     public boolean isRequest() {
-        return future != null && future.isDone() == false;
+        //如果有接收人，且未结束接收
+        return acceptor != null && acceptor.isDone() == false;
     }
 
 
@@ -75,11 +77,11 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
             throw new DamiException("This payload does not support a reply");
         }
 
-        if(future.isDone()){
+        if(acceptor.isDone()){
             throw new DamiException("This payload has completed the reply");
         }
 
-        future.accept(content);
+        acceptor.accept(content);
     }
 
 

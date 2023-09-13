@@ -3,14 +3,14 @@ package org.noear.dami.bus.impl;
 import java.util.function.Consumer;
 
 /**
- * 回调答复
+ * 回调答复接收人
  *
  * @author noear
  * @since 1.0
  */
-public class ReplyCallback<R> implements Reply<R> {
+public class AcceptorCallback<R> implements Acceptor<R> {
     Consumer<R> future;
-    public ReplyCallback(Consumer<R> future){
+    public AcceptorCallback(Consumer<R> future){
         this.future = future;
     }
     @Override
@@ -19,7 +19,8 @@ public class ReplyCallback<R> implements Reply<R> {
     }
 
     @Override
-    public void accept(R value) {
+    public boolean accept(R value) {
         future.accept(value);
+        return true;
     }
 }

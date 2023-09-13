@@ -25,7 +25,7 @@ public class MethodTopicListener implements TopicListener<Payload<Object,Object>
     @Override
     public void onEvent(Payload payload) throws Throwable {
         //解码
-        Object[] args = damiApi.getCoder().decode(method, payload.getContent());
+        Object[] args = damiApi.getCoder().decode(method, payload);
 
         //执行
         Object rst = method.invoke(target, args);

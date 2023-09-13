@@ -1,8 +1,8 @@
 package org.noear.dami.bus;
 
+import org.noear.dami.bus.impl.AcceptorCallback;
+import org.noear.dami.bus.impl.AcceptorResponse;
 import org.noear.dami.bus.impl.PayloadImpl;
-import org.noear.dami.bus.impl.ReplyCallback;
-import org.noear.dami.bus.impl.ReplyResponse;
 import org.noear.dami.bus.impl.TopicRouterImpl;
 import org.noear.dami.exception.DamiException;
 
@@ -74,7 +74,7 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
     @Override
     public R sendAndResponse(final String topic, final C content) {
         CompletableFuture<R> future = new CompletableFuture<>();
-        PayloadImpl<C,R> payload = new PayloadImpl<>(topic, content, new ReplyResponse<>(future));
+        PayloadImpl<C,R> payload = new PayloadImpl<>(topic, content, new AcceptorResponse<>(future));
         router.handle(payload);
 
         try {
@@ -93,7 +93,7 @@ public final class DamiBusImpl<C, R> implements DamiBus<C, R> {
      */
     @Override
     public void sendAndCallback(final String topic, final C content, final Consumer<R> callback) {
-        PayloadImpl<C,R> payload = new PayloadImpl<>(topic, content, new ReplyCallback<>(callback));
+        PayloadImpl<C,R> payload = new PayloadImpl<>(topic, content, new AcceptorCallback<>(callback));
 
         router.handle(payload);
     }
