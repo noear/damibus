@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
  * @since 1.0
  */
 public class AcceptorResponse<R> implements Acceptor<R> {
-    CompletableFuture<R> future;
+    private final CompletableFuture<R> future;
 
     public AcceptorResponse(CompletableFuture<R> future) {
         this.future = future;

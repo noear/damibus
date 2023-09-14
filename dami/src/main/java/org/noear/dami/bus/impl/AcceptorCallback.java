@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * @since 1.0
  */
 public class AcceptorCallback<R> implements Acceptor<R> {
-    Consumer<R> future;
+    private final Consumer<R> future;
     public AcceptorCallback(Consumer<R> future){
         this.future = future;
     }
