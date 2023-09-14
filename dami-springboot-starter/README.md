@@ -13,7 +13,7 @@
 </dependency>
 ```
 
-#### 代码
+#### demo91_springboot （无依赖实现效果）
 
 ```java
 @DamiTopic("event.user")
@@ -42,6 +42,42 @@ public class Demo91 {
         assert user.getUserId() == 99;
     }
 }
+```
 
+
+#### demo92_springboot （无依赖实现效果）
+
+```java
+@DamiTopic("demo92.event.user")
+public interface EventUserNotices {
+    void onCreated(long userId, String name);
+}
+
+@DamiTopic("demo92.event.user")
+public class EventUserNoticesListener {
+    public void onCreated(long userId, String name) {
+        System.err.println("1-onCreated: userId=" +userId);
+    }
+}
+
+@DamiTopic("demo92.event.user")
+public class EventUserNoticesListener2 {
+    public void onCreated(long userId, String name) {
+        System.err.println("2-onCreated: userId=" +userId);
+    }
+}
+
+@EnableAutoConfiguration
+@SpringBootTest(classes = Demo92.class)
+@ComponentScan("features.demo92_springboot")
+public class Demo91 {
+    @Autowired
+    EventUserNotices eventUserNotices;
+
+    @Test
+    public void main(){
+        eventUserNotices.onCreated(92, "noear");
+    }
+}
 ```
 

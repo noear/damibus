@@ -1,4 +1,4 @@
-package features.demo92_springboot.orderModule;
+package features.demo95_springboot.orderModule;
 
 import org.noear.dami.spring.boot.annotation.DamiTopic;
 

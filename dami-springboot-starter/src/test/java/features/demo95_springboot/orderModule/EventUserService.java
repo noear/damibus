@@ -1,7 +1,7 @@
-package features.demo92_springboot.orderModule;
+package features.demo95_springboot.orderModule;
 
 
-import features.demo92_springboot.baseModule.User;
+import features.demo95_springboot.baseModule.User;
 import org.noear.dami.spring.boot.annotation.DamiTopic;
 
 /**

@@ -1,4 +1,4 @@
-package features.demo92_springboot.baseModule;
+package features.demo95_springboot.baseModule;
 
 /**
  * 基础，公用的用户模型

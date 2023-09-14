@@ -1,8 +1,7 @@
 package features.demo92_springboot;
 
-
-import features.demo92_springboot.orderModule.OrderService;
-import features.demo92_springboot.userModule.UserService;
+import features.demo91_springboot.EventUserService;
+import features.demo91_springboot.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,25 +13,10 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("features.demo92_springboot")
 public class Demo92 {
     @Autowired
-    UserService userService;
-
-    @Autowired
-    OrderService orderService;
+    EventUserNotices eventUserNotices;
 
     @Test
     public void main(){
-        /**
-         * 场景描述：
-         * 1.添加用户；互动那边会有监听打印
-         * 2.修改用户；互动那边会有监听打印
-         * 3.添加订单；会获取用户（通过事件）；互动那边会有监听打印
-         * */
-
-        userService.addUser("noear");
-        userService.updateUser(999, "dami");
-
-        long orderId = orderService.addOrder(1010);
-
-        assert orderId == 1010 *10;
+        eventUserNotices.onCreated(92, "noear");
     }
 }

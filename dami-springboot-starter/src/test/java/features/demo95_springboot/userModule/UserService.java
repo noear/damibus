@@ -1,4 +1,4 @@
-package features.demo92_springboot.userModule;
+package features.demo95_springboot.userModule;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
