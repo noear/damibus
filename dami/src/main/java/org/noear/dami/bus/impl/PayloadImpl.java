@@ -22,7 +22,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
     //附件
     private Map<String, Object> attachments;
     //答复接收器
-    private transient Acceptor<R> acceptor;
+    private final transient Acceptor<R> acceptor;
 
     /**
      * @param topic 主题
