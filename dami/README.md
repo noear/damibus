@@ -8,7 +8,7 @@
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.24-M1</version>
+    <version>0.24</version>
 </dependency>
 ```
 
@@ -16,16 +16,16 @@
 #### demo21_send
 
 ```java
-//泛型总线风格。<C,R>bus()
+//总线风格。bus()
 public class Deom11 {
     static String topic = "demo.hello";
 
     public static void main(String[] args) {
         //监听事件
-        Dami.<String,Long>bus().listen(topic, payload -> {
+        Dami.bus().listen(topic, payload -> {
             System.err.println(payload); //可以有多个订阅
         });
-        Dami.<String,Long>bus().listen(topic, payload -> {
+        Dami.bus().listen(topic, payload -> {
             CompletableFuture.runAsync(()-> { //也可以异步消费
                 System.err.println(payload);
             });
@@ -33,7 +33,7 @@ public class Deom11 {
 
 
         //发送事件
-        Dami.<String,Long>bus().send(topic, "world");
+        Dami.bus().send(topic, "world");
     }
 }
 ```
@@ -41,13 +41,13 @@ public class Deom11 {
 #### demo12_request
 
 ```java
-//字符串总线风格。busStr() = <String,String>bus()
+//泛型总线风格。<C,R>bus()
 public class Demo12 {
     static String topic = "demo.hello";
 
     public static void main(String[] args) {
         //监听事件
-        Dami.busStr().listen(topic, payload -> {
+        Dami.<String,String>bus().listen(topic, payload -> {
             System.err.println(payload);
 
             if (payload.isRequest()) {
@@ -59,10 +59,10 @@ public class Demo12 {
 
 
         //发送事件
-        String rst1 = Dami.busStr().sendAndResponse(topic, "world"); //要求有返回值
+        String rst1 = Dami.<String,String>bus().sendAndResponse(topic, "world"); //要求有返回值
         System.out.println(rst1);
 
-        Dami.busStr().sendAndCallback(topic, "world", rst2 -> {
+        Dami.<String,String>bus().sendAndCallback(topic, "world", rst2 -> {
             System.out.println(rst2); //callback 不限回调次数
         });
     }
@@ -71,7 +71,7 @@ public class Demo12 {
 
 #### demo31_api
 
-使用 ioc 适配版本更简便，详情：[dami-solon-plugin](../dami-solon-plugin)、[dami-springboot-starter](../dami-springboot-starter)
+使用 ioc 适配版本更简便，详情：[dami-solon-plugin](dami-solon-plugin)、[dami-springboot-starter](dami-springboot-starter)
 
 ```java
 //接口风格
