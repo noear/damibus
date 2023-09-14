@@ -1,5 +1,5 @@
 <h1 align="center" style="text-align:center;">
-  Dami
+  DamiBus
 </h1>
 <p align="center">
 	<strong>基于事件总线的本地过程调用框架</strong>
@@ -36,7 +36,7 @@
 
 
 
-Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块、隔离模块、领域模块）。零依赖，特适合 DDD。
+DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模块、隔离模块、领域模块）。零依赖，特适合 DDD。
 
 ###  特点
 
@@ -48,14 +48,14 @@ Dami，专为本地多模块之间通讯解耦而设计（尤其是未知模块�
 * 支持 Bus 和 Api 两种体验风格
 
 
-### 与常见的 EventBus、ApiBean 的区别
+### 与常见的 EventBus、Api 的区别
 
-|    | Dami | EventBus | ApiBean | Dami 的情况说明                                                     |
-|----|------|----------|---------|----------------------------------------------------------------|
-| 广播 | 有    | 有        | 无       | 发送(send) + 监听(listen)<br/>以及 Api 模式                            |
-| 应答 | 有    | 无        | 有       | 发送并等响应(sendAndResponse) + 监听(listen) + 答复(reply)<br/>以及 Api 模式 |
-| 回调 | 有+   | 无        | 有-      | 发送并等回调(sendAndCallback) + 监听(listen) + 答复(reply)               |
-| 耦合 | 弱-   | 弱+       | 强++     |                                                                |
+|    | DamiBus | EventBus | Api | DamiBus 的情况说明                                                     |
+|----|------|----------|-----|----------------------------------------------------------------|
+| 广播 | 有    | 有        | 无   | 发送(send) + 监听(listen)<br/>以及 Api 模式                            |
+| 应答 | 有    | 无        | 有   | 发送并等响应(sendAndResponse) + 监听(listen) + 答复(reply)<br/>以及 Api 模式 |
+| 回调 | 有+   | 无        | 有-  | 发送并等回调(sendAndCallback) + 监听(listen) + 答复(reply)               |
+| 耦合 | 弱-   | 弱+       | 强++ |                                                                |
 
 
 ### 依赖配置
