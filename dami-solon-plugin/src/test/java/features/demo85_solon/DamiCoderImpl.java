@@ -1,4 +1,4 @@
-package features.demo82_solon;
+package features.demo85_solon;
 
 import org.noear.dami.api.Coder;
 import org.noear.dami.api.CoderDefault;

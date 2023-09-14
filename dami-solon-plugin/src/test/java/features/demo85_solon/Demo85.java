@@ -1,28 +1,35 @@
 package features.demo85_solon;
 
+import features.demo85_solon.orderModule.OrderService;
+import features.demo85_solon.userModule.UserService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import org.noear.dami.Dami;
-import org.noear.dami.bus.Payload;
-import org.noear.dami.bus.TopicListener;
-import org.noear.dami.solon.annotation.DamiTopic;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit5Extension;
 
 @ExtendWith(SolonJUnit5Extension.class)
 public class Demo85 {
+    @Inject
+    UserService userService;
+
+    @Inject
+    OrderService orderService;
+
     @Test
-    public void main() {
-        Dami.bus().send("demo85.event.user", new User(85));
-    }
+    public void main(){
+        /**
+         * 场景描述：
+         * 1.添加用户；互动那边会有监听打印
+         * 2.修改用户；互动那边会有监听打印
+         * 3.添加订单；会获取用户（通过事件）；互动那边会有监听打印
+         * */
 
-    @DamiTopic("demo85.event.user")
-    public static class UserListener implements TopicListener<Payload<User, Object>> {
+        userService.addUser("noear");
+        userService.updateUser(999, "dami");
 
-        @Override
-        public void onEvent(Payload<User, Object> payload) throws Throwable {
-            System.out.println(payload.getContent());
-        }
+        long orderId = orderService.addOrder(1010);
+
+        assert orderId == 1010 *10;
     }
 }

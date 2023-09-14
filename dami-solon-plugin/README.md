@@ -15,7 +15,7 @@
 
 如果涉及类加载器隔离：请在主程序标为编译，在其它模块标为可选。
 
-#### 代码
+#### demo81_solon （无依赖实现效果）
 
 ```java
 @DamiTopic("event.user")
@@ -40,6 +40,43 @@ public class Demo81 {
     public void main(){
         User user = eventUserService.getUser(99);
         assert user.getUserId() == 99;
+    }
+}
+```
+
+
+#### demo82_solon （广播效果）
+
+```java
+@DamiTopic("demo82.event.user")
+public interface EventUserNotices {
+    void onCreated(long userId, String name);
+}
+
+@DamiTopic("demo82.event.user")
+public class EventUserNoticesListener {
+    public void onCreated(long userId, String name) {
+        System.err.println("1-onCreated: userId=" +userId);
+    }
+}
+
+@DamiTopic("demo82.event.user")
+public class EventUserNoticesListener2 {
+
+    public void onCreated(long userId, String name) {
+        System.err.println("2-onCreated: userId=" +userId);
+    }
+
+}
+
+@ExtendWith(SolonJUnit5Extension.class)
+public class Demo82 {
+    @Inject
+    EventUserNotices eventUserNotices;
+
+    @Test
+    public void main() {
+        eventUserNotices.onCreated(82, "noear");
     }
 }
 ```
