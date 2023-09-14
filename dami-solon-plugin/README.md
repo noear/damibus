@@ -23,9 +23,9 @@ public interface EventUserService {
     User getUser(long userId); //方法的主题 = topicMapping + "." + method.getName() //方法不能重名
 }
 
-//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，这个会带来依赖关系）
+//通过约定保持与 EventUserService 相同的接口定义（或者实现 EventUserService 接口，这个会带来依赖关系）
 @DamiTopic("event.user")
-public class EventUserServiceListener {
+public class EventUserServiceListener { //它相当于是个实现类
     public User getUser(long userId) {
         return new User(userId);
     }
