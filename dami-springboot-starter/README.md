@@ -45,16 +45,3 @@ public class Demo91 {
 
 ```
 
-#### 如果需要拦截？
-
-```java
-//定义拦截器（可选）
-@Component
-public class DamiInterceptorImpl implements Interceptor {
-    @Override
-    public void doIntercept(Payload payload, InterceptorChain chain) {
-        System.out.println("拦截：" + payload.toString());
-        chain.doIntercept(payload);
-    }
-}
-```
