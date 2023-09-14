@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Demo12 {
     static String topic = "demo.hello";
-    //定义实例，避免单测干扰 //开发时用：Dami.busStr()
+    //定义实例，避免单测干扰 //开发时用：Dami.bus()
     DamiBus<String, String> busStr = new DamiBusImpl<>();
 
     @Test
