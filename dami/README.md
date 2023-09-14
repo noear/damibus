@@ -12,7 +12,6 @@
 </dependency>
 ```
 
-
 #### demo21_send
 
 ```java
