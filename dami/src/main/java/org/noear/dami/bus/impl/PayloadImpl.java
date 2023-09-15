@@ -30,7 +30,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
      * @param acceptor 答复接收器
      * */
     public PayloadImpl(final String topic, final C content, Acceptor<R> acceptor) {
-        this.guid = UUID.randomUUID().toString();
+        this.guid = UUID.randomUUID().toString().replaceAll("-", "");
         this.topic = topic;
         this.content = content;
         this.acceptor = acceptor;
