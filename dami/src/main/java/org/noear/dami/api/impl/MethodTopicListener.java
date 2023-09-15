@@ -36,4 +36,9 @@ public class MethodTopicListener implements TopicListener<Payload<Object,Object>
             payload.reply(rst);
         }
     }
+
+    @Override
+    public String toString() {
+        return target.getClass().getName() + "::" + method.getName();
+    }
 }

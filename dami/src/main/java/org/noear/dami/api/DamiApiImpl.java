@@ -5,6 +5,8 @@ import org.noear.dami.api.impl.MethodTopicListenerRecord;
 import org.noear.dami.api.impl.SenderInvocationHandler;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.exception.DamiException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -18,6 +20,8 @@ import java.util.Map;
  * @since 1.0
  */
 public class DamiApiImpl implements DamiApi {
+    static final Logger log = LoggerFactory.getLogger(DamiApiImpl.class);
+
     /**
      * 监听器缓存（注销时用）
      */
@@ -70,7 +74,13 @@ public class DamiApiImpl implements DamiApi {
      */
     @Override
     public <T> T createSender(String topicMapping, Class<T> senderClz) {
-        return (T) Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(this, senderClz, topicMapping));
+        Object tmp = Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(this, senderClz, topicMapping));
+
+        if (log.isDebugEnabled()) {
+            log.debug("This sender created successfully(@{}.*): {}", topicMapping, senderClz.getName());
+        }
+
+        return (T)tmp;
     }
 
     /**
@@ -103,6 +113,10 @@ public class DamiApiImpl implements DamiApi {
 
         //为了注销时，移掉对应的实例
         listenerMap.put(listenerClz, listenerRecords);
+
+        if (log.isDebugEnabled()) {
+            log.debug("This listener registered successfully(@{}.*): {}", topicMapping, listenerObj.getClass().getName());
+        }
     }
 
     /**
@@ -119,6 +133,10 @@ public class DamiApiImpl implements DamiApi {
             for (MethodTopicListenerRecord r1 : tmp) {
                 bus.unlisten(r1.getTopic(), r1.getListener());
             }
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("This listener unregistered successfully(@{}.*): {}", topicMapping, listenerObj.getClass().getName());
         }
     }
 

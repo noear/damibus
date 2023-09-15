@@ -15,6 +15,7 @@ public class Demo86 {
     @Test
     public void main() {
         Dami.bus().send("demo86.event.user", new User(85));
+        Dami.bus().send("demo86.event.user-no", new User(85));
     }
 
     @DamiTopic("demo86.event.user")

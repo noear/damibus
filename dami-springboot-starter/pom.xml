@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>dami-parent</artifactId>
-        <version>0.24</version>
+        <version>0.25-M1</version>
         <relativePath>../dami-parent/pom.xml</relativePath>
     </parent>
 
@@ -29,6 +29,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
             <version>${spring-boot.version}</version>
             <scope>test</scope>
         </dependency>

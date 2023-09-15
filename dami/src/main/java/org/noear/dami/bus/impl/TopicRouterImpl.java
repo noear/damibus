@@ -1,8 +1,11 @@
 package org.noear.dami.bus.impl;
 
+import org.noear.dami.api.impl.MethodTopicListener;
 import org.noear.dami.bus.*;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.exception.DamiException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
@@ -15,6 +18,8 @@ import java.util.*;
  * @since 1.0
  */
 public final class TopicRouterImpl<C, R> implements TopicRouter<C, R>, Interceptor<C,R> {
+    static final Logger log = LoggerFactory.getLogger(TopicRouterImpl.class);
+
     /**
      * 主题监听管道
      */
@@ -43,6 +48,10 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R>, Intercept
             //排序（顺排）
             interceptors.sort(Comparator.comparing(x -> x.getIndex()));
         }
+
+        if (log.isDebugEnabled()) {
+            log.debug("TopicRouter interceptor added: {}", interceptor.getClass().getName());
+        }
     }
 
     /**
@@ -59,6 +68,14 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R>, Intercept
         final TopicListenPipeline<Payload<C, R>> pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline<>());
 
         pipeline.add(index, listener);
+
+        if (log.isDebugEnabled()) {
+            if (MethodTopicListener.class.isAssignableFrom(listener.getClass())) {
+                log.debug("TopicRouter listener added(@{}): {}", topic, listener);
+            } else {
+                log.debug("TopicRouter listener added(@{}): {}", topic, listener.getClass().getName());
+            }
+        }
     }
 
     /**
@@ -75,6 +92,14 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R>, Intercept
 
         if (pipeline != null) {
             pipeline.remove(listener);
+        }
+
+        if (log.isDebugEnabled()) {
+            if (MethodTopicListener.class.isAssignableFrom(listener.getClass())) {
+                log.debug("TopicRouter listener removed(@{}): {}", topic, listener);
+            } else {
+                log.debug("TopicRouter listener removed(@{}): {}", topic, listener.getClass().getName());
+            }
         }
     }
 
@@ -97,6 +122,10 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R>, Intercept
     public void doIntercept(Payload<C, R> payload, InterceptorChain chain) {
         assertTopic(payload.getTopic());
 
+        if (log.isTraceEnabled()) {
+            log.trace("{}", payload);
+        }
+
         final TopicListenPipeline<Payload<C, R>> pipeline = pipelineMap.get(payload.getTopic());
 
         if (pipeline != null) {
@@ -108,6 +137,10 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R>, Intercept
                 throw new DamiException(e.getUndeclaredThrowable());
             } catch (Throwable e) {
                 throw new DamiException(e);
+            }
+        } else {
+            if (log.isWarnEnabled()) {
+                log.warn("There's no matching listening on the topic(@{})", payload.getTopic());
             }
         }
     }
