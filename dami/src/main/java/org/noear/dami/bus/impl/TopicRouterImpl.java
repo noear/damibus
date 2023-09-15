@@ -6,6 +6,7 @@ import org.noear.dami.bus.TopicListener;
 import org.noear.dami.exception.DamiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
@@ -111,6 +112,8 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R>, Intercept
      */
     @Override
     public void handle(final Payload<C, R> payload) {
+        MDC.put("dami-guid", payload.getGuid());
+
         new InterceptorChain<C, R>(interceptors).doIntercept(payload);
     }
 
