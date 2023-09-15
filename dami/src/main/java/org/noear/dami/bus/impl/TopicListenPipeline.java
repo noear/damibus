@@ -65,4 +65,11 @@ public final class TopicListenPipeline<Event> implements TopicListener<Event> {
             return index;
         }
     }
+
+    @Override
+    public String toString() {
+        return "TopicListenPipeline{" +
+                "size=" + list.size() +
+                '}';
+    }
 }
