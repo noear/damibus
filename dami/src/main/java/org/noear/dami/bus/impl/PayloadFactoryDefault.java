@@ -10,9 +10,9 @@ import org.noear.dami.bus.PayloadFactory;
  * @author noear
  * @since 1.0
  */
-public class PayloadFactoryLocalImpl<C, R> implements PayloadFactory<C, R> {
+public class PayloadFactoryDefault<C, R> implements PayloadFactory<C, R> {
     @Override
     public Payload<C, R> create(String topic, C content, Acceptor<R> acceptor) {
-        return new PayloadLocalImpl<>(topic, content, acceptor);
+        return new PayloadDefault<>(topic, content, acceptor);
     }
 }

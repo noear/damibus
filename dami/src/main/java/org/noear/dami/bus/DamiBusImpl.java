@@ -17,8 +17,22 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
     /**
      * 路由器
      */
-    private final TopicRouter<C, R> router = new TopicRouterImpl<>();
-    private final PayloadFactory<C, R> factory = new PayloadFactoryLocalImpl<>();
+    private TopicRouter<C, R> router = new TopicRouterDefault<>();
+    private PayloadFactory<C, R> factory = new PayloadFactoryDefault<>();
+
+    /**
+     * 设置主题路由器
+     */
+    public void setTopicRouter(TopicRouter<C, R> router) {
+        this.router = router;
+    }
+
+    /**
+     * 设置事件负载工厂
+     */
+    public void setPayloadFactory(PayloadFactory<C, R> factory) {
+        this.factory = factory;
+    }
 
     /**
      * 超时：默认3s
@@ -72,7 +86,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
     @Override
     public R sendAndResponse(final String topic, final C content) {
         CompletableFuture<R> future = new CompletableFuture<>();
-        Payload<C,R> payload = factory.create(topic, content, new AcceptorResponse<>(future));
+        Payload<C, R> payload = factory.create(topic, content, new AcceptorResponse<>(future));
         router.handle(payload);
 
         try {
@@ -91,7 +105,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
      */
     @Override
     public void sendAndCallback(final String topic, final C content, final Consumer<R> callback) {
-        Payload<C,R> payload = factory.create(topic, content, new AcceptorCallback<>(callback));
+        Payload<C, R> payload = factory.create(topic, content, new AcceptorCallback<>(callback));
 
         router.handle(payload);
     }

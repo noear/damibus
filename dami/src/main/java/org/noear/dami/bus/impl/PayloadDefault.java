@@ -15,7 +15,7 @@ import java.util.UUID;
  * @author noear
  * @since 1.0
  */
-public class PayloadLocalImpl<C, R> implements Payload<C, R>, Serializable {
+public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
     private final String guid;
     private final String topic;
     private final C content;
@@ -30,7 +30,7 @@ public class PayloadLocalImpl<C, R> implements Payload<C, R>, Serializable {
      * @param content 内容
      * @param acceptor 答复接收器
      * */
-    public PayloadLocalImpl(final String topic, final C content, Acceptor<R> acceptor) {
+    public PayloadDefault(final String topic, final C content, Acceptor<R> acceptor) {
         this.guid = UUID.randomUUID().toString().replaceAll("-", "");
         this.topic = topic;
         this.content = content;

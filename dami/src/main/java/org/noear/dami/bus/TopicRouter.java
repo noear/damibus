@@ -39,6 +39,7 @@ public interface TopicRouter<C, R> {
      * 接收事件并路由
      *
      * @param payload 事件负载
+     * @return 是否有订阅
      */
     void handle(final Payload<C, R> payload);
 }

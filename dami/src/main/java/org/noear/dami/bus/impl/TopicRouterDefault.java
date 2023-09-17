@@ -18,8 +18,8 @@ import java.util.*;
  * @author noear
  * @since 1.0
  */
-public final class TopicRouterImpl<C, R> implements TopicRouter<C, R>, Interceptor<C,R> {
-    static final Logger log = LoggerFactory.getLogger(TopicRouterImpl.class);
+public final class TopicRouterDefault<C, R> implements TopicRouter<C, R>, Interceptor<C,R> {
+    static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
      * 主题监听管道
@@ -31,7 +31,7 @@ public final class TopicRouterImpl<C, R> implements TopicRouter<C, R>, Intercept
      */
     private final List<InterceptorEntity> interceptors = new ArrayList<>();
 
-    public TopicRouterImpl() {
+    public TopicRouterDefault() {
         interceptors.add(new InterceptorEntity(Integer.MAX_VALUE, this));
     }
 

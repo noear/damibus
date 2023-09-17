@@ -13,8 +13,8 @@ import org.noear.dami.bus.Interceptor;
  * @since 1.0
  */
 public class Dami {
-    static final DamiBus bus = new DamiBusImpl<>();
-    static final DamiApi api = new DamiApiImpl(bus);
+    static DamiBus bus = new DamiBusImpl<>();
+    static DamiApi api = new DamiApiImpl(bus);
 
 
     /**
