@@ -1,5 +1,6 @@
 package org.noear.dami.bus.impl;
 
+import org.noear.dami.bus.Acceptor;
 import org.noear.dami.bus.Payload;
 import org.noear.dami.exception.DamiException;
 
@@ -9,12 +10,12 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 事件负载实现
+ * 事件负载本地实现
  *
  * @author noear
  * @since 1.0
  */
-public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
+public class PayloadLocalImpl<C, R> implements Payload<C, R>, Serializable {
     private final String guid;
     private final String topic;
     private final C content;
@@ -29,7 +30,7 @@ public class PayloadImpl<C, R> implements Payload<C, R>, Serializable {
      * @param content 内容
      * @param acceptor 答复接收器
      * */
-    public PayloadImpl(final String topic, final C content, Acceptor<R> acceptor) {
+    public PayloadLocalImpl(final String topic, final C content, Acceptor<R> acceptor) {
         this.guid = UUID.randomUUID().toString().replaceAll("-", "");
         this.topic = topic;
         this.content = content;

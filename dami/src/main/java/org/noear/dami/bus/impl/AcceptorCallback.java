@@ -1,5 +1,7 @@
 package org.noear.dami.bus.impl;
 
+import org.noear.dami.bus.Acceptor;
+
 import java.util.function.Consumer;
 
 /**

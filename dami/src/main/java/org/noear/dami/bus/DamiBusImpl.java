@@ -1,9 +1,6 @@
 package org.noear.dami.bus;
 
-import org.noear.dami.bus.impl.AcceptorCallback;
-import org.noear.dami.bus.impl.AcceptorResponse;
-import org.noear.dami.bus.impl.PayloadImpl;
-import org.noear.dami.bus.impl.TopicRouterImpl;
+import org.noear.dami.bus.impl.*;
 import org.noear.dami.exception.DamiException;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,6 +18,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
      * 路由器
      */
     private final TopicRouter<C, R> router = new TopicRouterImpl<>();
+    private final PayloadFactory<C, R> factory = new PayloadFactoryLocalImpl<>();
 
     /**
      * 超时：默认3s
@@ -62,7 +60,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
      */
     @Override
     public void send(final String topic, final C content) {
-        router.handle(new PayloadImpl<>(topic, content, null));
+        router.handle(factory.create(topic, content, null));
     }
 
     /**
@@ -74,7 +72,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
     @Override
     public R sendAndResponse(final String topic, final C content) {
         CompletableFuture<R> future = new CompletableFuture<>();
-        PayloadImpl<C,R> payload = new PayloadImpl<>(topic, content, new AcceptorResponse<>(future));
+        Payload<C,R> payload = factory.create(topic, content, new AcceptorResponse<>(future));
         router.handle(payload);
 
         try {
@@ -93,7 +91,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
      */
     @Override
     public void sendAndCallback(final String topic, final C content, final Consumer<R> callback) {
-        PayloadImpl<C,R> payload = new PayloadImpl<>(topic, content, new AcceptorCallback<>(callback));
+        Payload<C,R> payload = factory.create(topic, content, new AcceptorCallback<>(callback));
 
         router.handle(payload);
     }

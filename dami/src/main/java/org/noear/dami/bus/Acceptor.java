@@ -1,4 +1,4 @@
-package org.noear.dami.bus.impl;
+package org.noear.dami.bus;
 
 /**
  * 答复接收人
