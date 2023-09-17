@@ -1,10 +1,11 @@
-package org.noear.solon.core;
+package org.noear.dami.solon;
 
 import org.noear.dami.Dami;
 import org.noear.dami.bus.TopicListener;
-import org.noear.dami.solon.ListenerLifecycleWrap;
 import org.noear.dami.solon.annotation.DamiTopic;
 import org.noear.solon.Solon;
+import org.noear.solon.core.BeanBuilder;
+import org.noear.solon.core.BeanWrap;
 
 /**
  * TopicMapping 构建器
@@ -17,7 +18,7 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
     public void doBuild(Class<?> clz, BeanWrap bw, DamiTopic anno) throws Throwable {
         if (clz.isInterface()) {
             Object raw = Dami.api().createSender(anno.value(), clz);
-            bw.rawSet(raw);
+            bw.context().wrapAndPut(clz, raw);
         } else {
             if (TopicListener.class.isAssignableFrom(clz)) {
                 Dami.bus().listen(anno.value(), bw.raw());

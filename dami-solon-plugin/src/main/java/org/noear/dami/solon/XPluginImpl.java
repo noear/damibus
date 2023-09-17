@@ -5,7 +5,6 @@ import org.noear.dami.api.Coder;
 import org.noear.dami.bus.Interceptor;
 import org.noear.dami.solon.annotation.DamiTopic;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.DamiTopicBeanBuilder;
 import org.noear.solon.core.Plugin;
 
 /**
