@@ -6,53 +6,27 @@ import org.noear.dami.bus.TopicListener;
 import org.noear.dami.exception.DamiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.*;
 
 /**
- * 主题路由器
+ * 主题路由器（啥希表实现方案）
  *
  * @author noear
  * @since 1.0
  */
-public final class TopicRouterDefault<C, R> implements TopicRouter<C, R>, Interceptor<C,R> {
-    static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
+public class TopicRouterHashtable<C, R> extends TopicRouterBase<C,R> {
+    static final Logger log = LoggerFactory.getLogger(TopicRouterHashtable.class);
 
     /**
      * 主题监听管道
      */
     private final Map<String, TopicListenPipeline<Payload<C, R>>> pipelineMap = new LinkedHashMap<>();
 
-    /**
-     * 拦截器
-     */
-    private final List<InterceptorEntity> interceptors = new ArrayList<>();
-
-    public TopicRouterDefault() {
-        interceptors.add(new InterceptorEntity(Integer.MAX_VALUE, this));
-    }
-
-    /**
-     * 添加拦截器
-     *
-     * @param index       顺序位
-     * @param interceptor 拦截器
-     */
-    @Override
-    public synchronized void addInterceptor(int index, Interceptor interceptor) {
-        interceptors.add(new InterceptorEntity(index, interceptor));
-
-        if (interceptors.size() > 1) {
-            //排序（顺排）
-            interceptors.sort(Comparator.comparing(x -> x.getIndex()));
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("TopicRouter interceptor added: {}", interceptor.getClass().getName());
-        }
+    public TopicRouterHashtable() {
+        super();
     }
 
     /**
@@ -106,19 +80,6 @@ public final class TopicRouterDefault<C, R> implements TopicRouter<C, R>, Interc
 
 
     /**
-     * 接收事件
-     *
-     * @param payload 事件负载
-     */
-    @Override
-    public void handle(final Payload<C, R> payload) {
-        MDC.put("dami-guid", payload.getGuid());
-
-        new InterceptorChain<C, R>(interceptors).doIntercept(payload);
-    }
-
-
-    /**
      * 事件拦截并路由分发
      */
     @Override
@@ -145,17 +106,6 @@ public final class TopicRouterDefault<C, R> implements TopicRouter<C, R>, Interc
             if (log.isWarnEnabled()) {
                 log.warn("There's no matching listening on the topic(@{})", payload.getTopic());
             }
-        }
-    }
-
-    /**
-     * 断言主题是否为空
-     *
-     * @param topic
-     */
-    protected void assertTopic(final String topic) {
-        if (topic == null || topic.isEmpty()) {
-            throw new DamiException("The topic cannot be empty");
         }
     }
 }

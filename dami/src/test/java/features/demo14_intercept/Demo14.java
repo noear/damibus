@@ -6,7 +6,7 @@ import org.noear.dami.bus.DamiBusImpl;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Demo13 {
+public class Demo14 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
     DamiBus<String, String> busStr = new DamiBusImpl<>();

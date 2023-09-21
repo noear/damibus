@@ -17,8 +17,25 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
     /**
      * 路由器
      */
-    private TopicRouter<C, R> router = new TopicRouterDefault<>();
-    private PayloadFactory<C, R> factory = new PayloadFactoryDefault<>();
+    private TopicRouter<C, R> router;
+    private PayloadFactory<C, R> factory;
+
+    public DamiBusImpl() {
+        router = new TopicRouterHashtable<>();
+        factory = new PayloadFactoryDefault<>();
+        ;
+    }
+
+    public DamiBusImpl(TopicRouter<C, R> topicRouter) {
+        router = topicRouter;
+        factory = new PayloadFactoryDefault<>();
+        ;
+    }
+
+    public DamiBusImpl(TopicRouter<C, R> topicRouter, PayloadFactory<C, R> payloadFactory) {
+        router = topicRouter;
+        factory = payloadFactory;
+    }
 
     /**
      * 设置主题路由器

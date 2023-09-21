@@ -34,7 +34,6 @@ public interface TopicRouter<C, R> {
      */
     void remove(final String topic, final TopicListener<Payload<C, R>> listener);
 
-
     /**
      * 接收事件并路由
      *
