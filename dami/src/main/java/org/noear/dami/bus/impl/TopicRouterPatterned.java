@@ -98,7 +98,10 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
             log.trace("{}", payload);
         }
 
-        final List<Routing<C, R>> routings = routingList.stream().filter(r -> r.matches(payload.getTopic())).collect(Collectors.toList());
+        final List<Routing<C, R>> routings = routingList.stream()
+                .filter(r -> r.matches(payload.getTopic()))
+                .sorted(Comparator.comparing(r -> r.getIndex()))
+                .collect(Collectors.toList());
 
         if (routings != null && routings.size() > 0) {
             try {
@@ -120,22 +123,33 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
     }
 
     /**
-     * 路由记录
-     * */
+     * 监听路由记录
+     */
     public static class Routing<C, R> {
         private TopicListener<Payload<C, R>> listener;
         private int index;
         private String patternStr;
         private Pattern pattern;
 
+        /**
+         * 获取顺序位
+         */
         public int getIndex() {
             return index;
         }
 
+        /**
+         * 获取监听器
+         */
         public TopicListener<Payload<C, R>> getListener() {
             return listener;
         }
 
+        /**
+         * @param expr     表达式（* 表示一段，** 表示不限段）
+         * @param index    顺序位
+         * @param listener 监听器
+         */
         public Routing(String expr, int index, TopicListener<Payload<C, R>> listener) {
             this.listener = listener;
             this.index = index;
@@ -162,7 +176,12 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
             }
         }
 
-        boolean matches(String topic) {
+        /**
+         * 匹配
+         *
+         * @param topic 主题
+         */
+        public boolean matches(String topic) {
             if (patternStr.equals(topic)) {
                 return true;
             }
