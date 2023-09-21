@@ -109,3 +109,26 @@ public class Demo31 {
     }
 }
 ```
+
+### demo15_custom
+
+定制能力，切换为模式匹配路由器
+
+```java
+public class Demo15_custom {
+    public void main(){
+        //切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
+        DamiConfig.configure(new DamiBusImpl(new TopicRouterPatterned()));
+
+        //拦截
+        Dami.bus().listen("demo/*/**", (payload) -> {
+            System.err.println(payload);
+        });
+
+        //发送事件
+        Dami.bus().send("demo/a/1", "world1");
+        Dami.bus().send("demo/a/2", "world2");
+        Dami.bus().send("Demo/b/1/2", "world3");
+    }
+}
+```
