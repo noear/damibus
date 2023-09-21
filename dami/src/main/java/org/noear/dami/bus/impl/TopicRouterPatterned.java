@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * 主题路由器（模式匹配实现方案）
+ * 主题路由器（模式匹配实现方案；支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
  *
  *
  * @example /a/*, /a/**b

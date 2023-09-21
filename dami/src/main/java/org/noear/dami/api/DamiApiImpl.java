@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author noear
@@ -35,10 +36,14 @@ public class DamiApiImpl implements DamiApi {
     /**
      * 总线
      */
-    private final DamiBus bus;
+    private final Supplier<DamiBus> busSupplier;
 
     public DamiApiImpl(DamiBus bus) {
-        this.bus = bus;
+        this(() -> bus);
+    }
+
+    public DamiApiImpl(Supplier<DamiBus> busSupplier) {
+        this.busSupplier = busSupplier;
     }
 
     /**
@@ -63,7 +68,7 @@ public class DamiApiImpl implements DamiApi {
 
     @Override
     public DamiBus getBus() {
-        return bus;
+        return busSupplier.get();
     }
 
     /**
@@ -80,7 +85,7 @@ public class DamiApiImpl implements DamiApi {
             log.debug("This sender created successfully(@{}.*): {}", topicMapping, senderClz.getName());
         }
 
-        return (T)tmp;
+        return (T) tmp;
     }
 
     /**
@@ -107,7 +112,7 @@ public class DamiApiImpl implements DamiApi {
             MethodTopicListener listener = new MethodTopicListener(this, listenerObj, m1);
 
             listenerRecords.add(new MethodTopicListenerRecord(topic, listener));
-            bus.listen(topic, index, listener);
+            getBus().listen(topic, index, listener);
 
         }
 
@@ -131,7 +136,7 @@ public class DamiApiImpl implements DamiApi {
 
         if (tmp != null) {
             for (MethodTopicListenerRecord r1 : tmp) {
-                bus.unlisten(r1.getTopic(), r1.getListener());
+                getBus().unlisten(r1.getTopic(), r1.getListener());
             }
         }
 

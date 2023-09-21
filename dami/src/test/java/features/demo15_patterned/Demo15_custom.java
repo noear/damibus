@@ -5,12 +5,10 @@ import org.noear.dami.DamiConfig;
 import org.noear.dami.bus.DamiBusImpl;
 import org.noear.dami.bus.impl.TopicRouterPatterned;
 
-/**
- * @author noear 2023/9/21 created
- */
-public class Demo15_show {
-    public void demo(){
-        //::切换为模式匹配路由器
+
+public class Demo15_custom {
+    public void main(){
+        //::切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
 
         DamiConfig.configure(new DamiBusImpl(new TopicRouterPatterned()));
 
