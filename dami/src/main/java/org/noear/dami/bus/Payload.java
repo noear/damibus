@@ -23,6 +23,16 @@ public interface Payload<C, R> {
     <T> void setAttachment(String key, T value);
 
     /**
+     * 设置处理标识
+     * */
+    void setHandled(boolean handled);
+
+    /**
+     * 获取处理标识
+     * */
+    boolean getHandled();
+
+    /**
      * 是否为请求（是的话，需要答复）
      */
     boolean isRequest();

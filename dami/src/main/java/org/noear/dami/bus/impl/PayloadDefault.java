@@ -22,6 +22,8 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
 
     //附件
     private Map<String, Object> attachments;
+    //处理标识
+    private boolean handled;
     //答复接收器
     private final transient Acceptor<R> acceptor;
 
@@ -64,6 +66,16 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
         }
 
         attachments.put(key, value);
+    }
+
+    @Override
+    public void setHandled(boolean handled) {
+        this.handled = handled;
+    }
+
+    @Override
+    public boolean getHandled() {
+        return this.handled;
     }
 
     /**

@@ -108,6 +108,7 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
                 for (Routing<C, R> r1 : routings) {
                     r1.getListener().onEvent(payload);
                 }
+                payload.setHandled(true);
             } catch (InvocationTargetException e) {
                 throw new DamiException(e.getTargetException());
             } catch (UndeclaredThrowableException e) {

@@ -95,6 +95,7 @@ public class TopicRouterHashtable<C, R> extends TopicRouterBase<C,R> {
         if (pipeline != null) {
             try {
                 pipeline.onEvent(payload);
+                payload.setHandled(true);
             } catch (InvocationTargetException e) {
                 throw new DamiException(e.getTargetException());
             } catch (UndeclaredThrowableException e) {
