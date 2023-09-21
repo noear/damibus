@@ -128,7 +128,7 @@ public class Demo15_custom {
         //发送事件
         Dami.bus().send("demo/a/1", "world1");
         Dami.bus().send("demo/a/2", "world2");
-        Dami.bus().send("Demo/b/1/2", "world3");
+        Dami.bus().send("Demo/b/1/2", "world3"); //大小写敏感
     }
 }
 ```
