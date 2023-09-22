@@ -193,7 +193,7 @@ public class Demo15_custom {
 }
 ```
 
-### 无依赖接口实现
+### 可无依赖接口实现
 
 详情：[dami-solon-plugin](dami-solon-plugin)、[dami-springboot-starter](dami-springboot-starter)
 
