@@ -93,7 +93,7 @@ public class Deom11 {
 
 
         //发送事件
-        Dami.bus().send(topic, "world");
+        Dami.bus().send(topic, "{name:'noear',say:'hello'}");
     }
 }
 ```
