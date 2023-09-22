@@ -2,7 +2,7 @@
   DamiBus
 </h1>
 <p align="center">
-	<strong>基于事件总线的本地过程调用框架</strong>
+	<strong>本地过程调用框架（主打解耦）</strong>
 </p>
 
 <p align="center">
@@ -181,7 +181,7 @@ public class Demo15_custom {
         DamiConfig.configure(new DamiBusImpl(new TopicRouterPatterned()));
 
         //拦截
-        Dami.bus().listen("demo/*/**", (payload) -> {
+        Dami.bus().listen("demo/a/*", (payload) -> {
             System.err.println(payload);
         });
 
@@ -189,6 +189,37 @@ public class Demo15_custom {
         Dami.bus().send("demo/a/1", "world1");
         Dami.bus().send("demo/a/2", "world2");
         Dami.bus().send("Demo/b/1/2", "world3"); //大小写敏感
+    }
+}
+```
+
+### 无依赖接口实现
+
+详情：[dami-solon-plugin](dami-solon-plugin)、[dami-springboot-starter](dami-springboot-starter)
+
+```java
+@DamiTopic("event.user")
+public interface EventUserService {
+    User getUser(long userId); //方法的主题 = topicMapping + "." + method.getName() //方法不能重名
+}
+
+//通过约定保持与 EventUserService 相同的接口定义（或者实现 EventUserService 接口，这个会带来依赖关系）
+@DamiTopic("event.user")
+public class EventUserServiceListener { //它相当于是个实现类
+    public User getUser(long userId) {
+        return new User(userId);
+    }
+}
+
+@ExtendWith(SolonJUnit5Extension.class)
+public class Demo81 {
+    @Inject
+    EventUserService eventUserService;
+
+    @Test
+    public void main(){
+        User user = eventUserService.getUser(99);
+        assert user.getUserId() == 99;
     }
 }
 ```
