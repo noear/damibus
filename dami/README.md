@@ -121,7 +121,7 @@ public class Demo15_custom {
         DamiConfig.configure(new DamiBusImpl(new TopicRouterPatterned()));
 
         //拦截
-        Dami.bus().listen("demo/*/**", (payload) -> {
+        Dami.bus().listen("demo/a/*", (payload) -> {
             System.err.println(payload);
         });
 
