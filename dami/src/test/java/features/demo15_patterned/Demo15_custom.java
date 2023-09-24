@@ -4,14 +4,14 @@ import org.noear.dami.Dami;
 import org.noear.dami.DamiConfig;
 import org.noear.dami.bus.DamiBusImpl;
 import org.noear.dami.bus.impl.RoutingPattern;
-import org.noear.dami.bus.impl.TopicRouterMatcher;
+import org.noear.dami.bus.impl.TopicRouterPatterned;
 
 
 public class Demo15_custom {
     public static void main(String[] args){
         //::切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
 
-        DamiConfig.configure(new DamiBusImpl(new TopicRouterMatcher(RoutingPattern::new)));
+        DamiConfig.configure(new DamiBusImpl(new TopicRouterPatterned(RoutingPattern::new)));
 
         //::应用
 

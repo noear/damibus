@@ -3,7 +3,13 @@ package org.noear.dami.bus.impl;
 import org.noear.dami.bus.Payload;
 import org.noear.dami.bus.TopicListener;
 
-public class RoutingBase<C, R> {
+/**
+ * 路由记录
+ *
+ * @author noear
+ * @since 1.0
+ * */
+public class Routing<C, R> {
     private final TopicListener<Payload<C, R>> listener;
     private final int index;
     private final String expr;
@@ -13,7 +19,7 @@ public class RoutingBase<C, R> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public RoutingBase(String expr, int index, TopicListener<Payload<C, R>> listener) {
+    public Routing(String expr, int index, TopicListener<Payload<C, R>> listener) {
         this.listener = listener;
         this.index = index;
         this.expr = expr;
@@ -22,10 +28,10 @@ public class RoutingBase<C, R> {
     /**
      * 匹配
      *
-     * @param topicExpr 消息发送的主题表达式
+     * @param sentTopic 发送的主题
      */
-    public boolean matches(String topicExpr) {
-        return this.getExpr().equals(topicExpr);
+    public boolean matches(String sentTopic) {
+        return this.getExpr().equals(sentTopic);
     }
 
     /**
@@ -48,6 +54,4 @@ public class RoutingBase<C, R> {
     public TopicListener<Payload<C, R>> getListener() {
         return listener;
     }
-
-
 }

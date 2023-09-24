@@ -21,7 +21,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
     private PayloadFactory<C, R> factory;
 
     public DamiBusImpl() {
-        router = new TopicRouterHashtable<>();
+        router = new TopicRouterDefault<>();
         factory = new PayloadFactoryDefault<>();
         ;
     }

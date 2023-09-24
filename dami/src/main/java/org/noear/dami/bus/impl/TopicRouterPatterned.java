@@ -20,20 +20,20 @@ import java.util.stream.Collectors;
  * @author noear
  * @since 1.0
  */
-public class TopicRouterMatcher<C,R> extends TopicRouterBase<C,R> {
-    static final Logger log = LoggerFactory.getLogger(TopicRouterHashtable.class);
+public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
+    static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
      * 主题路由记录
      */
-    private final List<RoutingBase<C, R>> routingList = new ArrayList<>();
+    private final List<Routing<C, R>> routingList = new ArrayList<>();
 
     /**
      * 路由工厂
      */
-    private final RouterFactory<C, R> routerFactory;
+    private final RoutingFactory<C, R> routerFactory;
 
-    public TopicRouterMatcher(RouterFactory<C, R> routerFactory) {
+    public TopicRouterPatterned(RoutingFactory<C, R> routerFactory) {
         super();
         this.routerFactory = routerFactory;
     }
@@ -71,7 +71,7 @@ public class TopicRouterMatcher<C,R> extends TopicRouterBase<C,R> {
         assertTopic(topic);
 
         for (int i = 0; i < routingList.size(); i++) {
-            RoutingBase<C, R> routing = routingList.get(i);
+            Routing<C, R> routing = routingList.get(i);
             if (routing.matches(topic)) {
                 if (routing.getListener() == listener) {
                     routingList.remove(i);
@@ -100,14 +100,14 @@ public class TopicRouterMatcher<C,R> extends TopicRouterBase<C,R> {
             log.trace("{}", payload);
         }
 
-        final List<RoutingBase<C, R>> routings = routingList.stream()
+        final List<Routing<C, R>> routings = routingList.stream()
                 .filter(r -> r.matches(payload.getTopic()))
-                .sorted(Comparator.comparing(RoutingBase::getIndex))
+                .sorted(Comparator.comparing(Routing::getIndex))
                 .collect(Collectors.toList());
 
         if (!routings.isEmpty()) {
             try {
-                for (RoutingBase<C, R> r1 : routings) {
+                for (Routing<C, R> r1 : routings) {
                     r1.getListener().onEvent(payload);
                 }
                 payload.setHandled(true);
@@ -124,6 +124,4 @@ public class TopicRouterMatcher<C,R> extends TopicRouterBase<C,R> {
             }
         }
     }
-
-
 }

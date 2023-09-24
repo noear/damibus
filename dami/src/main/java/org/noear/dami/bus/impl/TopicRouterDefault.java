@@ -12,20 +12,20 @@ import java.lang.reflect.UndeclaredThrowableException;
 import java.util.*;
 
 /**
- * 主题路由器（啥希表实现方案）
+ * 主题路由器（默认啥希表实现方案）
  *
  * @author noear
  * @since 1.0
  */
-public class TopicRouterHashtable<C, R> extends TopicRouterBase<C,R> {
-    static final Logger log = LoggerFactory.getLogger(TopicRouterHashtable.class);
+public class TopicRouterDefault<C, R> extends TopicRouterBase<C,R> {
+    static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
      * 主题监听管道
      */
     private final Map<String, TopicListenPipeline<Payload<C, R>>> pipelineMap = new LinkedHashMap<>();
 
-    public TopicRouterHashtable() {
+    public TopicRouterDefault() {
         super();
     }
 

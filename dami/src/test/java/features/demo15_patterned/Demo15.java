@@ -5,7 +5,7 @@ import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
 import org.noear.dami.bus.impl.RoutingPattern;
 import org.noear.dami.bus.impl.RoutingTag;
-import org.noear.dami.bus.impl.TopicRouterMatcher;
+import org.noear.dami.bus.impl.TopicRouterPatterned;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -13,7 +13,7 @@ public class Demo15 {
     @Test
     public void test1_a() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterMatcher<>(RoutingPattern::new));
+        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingPattern::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -34,7 +34,7 @@ public class Demo15 {
     @Test
     public void test1_b() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterMatcher<>(RoutingPattern::new));
+        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingPattern::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -55,7 +55,7 @@ public class Demo15 {
     @Test
     public void test2_a() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterMatcher<>(RoutingPattern::new));
+        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingPattern::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -76,7 +76,7 @@ public class Demo15 {
     @Test
     public void test2_b() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterMatcher<>(RoutingPattern::new));
+        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingPattern::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -97,7 +97,7 @@ public class Demo15 {
     @Test
     public void test2_c() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterMatcher<>(RoutingPattern::new));
+        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingPattern::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -119,7 +119,7 @@ public class Demo15 {
     @Test
     public void test3_1() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterMatcher<>(RoutingTag::new));
+        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingTag::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 

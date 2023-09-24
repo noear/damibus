@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * 监听路由记录
  */
-public class RoutingPattern<C, R> extends RoutingBase<C, R> {
+public class RoutingPattern<C, R> extends Routing<C, R> {
 
     private final Pattern pattern;
 
@@ -44,15 +44,15 @@ public class RoutingPattern<C, R> extends RoutingBase<C, R> {
     /**
      * 匹配
      *
-     * @param topic 主题
+     * @param sentTopic 发送的主题
      */
-    public boolean matches(String topic) {
-        if (super.matches(topic)) {
+    public boolean matches(String sentTopic) {
+        if (super.matches(sentTopic)) {
             return true;
         }
 
         if (pattern != null) {
-            return pattern.matcher(topic).find();
+            return pattern.matcher(sentTopic).find();
         }
 
         return false;
