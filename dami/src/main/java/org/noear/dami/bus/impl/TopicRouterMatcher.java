@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -21,19 +20,23 @@ import java.util.stream.Collectors;
  * @author noear
  * @since 1.0
  */
-public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
+public class TopicRouterMatcher<C,R> extends TopicRouterBase<C,R> {
     static final Logger log = LoggerFactory.getLogger(TopicRouterHashtable.class);
 
     /**
      * 主题路由记录
      */
-    private List<Routing<C, R>> routingList = new ArrayList<>();
+    private final List<RoutingBase<C, R>> routingList = new ArrayList<>();
 
+    /**
+     * 路由工厂
+     */
+    private final RouterFactory<C, R> routerFactory;
 
-    public TopicRouterPatterned() {
+    public TopicRouterMatcher(RouterFactory<C, R> routerFactory) {
         super();
+        this.routerFactory = routerFactory;
     }
-
 
     /**
      * 添加监听
@@ -46,8 +49,7 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
     public synchronized void add(final String topic, final int index, final TopicListener<Payload<C, R>> listener) {
         assertTopic(topic);
 
-        routingList.add(new Routing<>(topic, index, listener));
-        routingList.sort(Comparator.comparing(x -> x.getIndex()));
+        routingList.add(routerFactory.create(topic, index, listener));
 
         if (log.isDebugEnabled()) {
             if (MethodTopicListener.class.isAssignableFrom(listener.getClass())) {
@@ -69,7 +71,7 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
         assertTopic(topic);
 
         for (int i = 0; i < routingList.size(); i++) {
-            Routing<C, R> routing = routingList.get(i);
+            RoutingBase<C, R> routing = routingList.get(i);
             if (routing.matches(topic)) {
                 if (routing.getListener() == listener) {
                     routingList.remove(i);
@@ -98,14 +100,14 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
             log.trace("{}", payload);
         }
 
-        final List<Routing<C, R>> routings = routingList.stream()
+        final List<RoutingBase<C, R>> routings = routingList.stream()
                 .filter(r -> r.matches(payload.getTopic()))
-                .sorted(Comparator.comparing(r -> r.getIndex()))
+                .sorted(Comparator.comparing(RoutingBase::getIndex))
                 .collect(Collectors.toList());
 
-        if (routings != null && routings.size() > 0) {
+        if (!routings.isEmpty()) {
             try {
-                for (Routing<C, R> r1 : routings) {
+                for (RoutingBase<C, R> r1 : routings) {
                     r1.getListener().onEvent(payload);
                 }
                 payload.setHandled(true);
@@ -123,75 +125,5 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
         }
     }
 
-    /**
-     * 监听路由记录
-     */
-    public static class Routing<C, R> {
-        private TopicListener<Payload<C, R>> listener;
-        private int index;
-        private String patternStr;
-        private Pattern pattern;
 
-        /**
-         * 获取顺序位
-         */
-        public int getIndex() {
-            return index;
-        }
-
-        /**
-         * 获取监听器
-         */
-        public TopicListener<Payload<C, R>> getListener() {
-            return listener;
-        }
-
-        /**
-         * @param expr     表达式（* 表示一段，** 表示不限段）
-         * @param index    顺序位
-         * @param listener 监听器
-         */
-        public Routing(String expr, int index, TopicListener<Payload<C, R>> listener) {
-            this.listener = listener;
-            this.index = index;
-            this.patternStr = expr;
-
-            if (expr.contains("*")) {
-                expr = expr.replace(".", "\\."); //支持 . 或 / 做为隔断
-
-                //替换中间的**值
-                expr = expr.replace("**", ".[]");
-
-                //替换*值
-                expr = expr.replace("*", "[^/\\.]*");
-
-                //替换**值
-                expr = expr.replace(".[]", ".*");
-
-                //加头尾
-                expr = "^" + expr + "$";
-
-                this.pattern = Pattern.compile(expr);
-            } else {
-                this.pattern = null;
-            }
-        }
-
-        /**
-         * 匹配
-         *
-         * @param topic 主题
-         */
-        public boolean matches(String topic) {
-            if (patternStr.equals(topic)) {
-                return true;
-            }
-
-            if (pattern != null) {
-                return pattern.matcher(topic).find();
-            }
-
-            return false;
-        }
-    }
 }
