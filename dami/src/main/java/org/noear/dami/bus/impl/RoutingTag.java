@@ -6,7 +6,7 @@ import org.noear.dami.bus.TopicListener;
 import java.util.*;
 
 /**
- * 监听路由记录
+ * 监听路由记录（tag 模式）
  *
  * @author kamosama
  * @since 1.0

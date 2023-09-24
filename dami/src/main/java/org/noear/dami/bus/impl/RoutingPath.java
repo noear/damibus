@@ -6,9 +6,9 @@ import org.noear.dami.bus.TopicListener;
 import java.util.regex.Pattern;
 
 /**
- * 监听路由记录
+ * 监听路由记录（path 模式）
  */
-public class RoutingPattern<C, R> extends Routing<C, R> {
+public class RoutingPath<C, R> extends Routing<C, R> {
 
     private final Pattern pattern;
 
@@ -17,7 +17,7 @@ public class RoutingPattern<C, R> extends Routing<C, R> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public RoutingPattern(String expr, int index, TopicListener<Payload<C, R>> listener) {
+    public RoutingPath(String expr, int index, TopicListener<Payload<C, R>> listener) {
         super(expr, index, listener);
 
         if (expr.contains("*")) {

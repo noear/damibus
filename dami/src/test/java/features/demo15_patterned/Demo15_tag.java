@@ -3,7 +3,6 @@ package features.demo15_patterned;
 import org.junit.jupiter.api.Test;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.bus.impl.RoutingPattern;
 import org.noear.dami.bus.impl.RoutingTag;
 import org.noear.dami.bus.impl.TopicRouterPatterned;
 
