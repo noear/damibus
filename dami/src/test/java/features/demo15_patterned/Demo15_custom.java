@@ -3,21 +3,20 @@ package features.demo15_patterned;
 import org.noear.dami.Dami;
 import org.noear.dami.DamiConfig;
 import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.bus.impl.TopicRouterPatterned;
+import org.noear.dami.bus.impl.RoutingPattern;
+import org.noear.dami.bus.impl.TopicRouterMatcher;
 
 
 public class Demo15_custom {
-    public void main(){
+    public static void main(String[] args){
         //::切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
 
-        DamiConfig.configure(new DamiBusImpl(new TopicRouterPatterned()));
+        DamiConfig.configure(new DamiBusImpl(new TopicRouterMatcher(RoutingPattern::new)));
 
         //::应用
 
         //拦截
-        Dami.bus().listen("demo/*/**", (payload) -> {
-            System.err.println(payload);
-        });
+        Dami.bus().listen("demo/*/**", System.err::println);
 
         //发送事件
         Dami.bus().send("demo/a/1", "world1");
