@@ -16,7 +16,7 @@ public class RoutingTag<C, R> extends Routing<C, R> {
     private final String topic;
 
     /**
-     * @param expr     表达式（* 表示一段，** 表示不限段）
+     * @param expr     表达式（: 为主题与标签的间隔符；,为标签的间隔符）
      * @param index    顺序位
      * @param listener 监听器
      */
