@@ -22,14 +22,12 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
 
     public DamiBusImpl() {
         router = new TopicRouterDefault<>();
-        factory = new PayloadFactoryDefault<>();
-        ;
+        factory = PayloadDefault::new;
     }
 
     public DamiBusImpl(TopicRouter<C, R> topicRouter) {
         router = topicRouter;
-        factory = new PayloadFactoryDefault<>();
-        ;
+        factory = PayloadDefault::new;
     }
 
     public DamiBusImpl(TopicRouter<C, R> topicRouter, PayloadFactory<C, R> payloadFactory) {
