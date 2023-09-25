@@ -175,7 +175,7 @@ public class Demo31 {
 ### 定制能力
 
 ```java
-public class Demo15_custom {
+public class Demo15_path {
     public void main(){
         //切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
         DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
@@ -188,7 +188,24 @@ public class Demo15_custom {
         //发送事件
         Dami.bus().send("demo/a/1", "world1");
         Dami.bus().send("demo/a/2", "world2");
-        Dami.bus().send("Demo/b/1/2", "world3"); //大小写敏感
+    }
+}
+```
+
+```java
+public class Demo15_tag {
+    public void main(){
+        //切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
+        DamiConfig.configure(new TopicRouterPatterned(RoutingTag::new));
+
+        //拦截
+        Dami.bus().listen("demo.a:id", (payload) -> {
+            System.err.println(payload);
+        });
+
+        //发送事件
+        Dami.bus().send("demo.a:id", "world1");
+        Dami.bus().send("demo.a:id,name", "world2");
     }
 }
 ```

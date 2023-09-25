@@ -2,6 +2,8 @@
 #### 0.28
 
 * TopicRouterPatterned 增加排序支持
+* 增加基于 Tag 的路由模式
+* dami-springboot-starter，增加 spronboot 2.0 的兼容
 
 #### 0.27
 
