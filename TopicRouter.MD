@@ -41,8 +41,11 @@ DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
 * RoutingTag（`:` 为主题与标签的间隔符，`,` 为主题的间隔符）
 
 
-| 发送主题                             | 监听主题                       | 备注       |
-|----------------------------------|----------------------------|----------|
-| `event.user.update:userId`       | `event.user.update`        | 没有标签表示不限 |
-| `event.user.update:userId,label` | `event.user.update`        |          |
-| `event.user.update:userId,label` | `event.user.update:userId` |          |
+| 发送主题                             | 监听主题                   | 监听Tag | 是否监听到  |
+|----------------------------------|----------------------------|----------|----------|
+| `event.user.update`       | `event.user.update`        | 不限 | 是 |
+| `event.user.update:id`       | `event.user.update`        | 不限 | 是 |
+| `event.user.update`       | `event.user.update:id`        | 不限 | 是 |
+| `event.user.update:id` | `event.user.update:id`        |     id     | 是 |
+| `event.user.update:id,name ` | `event.user.update:name ` |     name     | 是 |
+| `event.user.update:id` | `event.user.update:name`        |     name     | 否 |
