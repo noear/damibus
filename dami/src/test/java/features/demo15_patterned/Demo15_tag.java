@@ -17,6 +17,9 @@ public class Demo15_tag {
 
         AtomicInteger testObserver = new AtomicInteger();
 
+        //":"前为主题，后按 "," 号分割作为tag
+        //发送事件的tag只要有一个存在于监听的tag里面则会匹配 (多对多)
+
         //拦截1
         busStr.listen("demo:a,b", (payload) -> {
             System.err.println(payload);
@@ -29,7 +32,8 @@ public class Demo15_tag {
         });
 
         //发送事件
-        //发送的事件的tag只有有一个存在于监听的tag里面则会匹配
+
+        //发送和监听双方一方没有tags则无需匹配
         //2
         busStr.send("demo", "world");
         //1

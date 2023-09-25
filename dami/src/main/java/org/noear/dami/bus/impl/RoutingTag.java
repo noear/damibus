@@ -4,6 +4,7 @@ import org.noear.dami.bus.Payload;
 import org.noear.dami.bus.TopicListener;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 监听路由记录（tag 模式）
@@ -48,36 +49,26 @@ public class RoutingTag<C, R> extends Routing<C, R> {
 
         boolean topicMatch = exprList.get(0).equals(this.topic);
 
-        boolean hasTags = tags.isEmpty() || sendTags.isEmpty();
-        //发送和监听一方有tags则需要匹配
-        boolean tagMatch = hasTags || sendTags.stream().anyMatch(this.tags::contains);
+        boolean notHasTags = tags.isEmpty() || sendTags.isEmpty();
+        //发送和监听双方都有tags则需要匹配
+        boolean tagMatch = notHasTags || sendTags.stream().anyMatch(this.tags::contains);
 
         return topicMatch && tagMatch;
     }
 
     static class TopicTags {
-        private static Map<String, List<String>> cached = new HashMap<>();
+        private static final Map<String, List<String>> cached = new ConcurrentHashMap<>();
 
         /**
          * 获取 TopicTags
          */
         public static List<String> get(String expr) {
-            List<String> tmp = cached.get(expr);
-            if (tmp == null) {
-                synchronized (TopicTags.class) {
-                    tmp = cached.get(expr);
-                    if (tmp == null) {
-                        tmp = parse(expr);
-                        cached.put(expr, tmp);
-                    }
-                }
-            }
-
-            return tmp;
+            return cached.computeIfAbsent(expr, TopicTags::parse);
         }
 
         /**
          * 解析表达式
+         * @return List<String> 第一个元素为topic，剩下的为tag
          */
         private static List<String> parse(String expr) {
             List<String> parseList = new ArrayList<>();
@@ -88,6 +79,7 @@ public class RoutingTag<C, R> extends Routing<C, R> {
                 return parseList;
             }
 
+            //topic:tag1,tag2,tag3 以 : 切割为两部分
             String[] topicSplit = expr.split(":", 2);
             parseList.add(topicSplit[0]);
 
@@ -95,7 +87,7 @@ public class RoutingTag<C, R> extends Routing<C, R> {
             if (topicSplit[1].isEmpty()) {
                 return parseList;
             }
-
+            //tag1,tag2,tag3 以 , 切割数组作为tags
             String[] tagSplit = topicSplit[1].split(",");
             parseList.addAll(Arrays.asList(tagSplit));
 
