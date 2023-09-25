@@ -7,6 +7,13 @@
 * 默认路由器（基于 hash 实现，速度快）
 * 模式匹配路由器
 
+这么定制：
+
+```java
+DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
+```
+
+
 ## 2、主题路由器的监听风格
 
 ### 默认路由器
