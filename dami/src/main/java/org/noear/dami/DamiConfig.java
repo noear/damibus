@@ -2,6 +2,8 @@ package org.noear.dami;
 
 import org.noear.dami.api.DamiApi;
 import org.noear.dami.bus.DamiBus;
+import org.noear.dami.bus.DamiBusImpl;
+import org.noear.dami.bus.TopicRouter;
 
 /**
  * 大米配置器
@@ -10,6 +12,17 @@ import org.noear.dami.bus.DamiBus;
  * @since 1.0
  */
 public class DamiConfig {
+    /**
+     * 配置总线实例（根据主题路由器自动配置）
+     *
+     * @param topicRouter 主题路由器
+     */
+    public static void configure(TopicRouter topicRouter) {
+        if (topicRouter != null) {
+            Dami.bus = new DamiBusImpl(topicRouter);
+        }
+    }
+
     /**
      * 配置总线实例
      *
