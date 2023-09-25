@@ -1,8 +1,6 @@
 package features.demo92_springboot;
 
-import features.demo91_springboot.EventUserService;
-import features.demo91_springboot.User;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
