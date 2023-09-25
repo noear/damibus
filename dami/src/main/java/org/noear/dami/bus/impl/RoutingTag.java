@@ -24,7 +24,7 @@ public class RoutingTag<C, R> extends Routing<C, R> {
     public RoutingTag(String expr, int index, TopicListener<Payload<C, R>> listener) {
         super(expr, index, listener);
 
-        List<String> exprList = TopicTagHolder.get(expr);
+        List<String> exprList = TopicTags.get(expr);
         this.topic = exprList.get(0);
 
         if (exprList.size() == 1) {
@@ -44,7 +44,7 @@ public class RoutingTag<C, R> extends Routing<C, R> {
             return true;
         }
 
-        List<String> exprList = TopicTagHolder.get(sentTopic);
+        List<String> exprList = TopicTags.get(sentTopic);
         List<String> sendTags = exprList.subList(1, exprList.size());
 
         boolean topicMatch = exprList.get(0).equals(this.topic);
@@ -56,14 +56,14 @@ public class RoutingTag<C, R> extends Routing<C, R> {
         return topicMatch && tagMatch;
     }
 
-    static class TopicTagHolder {
+    static class TopicTags {
         private static final Map<String, List<String>> cached = new ConcurrentHashMap<>();
 
         /**
          * 获取 TopicTags
          */
         public static List<String> get(String expr) {
-            return cached.computeIfAbsent(expr, TopicTagHolder::parse);
+            return cached.computeIfAbsent(expr, TopicTags::parse);
         }
 
         /**
