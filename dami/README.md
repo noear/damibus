@@ -118,7 +118,7 @@ public class Demo31 {
 public class Demo15_custom {
     public void main(){
         //切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
-        DamiConfig.configure(new DamiBusImpl(new TopicRouterPatterned()));
+        DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
 
         //拦截
         Dami.bus().listen("demo/a/*", (payload) -> {
