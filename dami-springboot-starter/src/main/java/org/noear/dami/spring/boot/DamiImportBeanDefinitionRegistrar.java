@@ -2,7 +2,9 @@ package org.noear.dami.spring.boot;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -16,15 +18,12 @@ import java.util.List;
  * @author kamosama
  * @since 1.0
  */
-public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar {
+public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, BeanFactoryAware {
 
     protected static final Log logger = LogFactory.getLog(DamiImportBeanDefinitionRegistrar.class);
 
-    private final BeanFactory beanFactory;
+    private BeanFactory beanFactory;
 
-    public DamiImportBeanDefinitionRegistrar(BeanFactory beanFactory) {
-        this.beanFactory = beanFactory;
-    }
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
@@ -42,5 +41,10 @@ public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRe
 
         DamiBeanDefinitionScanner scanner = new DamiBeanDefinitionScanner(registry);
         scanner.scan(packages.toArray(new String[0]));
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
     }
 }
