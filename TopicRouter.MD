@@ -16,7 +16,7 @@ DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
 
 ## 2、主题路由器的监听风格
 
-### 默认路由器
+### 2.1、默认路由器
 
 * Hash （监听是什么，收的就是什么）
 
@@ -26,7 +26,7 @@ DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
 
 
 
-### 模式匹配路由器
+### 2.2、模式匹配路由器
 
 支持路由定制，已实现的有：RoutingPath，路径分格的路由；RoutingTag，标签分格的路由。还可以自己定制
 
