@@ -7,7 +7,7 @@
 * 默认路由器（基于 hash 实现，速度快）
 * 模式匹配路由器
 
-这么定制：
+如果有需求，程序启动时配置一下：
 
 ```java
 DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
