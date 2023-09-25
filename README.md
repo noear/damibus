@@ -172,12 +172,12 @@ public class Demo31 {
 ```
 
 
-### 定制能力
+### 定制能力（详见主题路由器：[TopicRouter.md](TopicRouter.md)）
 
 ```java
 public class Demo15_path {
     public void main(){
-        //切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
+        //切换为模式匹配路由器 + RoutingPath（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
         DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
 
         //拦截
@@ -195,7 +195,7 @@ public class Demo15_path {
 ```java
 public class Demo15_tag {
     public void main(){
-        //切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
+        //切换为模式匹配路由器 + RoutingTag（":"前为主题，后按 "," 号分割作为tag）
         DamiConfig.configure(new TopicRouterPatterned(RoutingTag::new));
 
         //拦截
