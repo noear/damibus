@@ -1,4 +1,8 @@
 
+#### 0.29
+
+* 添加 DamiTopic::index() 属性
+
 #### 0.28
 
 * TopicRouterPatterned 增加排序支持

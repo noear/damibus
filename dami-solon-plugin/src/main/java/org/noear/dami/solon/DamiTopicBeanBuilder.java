@@ -21,9 +21,9 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
             bw.context().wrapAndPut(clz, raw);
         } else {
             if (TopicListener.class.isAssignableFrom(clz)) {
-                Dami.bus().listen(anno.value(), bw.raw());
+                Dami.bus().listen(anno.value(), anno.index(), bw.raw());
             } else {
-                Dami.api().registerListener(anno.value(), bw.raw());
+                Dami.api().registerListener(anno.value(), anno.index(), bw.raw());
             }
 
             lifecycleWrap(bw, anno.value());

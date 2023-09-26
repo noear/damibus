@@ -14,6 +14,11 @@ import java.lang.annotation.*;
 public @interface DamiTopic {
     /**
      * 主题映射
-     * */
+     */
     String value();
+
+    /**
+     * 订阅顺序位
+     */
+    int index() default 0;
 }

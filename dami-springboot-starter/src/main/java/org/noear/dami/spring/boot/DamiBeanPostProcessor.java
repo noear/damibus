@@ -55,10 +55,10 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
 
             if (bean instanceof TopicListener) {
                 //是TopicListener实例则使用bus注册
-                Dami.bus().listen(topicMapping, (TopicListener) bean);
+                Dami.bus().listen(topicMapping, damiTopic.index(), (TopicListener) bean);
             } else {
                 //否则使用api注册
-                Dami.api().registerListener(topicMapping, bean);
+                Dami.api().registerListener(topicMapping, damiTopic.index(), bean);
             }
         }
 
