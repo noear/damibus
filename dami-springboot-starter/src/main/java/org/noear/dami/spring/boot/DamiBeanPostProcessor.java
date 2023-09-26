@@ -6,6 +6,7 @@ import org.noear.dami.bus.Interceptor;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.exception.DamiException;
 import org.noear.dami.spring.boot.annotation.DamiTopic;
+import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
 
@@ -38,7 +39,8 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
 
     @Override
     public boolean requiresDestruction(Object bean) {
-        return bean.getClass().isAnnotationPresent(DamiTopic.class);
+        Class<?> proxyClass = AopProxyUtils.ultimateTargetClass(bean);
+        return proxyClass.isAnnotationPresent(DamiTopic.class);
     }
 
     /**
@@ -46,8 +48,9 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        DamiTopic damiTopic = bean.getClass().getAnnotation(DamiTopic.class);
-
+       // DamiTopic damiTopic = bean.getClass().getAnnotation(DamiTopic.class);
+        Class<?> proxyClass = AopProxyUtils.ultimateTargetClass(bean);
+        DamiTopic damiTopic = proxyClass.getAnnotation(DamiTopic.class);
         if (damiTopic != null) {
             assertTopicMapping(damiTopic);
 
