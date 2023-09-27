@@ -2,6 +2,7 @@
 #### 0.29
 
 * 添加 DamiTopic::index() 属性
+* 修复 dami-springboot-starter 实现类被代理后不能正常注册与注销的问题
 
 #### 0.28
 
