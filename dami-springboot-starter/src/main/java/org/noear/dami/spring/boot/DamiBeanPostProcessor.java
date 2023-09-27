@@ -23,17 +23,20 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
      */
     @Override
     public void postProcessBeforeDestruction(Object bean, String beanName) throws BeansException {
-        DamiTopic damiTopic = bean.getClass().getAnnotation(DamiTopic.class);
-        assertTopicMapping(damiTopic);
+        Class<?> proxyClass = AopProxyUtils.ultimateTargetClass(bean);
+        DamiTopic damiTopic = proxyClass.getAnnotation(DamiTopic.class);
+        if(damiTopic!=null) {
+            assertTopicMapping(damiTopic);
 
-        String topicMapping = damiTopic.value()[0];
+            String topicMapping = damiTopic.value()[0];
 
-        if (bean instanceof TopicListener) {
-            //是TopicListener实例则使用bus移除
-            Dami.bus().unlisten(topicMapping, (TopicListener) bean);
-        } else {
-            //否则使用api移除
-            Dami.api().unregisterListener(topicMapping, bean);
+            if (bean instanceof TopicListener) {
+                //是TopicListener实例则使用bus移除
+                Dami.bus().unlisten(topicMapping, (TopicListener) bean);
+            } else {
+                //否则使用api移除
+                Dami.api().unregisterListener(topicMapping, bean);
+            }
         }
     }
 
