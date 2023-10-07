@@ -88,6 +88,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      *
      * @param topic   主题
      * @param content 内容
+     * @return 是否有订阅处理
      */
     @Override
     public boolean send(final String topic, final C content) {
@@ -103,6 +104,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      *
      * @param topic   主题
      * @param content 内容
+     * @return 响应数据
      */
     @Override
     public R sendAndResponse(final String topic, final C content) {
@@ -128,6 +130,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      * @param topic    主题
      * @param content  内容
      * @param callback 回调函数
+     * @return 是否有订阅处理
      */
     @Override
     public boolean sendAndCallback(final String topic, final C content, final Consumer<R> callback) {
