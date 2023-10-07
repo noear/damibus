@@ -8,7 +8,7 @@
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.30-M2</version>
+    <version>0.30-M3</version>
 </dependency>
 ```
 
