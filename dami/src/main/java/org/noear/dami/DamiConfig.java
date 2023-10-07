@@ -12,6 +12,19 @@ import org.noear.dami.bus.TopicRouter;
  * @since 1.0
  */
 public class DamiConfig {
+    private static boolean enableDefaultSend;
+
+    /**
+     * 启用默认发送
+     */
+    public static boolean enableDefaultSend() {
+        return enableDefaultSend;
+    }
+
+    public static void enableDefaultSend(boolean enable) {
+        enableDefaultSend = enable;
+    }
+
     /**
      * 配置总线实例（根据主题路由器自动配置）
      *

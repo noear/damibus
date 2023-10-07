@@ -1,5 +1,6 @@
 package org.noear.dami.api.impl;
 
+import org.noear.dami.DamiConfig;
 import org.noear.dami.api.DamiApi;
 
 import java.lang.reflect.InvocationHandler;
@@ -15,11 +16,18 @@ public class SenderInvocationHandler implements InvocationHandler {
     private final DamiApi damiApi;
     private Class<?> interfaceClz;
     private final String topicMapping;
+    private boolean enableDefaultSend;
 
     public SenderInvocationHandler(DamiApi damiApi, Class<?> interfaceClz, String topicMapping) {
         this.damiApi = damiApi;
         this.interfaceClz = interfaceClz;
         this.topicMapping = topicMapping;
+        this.enableDefaultSend = DamiConfig.enableDefaultSend();
+    }
+
+    public SenderInvocationHandler enableDefaultSend(boolean enable) {
+        enableDefaultSend = enable;
+        return this;
     }
 
     @Override
@@ -29,7 +37,7 @@ public class SenderInvocationHandler implements InvocationHandler {
             return invokeObject(proxy, method, args);
         }
 
-        if (method.isDefault()) {
+        if (method.isDefault() && enableDefaultSend) {
             return MethodHandlerUtils.invokeDefault(proxy, method, args);
         }
 
