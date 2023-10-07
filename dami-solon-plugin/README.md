@@ -60,7 +60,7 @@ public class EventUserNoticesListener {
     }
 }
 
-@DamiTopic("demo82.event.user")
+@DamiTopic(value="demo82.event.user", index=2) //可以控制监听顺序
 public class EventUserNoticesListener2 {
 
     public void onCreated(long userId, String name) {
