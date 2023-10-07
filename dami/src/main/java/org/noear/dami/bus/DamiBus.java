@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  */
 public interface DamiBus<C, R> {
     /**
-     * 获取超时
+     * 获取响应超时（单位：毫秒）
      */
     long timeout();
 

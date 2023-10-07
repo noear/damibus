@@ -19,7 +19,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
     private TopicRouter<C, R> router;
     //负载工厂
     private PayloadFactory<C, R> factory;
-    //超时：默认3s
+    //响应超时：默认3s
     private long timeout = 3000;
 
     public DamiBusImpl() {
