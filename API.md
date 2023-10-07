@@ -5,11 +5,9 @@
 ```java
 public class Dami {
     static final DamiBus bus = new DamiBusImpl<>();
-    static final DamiApi api = new DamiApiImpl(bus);
+    static final DamiApi api = new DamiApiImpl(Dami::bus);
     //泛型、强类型总线界面
     public static <C, R> DamiBus<C, R> bus() { return bus; }
-    //弱类型总线界面（适合类隔离的场景）
-    public static DamiBus<String, String> busStr() { return bus; }
     //接口界面
     public static DamiApi api() { return api; }
     //拦截
@@ -29,18 +27,12 @@ public interface DamiBus<C, R> {
     //拦截
     void intercept(int index, Interceptor interceptor);
     
-    //发送（不需要答复）
-    default void send(final String topic, final C content) { send(new Payload<>(topic, content)); }
-    //发送（不需要答复）,自定义载体
-    void send(final Payload<C, R> payload);
-    //发送并等待响应
-    default R sendAndResponse(final String topic, final C content) { return sendAndResponse(new Payload<>(topic, content)); }
-    //发送并等待响应,自定义载体
-    R sendAndResponse(final Payload<C, R> payload);
-    //发送并等待回调
-    default void sendAndCallback(final String topic, final C content, final Consumer<R> callback) { sendAndCallback(new Payload<>(topic, content), callback); }
-    //发送并等待回调,自定义载体
-    void sendAndCallback(final Payload<C, R> payload, final Consumer<R> callback);
+    //发送（不需要答复）=> 返回是否有订阅处理
+    boolean send(final String topic, final C content);
+    //发送并等待响应 => 返回响应结果（没有订阅处理，会异常）
+    R sendAndResponse(final String topic, final C content);
+    //发送并等待回调 => 返回是否有订阅处理
+    boolean sendAndCallback(final String topic, final C content, final Consumer<R> callback);
     
     //监听
     default void listen(final String topic, final TopicListener<Payload<C, R>> listener) { listen(topic, 0, listener); }
@@ -57,8 +49,6 @@ public interface DamiBus<C, R> {
 
 ```java
 public interface DamiApi {
-    //启用默认发送
-    boolean enableDefaultSend();
     //获取编码器
     Coder coder();
     //获取关联总线
@@ -94,7 +84,7 @@ public interface Payload<C, R> extends Serializable {
     //设置附件
     <T> void setAttachment(String key, T value);
     //设置处理标识
-    void setHandled(boolean handled);
+    void setHandled();
     //获取处理标识
     boolean getHandled();
 
@@ -125,8 +115,8 @@ Payload::reply，答复情况说明
 ## 5、TopicListener<Event>，主题监听接口
 
 ```java
-public interface TopicListener<Event extends Payload> {
-    //处理事件
+public interface TopicListener<Event> {
+    //处理监听事件
     void onEvent(final Event event) throws Throwable;
 }
 ```
