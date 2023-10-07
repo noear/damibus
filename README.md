@@ -196,7 +196,7 @@ public class Demo15_path {
 public class Demo15_tag {
     public void main(){
         //切换为模式匹配路由器 + RoutingTag（":"前为主题，后按 "," 号分割作为tag）
-        DamiConfig.setTopicRouter(new TopicRouterPatterned(RoutingTag::new));
+        DamiConfig.configure(new TopicRouterPatterned(RoutingTag::new));
 
         //拦截
         Dami.bus().listen("demo.a:id", (payload) -> {
