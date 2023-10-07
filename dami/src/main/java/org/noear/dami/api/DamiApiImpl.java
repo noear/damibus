@@ -87,7 +87,7 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
      */
     @Override
     public <T> T createSender(String topicMapping, Class<T> senderClz) {
-        Object tmp = Proxy.newProxyInstance(DamiApi.class.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(this, senderClz, topicMapping));
+        Object tmp = Proxy.newProxyInstance(senderClz.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(this, senderClz, topicMapping));
 
         if (log.isDebugEnabled()) {
             log.debug("This sender created successfully(@{}.*): {}", topicMapping, senderClz.getName());
