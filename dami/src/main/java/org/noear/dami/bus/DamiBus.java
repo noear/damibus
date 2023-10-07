@@ -27,14 +27,16 @@ public interface DamiBus<C, R> {
      *
      * @param topic   主题
      * @param content 内容
+     * @return 是否已订阅处理
      */
-    void send(final String topic, final C content);
+    boolean send(final String topic, final C content);
 
     /**
      * 发送并等待响应
      *
      * @param topic   主题
      * @param content 内容
+     * @return 响应数据
      */
     R sendAndResponse(final String topic, final C content);
 
@@ -44,8 +46,9 @@ public interface DamiBus<C, R> {
      * @param topic    主题
      * @param content  内容
      * @param callback 回调函数
+     * @return 是否已订阅处理
      */
-    void sendAndCallback(final String topic, final C content, final Consumer<R> callback);
+    boolean sendAndCallback(final String topic, final C content, final Consumer<R> callback);
 
 
     /**

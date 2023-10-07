@@ -90,8 +90,12 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      * @param content 内容
      */
     @Override
-    public void send(final String topic, final C content) {
-        router.handle(factory.create(topic, content, null));
+    public boolean send(final String topic, final C content) {
+        Payload<C, R> payload = factory.create(topic, content, null);
+
+        router.handle(payload);
+
+        return payload.getHandled();
     }
 
     /**
@@ -104,6 +108,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
     public R sendAndResponse(final String topic, final C content) {
         CompletableFuture<R> future = new CompletableFuture<>();
         Payload<C, R> payload = factory.create(topic, content, new AcceptorResponse<>(future));
+
         router.handle(payload);
 
         if (payload.getHandled()) {
@@ -125,10 +130,12 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      * @param callback 回调函数
      */
     @Override
-    public void sendAndCallback(final String topic, final C content, final Consumer<R> callback) {
+    public boolean sendAndCallback(final String topic, final C content, final Consumer<R> callback) {
         Payload<C, R> payload = factory.create(topic, content, new AcceptorCallback<>(callback));
 
         router.handle(payload);
+
+        return payload.getHandled();
     }
 
     /**

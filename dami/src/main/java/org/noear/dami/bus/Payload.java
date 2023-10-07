@@ -27,7 +27,7 @@ public interface Payload<C, R> extends Serializable {
     /**
      * 设置处理标识
      * */
-    void setHandled(boolean handled);
+    void setHandled();
 
     /**
      * 获取处理标识

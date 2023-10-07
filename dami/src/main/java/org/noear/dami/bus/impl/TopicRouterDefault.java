@@ -95,7 +95,7 @@ public class TopicRouterDefault<C, R> extends TopicRouterBase<C,R> {
         if (pipeline != null) {
             try {
                 pipeline.onEvent(payload);
-                payload.setHandled(true);
+                payload.setHandled();
             } catch (InvocationTargetException e) {
                 throw new DamiException(e.getTargetException());
             } catch (UndeclaredThrowableException e) {

@@ -69,8 +69,8 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
     }
 
     @Override
-    public void setHandled(boolean handled) {
-        this.handled = handled;
+    public void setHandled() {
+        this.handled = true;
     }
 
     @Override
