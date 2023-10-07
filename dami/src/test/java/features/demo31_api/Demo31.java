@@ -17,6 +17,8 @@ public class Demo31 {
 
     @Test
     public void main() {
+
+
         //注册监听器
         EventUserListenerOfModule1 userEventListener = new EventUserListenerOfModule1();
         api.registerListener(topicMapping, userEventListener);

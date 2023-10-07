@@ -1,5 +1,6 @@
 package org.noear.dami.api;
 
+import org.noear.dami.Dami;
 import org.noear.dami.api.impl.MethodTopicListener;
 import org.noear.dami.api.impl.MethodTopicListenerRecord;
 import org.noear.dami.api.impl.SenderInvocationHandler;
@@ -20,7 +21,7 @@ import java.util.function.Supplier;
  * @author noear
  * @since 1.0
  */
-public class DamiApiImpl implements DamiApi {
+public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
     static final Logger log = LoggerFactory.getLogger(DamiApiImpl.class);
 
     /**
@@ -38,6 +39,10 @@ public class DamiApiImpl implements DamiApi {
      */
     private final Supplier<DamiBus> busSupplier;
 
+    public DamiApiImpl() {
+        this(() -> Dami.bus());
+    }
+
     public DamiApiImpl(DamiBus bus) {
         this(() -> bus);
     }
@@ -46,13 +51,17 @@ public class DamiApiImpl implements DamiApi {
         this.busSupplier = busSupplier;
     }
 
-    /**
-     * 获取编码器
-     */
+    private boolean enableDefaultSend;
+
+
+
     @Override
-    public Coder getCoder() {
-        return coder;
+    public DamiApiConfigurator enableDefaultSend(boolean enable) {
+        enableDefaultSend = enable;
+        return this;
     }
+
+
 
     /**
      * 设置编码器
@@ -60,14 +69,32 @@ public class DamiApiImpl implements DamiApi {
      * @param coder 编码器
      */
     @Override
-    public void setCoder(Coder coder) {
+    public DamiApiConfigurator coder(Coder coder) {
         if (coder != null) {
             this.coder = coder;
         }
+
+        return this;
+    }
+
+
+
+
+    @Override
+    public boolean enableDefaultSend() {
+        return enableDefaultSend;
+    }
+
+    /**
+     * 获取编码器
+     */
+    @Override
+    public Coder coder() {
+        return coder;
     }
 
     @Override
-    public DamiBus getBus() {
+    public DamiBus bus() {
         return busSupplier.get();
     }
 
@@ -112,7 +139,7 @@ public class DamiApiImpl implements DamiApi {
             MethodTopicListener listener = new MethodTopicListener(this, listenerObj, m1);
 
             listenerRecords.add(new MethodTopicListenerRecord(topic, listener));
-            getBus().listen(topic, index, listener);
+            bus().listen(topic, index, listener);
 
         }
 
@@ -136,7 +163,7 @@ public class DamiApiImpl implements DamiApi {
 
         if (tmp != null) {
             for (MethodTopicListenerRecord r1 : tmp) {
-                getBus().unlisten(r1.getTopic(), r1.getListener());
+                bus().unlisten(r1.getTopic(), r1.getListener());
             }
         }
 

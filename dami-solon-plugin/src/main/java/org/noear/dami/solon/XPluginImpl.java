@@ -1,6 +1,7 @@
 package org.noear.dami.solon;
 
 import org.noear.dami.Dami;
+import org.noear.dami.DamiConfig;
 import org.noear.dami.api.Coder;
 import org.noear.dami.bus.Interceptor;
 import org.noear.dami.solon.annotation.DamiTopic;
@@ -12,6 +13,7 @@ import org.noear.solon.core.Plugin;
  * @since 1.0
  */
 public class XPluginImpl implements Plugin {
+
     @Override
     public void start(AppContext context) throws Throwable {
         context.beanBuilderAdd(DamiTopic.class, new DamiTopicBeanBuilder());
@@ -21,7 +23,7 @@ public class XPluginImpl implements Plugin {
         });
 
         context.getBeanAsync(Coder.class, bean -> {
-            Dami.api().setCoder(bean);
+            DamiConfig.setCoder(bean);
         });
     }
 }

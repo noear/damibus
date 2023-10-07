@@ -1,6 +1,7 @@
 package org.noear.dami.spring.boot;
 
 import org.noear.dami.Dami;
+import org.noear.dami.DamiConfig;
 import org.noear.dami.api.Coder;
 import org.noear.dami.bus.Interceptor;
 import org.noear.dami.bus.TopicListener;
@@ -51,7 +52,7 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-       // DamiTopic damiTopic = bean.getClass().getAnnotation(DamiTopic.class);
+        // DamiTopic damiTopic = bean.getClass().getAnnotation(DamiTopic.class);
         Class<?> proxyClass = AopProxyUtils.ultimateTargetClass(bean);
         DamiTopic damiTopic = proxyClass.getAnnotation(DamiTopic.class);
         if (damiTopic != null) {
@@ -73,7 +74,7 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
         }
 
         if (bean instanceof Coder) {
-            Dami.api().setCoder((Coder) bean);
+            DamiConfig.setCoder((Coder) bean);
         }
 
         return bean;

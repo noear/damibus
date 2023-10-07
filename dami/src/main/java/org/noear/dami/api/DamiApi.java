@@ -10,21 +10,19 @@ import org.noear.dami.bus.DamiBus;
  */
 public interface DamiApi {
     /**
-     * 获取编码器
-     */
-    Coder getCoder();
+     * 启用默认发送
+     * */
+    boolean enableDefaultSend();
 
     /**
-     * 设置编码器
-     *
-     * @param coder 编码器
+     * 获取编码器
      */
-    void setCoder(Coder coder);
+    Coder coder();
 
     /**
      * 获取关联总线
      * */
-    DamiBus getBus();
+    DamiBus bus();
 
     /**
      * 创建发送器代理

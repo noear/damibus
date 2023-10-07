@@ -1,6 +1,5 @@
 package org.noear.dami.api.impl;
 
-import org.noear.dami.DamiConfig;
 import org.noear.dami.api.DamiApi;
 
 import java.lang.reflect.InvocationHandler;
@@ -16,18 +15,11 @@ public class SenderInvocationHandler implements InvocationHandler {
     private final DamiApi damiApi;
     private Class<?> interfaceClz;
     private final String topicMapping;
-    private boolean enableDefaultSend;
 
     public SenderInvocationHandler(DamiApi damiApi, Class<?> interfaceClz, String topicMapping) {
         this.damiApi = damiApi;
         this.interfaceClz = interfaceClz;
         this.topicMapping = topicMapping;
-        this.enableDefaultSend = DamiConfig.enableDefaultSend();
-    }
-
-    public SenderInvocationHandler enableDefaultSend(boolean enable) {
-        enableDefaultSend = enable;
-        return this;
     }
 
     @Override
@@ -37,18 +29,18 @@ public class SenderInvocationHandler implements InvocationHandler {
             return invokeObject(proxy, method, args);
         }
 
-        if (method.isDefault() && enableDefaultSend) {
+        if (method.isDefault() && damiApi.enableDefaultSend()) {
             return MethodHandlerUtils.invokeDefault(proxy, method, args);
         }
 
         String topic = topicMapping + "." + method.getName();
-        Object content = damiApi.getCoder().encode(method, args);
+        Object content = damiApi.coder().encode(method, args);
 
         if (method.getReturnType() == void.class) { //不能用大写的 Void.class（不然对不上）
-            damiApi.getBus().send(topic, content);
+            damiApi.bus().send(topic, content);
             return null;
         } else {
-            return damiApi.getBus().sendAndResponse(topic, content);
+            return damiApi.bus().sendAndResponse(topic, content);
         }
     }
 

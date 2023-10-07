@@ -13,12 +13,13 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  */
-public class DamiBusImpl<C, R> implements DamiBus<C, R> {
-    /**
-     * 路由器
-     */
+public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, R> {
+    //路由器
     private TopicRouter<C, R> router;
+    //负载工厂
     private PayloadFactory<C, R> factory;
+    //超时：默认3s
+    private long timeout = 3000;
 
     public DamiBusImpl() {
         router = new TopicRouterDefault<>();
@@ -30,45 +31,45 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R> {
         factory = PayloadDefault::new;
     }
 
-    public DamiBusImpl(TopicRouter<C, R> topicRouter, PayloadFactory<C, R> payloadFactory) {
-        router = topicRouter;
-        factory = payloadFactory;
-    }
-
     /**
      * 设置主题路由器
      */
-    public void setTopicRouter(TopicRouter<C, R> router) {
-        this.router = router;
+    public DamiBusConfigurator<C, R> topicRouter(TopicRouter<C, R> router) {
+        if (router != null) {
+            this.router = router;
+        }
+        return this;
     }
 
     /**
      * 设置事件负载工厂
      */
-    public void setPayloadFactory(PayloadFactory<C, R> factory) {
-        this.factory = factory;
-    }
-
-    /**
-     * 超时：默认3s
-     */
-    private long timeout = 3000;
-
-    /**
-     * 获取超时
-     */
-    @Override
-    public long getTimeout() {
-        return timeout;
+    public DamiBusConfigurator<C, R> payloadFactory(PayloadFactory<C, R> factory) {
+        if (factory != null) {
+            this.factory = factory;
+        }
+        return this;
     }
 
     /**
      * 设置超时
      */
     @Override
-    public void setTimeout(final long timeout) {
+    public DamiBusConfigurator<C, R> timeout(final long timeout) {
         this.timeout = timeout;
+        return this;
     }
+
+
+    /**
+     * 获取超时
+     */
+    @Override
+    public long timeout() {
+        return timeout;
+    }
+
+
 
     /**
      * 拦截

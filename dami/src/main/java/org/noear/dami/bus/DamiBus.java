@@ -12,14 +12,7 @@ public interface DamiBus<C, R> {
     /**
      * 获取超时
      */
-    long getTimeout();
-
-    /**
-     * 设置超时
-     *
-     * @param timeout 超时
-     */
-    void setTimeout(final long timeout);
+    long timeout();
 
     /**
      * 拦截

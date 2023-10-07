@@ -1,9 +1,9 @@
 package org.noear.dami;
 
+import org.noear.dami.api.Coder;
 import org.noear.dami.api.DamiApi;
-import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.bus.TopicRouter;
+import org.noear.dami.api.DamiApiConfigurator;
+import org.noear.dami.bus.*;
 
 /**
  * 大米配置器
@@ -12,28 +12,59 @@ import org.noear.dami.bus.TopicRouter;
  * @since 1.0
  */
 public class DamiConfig {
-    private static boolean enableDefaultSend;
-
     /**
-     * 启用默认发送
-     */
-    public static boolean enableDefaultSend() {
-        return enableDefaultSend;
-    }
-
-    public static void enableDefaultSend(boolean enable) {
-        enableDefaultSend = enable;
-    }
-
-    /**
-     * 配置总线实例（根据主题路由器自动配置）
+     * 配置总线的主体路由器
      *
      * @param topicRouter 主题路由器
      */
-    public static void configure(TopicRouter topicRouter) {
+    public static void setTopicRouter(TopicRouter topicRouter) {
         if (topicRouter != null) {
-            Dami.bus = new DamiBusImpl(topicRouter);
+            ((DamiBusConfigurator) Dami.bus).topicRouter(topicRouter);
         }
+    }
+
+    /**
+     * 配置总线的负载工厂
+     *
+     * @param payloadFactory 负载工厂
+     */
+    public static void setPayloadFactory(PayloadFactory payloadFactory) {
+        if (payloadFactory != null) {
+            ((DamiBusConfigurator) Dami.bus).payloadFactory(payloadFactory);
+        }
+    }
+
+
+    /**
+     * 配置总线的超时
+     *
+     * @param timeout 超时（单位：毫秒）
+     */
+    public static void setTimeout(long timeout) {
+        if (timeout > 0) {
+            ((DamiBusConfigurator) Dami.bus).timeout(timeout);
+        }
+    }
+
+
+    /**
+     * 配置接口的编解码器
+     *
+     * @param coder 编解码器
+     */
+    public static void setCoder(Coder coder) {
+        if (coder != null) {
+            ((DamiApiConfigurator) Dami.api).coder(coder);
+        }
+    }
+
+    /**
+     * 配置接口启用默认方法发送
+     *
+     * @param enableDefaultSend 启用默认方法发送
+     */
+    public static void enableDefaultSend(boolean enableDefaultSend) {
+        ((DamiApiConfigurator) Dami.api).enableDefaultSend(enableDefaultSend);
     }
 
     /**
