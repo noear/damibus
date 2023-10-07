@@ -40,6 +40,11 @@ public class SenderInvocationHandler implements InvocationHandler {
             if (method.isDefault()) {
                 //如果没有订阅，且有默认实现
                 result = MethodHandlerUtils.invokeDefault(proxy, method, args);
+            } else {
+                if (method.getReturnType() != void.class) { //不能用大写的 Void.class（不然对不上）
+                    //如果没有默认实现，且返回不为空；给出异常提醒
+                    throw e;
+                }
             }
         }
 
