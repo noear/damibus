@@ -21,7 +21,7 @@ public class Dami {
 
 ```java
 public class DamiConfig {
-    //配置总线的主体路由器
+    //配置总线的主题路由器
     public static void configure(TopicRouter topicRouter);
     //配置总线的负载工厂
     public static void configure(PayloadFactory payloadFactory);
