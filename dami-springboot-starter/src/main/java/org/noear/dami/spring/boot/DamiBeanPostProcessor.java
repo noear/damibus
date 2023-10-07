@@ -74,7 +74,7 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
         }
 
         if (bean instanceof Coder) {
-            DamiConfig.setCoder((Coder) bean);
+            DamiConfig.configure((Coder) bean);
         }
 
         return bean;

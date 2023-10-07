@@ -23,7 +23,7 @@ public class XPluginImpl implements Plugin {
         });
 
         context.getBeanAsync(Coder.class, bean -> {
-            DamiConfig.setCoder(bean);
+            DamiConfig.configure(bean);
         });
     }
 }

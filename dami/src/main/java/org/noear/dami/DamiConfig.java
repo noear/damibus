@@ -17,7 +17,7 @@ public class DamiConfig {
      *
      * @param topicRouter 主题路由器
      */
-    public static void setTopicRouter(TopicRouter topicRouter) {
+    public static void configure(TopicRouter topicRouter) {
         if (topicRouter != null) {
             ((DamiBusConfigurator) Dami.bus).topicRouter(topicRouter);
         }
@@ -28,7 +28,7 @@ public class DamiConfig {
      *
      * @param payloadFactory 负载工厂
      */
-    public static void setPayloadFactory(PayloadFactory payloadFactory) {
+    public static void configure(PayloadFactory payloadFactory) {
         if (payloadFactory != null) {
             ((DamiBusConfigurator) Dami.bus).payloadFactory(payloadFactory);
         }
@@ -40,7 +40,7 @@ public class DamiConfig {
      *
      * @param timeout 超时（单位：毫秒）
      */
-    public static void setTimeout(long timeout) {
+    public static void configure(long timeout) {
         if (timeout > 0) {
             ((DamiBusConfigurator) Dami.bus).timeout(timeout);
         }
