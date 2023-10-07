@@ -34,15 +34,23 @@ public class SenderInvocationHandler implements InvocationHandler {
         Object content = damiApi.coder().encode(method, args);
 
         Object result = null;
-        try {
-            result = damiApi.bus().sendAndResponse(topic, content);
-        } catch (DamiNoSubscriptionException e) {
-            if (method.isDefault()) {
-                //如果没有订阅，且有默认实现
-                result = MethodHandlerUtils.invokeDefault(proxy, method, args);
-            } else {
-                if (method.getReturnType() != void.class) { //不能用大写的 Void.class（不然对不上）
-                    //如果没有默认实现，且返回不为空；给出异常提醒
+
+        if (method.getReturnType() == void.class) { //不能用大写的 Void.class（不然对不上）
+            if (damiApi.bus().send(topic, content) == false) {
+                if (method.isDefault()) {
+                    //如果没有订阅，且有默认实现
+                    MethodHandlerUtils.invokeDefault(proxy, method, args);
+                }
+            }
+        } else {
+            try {
+                result = damiApi.bus().sendAndResponse(topic, content);
+            } catch (DamiNoSubscriptionException e) {
+                if (method.isDefault()) {
+                    //如果没有订阅，且有默认实现
+                    result = MethodHandlerUtils.invokeDefault(proxy, method, args);
+                } else {
+                    //如果没有默认实现；给出异常提醒
                     throw e;
                 }
             }
