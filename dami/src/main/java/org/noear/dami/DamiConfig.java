@@ -52,7 +52,7 @@ public class DamiConfig {
      *
      * @param coder 编解码器
      */
-    public static void setCoder(Coder coder) {
+    public static void configure(Coder coder) {
         if (coder != null) {
             ((DamiApiConfigurator) Dami.api).coder(coder);
         }
