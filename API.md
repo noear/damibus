@@ -1,5 +1,5 @@
 
-## 1、Mami，入口主类
+## 1、Mami，主类
 
 
 ```java
@@ -17,7 +17,28 @@ public class Dami {
 }
 ```
 
-## 2、DamiBus<C, R>，总线模式接口
+## 2、Dami，配置类
+
+```java
+public class DamiConfig {
+    //配置总线的主体路由器
+    public static void configure(TopicRouter topicRouter);
+    //配置总线的负载工厂
+    public static void configure(PayloadFactory payloadFactory);
+    //配置总线的响应超时
+    public static void configure(long timeout);
+
+    //配置接口模式的编解码器
+    public static void configure(Coder coder);
+
+    //配置总线实例
+    public static void configure(DamiBus bus);
+    //配置接口实例
+    public static void configure(DamiApi api);
+}
+```
+
+## 3、DamiBus<C, R>，总线模式接口
 
 
 ```java
@@ -44,7 +65,7 @@ public interface DamiBus<C, R> {
 ```
 
 
-## 3、DamiApi，接口模式接口
+## 4、DamiApi，接口模式接口
 
 
 ```java
@@ -74,7 +95,7 @@ DamiApi::createSender，发送者接口代理情况说明
 | User getUser()   | 返回类型的，sendAndResponse 发送 | 没有监听，会异常。且必须要有答复 |
 
 
-## 4、Payload<C, R>，事件负载接口
+## 5、Payload<C, R>，事件负载接口
 
 
 ```java
@@ -112,7 +133,7 @@ Payload::reply，答复情况说明
 | sendAndCallback() | 可以无限次答复有效       | payload.isRequest() = true  |
 
 
-## 5、TopicListener<Event>，主题监听接口
+## 6、TopicListener<Event>，主题监听接口
 
 ```java
 public interface TopicListener<Event> {
