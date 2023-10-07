@@ -1,5 +1,5 @@
 
-## 1、Mami，主类
+## 1、Mami，操作主类
 
 
 ```java
@@ -17,7 +17,7 @@ public class Dami {
 }
 ```
 
-## 2、Dami，配置类
+## 2、Dami，配置操作类
 
 ```java
 public class DamiConfig {
