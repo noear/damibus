@@ -141,7 +141,7 @@ public interface EventUser {
 }
 
 //通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，但会带来依赖关系）
-public class EventUserListenerOfModule1 {
+public class EventUserListenerOfModule1 { // implements EventUser
     public void onCreated(Long userId, String name) {
         System.err.println("onCreated: userId=" + userId + ", name=" + name);
     }
@@ -222,7 +222,7 @@ public interface EventUserService {
 
 //通过约定保持与 EventUserService 相同的接口定义（或者实现 EventUserService 接口，这个会带来依赖关系）
 @DamiTopic("event.user")
-public class EventUserServiceListener { //它相当于是个实现类
+public class EventUserServiceListener { // implements EventUserService // 它相当于是个实现类
     public User getUser(long userId) {
         return new User(userId);
     }

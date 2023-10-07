@@ -80,7 +80,7 @@ public interface EventUser {
 }
 
 //通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，但会带来依赖关系）
-public class EventUserListenerOfModule1 {
+public class EventUserListenerOfModule1 { // implements EventUser
     public void onCreated(Long userId, String name) {
         System.err.println("onCreated: userId=" + userId + ", name=" + name);
     }
