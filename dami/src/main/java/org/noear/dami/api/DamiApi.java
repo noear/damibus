@@ -10,11 +10,6 @@ import org.noear.dami.bus.DamiBus;
  */
 public interface DamiApi {
     /**
-     * 启用默认发送
-     * */
-    boolean enableDefaultSend();
-
-    /**
      * 获取编码器
      */
     Coder coder();

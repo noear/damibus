@@ -8,11 +8,6 @@ package org.noear.dami.api;
  */
 public interface DamiApiConfigurator extends  DamiApi{
     /**
-     * 启用默认发送
-     * */
-    DamiApiConfigurator enableDefaultSend(boolean enable);
-
-    /**
      * 设置编码器
      *
      * @param coder 编码器

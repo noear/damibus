@@ -9,6 +9,6 @@ import org.noear.dami.api.DamiApiImpl;
  */
 public class Demo00 {
     public void main() {
-        DamiConfig.enableDefaultSend(true);
+
     }
 }

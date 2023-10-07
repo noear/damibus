@@ -59,15 +59,6 @@ public class DamiConfig {
     }
 
     /**
-     * 配置接口启用默认方法发送
-     *
-     * @param enableDefaultSend 启用默认方法发送
-     */
-    public static void enableDefaultSend(boolean enableDefaultSend) {
-        ((DamiApiConfigurator) Dami.api).enableDefaultSend(enableDefaultSend);
-    }
-
-    /**
      * 配置总线实例
      *
      * @param bus 总线实例

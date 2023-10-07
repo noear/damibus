@@ -1,6 +1,7 @@
 package org.noear.dami.api.impl;
 
 import org.noear.dami.api.DamiApi;
+import org.noear.dami.exception.DamiNoSubscriptionException;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -29,21 +30,20 @@ public class SenderInvocationHandler implements InvocationHandler {
             return invokeObject(proxy, method, args);
         }
 
-        if (method.isDefault()) {
-            if (damiApi.enableDefaultSend() == false) {
-                return MethodHandlerUtils.invokeDefault(proxy, method, args);
-            }
-        }
-
         String topic = topicMapping + "." + method.getName();
         Object content = damiApi.coder().encode(method, args);
 
-        if (method.getReturnType() == void.class) { //不能用大写的 Void.class（不然对不上）
-            damiApi.bus().send(topic, content);
-            return null;
-        } else {
-            return damiApi.bus().sendAndResponse(topic, content);
+        Object result = null;
+        try {
+            result = damiApi.bus().sendAndResponse(topic, content);
+        } catch (DamiNoSubscriptionException e) {
+            if (method.isDefault()) {
+                //如果没有订阅，且有默认实现
+                result = MethodHandlerUtils.invokeDefault(proxy, method, args);
+            }
         }
+
+        return result;
     }
 
     private Object invokeObject(Object proxy, Method method, Object[] args) throws Throwable {

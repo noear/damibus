@@ -2,6 +2,7 @@ package org.noear.dami.bus;
 
 import org.noear.dami.bus.impl.*;
 import org.noear.dami.exception.DamiException;
+import org.noear.dami.exception.DamiNoSubscriptionException;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -105,10 +106,14 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
         Payload<C, R> payload = factory.create(topic, content, new AcceptorResponse<>(future));
         router.handle(payload);
 
-        try {
-            return future.get(timeout, TimeUnit.MILLISECONDS);
-        } catch (Throwable e) {
-            throw new DamiException(e);
+        if (payload.getHandled()) {
+            try {
+                return future.get(timeout, TimeUnit.MILLISECONDS);
+            } catch (Throwable e) {
+                throw new DamiException(e);
+            }
+        } else {
+            throw new DamiNoSubscriptionException("No response subscription");
         }
     }
 

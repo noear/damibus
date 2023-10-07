@@ -51,17 +51,6 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
         this.busSupplier = busSupplier;
     }
 
-    private boolean enableDefaultSend;
-
-
-
-    @Override
-    public DamiApiConfigurator enableDefaultSend(boolean enable) {
-        enableDefaultSend = enable;
-        return this;
-    }
-
-
 
     /**
      * 设置编码器
@@ -75,14 +64,6 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
         }
 
         return this;
-    }
-
-
-
-
-    @Override
-    public boolean enableDefaultSend() {
-        return enableDefaultSend;
     }
 
     /**
