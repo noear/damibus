@@ -29,8 +29,10 @@ public class SenderInvocationHandler implements InvocationHandler {
             return invokeObject(proxy, method, args);
         }
 
-        if (method.isDefault() && damiApi.enableDefaultSend()) {
-            return MethodHandlerUtils.invokeDefault(proxy, method, args);
+        if (method.isDefault()) {
+            if (damiApi.enableDefaultSend() == false) {
+                return MethodHandlerUtils.invokeDefault(proxy, method, args);
+            }
         }
 
         String topic = topicMapping + "." + method.getName();

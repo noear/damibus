@@ -1,12 +1,14 @@
 package org.noear.dami.bus;
 
+import java.io.Serializable;
+
 /**
  * 事件负载
  *
  * @author noear
  * @since 1.0
  */
-public interface Payload<C, R> {
+public interface Payload<C, R> extends Serializable {
     /**
      * 获取附件
      *

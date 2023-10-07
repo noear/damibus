@@ -25,9 +25,7 @@ public class Dami {
 ```java
 public interface DamiBus<C, R> {
     //获取超时
-    long getTimeout();
-    //设置超时
-    void setTimeout(final long timeout);
+    long timeout();
     //拦截
     void intercept(int index, Interceptor interceptor);
     
@@ -59,12 +57,12 @@ public interface DamiBus<C, R> {
 
 ```java
 public interface DamiApi {
+    //启用默认发送
+    boolean enableDefaultSend();
     //获取编码器
-    Coder getCoder();
-    //设置编码器
-    void setCoder(Coder coder);
+    Coder coder();
     //获取关联总线
-    DamiBus getBus();
+    DamiBus bus();
     
     //创建发送器代理
     <T> T createSender(String topicMapping, Class<T> senderClz);
@@ -90,22 +88,27 @@ DamiApi::createSender，发送者接口代理情况说明
 
 
 ```java
-public class Payload<C, R> implements Serializable {
+public interface Payload<C, R> extends Serializable {
     //获取附件
-    public <T> T getAttachment(String key) {}
+    <T> T getAttachment(String key);
     //设置附件
-    public <T> void setAttachment(String key, T value) {}
+    <T> void setAttachment(String key, T value);
+    //设置处理标识
+    void setHandled(boolean handled);
+    //获取处理标识
+    boolean getHandled();
+
     //是否为请求（是的话，需要答复）
-    public boolean isRequest() { }
+    boolean isRequest();
     //答复
-    public void reply(final R content) {}
-    
+    boolean reply(final R content);
+
     //唯一标识
-    public String getGuid() {}
+    String getGuid();
     //主题
-    public String getTopic() {}
+    String getTopic();
     //内容
-    public C getContent() {}
+    C getContent();
 }
 
 ```
