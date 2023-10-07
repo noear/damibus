@@ -64,7 +64,7 @@ DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.29</version>
+    <version>0.30-M1</version>
 </dependency>
 ```
 
@@ -196,7 +196,7 @@ public class Demo15_path {
 public class Demo15_tag {
     public void main(){
         //切换为模式匹配路由器 + RoutingTag（":"前为主题，后按 "," 号分割作为tag）
-        DamiConfig.configure(new TopicRouterPatterned(RoutingTag::new));
+        DamiConfig.setTopicRouter(new TopicRouterPatterned(RoutingTag::new));
 
         //拦截
         Dami.bus().listen("demo.a:id", (payload) -> {
