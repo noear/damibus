@@ -124,7 +124,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      *
      * @param topic   主题
      * @param content 内容
-     * @return 是否有订阅处理
+     * @return 是否有订阅
      */
     @Override
     public boolean send(final String topic, final C content) {
@@ -138,14 +138,14 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
     }
 
     /**
-     * 发送并等待响应
+     * 发送并请求（会等待响应）
      *
      * @param topic   主题
      * @param content 内容
-     * @return 响应数据
+     * @return 响应结果
      */
     @Override
-    public R sendAndResponse(final String topic, final C content) {
+    public R sendAndRequest(final String topic, final C content) {
         AssertUtil.assertTopic(topic);
 
         CompletableFuture<R> future = new CompletableFuture<>();
@@ -165,18 +165,18 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
     }
 
     /**
-     * 发送并等待回调
+     * 发送并订阅
      *
      * @param topic    主题
      * @param content  内容
-     * @param callback 回调函数
-     * @return 是否有订阅处理
+     * @param consumer 消费者
+     * @return 是否有订阅
      */
     @Override
-    public boolean sendAndCallback(final String topic, final C content, final Consumer<R> callback) {
+    public boolean sendAndSubscribe(final String topic, final C content, final Consumer<R> consumer) {
         AssertUtil.assertTopic(topic);
 
-        Payload<C, R> payload = factory.create(topic, content, new AcceptorCallback<>(callback));
+        Payload<C, R> payload = factory.create(topic, content, new AcceptorCallback<>(consumer));
 
         dispatcher.handle(payload, router);
 

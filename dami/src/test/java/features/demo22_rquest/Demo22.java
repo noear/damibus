@@ -28,11 +28,11 @@ public class Demo22 {
 
 
         //发送事件
-        String rst1 = bus.sendAndResponse(topic, 2L);
+        String rst1 = bus.sendAndRequest(topic, 2L);
         System.out.println(rst1);
         assert "hi!".equals(rst1);
 
-        bus.sendAndCallback(topic, 3L, rst2 -> {
+        bus.sendAndSubscribe(topic, 3L, rst2 -> {
             System.out.println(rst2); //callback 不限回调次数
             testObserver.incrementAndGet();
         });

@@ -7,7 +7,6 @@ import org.noear.dami.bus.DamiBusImpl;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Demo22_async {
     static String topic = "demo.hello";
@@ -36,11 +35,11 @@ public class Demo22_async {
 
 
         //发送事件
-        String rst1 = bus.sendAndResponse(topic, 2L);
+        String rst1 = bus.sendAndRequest(topic, 2L);
         System.out.println(rst1);
         assert "hi!".equals(rst1);
 
-        bus.sendAndCallback(topic, 3L, rst2 -> {
+        bus.sendAndSubscribe(topic, 3L, rst2 -> {
             System.out.println(rst2); //callback 不限回调次数
             testObserver.countDown();
         });
