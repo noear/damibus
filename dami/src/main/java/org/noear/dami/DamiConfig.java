@@ -23,6 +23,12 @@ public class DamiConfig {
         }
     }
 
+    public static void configure(TopicDispatcher topicDispatcher){
+        if (topicDispatcher != null) {
+            ((DamiBusConfigurator) Dami.bus).topicDispatcher(topicDispatcher);
+        }
+    }
+
     /**
      * 配置总线的负载工厂
      *

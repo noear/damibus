@@ -1,6 +1,8 @@
 package org.noear.dami.bus.impl;
 
+import org.noear.dami.bus.Payload;
 import org.noear.dami.bus.TopicListener;
+import org.noear.dami.bus.TopicListenerHolder;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,15 +14,15 @@ import java.util.List;
  * @author noear
  * @since 1.0
  */
-public final class TopicListenPipeline<Event> implements TopicListener<Event> {
-    private final List<EH<Event>> list = new ArrayList<>();
+public final class TopicListenPipeline<C,R> {
+    private final List<TopicListenerHolder<C, R>> list = new ArrayList<>();
 
     /**
      * 添加监听
      *
      * @param listener 监听器
      */
-    public void add(final TopicListener<Event> listener) {
+    public void add(final TopicListener<Payload<C, R>> listener) {
         add(0, listener);
     }
 
@@ -30,9 +32,9 @@ public final class TopicListenPipeline<Event> implements TopicListener<Event> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public void add(final int index, final TopicListener<Event> listener) {
-        list.add(new EH<>(index, listener));
-        list.sort(Comparator.comparing(EH::getIndex));
+    public void add(final int index, final TopicListener<Payload<C, R>> listener) {
+        list.add(new TopicListenerHolder<>(index, listener));
+        list.sort(Comparator.comparing(TopicListenerHolder::getIndex));
     }
 
     /**
@@ -40,30 +42,12 @@ public final class TopicListenPipeline<Event> implements TopicListener<Event> {
      *
      * @param listener 监听器
      */
-    public void remove(final TopicListener<Event> listener) {
-        list.removeIf(e -> e.listener.equals(listener));
+    public void remove(final TopicListener<Payload<C, R>> listener) {
+        list.removeIf(e -> e.getListener().equals(listener));
     }
 
-    @Override
-    public void onEvent(final Event event) throws Throwable {
-        //用 i，可以避免遍历时添加监听的异常
-        for (int i = 0; i < list.size(); i++) {
-            list.get(i).listener.onEvent(event);
-        }
-    }
-
-    private final static class EH<Event> {
-        final int index;
-        final TopicListener<Event> listener;
-
-        EH(int index, TopicListener<Event> listener) {
-            this.index = index;
-            this.listener = listener;
-        }
-
-        public int getIndex() {
-            return index;
-        }
+    public List<TopicListenerHolder<C, R>> getList() {
+        return list;
     }
 
     @Override

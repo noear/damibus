@@ -17,19 +17,47 @@ import java.util.function.Consumer;
 public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, R> {
     //路由器
     private TopicRouter<C, R> router;
+    //调度器
+    private TopicDispatcher<C,R> dispatcher;
     //负载工厂
     private PayloadFactory<C, R> factory;
     //响应超时：默认3s
     private long timeout = 3000;
 
+    public DamiBusImpl(TopicRouter<C, R> router, TopicDispatcher<C,R> dispatcher, PayloadFactory<C, R> factory) {
+        if (router == null) {
+            this.router = new TopicRouterDefault<>();
+        } else {
+            this.router = router;
+        }
+
+        if (dispatcher == null) {
+            this.dispatcher = new TopicDispatcherDefault<>();
+        } else {
+            this.dispatcher = dispatcher;
+        }
+
+        if (this.factory == null) {
+            this.factory = PayloadDefault::new;
+        } else {
+            this.factory = factory;
+        }
+    }
+
     public DamiBusImpl() {
-        router = new TopicRouterDefault<>();
-        factory = PayloadDefault::new;
+        this(null, null, null);
     }
 
     public DamiBusImpl(TopicRouter<C, R> topicRouter) {
-        router = topicRouter;
-        factory = PayloadDefault::new;
+        this(topicRouter, null, null);
+    }
+
+    public DamiBusImpl(TopicRouter<C, R> topicRouter, TopicDispatcher<C, R> topicDispatcher) {
+        this(topicRouter, topicDispatcher, null);
+    }
+
+    public DamiBusImpl(TopicDispatcher<C, R> topicDispatcher) {
+        this(null, topicDispatcher, null);
     }
 
     /**
@@ -38,6 +66,14 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
     public DamiBusConfigurator<C, R> topicRouter(TopicRouter<C, R> router) {
         if (router != null) {
             this.router = router;
+        }
+        return this;
+    }
+
+    @Override
+    public DamiBusConfigurator<C, R> topicDispatcher(TopicDispatcher<C, R> dispatcher) {
+        if (dispatcher != null) {
+            this.dispatcher = dispatcher;
         }
         return this;
     }
@@ -80,7 +116,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      */
     @Override
     public void intercept(int index, Interceptor interceptor) {
-        router.addInterceptor(index, interceptor);
+        dispatcher.addInterceptor(index, interceptor);
     }
 
     /**
@@ -92,9 +128,11 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      */
     @Override
     public boolean send(final String topic, final C content) {
+        AssertUtil.assertTopic(topic);
+
         Payload<C, R> payload = factory.create(topic, content, null);
 
-        router.handle(payload);
+        dispatcher.handle(payload, router);
 
         return payload.getHandled();
     }
@@ -108,10 +146,12 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      */
     @Override
     public R sendAndResponse(final String topic, final C content) {
+        AssertUtil.assertTopic(topic);
+
         CompletableFuture<R> future = new CompletableFuture<>();
         Payload<C, R> payload = factory.create(topic, content, new AcceptorResponse<>(future));
 
-        router.handle(payload);
+        dispatcher.handle(payload, router);
 
         if (payload.getHandled()) {
             try {
@@ -134,9 +174,11 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      */
     @Override
     public boolean sendAndCallback(final String topic, final C content, final Consumer<R> callback) {
+        AssertUtil.assertTopic(topic);
+
         Payload<C, R> payload = factory.create(topic, content, new AcceptorCallback<>(callback));
 
-        router.handle(payload);
+        dispatcher.handle(payload, router);
 
         return payload.getHandled();
     }

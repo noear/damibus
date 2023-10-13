@@ -13,5 +13,5 @@ public interface Interceptor<C, R> {
      * @param payload 事件负载
      * @param chain   拦截链
      */
-    void doIntercept(Payload<C, R> payload, InterceptorChain chain);
+    void doIntercept(Payload<C, R> payload, InterceptorChain<C, R> chain);
 }

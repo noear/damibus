@@ -1,5 +1,7 @@
 package org.noear.dami.bus;
 
+import java.util.List;
+
 /**
  * 主题路由器
  *
@@ -8,14 +10,6 @@ package org.noear.dami.bus;
  * @author kongweiguang
  */
 public interface TopicRouter<C, R> {
-    /**
-     * 添加拦截器
-     *
-     * @param index       顺序位
-     * @param interceptor 拦截器
-     */
-    void addInterceptor(int index, Interceptor interceptor);
-
     /**
      * 添加监听
      *
@@ -35,10 +29,7 @@ public interface TopicRouter<C, R> {
     void remove(final String topic, final TopicListener<Payload<C, R>> listener);
 
     /**
-     * 接收事件并路由
-     *
-     * @param payload 事件负载
-     * @return 是否有订阅
-     */
-    void handle(final Payload<C, R> payload);
+     * 路由匹配
+     * */
+    List<TopicListenerHolder<C, R>> matching(final  String topic);
 }

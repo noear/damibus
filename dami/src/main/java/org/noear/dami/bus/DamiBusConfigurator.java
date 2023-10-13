@@ -20,6 +20,11 @@ public interface DamiBusConfigurator<C, R> extends DamiBus<C, R> {
     DamiBusConfigurator<C, R> topicRouter(TopicRouter<C, R> router);
 
     /**
+     * 配置主题调度器
+     */
+    DamiBusConfigurator<C, R> topicDispatcher(TopicDispatcher<C, R> dispatcher);
+
+    /**
      * 配置事件负载工厂
      */
     DamiBusConfigurator<C, R> payloadFactory(PayloadFactory<C, R> factory);

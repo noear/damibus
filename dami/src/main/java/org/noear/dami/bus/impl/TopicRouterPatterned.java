@@ -2,12 +2,9 @@ package org.noear.dami.bus.impl;
 
 import org.noear.dami.api.impl.MethodTopicListener;
 import org.noear.dami.bus.*;
-import org.noear.dami.exception.DamiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,7 +17,7 @@ import java.util.stream.Collectors;
  * @author noear
  * @since 1.0
  */
-public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
+public class TopicRouterPatterned<C,R> implements TopicRouter<C,R> {
     static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
@@ -47,8 +44,6 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
      */
     @Override
     public synchronized void add(final String topic, final int index, final TopicListener<Payload<C, R>> listener) {
-        assertTopic(topic);
-
         routingList.add(routerFactory.create(topic, index, listener));
 
         if (log.isDebugEnabled()) {
@@ -68,8 +63,6 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
      */
     @Override
     public synchronized void remove(final String topic, final TopicListener<Payload<C, R>> listener) {
-        assertTopic(topic);
-
         for (int i = 0; i < routingList.size(); i++) {
             Routing<C, R> routing = routingList.get(i);
             if (routing.matches(topic)) {
@@ -89,39 +82,13 @@ public class TopicRouterPatterned<C,R> extends TopicRouterBase<C,R> {
         }
     }
 
-    /**
-     * 事件拦截并路由分发
-     */
     @Override
-    public void doIntercept(Payload<C, R> payload, InterceptorChain chain) {
-        assertTopic(payload.getTopic());
-
-        if (log.isTraceEnabled()) {
-            log.trace("{}", payload);
-        }
-
-        final List<Routing<C, R>> routings = routingList.stream()
-                .filter(r -> r.matches(payload.getTopic()))
+    public List<TopicListenerHolder<C, R>> matching(String topic) {
+        List<TopicListenerHolder<C, R>> routings = routingList.stream()
+                .filter(r -> r.matches(topic))
                 .sorted(Comparator.comparing(Routing::getIndex))
                 .collect(Collectors.toList());
 
-        if (!routings.isEmpty()) {
-            try {
-                for (Routing<C, R> r1 : routings) {
-                    r1.getListener().onEvent(payload);
-                }
-                payload.setHandled();
-            } catch (InvocationTargetException e) {
-                throw new DamiException(e.getTargetException());
-            } catch (UndeclaredThrowableException e) {
-                throw new DamiException(e.getUndeclaredThrowable());
-            } catch (Throwable e) {
-                throw new DamiException(e);
-            }
-        } else {
-            if (log.isWarnEnabled()) {
-                log.warn("There's no matching listening on the topic(@{})", payload.getTopic());
-            }
-        }
+        return routings;
     }
 }
