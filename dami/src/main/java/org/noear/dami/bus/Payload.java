@@ -26,16 +26,16 @@ public interface Payload<C, R> extends Serializable {
 
     /**
      * 设置处理标识
-     * */
+     */
     void setHandled();
 
     /**
      * 获取处理标识
-     * */
+     */
     boolean getHandled();
 
     /**
-     * 是否为请求（是的话，需要答复）
+     * 是否有接收器（有，则需要答复）
      */
     boolean isRequest();
 
