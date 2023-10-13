@@ -23,6 +23,8 @@ public class Dami {
 public class DamiConfig {
     //配置总线的主题路由器
     public static void configure(TopicRouter topicRouter);
+    //配置总线的主题调度器
+    public static void configure(TopicDispatcher topicDispatcher);
     //配置总线的负载工厂
     public static void configure(PayloadFactory payloadFactory);
     //配置总线的响应超时
@@ -50,9 +52,9 @@ public interface DamiBus<C, R> {
     
     //发送（不需要答复）=> 返回是否有订阅处理
     boolean send(final String topic, final C content);
-    //发送并等待响应 => 返回响应结果（没有订阅处理，会异常）
+    //发送并请求 => 返回响应结果（没有订阅处理，会异常）
     R sendAndRequest(final String topic, final C content);
-    //发送并等待回调 => 返回是否有订阅处理
+    //发送并订阅 => 返回是否有订阅处理
     boolean sendAndSubscribe(final String topic, final C content, final Consumer<R> consumer);
     
     //监听
@@ -109,8 +111,10 @@ public interface Payload<C, R> extends Serializable {
     //获取处理标识
     boolean getHandled();
 
-    //是否为请求（是的话，需要答复）
+    //是否为请求（是，则需要答复）
     boolean isRequest();
+    //是否为订阅（是，则需要答复）
+    boolean isSubscribe();
     //答复
     boolean reply(final R content);
 
@@ -128,9 +132,9 @@ Payload::reply，答复情况说明
 
 | 发送接口              | 答复说明            | 备注                          |
 |-------------------|-----------------|-----------------------------|
-| send()            | 会出异常，提示不支持答复    | payload.isRequest() = false |
+| send()            | 会出异常，提示不支持答复    |  |
 | sendAndRequest() | 第一条答复有效，且必须要有答复 | payload.isRequest() = true  |
-| sendAndSubscribe() | 可以无限次答复有效       | payload.isRequest() = true  |
+| sendAndSubscribe() | 可以无限次答复有效       | payload.isSubscribe() = true  |
 
 
 ## 6、TopicListener<Event>，主题监听接口

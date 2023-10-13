@@ -23,6 +23,11 @@ public class DamiConfig {
         }
     }
 
+    /**
+     * 配置总线的主题调度器
+     *
+     * @param topicDispatcher 主题调度器
+     */
     public static void configure(TopicDispatcher topicDispatcher){
         if (topicDispatcher != null) {
             ((DamiBusConfigurator) Dami.bus).topicDispatcher(topicDispatcher);
