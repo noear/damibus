@@ -1,5 +1,5 @@
 
-#### 0.50
+#### 0.51
 * 添加 TopicDispatcher，将调度处理与路由器开发（更方便添加监控）
 * 添加 InterceptorChain::getTargets 接口（可以知道有哪些订阅）
 * 添加 Acceptor::isSingle 接口，用于识别单发还是多发接收
