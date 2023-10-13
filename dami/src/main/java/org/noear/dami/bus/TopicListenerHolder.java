@@ -26,4 +26,12 @@ public class TopicListenerHolder<C,R> {
     public TopicListener<Payload<C, R>> getListener() {
         return listener;
     }
+
+    @Override
+    public String toString() {
+        return "TopicListenerHolder{" +
+                "index=" + index +
+                ", listener=" + listener +
+                '}';
+    }
 }

@@ -17,6 +17,7 @@ public class Demo16_intercept {
     public void main() throws Exception {
         busStr.intercept((payload, chain) -> {
             System.out.println("开始监视...");
+            chain.getTargets().forEach(e->System.out.println(e));
             chain.doIntercept(payload);
             System.out.println("结速监视...");
         });
