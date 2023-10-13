@@ -21,8 +21,10 @@ public class TopicDispatcherMonitor<C,R> extends TopicDispatcherDefault<C,R> {
             TopicListener<Payload<C,R>> listener = targets.get(i).getListener();
 
             //发送前监视...
+            System.out.println("发送前监视...");
             listener.onEvent(payload);
             //发送后监视...
+            System.out.println("发送后监视...");
         }
 
         //结速监视...

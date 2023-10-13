@@ -23,6 +23,15 @@ public interface DamiBus<C, R> {
     void intercept(int index, Interceptor interceptor);
 
     /**
+     * 拦截
+     *
+     * @param interceptor 拦截器
+     */
+    default void intercept(Interceptor interceptor) {
+        intercept(0, interceptor);
+    }
+
+    /**
      * 发送（不需要答复）
      *
      * @param topic   主题
