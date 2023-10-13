@@ -5,16 +5,22 @@ import org.noear.dami.bus.Acceptor;
 import java.util.function.Consumer;
 
 /**
- * 回调答复接收人
+ * 请求接收器
  *
  * @author noear
  * @since 1.0
  */
-public class AcceptorCallback<R> implements Acceptor<R> {
+public class AcceptorRequest<R> implements Acceptor<R> {
     private final Consumer<R> future;
-    public AcceptorCallback(Consumer<R> future){
+    public AcceptorRequest(Consumer<R> future){
         this.future = future;
     }
+
+    @Override
+    public boolean isSingle() {
+        return true;
+    }
+
     @Override
     public boolean isDone() {
         return false;

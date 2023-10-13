@@ -1,7 +1,8 @@
 #### 0.31
 
 * 添加 TopicDispatcher，将调度处理与路由器开发；更方便添加监控
-* 添加 InterceptorChain::getTargets，方便打印日志
+* 添加 InterceptorChain::getTargets 接口，方便打印日志
+* 添加 Acceptor::isSingle 接口，用于识别单发还是多发接收
 * 调整 sendAndResponse 更名为 sendAndRequest
 * 调整 sendAndCallback 更名为 sendAndSubscribe
 
