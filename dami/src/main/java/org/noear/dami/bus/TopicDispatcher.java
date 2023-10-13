@@ -1,7 +1,7 @@
 package org.noear.dami.bus;
 
 /**
- * 主题调度器
+ * 主题派发器
  *
  * @author noear
  * @since 1.0
@@ -13,7 +13,7 @@ public interface TopicDispatcher<C,R> {
     void addInterceptor(int index, Interceptor interceptor);
 
     /**
-     * 调度处理
+     * 派发
      */
-    void handle(Payload<C, R> payload, TopicRouter<C, R> router);
+    void dispatch(Payload<C, R> payload, TopicRouter<C, R> router);
 }

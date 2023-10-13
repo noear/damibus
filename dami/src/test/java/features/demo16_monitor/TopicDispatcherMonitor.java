@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class TopicDispatcherMonitor<C,R> extends TopicDispatcherDefault<C,R> {
     @Override
-    protected void doExchange(Payload<C, R> payload, List<TopicListenerHolder<C, R>> targets) throws Throwable {
+    protected void doDispatch(Payload<C, R> payload, List<TopicListenerHolder<C, R>> targets) throws Throwable {
         //开始监视...
         System.out.println("开始监视...");
 

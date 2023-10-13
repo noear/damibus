@@ -132,7 +132,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
 
         Payload<C, R> payload = factory.create(topic, content, null);
 
-        dispatcher.handle(payload, router);
+        dispatcher.dispatch(payload, router);
 
         return payload.getHandled();
     }
@@ -151,7 +151,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
         CompletableFuture<R> future = new CompletableFuture<>();
         Payload<C, R> payload = factory.create(topic, content, new AcceptorRequest<>(future));
 
-        dispatcher.handle(payload, router);
+        dispatcher.dispatch(payload, router);
 
         if (payload.getHandled()) {
             try {
@@ -178,7 +178,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
 
         Payload<C, R> payload = factory.create(topic, content, new AcceptorSubscribe<>(consumer));
 
-        dispatcher.handle(payload, router);
+        dispatcher.dispatch(payload, router);
 
         return payload.getHandled();
     }

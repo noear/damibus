@@ -13,6 +13,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
+ * 主题派发器默认实现
+ *
  * @author noear
  * @since 1.0
  */
@@ -48,17 +50,11 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
         }
     }
 
-    @Override
-    public void handle(Payload<C, R> payload, TopicRouter<C, R> router) {
-        AssertUtil.assertTopic(payload.getTopic());
 
-        MDC.put("dami-guid", payload.getGuid());
 
-        List<TopicListenerHolder<C, R>> targets = router.matching(payload.getTopic());
-
-        new InterceptorChain<>(interceptors, targets).doIntercept(payload);
-    }
-
+    /**
+     * 执行拦截
+     * */
     @Override
     public void doIntercept(Payload<C, R> payload, InterceptorChain<C, R> chain) {
         if (log.isTraceEnabled()) {
@@ -69,7 +65,7 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
 
         if (targets != null && targets.size() > 0) {
             try {
-                doExchange(payload, chain.getTargets());
+                doDispatch(payload, chain.getTargets());
                 payload.setHandled();
             } catch (InvocationTargetException e) {
                 throw new DamiException(e.getTargetException());
@@ -85,7 +81,26 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
         }
     }
 
-    protected void doExchange(Payload<C, R> payload, List<TopicListenerHolder<C, R>> targets) throws Throwable {
+    /**
+     * 派发
+     * */
+    @Override
+    public void dispatch(Payload<C, R> payload, TopicRouter<C, R> router) {
+        AssertUtil.assertTopic(payload.getTopic());
+
+        MDC.put("dami-guid", payload.getGuid());
+
+        //获取路由匹配结果
+        List<TopicListenerHolder<C, R>> targets = router.matching(payload.getTopic());
+
+        //转成拦截链处理
+        new InterceptorChain<>(interceptors, targets).doIntercept(payload);
+    }
+
+    /**
+     * 执行派发
+     * */
+    protected void doDispatch(Payload<C, R> payload, List<TopicListenerHolder<C, R>> targets) throws Throwable {
         //用 i，可以避免遍历时添加监听的异常
         for (int i = 0; i < targets.size(); i++) {
             targets.get(i).getListener().onEvent(payload);
