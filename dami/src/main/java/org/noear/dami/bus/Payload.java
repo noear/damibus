@@ -35,9 +35,14 @@ public interface Payload<C, R> extends Serializable {
     boolean getHandled();
 
     /**
-     * 是否有接收器（有，则需要答复）
+     * 是否是请求（有，则需要答复）
      */
     boolean isRequest();
+
+    /**
+     * 是否是订阅（有，则需要答复）
+     * */
+    boolean isSubscribe();
 
     /**
      * 答复

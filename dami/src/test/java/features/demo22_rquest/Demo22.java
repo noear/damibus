@@ -19,7 +19,7 @@ public class Demo22 {
         bus.listen(topic, payload -> {
             System.err.println(payload);
 
-            if (payload.isRequest()) {
+            if (payload.isRequest() || payload.isSubscribe()) {
                 payload.reply("hi!");
                 payload.reply("* hi nihao!");
                 payload.reply("** hi nihao!");

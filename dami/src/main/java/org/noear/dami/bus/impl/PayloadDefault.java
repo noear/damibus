@@ -83,8 +83,20 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
      */
     @Override
     public boolean isRequest() {
-        //如果有接收人，且未结束接收
-        return acceptor != null;
+        if (acceptor != null) {
+            return acceptor.isSingle();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isSubscribe() {
+        if (acceptor != null) {
+            return !acceptor.isSingle();
+        } else {
+            return false;
+        }
     }
 
 
@@ -95,7 +107,7 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
      */
     @Override
     public boolean reply(final R content) {
-        if (isRequest() == false) {
+        if (acceptor == null) {
             throw new DamiException("This payload does not support a reply");
         }
 

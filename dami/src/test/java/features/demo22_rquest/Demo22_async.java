@@ -25,7 +25,7 @@ public class Demo22_async {
                 System.out.println(Thread.currentThread());
                 System.err.println(payload);
 
-                if (payload.isRequest()) {
+                if (payload.isRequest() || payload.isSubscribe()) {
                     payload.reply("hi!"); // sendAndRequest 只接收第一个
                     payload.reply("* hi nihao!");
                     payload.reply("** hi nihao!");
