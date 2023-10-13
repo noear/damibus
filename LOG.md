@@ -1,3 +1,7 @@
+
+#### 0.41
+* 添加 Payload::isSubscribe 接口，用于识别订阅
+
 #### 0.40
 
 * 添加 TopicDispatcher，将调度处理与路由器开发；更方便添加监控
