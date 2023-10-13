@@ -141,4 +141,3 @@ public interface TopicListener<Event> {
     void onEvent(final Event event) throws Throwable;
 }
 ```
-
