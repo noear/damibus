@@ -1,22 +1,20 @@
 
-#### 0.42
-* 添加 Payload::isSubscribe 接口，用于识别订阅
-
-#### 0.40
-
-* 添加 TopicDispatcher，将调度处理与路由器开发；更方便添加监控
-* 添加 InterceptorChain::getTargets 接口，可以知道有哪些订阅
+#### 0.50
+* 添加 TopicDispatcher，将调度处理与路由器开发（更方便添加监控）
+* 添加 InterceptorChain::getTargets 接口（可以知道有哪些订阅）
 * 添加 Acceptor::isSingle 接口，用于识别单发还是多发接收
+* 添加 Payload::isSubscribe 接口，用于识别订阅
 * 
-* 调整 sendAndResponse 更名为 sendAndRequest
-* 调整 sendAndCallback 更名为 sendAndSubscribe
+* 更名 sendAndResponse 为 sendAndRequest!!!
+* 更名 sendAndCallback 为 sendAndSubscribe!!!
+* 删除 Dami::intercept 接品，改用 Dami.bus()::intercept
 
 #### 0.30
 
 * 调整 启用新的配置方式（配置路由时，不需要重新实例化总线）
 * 调整 接口默认方法处理策略（有订阅执行订阅，无订阅者执行默认）
 * 调整 createSender 调整类加载器的主体
-* 调整 send,sendAndCallback 返回类型改为 bool，表示是否有订阅处理
+* 调整 send,sendAndSubscribe 返回类型改为 bool（马上可以知道是否有订阅目标）
 
 #### 0.29
 

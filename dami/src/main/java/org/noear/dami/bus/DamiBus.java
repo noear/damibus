@@ -20,14 +20,14 @@ public interface DamiBus<C, R> {
      * @param index       顺序位
      * @param interceptor 拦截器
      */
-    void intercept(int index, Interceptor interceptor);
+    void intercept(int index, Interceptor<C,R> interceptor);
 
     /**
      * 拦截
      *
      * @param interceptor 拦截器
      */
-    default void intercept(Interceptor interceptor) {
+    default void intercept(Interceptor<C,R> interceptor) {
         intercept(0, interceptor);
     }
 

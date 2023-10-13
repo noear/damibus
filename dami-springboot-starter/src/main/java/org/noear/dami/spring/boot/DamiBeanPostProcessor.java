@@ -70,7 +70,7 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
         }
 
         if (bean instanceof Interceptor) {
-            Dami.intercept((Interceptor) bean);
+            Dami.bus().intercept((Interceptor) bean);
         }
 
         if (bean instanceof Coder) {

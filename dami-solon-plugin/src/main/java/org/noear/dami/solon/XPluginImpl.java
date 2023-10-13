@@ -19,7 +19,7 @@ public class XPluginImpl implements Plugin {
         context.beanBuilderAdd(DamiTopic.class, new DamiTopicBeanBuilder());
 
         context.subWrapsOfType(Interceptor.class, wrap -> {
-            Dami.intercept(wrap.index(), wrap.raw());
+            Dami.bus().intercept(wrap.index(), wrap.raw());
         });
 
         context.getBeanAsync(Coder.class, bean -> {

@@ -10,10 +10,6 @@ public class Dami {
     public static <C, R> DamiBus<C, R> bus() { return bus; }
     //接口界面
     public static DamiApi api() { return api; }
-    //拦截
-    public static void intercept(Interceptor interceptor) { intercept(0, interceptor); }
-    //拦截
-    public static void intercept(int index, Interceptor interceptor) { bus.intercept(index, interceptor);}
 }
 ```
 
