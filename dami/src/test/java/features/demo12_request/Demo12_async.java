@@ -41,7 +41,7 @@ public class Demo12_async {
 
         busStr.sendAndSubscribe(topic, "world", rst2 -> {
             System.out.println(Thread.currentThread());
-            System.out.println(rst2); //callback 不限回调次数
+            System.out.println(rst2); //subscribe 不限回调次数
             testObserver.countDown();
         });
 

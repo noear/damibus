@@ -53,7 +53,7 @@ public interface DamiBus<C, R> {
     //发送并等待响应 => 返回响应结果（没有订阅处理，会异常）
     R sendAndRequest(final String topic, final C content);
     //发送并等待回调 => 返回是否有订阅处理
-    boolean sendAndSubscribe(final String topic, final C content, final Consumer<R> callback);
+    boolean sendAndSubscribe(final String topic, final C content, final Consumer<R> consumer);
     
     //监听
     default void listen(final String topic, final TopicListener<Payload<C, R>> listener) { listen(topic, 0, listener); }

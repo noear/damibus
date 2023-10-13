@@ -110,7 +110,7 @@ public class Demo12 {
         Dami.<String,String>bus().listen(topic, payload -> {
             System.err.println(payload);
 
-            if (payload.isRequest()) {
+            if (payload.isRequest() || payload.isSubscribe()) {
                 payload.reply("hi!"); // sendAndRequest 只接收第一个
                 payload.reply("* hi nihao!");
                 payload.reply("** hi nihao!");
@@ -123,7 +123,7 @@ public class Demo12 {
         System.out.println(rst1);
 
         Dami.<String,String>bus().sendAndSubscribe(topic, "world", rst2 -> {
-            System.out.println(rst2); //callback 不限回调次数
+            System.out.println(rst2); //subscribe 不限回调次数
         });
     }
 }

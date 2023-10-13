@@ -40,7 +40,7 @@ public class Demo22_async {
         assert "hi!".equals(rst1);
 
         bus.sendAndSubscribe(topic, 3L, rst2 -> {
-            System.out.println(rst2); //callback 不限回调次数
+            System.out.println(rst2); //subscribe 不限回调次数
             testObserver.countDown();
         });
 
