@@ -64,7 +64,7 @@ DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.41</version>
+    <version>0.42</version>
 </dependency>
 ```
 
