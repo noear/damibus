@@ -149,7 +149,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
         AssertUtil.assertTopic(topic);
 
         CompletableFuture<R> future = new CompletableFuture<>();
-        Payload<C, R> payload = factory.create(topic, content, new AcceptorSubscribe<>(future));
+        Payload<C, R> payload = factory.create(topic, content, new AcceptorRequest<>(future));
 
         dispatcher.handle(payload, router);
 
@@ -176,7 +176,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
     public boolean sendAndSubscribe(final String topic, final C content, final Consumer<R> consumer) {
         AssertUtil.assertTopic(topic);
 
-        Payload<C, R> payload = factory.create(topic, content, new AcceptorRequest<>(consumer));
+        Payload<C, R> payload = factory.create(topic, content, new AcceptorSubscribe<>(consumer));
 
         dispatcher.handle(payload, router);
 

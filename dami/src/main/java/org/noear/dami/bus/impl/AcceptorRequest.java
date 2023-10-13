@@ -2,17 +2,18 @@ package org.noear.dami.bus.impl;
 
 import org.noear.dami.bus.Acceptor;
 
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 /**
- * 请求接收器
+ * 订阅接收器
  *
  * @author noear
  * @since 1.0
  */
 public class AcceptorRequest<R> implements Acceptor<R> {
-    private final Consumer<R> future;
-    public AcceptorRequest(Consumer<R> future){
+    private final CompletableFuture<R> future;
+
+    public AcceptorRequest(CompletableFuture<R> future) {
         this.future = future;
     }
 
@@ -23,12 +24,11 @@ public class AcceptorRequest<R> implements Acceptor<R> {
 
     @Override
     public boolean isDone() {
-        return false;
+        return future.isDone();
     }
 
     @Override
     public boolean accept(R value) {
-        future.accept(value);
-        return true;
+        return future.complete(value);
     }
 }
