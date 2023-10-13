@@ -50,7 +50,7 @@ public class Demo12 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                payload.reply("hi!"); // sendAndResponse 只接收第一个
+                payload.reply("hi!"); // sendAndRequest 只接收第一个
                 payload.reply("* hi nihao!");
                 payload.reply("** hi nihao!");
             }
@@ -58,10 +58,10 @@ public class Demo12 {
 
 
         //发送事件
-        String rst1 = Dami.<String,String>bus().sendAndResponse(topic, "world"); //要求有返回值
+        String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world"); //要求有返回值
         System.out.println(rst1);
 
-        Dami.<String,String>bus().sendAndCallback(topic, "world", rst2 -> {
+        Dami.<String,String>bus().sendAndSubscribe(topic, "world", rst2 -> {
             System.out.println(rst2); //callback 不限回调次数
         });
     }

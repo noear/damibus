@@ -25,7 +25,7 @@ public class Demo12_async {
                 System.err.println(payload);
 
                 if (payload.isRequest()) {
-                    payload.reply("hi!"); // sendAndResponse 只接收第一个
+                    payload.reply("hi!"); // sendAndRequest 只接收第一个
                     payload.reply("* hi nihao!");
                     payload.reply("** hi nihao!");
                 }

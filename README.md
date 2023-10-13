@@ -53,8 +53,8 @@ DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模�
 |    | DamiBus | EventBus | Api | DamiBus 的情况说明                                                     |
 |----|------|----------|-----|----------------------------------------------------------------|
 | 广播 | 有    | 有        | 无   | 发送(send) + 监听(listen)<br/>以及 Api 模式                            |
-| 应答 | 有    | 无        | 有   | 发送并等响应(sendAndResponse) + 监听(listen) + 答复(reply)<br/>以及 Api 模式 |
-| 回调 | 有+   | 无        | 有-  | 发送并等回调(sendAndCallback) + 监听(listen) + 答复(reply)               |
+| 应答 | 有    | 无        | 有   | 发送并等响应(sendAndRequest) + 监听(listen) + 答复(reply)<br/>以及 Api 模式 |
+| 回调 | 有+   | 无        | 有-  | 发送并等回调(sendAndSubscribe) + 监听(listen) + 答复(reply)               |
 | 耦合 | 弱-   | 弱+       | 强++ |                                                                |
 
 
@@ -64,7 +64,7 @@ DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>0.30</version>
+    <version>1.0-M1</version>
 </dependency>
 ```
 
@@ -111,7 +111,7 @@ public class Demo12 {
             System.err.println(payload);
 
             if (payload.isRequest()) {
-                payload.reply("hi!"); // sendAndResponse 只接收第一个
+                payload.reply("hi!"); // sendAndRequest 只接收第一个
                 payload.reply("* hi nihao!");
                 payload.reply("** hi nihao!");
             }
@@ -119,10 +119,10 @@ public class Demo12 {
 
 
         //发送事件
-        String rst1 = Dami.<String,String>bus().sendAndResponse(topic, "world"); //要求有返回值
+        String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world"); //要求有返回值
         System.out.println(rst1);
 
-        Dami.<String,String>bus().sendAndCallback(topic, "world", rst2 -> {
+        Dami.<String,String>bus().sendAndSubscribe(topic, "world", rst2 -> {
             System.out.println(rst2); //callback 不限回调次数
         });
     }
