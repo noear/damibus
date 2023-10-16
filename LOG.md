@@ -1,4 +1,7 @@
 
+#### 0.52
+* 修复 TopicDispatcherDefault::dispatch MDC 添加后没有移除的问题
+
 #### 0.51
 * 添加 TopicDispatcher，将调度处理与路由器开发（更方便添加监控）
 * 添加 InterceptorChain::getTargets 接口（可以知道有哪些订阅）

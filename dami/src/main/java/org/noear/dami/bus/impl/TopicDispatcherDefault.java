@@ -88,13 +88,17 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
     public void dispatch(Payload<C, R> payload, TopicRouter<C, R> router) {
         AssertUtil.assertTopic(payload.getTopic());
 
-        MDC.put("dami-guid", payload.getGuid());
+        try {
+            MDC.put("dami-guid", payload.getGuid());
 
-        //获取路由匹配结果
-        List<TopicListenerHolder<C, R>> targets = router.matching(payload.getTopic());
+            //获取路由匹配结果
+            List<TopicListenerHolder<C, R>> targets = router.matching(payload.getTopic());
 
-        //转成拦截链处理
-        new InterceptorChain<>(interceptors, targets).doIntercept(payload);
+            //转成拦截链处理
+            new InterceptorChain<>(interceptors, targets).doIntercept(payload);
+        } finally {
+            MDC.remove("dami-guid");
+        }
     }
 
     /**
