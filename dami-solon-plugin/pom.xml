@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>dami-parent</artifactId>
-        <version>0.51</version>
+        <version>0.52</version>
         <relativePath>../dami-parent/pom.xml</relativePath>
     </parent>
 

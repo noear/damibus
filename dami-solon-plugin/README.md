@@ -9,7 +9,7 @@
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami-solon-plugin</artifactId>
-    <version>0.51</version>
+    <version>0.52</version>
 </dependency>
 ```
 
