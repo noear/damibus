@@ -20,14 +20,14 @@ public interface DamiBus<C, R> {
      * @param index       顺序位
      * @param interceptor 拦截器
      */
-    void intercept(int index, Interceptor<C,R> interceptor);
+    void intercept(int index, Interceptor<C, R> interceptor);
 
     /**
      * 拦截
      *
      * @param interceptor 拦截器
      */
-    default void intercept(Interceptor<C,R> interceptor) {
+    default void intercept(Interceptor<C, R> interceptor) {
         intercept(0, interceptor);
     }
 
@@ -88,9 +88,9 @@ public interface DamiBus<C, R> {
     void unlisten(final String topic, final TopicListener<Payload<C, R>> listener);
 
     /**
-     * 取消监听
+     * 取消监听（主题下的所有监听）
      *
-     * @param topic    主题
+     * @param topic 主题
      */
     void unlisten(final String topic);
 }

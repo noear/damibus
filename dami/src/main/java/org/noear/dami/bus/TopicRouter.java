@@ -31,12 +31,12 @@ public interface TopicRouter<C, R> {
     /**
      * 移除监听
      *
-     * @param topic    主题
+     * @param topic 主题
      */
     void remove(final String topic);
 
     /**
      * 路由匹配
-     * */
-    List<TopicListenerHolder<C, R>> matching(final  String topic);
+     */
+    List<TopicListenerHolder<C, R>> matching(final String topic);
 }

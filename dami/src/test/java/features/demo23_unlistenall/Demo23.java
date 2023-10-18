@@ -6,10 +6,7 @@ import org.noear.dami.bus.DamiBusImpl;
 import org.noear.dami.bus.Payload;
 import org.noear.dami.bus.TopicListener;
 
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-public class Demo21 {
+public class Demo23 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.<String,String>bus()
     DamiBus<String, Long> bus = new DamiBusImpl<>();

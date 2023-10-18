@@ -82,15 +82,16 @@ public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
      */
     @Override
     public synchronized void remove(final String topic) {
-        final TopicListenPipeline<C, R> pipeline = pipelineMap.get(topic);
-        if (pipeline != null) {
-            pipelineMap.remove(topic);
-        }
+        pipelineMap.remove(topic);
+
         if (log.isDebugEnabled()) {
-            log.debug("TopicRouter listener removed(@{})", topic);
+            log.debug("TopicRouter listener removed(@{}): all..", topic);
         }
     }
 
+    /**
+     * 路由匹配
+     */
     @Override
     public List<TopicListenerHolder<C, R>> matching(String topic) {
         final TopicListenPipeline<C, R> pipeline = pipelineMap.get(topic);

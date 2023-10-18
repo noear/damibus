@@ -86,6 +86,11 @@ public class TopicRouterPatterned<C, R> implements TopicRouter<C, R> {
         }
     }
 
+    /**
+     * 移除监听
+     *
+     * @param topic 主题
+     */
     @Override
     public void remove(String topic) {
         for (int i = 0; i < routingList.size(); i++) {
@@ -95,11 +100,15 @@ public class TopicRouterPatterned<C, R> implements TopicRouter<C, R> {
                 i--;
             }
         }
+
         if (log.isDebugEnabled()) {
-            log.debug("TopicRouter listener removed(@{})", topic);
+            log.debug("TopicRouter listener removed(@{}): all..", topic);
         }
     }
 
+    /**
+     * 路由匹配
+     */
     @Override
     public List<TopicListenerHolder<C, R>> matching(String topic) {
         List<TopicListenerHolder<C, R>> routings = routingList.stream()

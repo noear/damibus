@@ -1,3 +1,5 @@
+#### 0.53
+* 添加 DamiBus::unlisten 取肖主题的所有监听
 
 #### 0.52
 * 修复 TopicDispatcherDefault::dispatch MDC 添加后没有移除的问题
