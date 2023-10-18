@@ -13,6 +13,36 @@
 </dependency>
 ```
 
+#### demo90_springboot （注解）
+
+```java
+@EnableAutoConfiguration
+@SpringBootTest(classes = Demo90.class)
+@ComponentScan("features.demo90_springboot")
+public class Demo90 {
+    @Test
+    public void main() {
+        DamiBus<String, String> bus = Dami.<String, String>bus();
+
+        System.out.println(bus.sendAndRequest("user.demo", "solon"));
+        bus.sendAndSubscribe("user.demo", "dami", rst -> {
+            System.out.println(rst);
+        });
+    }
+
+    @DamiTopic("user.demo")
+    public static class UserEventListener implements TopicListener<Payload<String, String>> {
+        @Override
+        public void onEvent(Payload<String, String> payload) throws Throwable {
+            if (payload.isSubscribe() || payload.isRequest()) {
+                payload.reply("Hi " + payload.getContent());
+                payload.reply("Hi " + payload.getContent());
+            }
+        }
+    }
+}
+```
+
 #### demo91_springboot （无依赖实现效果）
 
 ```java

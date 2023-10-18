@@ -15,6 +15,35 @@
 
 如果涉及类加载器隔离：请在主程序标为编译，在其它模块标为可选。
 
+#### demo80_solon （注解）
+
+```java
+@ExtendWith(SolonJUnit5Extension.class)
+public class Demo80 {
+    @Test
+    public void main() {
+        DamiBus<String, String> bus = Dami.<String, String>bus();
+        
+        System.out.println(bus.sendAndRequest("user.demo", "solon"));
+        bus.sendAndSubscribe("user.demo", "dami", rst -> {
+            System.out.println(rst);
+        });
+    }
+
+    @DamiTopic("user.demo")
+    public static class UserEventListener implements TopicListener<Payload<String, String>> {
+        @Override
+        public void onEvent(Payload<String, String> payload) throws Throwable {
+            if (payload.isSubscribe() || payload.isRequest()) {
+                payload.reply("Hi " + payload.getContent());
+                payload.reply("Hi " + payload.getContent());
+            }
+        }
+    }
+}
+```
+
+
 #### demo81_solon （无依赖实现效果）
 
 ```java
