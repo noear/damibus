@@ -1,23 +1,27 @@
 package org.noear.dami.bus.impl;
 
 import org.noear.dami.api.impl.MethodTopicListener;
-import org.noear.dami.bus.*;
+import org.noear.dami.bus.Payload;
+import org.noear.dami.bus.TopicListener;
+import org.noear.dami.bus.TopicListenerHolder;
+import org.noear.dami.bus.TopicRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
 /**
  * 主题路由器（模式匹配实现方案；支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
  *
- *
- * @example /a/*, /a/**b
  * @author noear
+ * @example /a/*, /a/**b
  * @since 1.0
  */
-public class TopicRouterPatterned<C,R> implements TopicRouter<C,R> {
+public class TopicRouterPatterned<C, R> implements TopicRouter<C, R> {
     static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
@@ -79,6 +83,20 @@ public class TopicRouterPatterned<C,R> implements TopicRouter<C,R> {
             } else {
                 log.debug("TopicRouter listener removed(@{}): {}", topic, listener.getClass().getName());
             }
+        }
+    }
+
+    @Override
+    public void remove(String topic) {
+        for (int i = 0; i < routingList.size(); i++) {
+            Routing<C, R> routing = routingList.get(i);
+            if (routing.matches(topic)) {
+                routingList.remove(i);
+                i--;
+            }
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("TopicRouter listener removed(@{})", topic);
         }
     }
 
