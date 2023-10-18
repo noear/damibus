@@ -29,6 +29,13 @@ public interface TopicRouter<C, R> {
     void remove(final String topic, final TopicListener<Payload<C, R>> listener);
 
     /**
+     * 移除监听
+     *
+     * @param topic    主题
+     */
+    void remove(final String topic);
+
+    /**
      * 路由匹配
      * */
     List<TopicListenerHolder<C, R>> matching(final  String topic);

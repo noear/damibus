@@ -1,12 +1,16 @@
 package org.noear.dami.bus.impl;
 
 import org.noear.dami.api.impl.MethodTopicListener;
-import org.noear.dami.bus.*;
+import org.noear.dami.bus.Payload;
 import org.noear.dami.bus.TopicListener;
+import org.noear.dami.bus.TopicListenerHolder;
+import org.noear.dami.bus.TopicRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 主题路由器（默认啥希表实现方案）
@@ -68,6 +72,22 @@ public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
             } else {
                 log.debug("TopicRouter listener removed(@{}): {}", topic, listener.getClass().getName());
             }
+        }
+    }
+
+    /**
+     * 移除监听
+     *
+     * @param topic 主题
+     */
+    @Override
+    public synchronized void remove(final String topic) {
+        final TopicListenPipeline<C, R> pipeline = pipelineMap.get(topic);
+        if (pipeline != null) {
+            pipelineMap.remove(topic);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("TopicRouter listener removed(@{})", topic);
         }
     }
 

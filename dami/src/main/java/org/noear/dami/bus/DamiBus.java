@@ -86,4 +86,11 @@ public interface DamiBus<C, R> {
      * @param listener 监听
      */
     void unlisten(final String topic, final TopicListener<Payload<C, R>> listener);
+
+    /**
+     * 取消监听
+     *
+     * @param topic    主题
+     */
+    void unlisten(final String topic);
 }
