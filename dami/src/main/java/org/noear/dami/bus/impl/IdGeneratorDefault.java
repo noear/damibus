@@ -5,7 +5,7 @@ import org.noear.dami.bus.IdGenerator;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Id 生成器默认器
+ * Id 生成器默认实现
  *
  * @author noear
  * @since 1.0
