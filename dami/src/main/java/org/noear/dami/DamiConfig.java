@@ -28,7 +28,7 @@ public class DamiConfig {
      *
      * @param topicDispatcher 主题调度器
      */
-    public static void configure(TopicDispatcher topicDispatcher){
+    public static void configure(TopicDispatcher topicDispatcher) {
         if (topicDispatcher != null) {
             ((DamiBusConfigurator) Dami.bus).topicDispatcher(topicDispatcher);
         }
@@ -42,6 +42,17 @@ public class DamiConfig {
     public static void configure(PayloadFactory payloadFactory) {
         if (payloadFactory != null) {
             ((DamiBusConfigurator) Dami.bus).payloadFactory(payloadFactory);
+        }
+    }
+
+    /**
+     * 配置总线的Id生成器
+     *
+     * @param idGenerator Id生成器
+     */
+    public static void configure(IdGenerator idGenerator) {
+        if (idGenerator != null) {
+            ((DamiBusConfigurator) Dami.bus).idGenerator(idGenerator);
         }
     }
 

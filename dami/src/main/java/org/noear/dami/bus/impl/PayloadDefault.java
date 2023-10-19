@@ -7,7 +7,6 @@ import org.noear.dami.exception.DamiException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * 事件负载本地实现
@@ -16,7 +15,7 @@ import java.util.UUID;
  * @since 1.0
  */
 public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
-    private final String guid;
+    private final String plid;
     private final String topic;
     private final C content;
 
@@ -32,8 +31,8 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
      * @param content 内容
      * @param acceptor 答复接收器
      * */
-    public PayloadDefault(final String topic, final C content, Acceptor<R> acceptor) {
-        this.guid = UUID.randomUUID().toString().replaceAll("-", "");
+    public PayloadDefault(final  String plid, final String topic, final C content, Acceptor<R> acceptor) {
+        this.plid = plid;
         this.topic = topic;
         this.content = content;
         this.acceptor = acceptor;
@@ -123,8 +122,8 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
      * 唯一标识
      */
     @Override
-    public String getGuid() {
-        return guid;
+    public String getPlid() {
+        return plid;
     }
 
     /**
@@ -146,7 +145,7 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
     @Override
     public String toString() {
         return "Payload{" +
-                "guid='" + guid + '\'' +
+                "plid='" + plid + '\'' +
                 ", topic='" + topic + '\'' +
                 ", content=" + content +
                 ", attachments=" + attachments +

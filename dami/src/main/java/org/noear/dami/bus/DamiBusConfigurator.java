@@ -28,4 +28,9 @@ public interface DamiBusConfigurator<C, R> extends DamiBus<C, R> {
      * 配置事件负载工厂
      */
     DamiBusConfigurator<C, R> payloadFactory(PayloadFactory<C, R> factory);
+
+    /**
+     * 配置id生成器
+     */
+    DamiBusConfigurator<C, R> idGenerator(IdGenerator generator);
 }

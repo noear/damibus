@@ -89,7 +89,7 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
         AssertUtil.assertTopic(payload.getTopic());
 
         try {
-            MDC.put("dami-guid", payload.getGuid());
+            MDC.put("dami-plid", payload.getPlid());
 
             //获取路由匹配结果
             List<TopicListenerHolder<C, R>> targets = router.matching(payload.getTopic());
@@ -97,7 +97,7 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
             //转成拦截链处理
             new InterceptorChain<>(interceptors, targets).doIntercept(payload);
         } finally {
-            MDC.remove("dami-guid");
+            MDC.remove("dami-plid");
         }
     }
 

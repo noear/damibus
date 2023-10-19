@@ -41,7 +41,7 @@ public interface Payload<C, R> extends Serializable {
 
     /**
      * 是否为订阅（是，则需要答复）
-     * */
+     */
     boolean isSubscribe();
 
     /**
@@ -53,9 +53,9 @@ public interface Payload<C, R> extends Serializable {
     boolean reply(final R content);
 
     /**
-     * 唯一标识
+     * 负载标识
      */
-    String getGuid();
+    String getPlid();
 
     /**
      * 主题

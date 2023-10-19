@@ -10,9 +10,10 @@ public interface PayloadFactory<C, R> {
     /**
      * 创建
      *
+     * @param plid     负载标识
      * @param topic    主题
      * @param content  内容
      * @param acceptor 接收人
      */
-    Payload<C, R> create(final String topic, final C content, Acceptor<R> acceptor);
+    Payload<C, R> create(final String plid, final String topic, final C content, Acceptor<R> acceptor);
 }

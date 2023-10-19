@@ -1,3 +1,9 @@
+#### 0.54
+* 添加 IdGenerator 接口（支持自定义id生成）
+* 调整 Payload::getGuid 更名为 getPlid
+* 调整 MDC（dami-guid）更名为 plid
+
+
 #### 0.53
 * 添加 DamiBus::unlisten 取肖主题的所有监听
 
