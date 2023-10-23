@@ -3,13 +3,18 @@ package benchmark;
 import org.noear.dami.Dami;
 
 public class SendTest {
+    static Integer count = 0;
+
     public static void main(String[] args) {
-        Dami.bus().listen("test.demo", e -> { });
+
+        Dami.bus().listen("test.demo", e -> {
+            count = count + 1;
+        });
 
         long start = System.currentTimeMillis();
-        for (int i = 1; i < 10000000; i++) {
+        for (int i = 0; i < 10000000; i++) {
             Dami.bus().send("test.demo", "1");
         }
-        System.out.println(System.currentTimeMillis() - start);
+        System.out.println(System.currentTimeMillis() - start + "::" + count);
     }
 }
