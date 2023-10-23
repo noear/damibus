@@ -4,19 +4,12 @@ import org.noear.dami.Dami;
 
 public class SendTest {
     public static void main(String[] args) {
-        Dami.bus().listen("test.demo", e -> {
+        Dami.bus().listen("test.demo", e -> { });
 
-        });
-
-        int count = 1000 * 1000 * 10;
         long start = System.currentTimeMillis();
-        for (int i = 1; i < count; i++) {
+        for (int i = 1; i < 10000000; i++) {
             Dami.bus().send("test.demo", "1");
         }
         System.out.println(System.currentTimeMillis() - start);
-    }
-
-    static void empty() {
-
     }
 }
