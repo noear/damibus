@@ -1,6 +1,6 @@
 package features.demo31_api;
 
-import features.demo31_api.module1.EventUserListenerOfModule1;
+import features.demo31_api.module1.EventUserListener1;
 import features.demo31_api.module2.EventUser;
 
 import org.junit.jupiter.api.Test;
@@ -17,10 +17,8 @@ public class Demo31 {
 
     @Test
     public void main() {
-
-
         //注册监听器
-        EventUserListenerOfModule1 userEventListener = new EventUserListenerOfModule1();
+        EventUserListener1 userEventListener = new EventUserListener1();
         api.registerListener(topicMapping, userEventListener);
 
         //生成发送器

@@ -80,7 +80,7 @@ public interface EventUser {
 }
 
 //通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，但会带来依赖关系）
-public class EventUserListenerOfModule1 { // implements EventUser
+public class EventUserListener1 { // implements EventUser
     public void onCreated(Long userId, String name) {
         System.err.println("onCreated: userId=" + userId + ", name=" + name);
     }
@@ -93,7 +93,7 @@ public class EventUserListenerOfModule1 { // implements EventUser
 public class Demo31 {
     public static void main(String[] args) {
         //注册监听器
-        EventUserListenerOfModule1 userEventListener = new EventUserListenerOfModule1();
+        EventUserListener1 userEventListener = new EventUserListener1();
         api.registerListener(topicMapping, userEventListener);
 
         //生成发送器
