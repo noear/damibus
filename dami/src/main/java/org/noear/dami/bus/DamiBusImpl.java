@@ -23,8 +23,6 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
     private PayloadFactory<C, R> factory;
     //标识生成
     private IdGenerator generator;
-    //响应超时：默认3s
-    private long timeout = 3000;
 
     public DamiBusImpl(TopicRouter<C, R> router) {
         if (router == null) {
@@ -79,25 +77,6 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
     }
 
     /**
-     * 设置超时
-     */
-    @Override
-    public DamiBusConfigurator<C, R> timeout(final long timeout) {
-        this.timeout = timeout;
-        return this;
-    }
-
-
-    /**
-     * 获取超时
-     */
-    @Override
-    public long timeout() {
-        return timeout;
-    }
-
-
-    /**
      * 拦截
      *
      * @param index       顺序位
@@ -134,7 +113,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      * @return 响应结果
      */
     @Override
-    public R sendAndRequest(final String topic, final C content) {
+    public R sendAndRequest(final String topic, final C content, long timeout) {
         AssertUtil.assertTopic(topic);
 
         CompletableFuture<R> future = new CompletableFuture<>();

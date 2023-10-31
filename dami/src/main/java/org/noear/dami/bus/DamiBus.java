@@ -10,11 +10,6 @@ import java.util.function.Consumer;
  */
 public interface DamiBus<C, R> {
     /**
-     * 获取响应超时（单位：毫秒）
-     */
-    long timeout();
-
-    /**
      * 拦截
      *
      * @param index       顺序位
@@ -47,7 +42,19 @@ public interface DamiBus<C, R> {
      * @param content 内容
      * @return 响应结果
      */
-    R sendAndRequest(final String topic, final C content);
+    default R sendAndRequest(final String topic, final C content) {
+        return sendAndRequest(topic, content, 3000);
+    }
+
+    /**
+     * 发送并请求（会等待响应）
+     *
+     * @param topic   主题
+     * @param content 内容
+     * @param timeout 超时（毫秒）
+     * @return 响应结果
+     */
+    R sendAndRequest(final String topic, final C content, long timeout);
 
     /**
      * 发送并订阅

@@ -58,18 +58,6 @@ public class DamiConfig {
 
 
     /**
-     * 配置总线的超时
-     *
-     * @param timeout 超时（单位：毫秒）
-     */
-    public static void configure(long timeout) {
-        if (timeout > 0) {
-            ((DamiBusConfigurator) Dami.bus).timeout(timeout);
-        }
-    }
-
-
-    /**
      * 配置接口的编解码器
      *
      * @param coder 编解码器

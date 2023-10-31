@@ -8,13 +8,6 @@ package org.noear.dami.bus;
  */
 public interface DamiBusConfigurator<C, R> extends DamiBus<C, R> {
     /**
-     * 配置响应超时
-     *
-     * @param timeout 超时（单位：毫秒）
-     */
-    DamiBusConfigurator<C, R> timeout(final long timeout);
-
-    /**
      * 配置主题路由器
      */
     DamiBusConfigurator<C, R> topicRouter(TopicRouter<C, R> router);

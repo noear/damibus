@@ -1,3 +1,6 @@
+#### 0.55
+* 添加 DamiBus::sendAndRequest 带超时的接口
+
 #### 0.54
 * 添加 IdGenerator 接口（支持自定义id生成）
 * 调整 Payload::getGuid 更名为 getPlid
