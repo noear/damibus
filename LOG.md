@@ -1,3 +1,6 @@
+#### 0.56
+* solon 升为 1.6.2
+
 #### 0.55
 * 添加 DamiBus::sendAndRequest 带超时的接口
 
