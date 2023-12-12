@@ -2,7 +2,7 @@
   DamiBus
 </h1>
 <p align="center">
-	<strong>本地过程调用框架（主打解耦）</strong>
+	<strong>本地多模块过程调用框架（主打解耦）</strong>
 </p>
 
 <p align="center">
