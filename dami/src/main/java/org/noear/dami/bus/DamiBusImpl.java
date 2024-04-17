@@ -174,6 +174,11 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
         router.remove(topic, listener);
     }
 
+    /**
+     * 取消监听
+     *
+     * @param topic 主题
+     */
     @Override
     public void unlisten(String topic) {
         router.remove(topic);
