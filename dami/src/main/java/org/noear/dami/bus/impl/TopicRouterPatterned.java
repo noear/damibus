@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 
@@ -28,6 +29,9 @@ public class TopicRouterPatterned<C, R> implements TopicRouter<C, R> {
      * 主题路由记录
      */
     private final List<Routing<C, R>> routingList = new ArrayList<>();
+
+    protected final ReentrantLock ROUTING_LIST_LOCK = new ReentrantLock();
+
 
     /**
      * 路由工厂
@@ -47,9 +51,13 @@ public class TopicRouterPatterned<C, R> implements TopicRouter<C, R> {
      * @param listener 监听器
      */
     @Override
-    public synchronized void add(final String topic, final int index, final TopicListener<Payload<C, R>> listener) {
-        routingList.add(routerFactory.create(topic, index, listener));
-
+    public void add(final String topic, final int index, final TopicListener<Payload<C, R>> listener) {
+        ROUTING_LIST_LOCK.lock();
+        try {
+            routingList.add(routerFactory.create(topic, index, listener));
+        } finally {
+            ROUTING_LIST_LOCK.unlock();
+        }
         if (log.isDebugEnabled()) {
             if (MethodTopicListener.class.isAssignableFrom(listener.getClass())) {
                 log.debug("TopicRouter listener added(@{}): {}", topic, listener);
@@ -66,17 +74,15 @@ public class TopicRouterPatterned<C, R> implements TopicRouter<C, R> {
      * @param listener 监听器
      */
     @Override
-    public synchronized void remove(final String topic, final TopicListener<Payload<C, R>> listener) {
-        for (int i = 0; i < routingList.size(); i++) {
-            Routing<C, R> routing = routingList.get(i);
-            if (routing.matches(topic)) {
-                if (routing.getListener() == listener) {
-                    routingList.remove(i);
-                    i--;
-                }
-            }
+    public void remove(final String topic, final TopicListener<Payload<C, R>> listener) {
+        ROUTING_LIST_LOCK.lock();
+        try {
+            routingList.removeIf(routing ->
+                    routing.matches(topic)
+                            && routing.getListener() == listener);
+        } finally {
+            ROUTING_LIST_LOCK.unlock();
         }
-
         if (log.isDebugEnabled()) {
             if (MethodTopicListener.class.isAssignableFrom(listener.getClass())) {
                 log.debug("TopicRouter listener removed(@{}): {}", topic, listener);
@@ -93,12 +99,11 @@ public class TopicRouterPatterned<C, R> implements TopicRouter<C, R> {
      */
     @Override
     public void remove(String topic) {
-        for (int i = 0; i < routingList.size(); i++) {
-            Routing<C, R> routing = routingList.get(i);
-            if (routing.matches(topic)) {
-                routingList.remove(i);
-                i--;
-            }
+        ROUTING_LIST_LOCK.lock();
+        try {
+            routingList.removeIf(routing -> routing.matches(topic));
+        } finally {
+            ROUTING_LIST_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {
