@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 主题路由器（默认啥希表实现方案）
@@ -26,6 +27,8 @@ public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
      */
     private final Map<String, TopicListenPipeline<C, R>> pipelineMap = new LinkedHashMap<>();
 
+    protected final ReentrantLock PIPELINE_MAP_LOCK = new ReentrantLock();
+
     public TopicRouterDefault() {
         super();
     }
@@ -38,10 +41,14 @@ public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
      * @param listener 监听器
      */
     @Override
-    public synchronized void add(final String topic, final int index, final TopicListener<Payload<C, R>> listener) {
-        final TopicListenPipeline<C, R> pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline<>());
-
-        pipeline.add(index, listener);
+    public void add(final String topic, final int index, final TopicListener<Payload<C, R>> listener) {
+        PIPELINE_MAP_LOCK.lock();
+        try {
+            final TopicListenPipeline<C, R> pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline<>());
+            pipeline.add(index, listener);
+        } finally {
+            PIPELINE_MAP_LOCK.unlock();
+        }
 
         if (log.isDebugEnabled()) {
             if (MethodTopicListener.class.isAssignableFrom(listener.getClass())) {
@@ -59,11 +66,18 @@ public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
      * @param listener 监听器
      */
     @Override
-    public synchronized void remove(final String topic, final TopicListener<Payload<C, R>> listener) {
-        final TopicListenPipeline<C, R> pipeline = pipelineMap.get(topic);
-
+    public void remove(final String topic, final TopicListener<Payload<C, R>> listener) {
+        TopicListenPipeline<C, R> pipeline = pipelineMap.get(topic);
         if (pipeline != null) {
-            pipeline.remove(listener);
+            PIPELINE_MAP_LOCK.lock();
+            try {
+                pipeline = pipelineMap.get(topic);
+                if (pipeline != null) {
+                    pipeline.remove(listener);
+                }
+            } finally {
+                PIPELINE_MAP_LOCK.unlock();
+            }
         }
 
         if (log.isDebugEnabled()) {
@@ -81,8 +95,13 @@ public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
      * @param topic 主题
      */
     @Override
-    public synchronized void remove(final String topic) {
-        pipelineMap.remove(topic);
+    public void remove(final String topic) {
+        PIPELINE_MAP_LOCK.lock();
+        try {
+            pipelineMap.remove(topic);
+        } finally {
+            PIPELINE_MAP_LOCK.unlock();
+        }
 
         if (log.isDebugEnabled()) {
             log.debug("TopicRouter listener removed(@{}): all..", topic);
