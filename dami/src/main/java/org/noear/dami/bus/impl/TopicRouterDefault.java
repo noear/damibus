@@ -67,17 +67,14 @@ public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
      */
     @Override
     public void remove(final String topic, final TopicListener<Payload<C, R>> listener) {
-        TopicListenPipeline<C, R> pipeline = pipelineMap.get(topic);
-        if (pipeline != null) {
-            PIPELINE_MAP_LOCK.lock();
-            try {
-                pipeline = pipelineMap.get(topic);
-                if (pipeline != null) {
-                    pipeline.remove(listener);
-                }
-            } finally {
-                PIPELINE_MAP_LOCK.unlock();
+        PIPELINE_MAP_LOCK.lock();
+        try {
+            final TopicListenPipeline<C, R> pipeline = pipelineMap.get(topic);
+            if (pipeline != null) {
+                pipeline.remove(listener);
             }
+        } finally {
+            PIPELINE_MAP_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {

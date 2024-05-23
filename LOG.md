@@ -1,3 +1,6 @@
+#### 0.58
+* 调整 synchronized 锁改为 ReentrantLock 锁
+
 #### 0.57
 * 调整 slf4j 依赖改为 provided
 * solon 升为 1.7.0

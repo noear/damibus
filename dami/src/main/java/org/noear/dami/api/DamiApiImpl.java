@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 /**
@@ -28,6 +29,7 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
      * 监听器缓存（注销时用）
      */
     private Map<Class<?>, List<MethodTopicListenerRecord>> listenerMap = new HashMap<>();
+    private ReentrantLock LISTENERMAP_LOCK = new ReentrantLock();
 
     /**
      * 编码解器
@@ -104,28 +106,33 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
      * @param listenerObj  监听器实现类
      */
     @Override
-    public synchronized void registerListener(String topicMapping, int index, Object listenerObj) {
+    public void registerListener(String topicMapping, int index, Object listenerObj) {
         Class<?> listenerClz = listenerObj.getClass();
 
-        //防止重复注册
-        if (listenerMap.containsKey(listenerClz)) {
-            throw new DamiException("This listener is registered: " + listenerClz.getName());
+        LISTENERMAP_LOCK.lock();
+        try {
+            //防止重复注册
+            if (listenerMap.containsKey(listenerClz)) {
+                throw new DamiException("This listener is registered: " + listenerClz.getName());
+            }
+
+            //开始注册
+            List<MethodTopicListenerRecord> listenerRecords = new ArrayList<>();
+
+            for (Method m1 : findMethods(listenerClz)) {
+                String topic = getMethodTopic(topicMapping, m1.getName());
+                MethodTopicListener listener = new MethodTopicListener(this, listenerObj, m1);
+
+                listenerRecords.add(new MethodTopicListenerRecord(topic, listener));
+                bus().listen(topic, index, listener);
+
+            }
+
+            //为了注销时，移掉对应的实例
+            listenerMap.put(listenerClz, listenerRecords);
+        } finally {
+            LISTENERMAP_LOCK.unlock();
         }
-
-        //开始注册
-        List<MethodTopicListenerRecord> listenerRecords = new ArrayList<>();
-
-        for (Method m1 : findMethods(listenerClz)) {
-            String topic = getMethodTopic(topicMapping, m1.getName());
-            MethodTopicListener listener = new MethodTopicListener(this, listenerObj, m1);
-
-            listenerRecords.add(new MethodTopicListenerRecord(topic, listener));
-            bus().listen(topic, index, listener);
-
-        }
-
-        //为了注销时，移掉对应的实例
-        listenerMap.put(listenerClz, listenerRecords);
 
         if (log.isDebugEnabled()) {
             log.debug("This listener registered successfully(@{}.*): {}", topicMapping, listenerObj.getClass().getName());
@@ -139,13 +146,18 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
      * @param listenerObj  监听器实现类
      */
     @Override
-    public synchronized void unregisterListener(String topicMapping, Object listenerObj) {
-        List<MethodTopicListenerRecord> tmp = listenerMap.remove(listenerObj.getClass());
+    public void unregisterListener(String topicMapping, Object listenerObj) {
+        LISTENERMAP_LOCK.lock();
+        try {
+            List<MethodTopicListenerRecord> tmp = listenerMap.remove(listenerObj.getClass());
 
-        if (tmp != null) {
-            for (MethodTopicListenerRecord r1 : tmp) {
-                bus().unlisten(r1.getTopic(), r1.getListener());
+            if (tmp != null) {
+                for (MethodTopicListenerRecord r1 : tmp) {
+                    bus().unlisten(r1.getTopic(), r1.getListener());
+                }
             }
+        } finally {
+            LISTENERMAP_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {

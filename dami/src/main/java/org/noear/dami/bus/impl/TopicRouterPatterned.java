@@ -58,6 +58,7 @@ public class TopicRouterPatterned<C, R> implements TopicRouter<C, R> {
         } finally {
             ROUTING_LIST_LOCK.unlock();
         }
+
         if (log.isDebugEnabled()) {
             if (MethodTopicListener.class.isAssignableFrom(listener.getClass())) {
                 log.debug("TopicRouter listener added(@{}): {}", topic, listener);
@@ -77,12 +78,11 @@ public class TopicRouterPatterned<C, R> implements TopicRouter<C, R> {
     public void remove(final String topic, final TopicListener<Payload<C, R>> listener) {
         ROUTING_LIST_LOCK.lock();
         try {
-            routingList.removeIf(routing ->
-                    routing.matches(topic)
-                            && routing.getListener() == listener);
+            routingList.removeIf(routing -> routing.matches(topic) && routing.getListener() == listener);
         } finally {
             ROUTING_LIST_LOCK.unlock();
         }
+
         if (log.isDebugEnabled()) {
             if (MethodTopicListener.class.isAssignableFrom(listener.getClass())) {
                 log.debug("TopicRouter listener removed(@{}): {}", topic, listener);

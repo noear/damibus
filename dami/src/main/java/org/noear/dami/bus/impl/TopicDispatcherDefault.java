@@ -11,6 +11,7 @@ import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 主题派发器默认实现
@@ -24,6 +25,7 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
      * 拦截器
      */
     private final List<InterceptorEntity> interceptors = new ArrayList<>();
+    private final ReentrantLock INTERCEPTORS_LOCK = new ReentrantLock();
 
     public TopicDispatcherDefault() {
         interceptors.add(new InterceptorEntity(Integer.MAX_VALUE, this));
@@ -37,12 +39,17 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
      * @param interceptor 拦截器
      */
     @Override
-    public synchronized void addInterceptor(int index, Interceptor interceptor) {
-        interceptors.add(new InterceptorEntity(index, interceptor));
+    public void addInterceptor(int index, Interceptor interceptor) {
+        INTERCEPTORS_LOCK.lock();
+        try {
+            interceptors.add(new InterceptorEntity(index, interceptor));
 
-        if (interceptors.size() > 1) {
-            //排序（顺排）
-            interceptors.sort(Comparator.comparing(x -> x.getIndex()));
+            if (interceptors.size() > 1) {
+                //排序（顺排）
+                interceptors.sort(Comparator.comparing(x -> x.getIndex()));
+            }
+        } finally {
+            INTERCEPTORS_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {
@@ -51,10 +58,9 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
     }
 
 
-
     /**
      * 执行拦截
-     * */
+     */
     @Override
     public void doIntercept(Payload<C, R> payload, InterceptorChain<C, R> chain) {
         if (log.isTraceEnabled()) {
@@ -83,7 +89,7 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
 
     /**
      * 派发
-     * */
+     */
     @Override
     public void dispatch(Payload<C, R> payload, TopicRouter<C, R> router) {
         AssertUtil.assertTopic(payload.getTopic());
@@ -103,7 +109,7 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
 
     /**
      * 执行派发
-     * */
+     */
     protected void doDispatch(Payload<C, R> payload, List<TopicListenerHolder<C, R>> targets) throws Throwable {
         //用 i，可以避免遍历时添加监听的异常
         for (int i = 0; i < targets.size(); i++) {
