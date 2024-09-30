@@ -24,11 +24,19 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * Dami 发送着注册器
+ *
+ * @author kamosama,tangxin
+ * @since 1.0
+ */
+
 public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, BeanFactoryAware {
     protected static final Log logger = LogFactory.getLog(DamiImportBeanDefinitionRegistrar.class);
 
     private final Environment environment;
     private BeanFactory beanFactory;
+    private static boolean initialized = false;
 
     DamiImportBeanDefinitionRegistrar(Environment environment) {
         this.environment = environment;
@@ -36,16 +44,26 @@ public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRe
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
-        Set<String> packages = getPackagesToScan(metadata);
-        if (packages.isEmpty() && AutoConfigurationPackages.has(beanFactory)) {
-            packages = new HashSet<>(AutoConfigurationPackages.get(beanFactory));
+        if (!initialized) {
+            initialized = true;
+            Set<String> packages = null;
+            if (metadata.getClassName().equals(DamiAutoConfiguration.class.getName())) {
+                if (AutoConfigurationPackages.has(beanFactory)) {
+                    packages = new HashSet<>(AutoConfigurationPackages.get(beanFactory));
+                }
+            } else {
+                packages = getPackagesToScan(metadata);
+                if (packages.isEmpty() && AutoConfigurationPackages.has(beanFactory)) {
+                    packages = new HashSet<>(AutoConfigurationPackages.get(beanFactory));
+                }
+            }
+            if (packages == null || packages.isEmpty()) {
+                logger.debug("Could not determine auto-configuration package, automatic damiSender scanning disabled.");
+                return;
+            }
+            DamiBeanDefinitionScanner scanner = new DamiBeanDefinitionScanner(registry);
+            scanner.scan(packages.toArray(new String[0]));
         }
-        if (packages.isEmpty()) {
-            logger.debug("Could not determine auto-configuration package, automatic damiSender scanning disabled.");
-            return;
-        }
-        DamiBeanDefinitionScanner scanner = new DamiBeanDefinitionScanner(registry);
-        scanner.scan(packages.toArray(new String[0]));
     }
 
     private Set<String> getPackagesToScan(AnnotationMetadata metadata) {

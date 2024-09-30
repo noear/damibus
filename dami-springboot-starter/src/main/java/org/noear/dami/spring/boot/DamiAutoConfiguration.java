@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ConditionalOnClass(Dami.class)
-@Import({ DamiBeanPostProcessor.class})
+@Import({DamiImportBeanDefinitionRegistrar.class, DamiBeanPostProcessor.class})
 public class DamiAutoConfiguration {
 
 }
