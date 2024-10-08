@@ -11,6 +11,7 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
@@ -27,20 +28,17 @@ import java.util.Set;
 /**
  * Dami 发送着注册器
  *
- * @author kamosama,tangxin
+ * @author kamosama, tangxin
  * @since 1.0
  */
 
-public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, BeanFactoryAware {
+public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, BeanFactoryAware, EnvironmentAware {
     protected static final Log logger = LogFactory.getLog(DamiImportBeanDefinitionRegistrar.class);
 
-    private final Environment environment;
+    private Environment environment;
     private BeanFactory beanFactory;
     private static boolean initialized = false;
 
-    DamiImportBeanDefinitionRegistrar(Environment environment) {
-        this.environment = environment;
-    }
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
@@ -92,5 +90,10 @@ public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRe
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 }
