@@ -1,3 +1,7 @@
+#### 1.0.1
+
+* 添加 `@Param` 注解支持（支持没有 `-parameters` 的编译场景）
+
 #### 1.0.0
 
 * dami DamiApi::registerListener 改为公有函数注册（之前为自有函数注册）
