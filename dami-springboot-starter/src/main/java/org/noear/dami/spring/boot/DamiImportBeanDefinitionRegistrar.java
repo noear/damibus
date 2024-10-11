@@ -43,13 +43,13 @@ public class DamiImportBeanDefinitionRegistrar implements ImportBeanDefinitionRe
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
         if (!initialized) {
-            initialized = true;
             Set<String> packages = null;
             if (metadata.getClassName().equals(DamiAutoConfiguration.class.getName())) {
                 if (AutoConfigurationPackages.has(beanFactory)) {
                     packages = new HashSet<>(AutoConfigurationPackages.get(beanFactory));
                 }
             } else {
+                initialized = true;
                 packages = getPackagesToScan(metadata);
                 if (packages.isEmpty() && AutoConfigurationPackages.has(beanFactory)) {
                     packages = new HashSet<>(AutoConfigurationPackages.get(beanFactory));
