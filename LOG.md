@@ -4,9 +4,9 @@
 
 #### 1.0.0
 
-* dami DamiApi::registerListener 改为公有函数注册（之前为自有函数注册）
-* dami-solon-plugin solon 升为 3.0.1
-* dami-springboot-starter 添加新注解 `@DamiScan`
+* 调整 dami DamiApi::registerListener 改为公有函数注册（之前为自有函数注册）
+* 调整 dami-solon-plugin solon 升为 3.0.1
+* 添加 dami-springboot-starter 新注解 `@DamiScan`
 
 #### 0.58
 * 调整 synchronized 锁改为 ReentrantLock 锁
