@@ -1,15 +1,14 @@
 package features.demo80_solon;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.Payload;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.solon.annotation.DamiTopic;
-import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.test.SolonTest;
 
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class Demo80 {
     @Test
     public void main() {

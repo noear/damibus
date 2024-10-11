@@ -1,11 +1,10 @@
 package features.demo82_solon;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.test.SolonTest;
 
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class Demo82 {
     @Inject
     EventUserNotices eventUserNotices;

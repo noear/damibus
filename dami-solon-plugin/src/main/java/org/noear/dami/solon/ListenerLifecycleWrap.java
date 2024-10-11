@@ -43,11 +43,11 @@ public class ListenerLifecycleWrap implements LifecycleBean {
      * 获取实例
      */
     public static ListenerLifecycleWrap getOf(AppContext context) {
-        ListenerLifecycleWrap lifecycleWrap = (ListenerLifecycleWrap) context.getAttrs().get(ListenerLifecycleWrap.class);
+        ListenerLifecycleWrap lifecycleWrap = context.attachGet(ListenerLifecycleWrap.class);
 
         if (lifecycleWrap == null) {
             lifecycleWrap = new ListenerLifecycleWrap();
-            context.getAttrs().put(ListenerLifecycleWrap.class, lifecycleWrap);
+            context.attachSet(ListenerLifecycleWrap.class, lifecycleWrap);
             context.lifecycle(lifecycleWrap);
         }
 
