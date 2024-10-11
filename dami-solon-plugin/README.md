@@ -91,11 +91,9 @@ public class EventUserNoticesListener { // implements EventUserNotices
 
 @DamiTopic(value="demo82.event.user", index=2) //可以控制监听顺序
 public class EventUserNoticesListener2 { // implements EventUserNotices
-
     public void onCreated(long userId, String name) {
         System.err.println("2-onCreated: userId=" +userId);
     }
-
 }
 
 @SolonTest
