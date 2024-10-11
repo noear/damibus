@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
 @ComponentScan("features.demo95_springboot")
-public class Demo92 {
+public class Demo95 {
     @Autowired
     UserService userService;
 
