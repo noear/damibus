@@ -1,5 +1,6 @@
 package org.noear.dami.api;
 
+import org.noear.dami.annotation.Param;
 import org.noear.dami.bus.Payload;
 
 import java.lang.reflect.Method;
@@ -29,7 +30,15 @@ public class CoderDefault implements Coder {
         if (method.getParameterCount() > 0) {
             Parameter[] parameters = method.getParameters();
             for (int i = 0, len = method.getParameterCount(); i < len; i++) {
-                map.put(parameters[i].getName(), args[i]);
+                Parameter p1 = parameters[i];
+
+                String name = p1.getName();
+                Param p1Anno = p1.getAnnotation(Param.class);
+                if (p1Anno != null && p1Anno.value().length() > 0) {
+                    name = p1Anno.value();
+                }
+
+                map.put(name, args[i]);
             }
         }
 
@@ -56,7 +65,13 @@ public class CoderDefault implements Coder {
             if (Payload.class.isAssignableFrom(p1.getType())) {
                 args[i] = payload;
             } else {
-                args[i] = map.get(p1.getName());
+                String name = p1.getName();
+                Param p1Anno = p1.getAnnotation(Param.class);
+                if (p1Anno != null && p1Anno.value().length() > 0) {
+                    name = p1Anno.value();
+                }
+
+                args[i] = map.get(name);
             }
         }
 

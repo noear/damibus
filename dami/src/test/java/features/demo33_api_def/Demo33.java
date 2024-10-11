@@ -1,6 +1,7 @@
 package features.demo33_api_def;
 
 import org.junit.jupiter.api.Test;
+import org.noear.dami.annotation.Param;
 import org.noear.dami.api.DamiApi;
 import org.noear.dami.api.DamiApiImpl;
 import org.noear.dami.bus.DamiBus;
@@ -15,7 +16,7 @@ public class Demo33 {
 
     @Test
     public void main() {
-        api.registerListener(topicMapping,new EventDemoImpl());
+        api.registerListener(topicMapping, new EventDemoImpl());
         EventDemo eventDemo = api.createSender(topicMapping, EventDemo.class);
         assert eventDemo.demo1() == 1; //有默认返回值
         eventDemo.demo2();
@@ -27,7 +28,7 @@ public class Demo33 {
             assert true;
         }
 
-        assert eventDemo.demo4() == 4;
+        assert eventDemo.demo4(1, 0) == 5;
     }
 
     public static interface EventDemo {
@@ -40,14 +41,14 @@ public class Demo33 {
 
         String demo3();
 
-        default int demo4() {
-            return 1;
+        default int demo4(@Param("b1") Integer i, @Param("b0") Integer b) {
+            return 1 + i;
         }
     }
 
-    public static class  EventDemoImpl{
-        public int demo4() {
-            return 4;
+    public static class EventDemoImpl {
+        public int demo4(@Param("b0") Integer b, @Param("b1") Integer i) {
+            return 4 + i;
         }
     }
 }
