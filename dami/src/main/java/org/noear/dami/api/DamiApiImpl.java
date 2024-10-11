@@ -120,12 +120,14 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
             List<MethodTopicListenerRecord> listenerRecords = new ArrayList<>();
 
             for (Method m1 : findMethods(listenerClz)) {
-                String topic = getMethodTopic(topicMapping, m1.getName());
-                MethodTopicListener listener = new MethodTopicListener(this, listenerObj, m1);
+                //不能是 Object 申明的方法
+                if(m1.getDeclaringClass() != Object.class) {
+                    String topic = getMethodTopic(topicMapping, m1.getName());
+                    MethodTopicListener listener = new MethodTopicListener(this, listenerObj, m1);
 
-                listenerRecords.add(new MethodTopicListenerRecord(topic, listener));
-                bus().listen(topic, index, listener);
-
+                    listenerRecords.add(new MethodTopicListenerRecord(topic, listener));
+                    bus().listen(topic, index, listener);
+                }
             }
 
             //为了注销时，移掉对应的实例
@@ -169,8 +171,8 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
      * 获取方法
      */
     protected Method[] findMethods(Class<?> listenerClz) {
-        //只用自己申明的方法（不支持承断）
-        return listenerClz.getDeclaredMethods();
+        //只用公有的方法（支持承断） //old::只用自己申明的方法（不支持承断）
+        return listenerClz.getMethods();
     }
 
     /**
