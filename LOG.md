@@ -1,13 +1,19 @@
+#### 1.0.0
+
+* dami DamiApi::registerListener 改为公有函数注册（之前为自有函数注册）
+* dami-solon-plugin solon 升为 3.0.1
+* dami-springboot-starter 添加新注解 `@DamiScan`
+
 #### 0.58
 * 调整 synchronized 锁改为 ReentrantLock 锁
 
 #### 0.57
 * 调整 slf4j 依赖改为 provided
-* solon 升为 1.7.0
+* solon 升为 2.7.0
 
 
 #### 0.56
-* solon 升为 1.6.2
+* solon 升为 2.6.2
 
 #### 0.55
 * 添加 DamiBus::sendAndRequest 带超时的接口

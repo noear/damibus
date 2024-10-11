@@ -9,7 +9,7 @@
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami-solon-plugin</artifactId>
-    <version>0.58</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -18,7 +18,7 @@
 #### demo80_solon （注解）
 
 ```java
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class Demo80 {
     @Test
     public void main() {
@@ -60,7 +60,7 @@ public class EventUserServiceListener { // implements EventUserService // 它相
     }
 }
 
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class Demo81 {
     @Inject
     EventUserService eventUserService;
@@ -98,7 +98,7 @@ public class EventUserNoticesListener2 { // implements EventUserNotices
 
 }
 
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class Demo82 {
     @Inject
     EventUserNotices eventUserNotices;

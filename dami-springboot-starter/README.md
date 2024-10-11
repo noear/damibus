@@ -9,7 +9,7 @@
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami-springboot-starter</artifactId>
-    <version>0.58</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 

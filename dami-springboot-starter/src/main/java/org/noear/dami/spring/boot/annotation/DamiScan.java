@@ -18,15 +18,20 @@ import java.lang.annotation.*;
 @Documented
 @Import(DamiImportBeanDefinitionRegistrar.class)
 public @interface DamiScan {
-
-
+	/**
+	 * 基础包名
+	 */
 	@AliasFor("basePackages")
 	String[] value() default {};
 
-
+	/**
+	 * 基础包名
+	 */
 	@AliasFor("value")
 	String[] basePackages() default {};
 
+	/**
+	 * 基础包类
+	 */
 	Class<?>[] basePackageClasses() default {};
-
 }
