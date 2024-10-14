@@ -20,6 +20,9 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
             Object raw = Dami.api().createSender(anno.value(), clz);
             bw.context().wrapAndPut(clz, raw);
         } else {
+            //增加代理支持
+            bw.context().beanExtractOrProxy(bw);
+
             if (TopicListener.class.isAssignableFrom(clz)) {
                 Dami.bus().listen(anno.value(), anno.index(), bw.raw());
             } else {
