@@ -1,3 +1,7 @@
+#### 1.0.2
+
+* dami-solon-plugin DamiTopic 注解的类，增加代理支持
+
 #### 1.0.1
 
 * 添加 `@Param` 注解支持（支持没有 `-parameters` 的编译场景）
