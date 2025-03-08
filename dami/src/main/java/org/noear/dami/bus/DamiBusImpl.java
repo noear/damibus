@@ -7,6 +7,7 @@ import org.noear.dami.exception.DamiNoSubscriptionException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * 大米总线实现
@@ -114,6 +115,18 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      */
     @Override
     public R sendAndRequest(final String topic, final C content, long timeout) {
+        return sendAndRequest(topic, content, timeout, null);
+    }
+
+    /**
+     * 发送并请求（会等待响应）
+     *
+     * @param topic   主题
+     * @param content 内容
+     * @return 响应结果
+     */
+    @Override
+    public R sendAndRequest(String topic, C content, long timeout, Supplier<R> supplier) {
         AssertUtil.assertTopic(topic);
 
         CompletableFuture<R> future = new CompletableFuture<>();
@@ -128,7 +141,10 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
                 throw new DamiException(e);
             }
         } else {
-            throw new DamiNoSubscriptionException("No response subscription");
+            if (supplier == null) {
+                throw new DamiNoSubscriptionException("No response subscription");
+            }
+            return supplier.get();
         }
     }
 
