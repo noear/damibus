@@ -106,27 +106,17 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
         return payload.getHandled();
     }
 
-    /**
-     * 发送并请求（会等待响应）
-     *
-     * @param topic   主题
-     * @param content 内容
-     * @return 响应结果
-     */
-    @Override
-    public R sendAndRequest(final String topic, final C content, long timeout) {
-        return sendAndRequest(topic, content, timeout, null);
-    }
 
     /**
      * 发送并请求（会等待响应）
      *
      * @param topic   主题
      * @param content 内容
+     * @param def     默认返回（如果没有返回）
      * @return 响应结果
      */
     @Override
-    public R sendAndRequest(String topic, C content, long timeout, Supplier<R> supplier) {
+    public R sendAndRequest(String topic, C content, long timeout, Supplier<R> def) {
         AssertUtil.assertTopic(topic);
 
         CompletableFuture<R> future = new CompletableFuture<>();
@@ -141,10 +131,10 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
                 throw new DamiException(e);
             }
         } else {
-            if (supplier == null) {
+            if (def == null) {
                 throw new DamiNoSubscriptionException("No response subscription");
             }
-            return supplier.get();
+            return def.get();
         }
     }
 

@@ -1,3 +1,7 @@
+#### 1.0.3
+
+* DamiBus:sendAndRequest 添加默认返回支持
+
 #### 1.0.2
 
 * dami-solon-plugin DamiTopic 注解的类，增加代理支持

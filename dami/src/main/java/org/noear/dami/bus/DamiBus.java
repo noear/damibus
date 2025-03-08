@@ -55,18 +55,20 @@ public interface DamiBus<C, R> {
      * @param timeout 超时（毫秒）
      * @return 响应结果
      */
-    R sendAndRequest(final String topic, final C content, long timeout);
+    default R sendAndRequest(final String topic, final C content, long timeout) {
+        return sendAndRequest(topic, content, timeout, null);
+    }
 
     /**
      * 发送并请求（会等待响应）
      *
-     * @param topic    主题
-     * @param content  内容
-     * @param timeout  超时（毫秒）
-     * @param supplier 用户自定义返回
+     * @param topic   主题
+     * @param content 内容
+     * @param timeout 超时（毫秒）
+     * @param def     默认返回（如果没有返回）
      * @return 响应结果
      */
-    R sendAndRequest(final String topic, final C content, long timeout, Supplier<R> supplier);
+    R sendAndRequest(final String topic, final C content, long timeout, Supplier<R> def);
 
     /**
      * 发送并订阅
