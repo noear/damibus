@@ -64,6 +64,18 @@ public interface DamiBus<C, R> {
      *
      * @param topic   主题
      * @param content 内容
+     * @param def     默认返回（如果没有返回）
+     * @return 响应结果
+     */
+    default R sendAndRequest(final String topic, final C content, Supplier<R> def) {
+        return sendAndRequest(topic, content, 3000, def);
+    }
+
+    /**
+     * 发送并请求（会等待响应）
+     *
+     * @param topic   主题
+     * @param content 内容
      * @param timeout 超时（毫秒）
      * @param def     默认返回（如果没有返回）
      * @return 响应结果
