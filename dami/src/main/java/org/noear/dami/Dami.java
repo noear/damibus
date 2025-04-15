@@ -28,4 +28,20 @@ public class Dami {
     public static DamiApi api() {
         return api;
     }
+
+    /// ///////////////////
+
+    /**
+     * 新建总线界面
+     */
+    public static <C, R> DamiBus<C, R> newBus() {
+        return new DamiBusImpl<>();
+    }
+
+    /**
+     * 新建接口界面
+     */
+    public static DamiApi newApi() {
+        return new DamiApiImpl(newBus());
+    }
 }
