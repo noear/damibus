@@ -1,7 +1,10 @@
-#### 1.0.3
+#### 1.0.5
+
+* 添加 `DamiBus:sendAndRequest(topic, content, def)` 方法
+
+#### 1.0.4
 
 * 添加 `Dami.newBus()` 新建实例方法
-* 添加 `DamiBus:sendAndRequest(topic, content, def)` 方法
 
 #### 1.0.3
 
