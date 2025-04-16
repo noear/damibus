@@ -129,6 +129,7 @@ public class Demo12 {
 
         //发送事件
         String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world"); //要求有返回值
+        //String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world",()->"demo"); //要求有返回值 //支持默认值（没有订阅时触发）
         System.out.println(rst1);
 
         Dami.<String,String>bus().sendAndSubscribe(topic, "world", rst2 -> {
