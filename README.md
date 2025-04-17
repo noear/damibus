@@ -127,11 +127,13 @@ public class Demo12 {
         });
 
 
-        //发送事件
-        String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world"); //要求有返回值
-        //String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world",()->"demo"); //要求有返回值 //支持默认值（没有订阅时触发）
+        //发送事件 //要求有答复（即，返回值）
+        String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world"); 
+        //发送事件 //要求有答复（即，返回值） //支持默认值（没有订阅时触发）
+        //String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world",()->"demo"); 
         System.out.println(rst1);
 
+        //发送事件 //可接收多次答复
         Dami.<String,String>bus().sendAndSubscribe(topic, "world", rst2 -> {
             System.out.println(rst2); //subscribe 不限回调次数
         });
