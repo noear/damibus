@@ -1,3 +1,7 @@
+#### 1.0.6
+
+* 调整 no matching listener 的日志级别（warn 改为 debug）
+
 #### 1.0.5
 
 * 添加 `DamiBus:sendAndRequest(topic, content, def)` 方法
