@@ -81,8 +81,8 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
                 throw new DamiException(e);
             }
         } else {
-            if (log.isWarnEnabled()) {
-                log.warn("There's no matching listening on the topic(@{})", payload.getTopic());
+            if (log.isDebugEnabled()) {
+                log.debug("There's no matching listener on the topic(@{})", payload.getTopic());
             }
         }
     }

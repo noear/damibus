@@ -48,8 +48,11 @@ public class DamiBeanDefinitionScanner extends ClassPathBeanDefinitionScanner {
         if (super.checkCandidate(beanName, beanDefinition)) {
             return true;
         } else {
-            logger.warn("Skipping  name '" + beanName + "' and '"
-                    + beanDefinition.getBeanClassName() + "' DamiSenderInterface" + ". Bean already defined with the same name!");
+            if (logger.isWarnEnabled()) {
+                logger.warn("Skipping  name '" + beanName + "' and '"
+                        + beanDefinition.getBeanClassName() + "' DamiSenderInterface" + ". Bean already defined with the same name!");
+            }
+
             return false;
         }
     }
