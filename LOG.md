@@ -1,3 +1,8 @@
+#### 1.0.7
+
+* 添加 DamiBus.router() 方法
+* 添加 TopicRouter:count() 方法
+
 #### 1.0.6
 
 * 调整 no matching listener 的日志级别（warn 改为 debug）
