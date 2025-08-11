@@ -4,6 +4,7 @@ import org.noear.dami.bus.impl.*;
 import org.noear.dami.exception.DamiException;
 import org.noear.dami.exception.DamiNoSubscriptionException;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -188,5 +189,11 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
     @Override
     public void unlisten(String topic) {
         router.remove(topic);
+    }
+
+    @Override
+    public int listenerCount(String topic) {
+        List<TopicListenerHolder<C, R>> matching = router.matching(topic);
+        return matching == null ? 0 : matching.size();
     }
 }

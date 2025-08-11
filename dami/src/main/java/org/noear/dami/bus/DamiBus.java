@@ -126,4 +126,12 @@ public interface DamiBus<C, R> {
      * @param topic 主题
      */
     void unlisten(final String topic);
+
+    /**
+     * 获取监听器数量
+     *
+     * @param topic 主题
+     * @return 监听器数量
+     */
+     int listenerCount(final String topic);
 }
