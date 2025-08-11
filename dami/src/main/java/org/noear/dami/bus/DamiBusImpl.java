@@ -191,9 +191,10 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
         router.remove(topic);
     }
 
-    @Override
-    public int listenerCount(String topic) {
-        List<TopicListenerHolder<C, R>> matching = router.matching(topic);
-        return matching == null ? 0 : matching.size();
+    /**
+     * 路由器
+     */
+    public TopicRouter<C, R> router() {
+        return this.router;
     }
 }
