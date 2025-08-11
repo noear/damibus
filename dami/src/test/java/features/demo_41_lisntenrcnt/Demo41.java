@@ -28,9 +28,9 @@ public class Demo41 {
         busStr.send(topic, "world");
         assert testObserver.get() == 1;
 
-        assert busStr.listenerCount(topic) == 1;
+        assert busStr.router().count(topic) == 1;
 
         busStr.unlisten(topic);
-        assert busStr.listenerCount(topic) == 0;
+        assert busStr.router().count(topic) == 0;
     }
 }

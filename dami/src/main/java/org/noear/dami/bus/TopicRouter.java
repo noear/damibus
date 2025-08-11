@@ -39,4 +39,12 @@ public interface TopicRouter<C, R> {
      * 路由匹配
      */
     List<TopicListenerHolder<C, R>> matching(final String topic);
+
+    /**
+     * 计数
+     */
+    default int count(final String topic) {
+        List list = matching(topic);
+        return list == null ? 0 : list.size();
+    }
 }
