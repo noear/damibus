@@ -1,9 +1,9 @@
 #### 1.1.0
 
 * 调整 DamiBus:sendAndSubscribe 标为弃用
-* 调整 DamiBus:sendAndRequest 标为弃用
+* 调整 DamiBus:sendAndRequest 标为弃用（由 call 替代）
 * 调整 Payload:isSubscribe 标为弃用
-* 调整 Payload:isRequest 标为弃用
+* 调整 Payload:isRequest 标为弃用（由 requiredReply 替代）
 * 添加 DamiBus:call 方法，意为调用（要求有一个答复）
 * 添加 Payload:requiredReply 方法，意为要求答复（或必须答复）
 
