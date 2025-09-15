@@ -89,6 +89,10 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
         }
     }
 
+    /**
+     * @deprecated 1.1.0 （简化模式，不再支持流调用）
+     * */
+    @Deprecated
     @Override
     public boolean isSubscribe() {
         if (acceptor != null) {

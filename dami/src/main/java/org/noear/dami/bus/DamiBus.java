@@ -62,25 +62,25 @@ public interface DamiBus<C, R> {
     /**
      * 发送并请求（会等待响应）
      *
-     * @param topic   主题
-     * @param content 内容
-     * @param def     默认返回（如果没有返回）
+     * @param topic    主题
+     * @param content  内容
+     * @param fallback 应急处理（如果没有返回）
      * @return 响应结果
      */
-    default R sendAndRequest(final String topic, final C content, Supplier<R> def) {
-        return sendAndRequest(topic, content, 3000, def);
+    default R sendAndRequest(final String topic, final C content, Supplier<R> fallback) {
+        return sendAndRequest(topic, content, 3000, fallback);
     }
 
     /**
      * 发送并请求（会等待响应）
      *
-     * @param topic   主题
-     * @param content 内容
-     * @param timeout 超时（毫秒）
-     * @param def     默认返回（如果没有返回）
+     * @param topic    主题
+     * @param content  内容
+     * @param timeout  超时（毫秒）
+     * @param fallback 应急处理（如果没有返回）
      * @return 响应结果
      */
-    R sendAndRequest(final String topic, final C content, long timeout, Supplier<R> def);
+    R sendAndRequest(final String topic, final C content, long timeout, Supplier<R> fallback);
 
     /**
      * 发送并订阅
@@ -89,7 +89,9 @@ public interface DamiBus<C, R> {
      * @param content  内容
      * @param consumer 消费者
      * @return 是否有订阅目标
+     * @deprecated 1.1.0 （简化模式，不再支持流调用）
      */
+    @Deprecated
     boolean sendAndSubscribe(final String topic, final C content, final Consumer<R> consumer);
 
 

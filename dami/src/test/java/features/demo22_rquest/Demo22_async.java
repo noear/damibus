@@ -25,10 +25,8 @@ public class Demo22_async {
                 System.out.println(Thread.currentThread());
                 System.err.println(payload);
 
-                if (payload.isRequest() || payload.isSubscribe()) {
-                    payload.reply("hi!"); // sendAndRequest 只接收第一个
-                    payload.reply("* hi nihao!");
-                    payload.reply("** hi nihao!");
+                if (payload.isRequest()) {
+                    payload.reply("hi!");
                 }
             });
         });
@@ -38,12 +36,5 @@ public class Demo22_async {
         String rst1 = bus.sendAndRequest(topic, 2L);
         System.out.println(rst1);
         assert "hi!".equals(rst1);
-
-        bus.sendAndSubscribe(topic, 3L, rst2 -> {
-            System.out.println(rst2); //subscribe 不限回调次数
-            testObserver.countDown();
-        });
-
-        assert testObserver.await(1, TimeUnit.SECONDS);
     }
 }

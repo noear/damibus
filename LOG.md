@@ -1,3 +1,8 @@
+#### 1.1.0
+
+* 调整 DamiBus:sendAndSubscribe 标为弃用
+* 调整 Payload:isSubscribe 标为弃用
+
 #### 1.0.7
 
 * 添加 DamiBus.router() 方法

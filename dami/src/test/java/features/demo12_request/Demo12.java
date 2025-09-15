@@ -20,10 +20,8 @@ public class Demo12 {
             System.out.println(Thread.currentThread());
             System.err.println(payload);
 
-            if (payload.isRequest() || payload.isSubscribe()) {
-                payload.reply("hi!"); // sendAndRequest 只接收第一个
-                payload.reply("* hi nihao!");
-                payload.reply("** hi nihao!");
+            if (payload.isRequest()) {
+                payload.reply("hi!");
             }
         });
 
@@ -33,13 +31,5 @@ public class Demo12 {
         String rst1 = busStr.sendAndRequest(topic, "world");
         System.out.println(rst1);
         assert "hi!".equals(rst1);
-
-        busStr.sendAndSubscribe(topic, "world", rst2 -> {
-            System.out.println(Thread.currentThread());
-            System.out.println(rst2); //subscribe 不限回调次数
-            testObserver.incrementAndGet();
-        });
-
-        assert testObserver.get() == 3;
     }
 }

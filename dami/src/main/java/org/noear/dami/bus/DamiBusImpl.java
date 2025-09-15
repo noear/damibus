@@ -4,7 +4,6 @@ import org.noear.dami.bus.impl.*;
 import org.noear.dami.exception.DamiException;
 import org.noear.dami.exception.DamiNoSubscriptionException;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -111,13 +110,13 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
     /**
      * 发送并请求（会等待响应）
      *
-     * @param topic   主题
-     * @param content 内容
-     * @param def     默认返回（如果没有返回）
+     * @param topic    主题
+     * @param content  内容
+     * @param fallback 应急处理（如果没有返回）
      * @return 响应结果
      */
     @Override
-    public R sendAndRequest(String topic, C content, long timeout, Supplier<R> def) {
+    public R sendAndRequest(String topic, C content, long timeout, Supplier<R> fallback) {
         AssertUtil.assertTopic(topic);
 
         CompletableFuture<R> future = new CompletableFuture<>();
@@ -132,10 +131,11 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
                 throw new DamiException(e);
             }
         } else {
-            if (def == null) {
+            if (fallback == null) {
                 throw new DamiNoSubscriptionException("No response subscription");
+            } else {
+                return fallback.get();
             }
-            return def.get();
         }
     }
 

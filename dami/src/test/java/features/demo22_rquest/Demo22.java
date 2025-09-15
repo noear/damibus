@@ -19,10 +19,8 @@ public class Demo22 {
         bus.listen(topic, payload -> {
             System.err.println(payload);
 
-            if (payload.isRequest() || payload.isSubscribe()) {
+            if (payload.isRequest()) {
                 payload.reply("hi!");
-                payload.reply("* hi nihao!");
-                payload.reply("** hi nihao!");
             }
         });
 
@@ -31,12 +29,5 @@ public class Demo22 {
         String rst1 = bus.sendAndRequest(topic, 2L);
         System.out.println(rst1);
         assert "hi!".equals(rst1);
-
-        bus.sendAndSubscribe(topic, 3L, rst2 -> {
-            System.out.println(rst2); //subscribe 不限回调次数
-            testObserver.incrementAndGet();
-        });
-
-        assert testObserver.get() == 3;
     }
 }

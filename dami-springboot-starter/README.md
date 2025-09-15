@@ -25,17 +25,13 @@ public class Demo90 {
         DamiBus<String, String> bus = Dami.<String, String>bus();
 
         System.out.println(bus.sendAndRequest("user.demo", "solon"));
-        bus.sendAndSubscribe("user.demo", "dami", rst -> {
-            System.out.println(rst);
-        });
     }
 
     @DamiTopic("user.demo")
     public static class UserEventListener implements TopicListener<Payload<String, String>> {
         @Override
         public void onEvent(Payload<String, String> payload) throws Throwable {
-            if (payload.isSubscribe() || payload.isRequest()) {
-                payload.reply("Hi " + payload.getContent());
+            if (payload.isRequest()) {
                 payload.reply("Hi " + payload.getContent());
             }
         }
