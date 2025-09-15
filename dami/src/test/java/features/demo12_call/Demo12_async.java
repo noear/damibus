@@ -1,28 +1,32 @@
-package features.demo12_request;
+package features.demo12_call;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 
-public class Demo12 {
+public class Demo12_async {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
     DamiBus<String, String> busStr = new DamiBusImpl<>();
 
     @Test
-    public void main() {
-        AtomicInteger testObserver = new AtomicInteger();
+    public void main() throws Exception{
+        CountDownLatch testObserver = new CountDownLatch(3);
+
 
         //监听事件
         busStr.listen(topic, payload -> {
-            System.out.println(Thread.currentThread());
-            System.err.println(payload);
+            CompletableFuture.runAsync(()->{
+                System.out.println(Thread.currentThread());
+                System.err.println(payload);
 
-            if (payload.requiredReply()) {
-                payload.reply("hi!");
-            }
+                if (payload.requiredReply()) {
+                    payload.reply("hi!");
+                }
+            });
         });
 
         System.out.println(Thread.currentThread());

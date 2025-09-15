@@ -1,4 +1,4 @@
-package features.demo22_rquest;
+package features.demo22_call;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.bus.DamiBus;
