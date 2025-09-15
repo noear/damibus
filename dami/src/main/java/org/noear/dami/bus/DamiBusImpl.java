@@ -108,7 +108,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
 
 
     /**
-     * 发送并请求（会等待响应）
+     * 调用（要求有一个答复）
      *
      * @param topic    主题
      * @param content  内容
@@ -116,7 +116,7 @@ public class DamiBusImpl<C, R> implements DamiBus<C, R>, DamiBusConfigurator<C, 
      * @return 响应结果
      */
     @Override
-    public R sendAndRequest(String topic, C content, long timeout, Supplier<R> fallback) {
+    public R call(String topic, C content, long timeout, Supplier<R> fallback) {
         AssertUtil.assertTopic(topic);
 
         CompletableFuture<R> future = new CompletableFuture<>();

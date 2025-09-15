@@ -49,14 +49,14 @@ public class Demo12 {
         Dami.<String,String>bus().listen(topic, payload -> {
             System.err.println(payload);
 
-            if (payload.isRequest()) {
+            if (payload.requiredReply()) {
                 payload.reply("hi!"); 
             }
         });
 
 
         //发送事件
-        String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world"); //要求有返回值
+        String rst1 = Dami.<String,String>bus().call(topic, "world"); //要求有返回值
         System.out.println(rst1);
     }
 }

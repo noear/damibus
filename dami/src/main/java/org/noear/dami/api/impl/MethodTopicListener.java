@@ -31,7 +31,7 @@ public class MethodTopicListener implements TopicListener<Payload<Object,Object>
         //执行
         Object rst = method.invoke(target, args);
 
-        if (payload.isRequest()) {
+        if (payload.requiredReply()) {
             //答复
             payload.reply(rst);
         }

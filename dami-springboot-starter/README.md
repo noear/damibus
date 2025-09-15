@@ -24,14 +24,14 @@ public class Demo90 {
     public void main() {
         DamiBus<String, String> bus = Dami.<String, String>bus();
 
-        System.out.println(bus.sendAndRequest("user.demo", "solon"));
+        System.out.println(bus.call("user.demo", "solon"));
     }
 
     @DamiTopic("user.demo")
     public static class UserEventListener implements TopicListener<Payload<String, String>> {
         @Override
         public void onEvent(Payload<String, String> payload) throws Throwable {
-            if (payload.isRequest()) {
+            if (payload.requiredReply()) {
                 payload.reply("Hi " + payload.getContent());
             }
         }

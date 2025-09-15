@@ -62,7 +62,7 @@ DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模�
 |    | DamiBus | EventBus | Api | DamiBus 的情况说明                                                    |
 |----|------|----------|-----|----------------------------------------------------------------|
 | 广播 | 有    | 有        | 无   | 发送(send) + 监听(listen)<br/>以及 Api 模式                            |
-| 应答 | 有    | 无        | 有   | 发送并请求(sendAndRequest) + 监听(listen) + 答复(reply)<br/>以及 Api 模式 |
+| 应答 | 有    | 无        | 有   | 发送并请求(call) + 监听(listen) + 答复(reply)<br/>以及 Api 模式 |
 | 耦合 | 弱-   | 弱+       | 强++ |                                                                |
 
 
@@ -118,16 +118,16 @@ public class Demo12 {
         Dami.<String,String>bus().listen(topic, payload -> {
             System.err.println(payload);
 
-            if (payload.isRequest()) {
+            if (payload.requiredReply()) {
                 payload.reply("hi!"); 
             }
         });
 
 
         //发送事件 //要求有答复（即，返回值）
-        String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world"); 
+        String rst1 = Dami.<String,String>bus().call(topic, "world"); 
         //发送事件 //要求有答复（即，返回值） //支持默认值（没有订阅时触发）
-        //String rst1 = Dami.<String,String>bus().sendAndRequest(topic, "world", ()->"demo"); 
+        //String rst1 = Dami.<String,String>bus().call(topic, "world", ()->"demo"); 
         System.out.println(rst1);
     }
 }

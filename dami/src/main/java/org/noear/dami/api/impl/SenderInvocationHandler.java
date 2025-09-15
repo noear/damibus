@@ -44,7 +44,7 @@ public class SenderInvocationHandler implements InvocationHandler {
             }
         } else {
             try {
-                result = damiApi.bus().sendAndRequest(topic, content);
+                result = damiApi.bus().call(topic, content);
             } catch (DamiNoSubscriptionException e) {
                 if (method.isDefault()) {
                     //如果没有订阅，且有默认实现

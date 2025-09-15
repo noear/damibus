@@ -20,7 +20,7 @@ public class Demo12 {
             System.out.println(Thread.currentThread());
             System.err.println(payload);
 
-            if (payload.isRequest()) {
+            if (payload.requiredReply()) {
                 payload.reply("hi!");
             }
         });
@@ -28,7 +28,7 @@ public class Demo12 {
         System.out.println(Thread.currentThread());
 
         //发送事件
-        String rst1 = busStr.sendAndRequest(topic, "world");
+        String rst1 = busStr.call(topic, "world");
         System.out.println(rst1);
         assert "hi!".equals(rst1);
     }

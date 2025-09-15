@@ -48,8 +48,8 @@ public interface DamiBus<C, R> {
     
     //发送（不需要答复）=> 返回是否有订阅处理
     boolean send(final String topic, final C content);
-    //发送并请求 => 返回响应结果（没有订阅处理，会异常）
-    R sendAndRequest(final String topic, final C content);
+    //调用 => 返回响应结果（没有订阅处理，会异常）
+    R call(final String topic, final C content);
    
     //监听
     default void listen(final String topic, final TopicListener<Payload<C, R>> listener) { listen(topic, 0, listener); }
@@ -88,7 +88,7 @@ DamiApi::createSender，发送者接口代理情况说明
 | 用例               | 对应总线接口                   | 说明               |
 |------------------|--------------------------|------------------|
 | void onCreated() | 返回为空的，send 发送            | 没有监听，不会异常        |
-| User getUser()   | 返回类型的，sendAndRequest 发送 | 没有监听，会异常。且必须要有答复 |
+| User getUser()   | 返回类型的，call 发送 | 没有监听，会异常。且必须要有答复 |
 
 
 ## 5、Payload<C, R>，事件负载接口
@@ -105,8 +105,8 @@ public interface Payload<C, R> extends Serializable {
     //获取处理标识
     boolean getHandled();
 
-    //是否为请求（是，则需要答复）
-    boolean isRequest();
+    //要求答复？
+    boolean requiredReply();
     //答复
     boolean reply(final R content);
 
@@ -125,7 +125,7 @@ Payload::reply，答复情况说明
 | 发送接口              | 答复说明            | 备注                          |
 |-------------------|-----------------|-----------------------------|
 | send()            | 会出异常，提示不支持答复    |  |
-| sendAndRequest() | 第一条答复有效，且必须要有答复 | payload.isRequest() = true  |
+| call() | 第一条答复有效，且必须要有答复 | payload.requiredReply() = true  |
 
 
 ## 6、TopicListener<Event>，主题监听接口

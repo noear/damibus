@@ -6,7 +6,6 @@ import org.noear.dami.bus.DamiBusImpl;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class Demo22_async {
     static String topic = "demo.hello";
@@ -25,7 +24,7 @@ public class Demo22_async {
                 System.out.println(Thread.currentThread());
                 System.err.println(payload);
 
-                if (payload.isRequest()) {
+                if (payload.requiredReply()) {
                     payload.reply("hi!");
                 }
             });
@@ -33,7 +32,7 @@ public class Demo22_async {
 
 
         //发送事件
-        String rst1 = bus.sendAndRequest(topic, 2L);
+        String rst1 = bus.call(topic, 2L);
         System.out.println(rst1);
         assert "hi!".equals(rst1);
     }

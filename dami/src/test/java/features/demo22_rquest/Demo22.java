@@ -19,14 +19,14 @@ public class Demo22 {
         bus.listen(topic, payload -> {
             System.err.println(payload);
 
-            if (payload.isRequest()) {
+            if (payload.requiredReply()) {
                 payload.reply("hi!");
             }
         });
 
 
         //发送事件
-        String rst1 = bus.sendAndRequest(topic, 2L);
+        String rst1 = bus.call(topic, 2L);
         System.out.println(rst1);
         assert "hi!".equals(rst1);
     }
