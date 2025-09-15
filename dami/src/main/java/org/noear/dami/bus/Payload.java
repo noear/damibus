@@ -35,8 +35,18 @@ public interface Payload<C, R> extends Serializable {
     boolean getHandled();
 
     /**
-     * 是否为请求（是，则需要答复）
+     * 要求答复
+     *
+     * @since 1.1.0
      */
+    boolean requiredReply();
+
+    /**
+     * 是否为请求（是，则需要答复）
+     *
+     * @deprecated 1.1.0 （简化模式，不再支持流调用）
+     */
+    @Deprecated
     boolean isRequest();
 
     /**

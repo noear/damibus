@@ -2,6 +2,8 @@
 
 * 调整 DamiBus:sendAndSubscribe 标为弃用
 * 调整 Payload:isSubscribe 标为弃用
+* 调整 Payload:isRequest 标为弃用
+* 添加 Payload:requiredReply 方法，意为要求答复（或必须答复）
 
 #### 1.0.7
 

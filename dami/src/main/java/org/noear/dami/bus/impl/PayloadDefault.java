@@ -78,7 +78,19 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
     }
 
     /**
+     * 要求答复
+     *
+     * @since 1.1.0
+     */
+    @Override
+    public boolean requiredReply() {
+        return acceptor != null;
+    }
+
+    /**
      * 是否为请求（是的话，需要答复）
+     *
+     * @deprecated 1.1.0 （简化模式，不再支持流调用）
      */
     @Override
     public boolean isRequest() {
