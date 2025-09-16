@@ -17,6 +17,7 @@ package org.noear.dami.api;
 
 import org.noear.dami.bus.DamiBus;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
@@ -63,10 +64,15 @@ public interface DamiApi {
 
     /// ////////////////
 
-//    /**
-//     * 调用
-//     */
-//    <C, R> Publisher<R> stream(String topic, C content);
+    /**
+     * 流
+     */
+    <C, R> Publisher<R> stream(String topic, C content);
+
+    /**
+     * 输出
+     */
+    <C, R> void feed(String topic, BiConsumer<C, Subscriber<? super R>> consumer);
 
 
     /// ////////////////

@@ -21,7 +21,10 @@ import org.noear.dami.api.impl.MethodTopicListenerRecord;
 import org.noear.dami.api.impl.SenderInvocationHandler;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.payload.RequestPayload;
+import org.noear.dami.bus.payload.SubscribePayload;
 import org.noear.dami.exception.DamiException;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -129,6 +132,24 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
                     consumer.accept(msg.getPayload().getContext(), msg.getPayload().getReceiver());
                 });
     }
+
+    @Override
+    public <C, R> Publisher<R> stream(String topic, C content) {
+        return subscriber -> {
+            ((DamiBus<SubscribePayload<C, R>>) bus())
+                    .send(topic, new SubscribePayload<>(content, subscriber));
+        };
+    }
+
+    @Override
+    public <C, R> void feed(String topic, BiConsumer<C, Subscriber<? super R>> consumer) {
+        ((DamiBus<SubscribePayload<C, R>>) bus()).listen(topic, message -> {
+
+            consumer.accept(message.getPayload().getContext(), message.getPayload().getReceiver());
+        });
+    }
+
+    /// ///////
 
     /**
      * 创建发送器代理

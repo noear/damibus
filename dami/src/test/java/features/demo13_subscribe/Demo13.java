@@ -2,12 +2,9 @@ package features.demo13_subscribe;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.Dami;
-import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.payload.ReceivePayload;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import org.noear.dami.api.DamiApi;
+import org.noear.solon.rx.SimpleSubscriber;
+import org.noear.solon.rx.SimpleSubscription;
 
 /**
  *
@@ -17,29 +14,34 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Demo13 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
-    DamiBus<ReceivePayload<String, FluxSink<String>>> busStr = Dami.newBus();
+    DamiApi api = Dami.newApi();
+
 
     @Test
     public void main() throws Exception {
-        AtomicInteger testObserver = new AtomicInteger();
-
         //监听事件
-        busStr.listen(topic, message -> {
+        api.<String, String>feed(topic, (req, subs) -> {
             System.out.println(Thread.currentThread());
-            System.err.println(message);
+            System.err.println(req);
 
-            message.getPayload().getReceiver().next("hi!");
-            message.getPayload().getReceiver().complete();
+            subs.onSubscribe(new SimpleSubscription()
+                    .onRequest((s, l) -> {
+                        for (int i = 0; i < l; i++) {
+                            subs.onNext("test");
+                        }
+                    }));
         });
 
         System.out.println(Thread.currentThread());
 
         //发送事件
-
-        Flux.<String>create(sink -> {
-            busStr.send(topic, new ReceivePayload<>("world", sink), r -> {
-                r.getReceiver().isCancelled();
-            });
-        });
+        api.<String, String>stream(topic, "world").subscribe(new SimpleSubscriber<>()
+                .doOnSubscribe(subs -> {
+                    subs.request(1);
+                })
+                .doOnNext((s, item) -> {
+                    System.out.println(Thread.currentThread());
+                    s.request(1);
+                }));
     }
 }
