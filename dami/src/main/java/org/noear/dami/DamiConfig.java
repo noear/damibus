@@ -37,11 +37,11 @@ public class DamiConfig {
     /**
      * 配置总线的负载工厂
      *
-     * @param payloadFactory 负载工厂
+     * @param messageFactory 负载工厂
      */
-    public static void configure(MessageFactory payloadFactory) {
-        if (payloadFactory != null) {
-            ((DamiBusConfigurator) Dami.bus).payloadFactory(payloadFactory);
+    public static void configure(MessageFactory messageFactory) {
+        if (messageFactory != null) {
+            ((DamiBusConfigurator) Dami.bus).messageFactory(messageFactory);
         }
     }
 

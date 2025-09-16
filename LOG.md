@@ -2,10 +2,10 @@
 
 * 调整 DamiBus:sendAndSubscribe 标为弃用
 * 调整 DamiBus:sendAndRequest 标为弃用（由 call 替代）
-* 调整 Payload:isSubscribe 标为弃用
-* 调整 Payload:isRequest 标为弃用（由 requiredReply 替代）
+* 调整 Message:isSubscribe 标为弃用
+* 调整 Message:isRequest 标为弃用（由 requiredReply 替代）
 * 添加 DamiBus:call 方法，意为调用（要求有一个答复）
-* 添加 Payload:requiredReply 方法，意为要求答复（或必须答复）
+* 添加 Message:requiredReply 方法，意为要求答复（或必须答复）
 
 #### 1.0.7
 
@@ -58,7 +58,7 @@
 
 #### 0.54
 * 添加 IdGenerator 接口（支持自定义id生成）
-* 调整 Payload::getGuid 更名为 getPlid
+* 调整 Message::getGuid 更名为 getPlid
 * 调整 MDC（dami-guid）更名为 plid
 
 
@@ -72,7 +72,7 @@
 * 添加 TopicDispatcher，将调度处理与路由器开发（更方便添加监控）
 * 添加 InterceptorChain::getTargets 接口（可以知道有哪些订阅）
 * 添加 Acceptor::isSingle 接口，用于识别单发还是多发接收
-* 添加 Payload::isSubscribe 接口，用于识别订阅
+* 添加 Message::isSubscribe 接口，用于识别订阅
 * 
 * 更名 sendAndResponse 为 sendAndRequest!!!
 * 更名 sendAndCallback 为 sendAndSubscribe!!!
@@ -109,8 +109,8 @@
 
 #### 0.24
 
-* Payload::reply 增加返回是否成功
-* Dami.api() 的监听者参数数量可与发送者略有不同（比如增加 Payload 参数）
+* Message::reply 增加返回是否成功
+* Dami.api() 的监听者参数数量可与发送者略有不同（比如增加 Message 参数）
 
 #### 0.23
 

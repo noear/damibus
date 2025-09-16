@@ -12,7 +12,7 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  */
-public class PayloadDefault<C> implements Message<C>, Serializable {
+public class MessageDefault<C> implements Message<C>, Serializable {
     private final String topic;
     private final C content;
 
@@ -25,7 +25,7 @@ public class PayloadDefault<C> implements Message<C>, Serializable {
      * @param topic 主题
      * @param content 内容
      * */
-    public PayloadDefault(final String topic, final C content) {
+    public MessageDefault(final String topic, final C content) {
         this.topic = topic;
         this.content = content;
     }
@@ -87,7 +87,7 @@ public class PayloadDefault<C> implements Message<C>, Serializable {
 
     @Override
     public String toString() {
-        return "Payload{" +
+        return "Message{" +
                 ", topic='" + topic + '\'' +
                 ", content=" + content +
                 ", attachments=" + attachments +

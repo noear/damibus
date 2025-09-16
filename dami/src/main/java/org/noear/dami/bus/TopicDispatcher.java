@@ -15,5 +15,5 @@ public interface TopicDispatcher<C> {
     /**
      * 派发
      */
-    void dispatch(Message<C> payload, TopicRouter<C> router);
+    void dispatch(Message<C> message, TopicRouter<C> router);
 }

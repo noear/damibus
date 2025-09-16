@@ -28,11 +28,11 @@ public class Demo80 {
     }
 
     @DamiTopic("user.demo")
-    public static class UserEventListener implements TopicListener<Payload<String, String>> {
+    public static class UserEventListener implements TopicListener<Message<String, String>> {
         @Override
-        public void onEvent(Payload<String, String> payload) throws Throwable {
-            if (payload.requiredReply()) {
-                payload.reply("Hi " + payload.getContent());
+        public void onEvent(Message<String, String> message) throws Throwable {
+            if (message.requiredReply()) {
+                message.reply("Hi " + message.getContent());
             }
         }
     }

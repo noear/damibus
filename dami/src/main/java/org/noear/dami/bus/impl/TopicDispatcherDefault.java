@@ -61,17 +61,17 @@ public class TopicDispatcherDefault<C> implements TopicDispatcher<C> ,Intercepto
      * 执行拦截
      */
     @Override
-    public void doIntercept(Message<C> payload, InterceptorChain<C> chain) {
+    public void doIntercept(Message<C> message, InterceptorChain<C> chain) {
         if (log.isTraceEnabled()) {
-            log.trace("{}", payload);
+            log.trace("{}", message);
         }
 
         final List<TopicListenerHolder<C>> targets = chain.getTargets();
 
         if (targets != null && targets.size() > 0) {
             try {
-                doDispatch(payload, chain.getTargets());
-                payload.setHandled();
+                doDispatch(message, chain.getTargets());
+                message.setHandled();
             } catch (InvocationTargetException e) {
                 throw new DamiException(e.getTargetException());
             } catch (UndeclaredThrowableException e) {
@@ -81,7 +81,7 @@ public class TopicDispatcherDefault<C> implements TopicDispatcher<C> ,Intercepto
             }
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("There's no matching listener on the topic(@{})", payload.getTopic());
+                log.debug("There's no matching listener on the topic(@{})", message.getTopic());
             }
         }
     }
@@ -90,17 +90,17 @@ public class TopicDispatcherDefault<C> implements TopicDispatcher<C> ,Intercepto
      * 派发
      */
     @Override
-    public void dispatch(Message<C> payload, TopicRouter<C> router) {
-        AssertUtil.assertTopic(payload.getTopic());
+    public void dispatch(Message<C> message, TopicRouter<C> router) {
+        AssertUtil.assertTopic(message.getTopic());
 
 //        try {
-//            MDC.put("dami-plid", payload.getPlid());
+//            MDC.put("dami-plid", message.getPlid());
 
             //获取路由匹配结果
-            List<TopicListenerHolder<C>> targets = router.matching(payload.getTopic());
+            List<TopicListenerHolder<C>> targets = router.matching(message.getTopic());
 
             //转成拦截链处理
-            new InterceptorChain<>(interceptors, targets).doIntercept(payload);
+            new InterceptorChain<>(interceptors, targets).doIntercept(message);
 //        } finally {
 //            MDC.remove("dami-plid");
 //        }
@@ -109,10 +109,10 @@ public class TopicDispatcherDefault<C> implements TopicDispatcher<C> ,Intercepto
     /**
      * 执行派发
      */
-    protected void doDispatch(Message<C> payload, List<TopicListenerHolder<C>> targets) throws Throwable {
+    protected void doDispatch(Message<C> message, List<TopicListenerHolder<C>> targets) throws Throwable {
         //用 i，可以避免遍历时添加监听的异常
         for (int i = 0; i < targets.size(); i++) {
-            targets.get(i).getListener().onEvent(payload);
+            targets.get(i).getListener().onEvent(message);
         }
     }
 }

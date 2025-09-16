@@ -24,16 +24,16 @@ public class MethodTopicListener implements TopicListener<Message<Object,Object>
     }
 
     @Override
-    public void onEvent(Message payload) throws Throwable {
+    public void onEvent(Message message) throws Throwable {
         //解码
-        Object[] args = damiApi.coder().decode(method, payload);
+        Object[] args = damiApi.coder().decode(method, message);
 
         //执行
         Object rst = method.invoke(target, args);
 
-        if (payload.requiredReply()) {
+        if (message.requiredReply()) {
             //答复
-            payload.reply(rst);
+            message.reply(rst);
         }
     }
 

@@ -18,8 +18,8 @@ public class Demo11 {
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        busStr.listen(topic, payload -> {
-            System.err.println(payload);
+        busStr.listen(topic, message -> {
+            System.err.println(message);
             testObserver.incrementAndGet();
         });
 

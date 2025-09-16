@@ -23,7 +23,7 @@ public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
             this.router = router;
         }
 
-        this.factory = PayloadDefault::new;
+        this.factory = MessageDefault::new;
         this.dispatcher = new TopicDispatcherDefault<>();
     }
 
@@ -52,7 +52,7 @@ public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
     /**
      * 设置事件负载工厂
      */
-    public DamiBusConfigurator<C> payloadFactory(MessageFactory<C> factory) {
+    public DamiBusConfigurator<C> messageFactory(MessageFactory<C> factory) {
         if (factory != null) {
             this.factory = factory;
         }
@@ -81,11 +81,11 @@ public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
     public boolean send(final String topic, final C content) {
         AssertUtil.assertTopic(topic);
 
-        Message<C> payload = factory.create(topic, content);
+        Message<C> message = factory.create(topic, content);
 
-        dispatcher.dispatch(payload, router);
+        dispatcher.dispatch(message, router);
 
-        return payload.getHandled();
+        return message.getHandled();
     }
 
 

@@ -24,7 +24,7 @@ public class InterceptorChain<C> {
     /**
      * 拦截
      * */
-    public void doIntercept(Message<C> payload) {
-        interceptors.get(interceptorIndex++).doIntercept(payload, this);
+    public void doIntercept(Message<C> message) {
+        interceptors.get(interceptorIndex++).doIntercept(message, this);
     }
 }

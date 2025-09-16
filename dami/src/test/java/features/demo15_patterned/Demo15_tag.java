@@ -21,7 +21,7 @@ public class Demo15_tag {
         //发送事件的tag只要有一个存在于监听的tag里面则会匹配 (多对多)
 
         //拦截1
-        busStr.listen("demo:a,b", (payload) -> {
+        busStr.listen("demo:a,b", (message) -> {
             System.err.println(payload);
             testObserver.incrementAndGet();
         });

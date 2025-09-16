@@ -17,7 +17,7 @@ public class Demo23 {
 
     @Test
     public void main() throws InterruptedException {
-        final TopicListener<Message<String, Long>> aListener = payload -> {
+        final TopicListener<Message<String, Long>> aListener = message -> {
             System.out.println("i'm a:" + payload);
         };
         final TopicListener<Message<String, Long>> bListener = payload -> {

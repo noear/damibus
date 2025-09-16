@@ -20,7 +20,7 @@ public class Demo80 {
     @DamiTopic("user.demo")
     public static class UserEventListener implements TopicListener<Message<String, String>> {
         @Override
-        public void onEvent(Message<String, String> payload) throws Throwable {
+        public void onEvent(Message<String, String> message) throws Throwable {
             if (payload.requiredReply()) {
                 payload.reply("Hi " + payload.getContent());
             }

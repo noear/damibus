@@ -10,8 +10,8 @@ public interface Interceptor<C> {
     /**
      * 拦截
      *
-     * @param payload 事件负载
+     * @param message 事件负载
      * @param chain   拦截链
      */
-    void doIntercept(Message<C> payload, InterceptorChain<C> chain);
+    void doIntercept(Message<C> message, InterceptorChain<C> chain);
 }

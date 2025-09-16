@@ -22,7 +22,7 @@ public class DamiConfig {
     //配置总线的主题调度器
     public static void configure(TopicDispatcher topicDispatcher);
     //配置总线的负载工厂
-    public static void configure(PayloadFactory payloadFactory);
+    public static void configure(MessageFactory messageFactory);
     //配置总线的响应超时
     public static void configure(long timeout);
 
@@ -52,11 +52,11 @@ public interface DamiBus<C> {
     R call(final String topic, final C content);
    
     //监听
-    default void listen(final String topic, final TopicListener<Payload<C>> listener) { listen(topic, 0, listener); }
+    default void listen(final String topic, final TopicListener<Message<C>> listener) { listen(topic, 0, listener); }
     //监听
-    void listen(final String topic, final int index, final TopicListener<Payload<C>> listener);
+    void listen(final String topic, final int index, final TopicListener<Message<C>> listener);
     //取消监听
-    void unlisten(final String topic, final TopicListener<Payload<C>> listener);
+    void unlisten(final String topic, final TopicListener<Message<C>> listener);
 }
 ```
 
@@ -91,11 +91,11 @@ DamiApi::createSender，发送者接口代理情况说明
 | User getUser()   | 返回类型的，call 发送 | 没有监听，会异常。且必须要有答复 |
 
 
-## 5、Payload<C>，事件负载接口
+## 5、Message<C>，事件负载接口
 
 
 ```java
-public interface Payload<C> extends Serializable {
+public interface Message<C> extends Serializable {
     //获取附件
     <T> T getAttachment(String key);
     //设置附件
@@ -120,12 +120,12 @@ public interface Payload<C> extends Serializable {
 
 ```
 
-Payload::reply，答复情况说明
+Message::reply，答复情况说明
 
 | 发送接口              | 答复说明            | 备注                          |
 |-------------------|-----------------|-----------------------------|
 | send()            | 会出异常，提示不支持答复    |  |
-| call() | 第一条答复有效，且必须要有答复 | payload.requiredReply() = true  |
+| call() | 第一条答复有效，且必须要有答复 | message.requiredReply() = true  |
 
 
 ## 6、TopicListener<Event>，主题监听接口

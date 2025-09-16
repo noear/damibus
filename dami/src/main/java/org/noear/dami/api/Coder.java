@@ -24,8 +24,8 @@ public interface Coder {
      * 解码
      *
      * @param method  方法
-     * @param payload 负载
+     * @param message 负载
      * @return 方法参数
      */
-    Object[] decode(Method method, Message payload) throws Throwable;
+    Object[] decode(Method method, Message message) throws Throwable;
 }

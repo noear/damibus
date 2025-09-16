@@ -20,5 +20,5 @@ public interface DamiBusConfigurator<C> extends DamiBus<C> {
     /**
      * 配置事件负载工厂
      */
-    DamiBusConfigurator<C> payloadFactory(MessageFactory<C> factory);
+    DamiBusConfigurator<C> messageFactory(MessageFactory<C> factory);
 }

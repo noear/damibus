@@ -22,8 +22,8 @@ public class Demo16_dispatcher {
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        busStr.listen(topic, payload -> {
-            System.out.println(payload);
+        busStr.listen(topic, message -> {
+            System.out.println(message);
             testObserver.incrementAndGet();
         });
 

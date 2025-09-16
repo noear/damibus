@@ -49,12 +49,12 @@ public class CoderDefault implements Coder {
      * 解码
      *
      * @param method  方法
-     * @param payload 负载
+     * @param message 负载
      * @return 方法参数
      */
     @Override
-    public Object[] decode(Method method, Message payload) {
-        Map<String, Object> map = (Map<String, Object>) payload.getContent();
+    public Object[] decode(Method method, Message message) {
+        Map<String, Object> map = (Map<String, Object>) message.getContent();
 
         //构建执行参数（可以与发送者的参数，略有不同）
         Object[] args = new Object[method.getParameterCount()];
@@ -63,7 +63,7 @@ public class CoderDefault implements Coder {
         for (int i = 0, len = method.getParameterCount(); i < len; i++) {
             Parameter p1 = parameters[i];
             if (Message.class.isAssignableFrom(p1.getType())) {
-                args[i] = payload;
+                args[i] = message;
             } else {
                 String name = p1.getName();
                 Param p1Anno = p1.getAnnotation(Param.class);
