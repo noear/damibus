@@ -59,11 +59,12 @@ DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模�
 
 ### 与常见的 EventBus、ApiBean 的区别
 
-|    | DamiBus | EventBus | Api | DamiBus 的情况说明                                   |
-|----|------|----------|-----|-------------------------------------------------|
-| 广播 | 有    | 有        | 无   | 发送(send) + 监听(listen)<br/>以及 Api 模式             |
-| 应答 | 有    | 无        | 有   | 调用(call) + 监听(listen) + 答复(reply)<br/>以及 Api 模式 |
-| 耦合 | 弱-   | 弱+       | 强++ |                                                 |
+|    | DamiBus | EventBus | Api | DamiBus 的情况说明                                                      |
+|----|------|----------|-----|--------------------------------------------------------------------|
+| 广播 | 有    | 有        | 无   | 发送(send) + 监听(listen)<br/>以及 Api 模式                                |
+| 请求 | 有    | 无        | 有   | 请求(send(RequestPayload)) + 监听(listen) + 答复(response)<br/>以及 Api 模式 |
+| 订阅 | 有    | 无        | 无   | 请求(send(SubscribePayload)) + 监听(listen) + 答复(subscriber)<br/>以及 Api 模式      |
+| 耦合 | 弱-   | 弱+       | 强++ |                                                                    |
 
 
 ### 依赖配置
@@ -72,7 +73,7 @@ DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -106,7 +107,7 @@ public class Deom11 {
 }
 ```
 
-#### demo12_call
+#### demo12_request
 
 ```java
 //泛型总线风格。<P>bus()
@@ -115,19 +116,20 @@ public class Demo12 {
 
     public static void main(String[] args) {
         //监听事件
-        Dami.<String,String>bus().listen(topic, message -> {
+        Dami.<RequestPayload<String,String>>bus().listen(topic, message -> {
             System.err.println(message);
 
-            if (message.requiredReply()) {
-                message.reply("hi!"); 
-            }
+            message.getPayload().getResponse().complete("hi!");
         });
 
 
         //发送事件 //要求有答复（即，返回值）
-        String rst1 = Dami.<String,String>bus().call(topic, "world"); 
-        //发送事件 //要求有答复（即，返回值） //支持默认值（没有订阅时触发）
-        //String rst1 = Dami.<String,String>bus().call(topic, "world", ()->"demo"); 
+        String rst1 = Dami.<RequestPayload<String,String>>bus().send(topic, new RequestPayload<>("world"))
+                .getPayload()
+                .getResponse()
+                .get();
+        //发送事件 //要求有答复（即，返回值） //支持应急处理（或降级处理）（没有订阅时触发时）
+        //String rst1 = Dami.<RequestPayload<String,String>>bus().send(topic, new RequestPayload<>("world"), r -> r.getResponse().complete("def"))...;
         System.out.println(rst1);
     }
 }
