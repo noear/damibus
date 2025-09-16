@@ -1,6 +1,23 @@
+/*
+ * Copyright 2023～ noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.dami.bus;
 
 import org.noear.dami.bus.impl.*;
+
+import java.util.function.Consumer;
 
 /**
  * 大米总线实现
@@ -8,15 +25,15 @@ import org.noear.dami.bus.impl.*;
  * @author noear
  * @since 1.0
  */
-public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
+public class DamiBusImpl<P> implements DamiBus<P>, DamiBusConfigurator<P> {
     //路由器
-    private TopicRouter<C> router;
+    private TopicRouter<P> router;
     //调度器
-    private TopicDispatcher<C> dispatcher;
+    private TopicDispatcher<P> dispatcher;
     //负载工厂
-    private MessageFactory<C> factory;
+    private MessageFactory<P> factory;
 
-    public DamiBusImpl(TopicRouter<C> router) {
+    public DamiBusImpl(TopicRouter<P> router) {
         if (router == null) {
             this.router = new TopicRouterDefault<>();
         } else {
@@ -34,7 +51,7 @@ public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
     /**
      * 设置主题路由器
      */
-    public DamiBusConfigurator<C> topicRouter(TopicRouter<C> router) {
+    public DamiBusConfigurator<P> topicRouter(TopicRouter<P> router) {
         if (router != null) {
             this.router = router;
         }
@@ -42,7 +59,7 @@ public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
     }
 
     @Override
-    public DamiBusConfigurator<C> topicDispatcher(TopicDispatcher<C> dispatcher) {
+    public DamiBusConfigurator<P> topicDispatcher(TopicDispatcher<P> dispatcher) {
         if (dispatcher != null) {
             this.dispatcher = dispatcher;
         }
@@ -52,7 +69,7 @@ public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
     /**
      * 设置事件负载工厂
      */
-    public DamiBusConfigurator<C> messageFactory(MessageFactory<C> factory) {
+    public DamiBusConfigurator<P> messageFactory(MessageFactory<P> factory) {
         if (factory != null) {
             this.factory = factory;
         }
@@ -73,19 +90,26 @@ public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
     /**
      * 发送（不需要答复）
      *
-     * @param topic   主题
-     * @param content 内容
-     * @return 是否有订阅
+     * @param topic    主题
+     * @param payload  核载
+     * @param fallback 应急处理（当没有订阅时执行）
+     * @return 消息
      */
     @Override
-    public boolean send(final String topic, final C content) {
+    public Message<P> send(final String topic, final P payload, Consumer<P> fallback) {
         AssertUtil.assertTopic(topic);
 
-        Message<C> message = factory.create(topic, content);
+        Message<P> message = factory.create(topic, payload);
 
         dispatcher.dispatch(message, router);
 
-        return message.getHandled();
+        if (message.getHandled() == false) {
+            if (fallback != null) {
+                fallback.accept(payload);
+            }
+        }
+
+        return message;
     }
 
 
@@ -97,7 +121,7 @@ public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
      * @param listener 监听
      */
     @Override
-    public void listen(final String topic, final int index, final TopicListener<Message<C>> listener) {
+    public void listen(final String topic, final int index, final TopicListener<Message<P>> listener) {
         router.add(topic, index, listener);
     }
 
@@ -108,7 +132,7 @@ public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
      * @param listener 监听
      */
     @Override
-    public void unlisten(final String topic, final TopicListener<Message<C>> listener) {
+    public void unlisten(final String topic, final TopicListener<Message<P>> listener) {
         router.remove(topic, listener);
     }
 
@@ -125,7 +149,7 @@ public class DamiBusImpl<C> implements DamiBus<C>, DamiBusConfigurator<C> {
     /**
      * 路由器
      */
-    public TopicRouter<C> router() {
+    public TopicRouter<P> router() {
         return this.router;
     }
 }

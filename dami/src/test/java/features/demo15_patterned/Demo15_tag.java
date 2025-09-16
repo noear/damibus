@@ -13,7 +13,7 @@ public class Demo15_tag {
     @Test
     public void test3_1() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String, String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingTag::new));
+        DamiBus<String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingTag::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -22,7 +22,7 @@ public class Demo15_tag {
 
         //拦截1
         busStr.listen("demo:a,b", (message) -> {
-            System.err.println(payload);
+            System.err.println(message);
             testObserver.incrementAndGet();
         });
         //拦截2

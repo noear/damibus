@@ -43,6 +43,7 @@
         <junit4.version>4.13.2</junit4.version>
         <junit5.version>5.9.1</junit5.version>
         <slf4j.version>2.0.9</slf4j.version>
+        <reactive.version>1.0.4</reactive.version>
         <solon.version>3.4.3</solon.version>
         <spring-boot.version>2.0.4.RELEASE</spring-boot.version>
     </properties>

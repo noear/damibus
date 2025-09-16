@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023～ noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.dami.bus.impl;
 
 import org.noear.dami.bus.*;
@@ -18,7 +33,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author noear
  * @since 1.0
  */
-public class TopicDispatcherDefault<C> implements TopicDispatcher<C> ,Interceptor<C> {
+public class TopicDispatcherDefault<P> implements TopicDispatcher<P> ,Interceptor<P> {
     static final Logger log = LoggerFactory.getLogger(TopicDispatcherDefault.class);
     /**
      * 拦截器
@@ -61,12 +76,12 @@ public class TopicDispatcherDefault<C> implements TopicDispatcher<C> ,Intercepto
      * 执行拦截
      */
     @Override
-    public void doIntercept(Message<C> message, InterceptorChain<C> chain) {
+    public void doIntercept(Message<P> message, InterceptorChain<P> chain) {
         if (log.isTraceEnabled()) {
             log.trace("{}", message);
         }
 
-        final List<TopicListenerHolder<C>> targets = chain.getTargets();
+        final List<TopicListenerHolder<P>> targets = chain.getTargets();
 
         if (targets != null && targets.size() > 0) {
             try {
@@ -90,14 +105,14 @@ public class TopicDispatcherDefault<C> implements TopicDispatcher<C> ,Intercepto
      * 派发
      */
     @Override
-    public void dispatch(Message<C> message, TopicRouter<C> router) {
+    public void dispatch(Message<P> message, TopicRouter<P> router) {
         AssertUtil.assertTopic(message.getTopic());
 
 //        try {
 //            MDC.put("dami-plid", message.getPlid());
 
             //获取路由匹配结果
-            List<TopicListenerHolder<C>> targets = router.matching(message.getTopic());
+            List<TopicListenerHolder<P>> targets = router.matching(message.getTopic());
 
             //转成拦截链处理
             new InterceptorChain<>(interceptors, targets).doIntercept(message);
@@ -109,7 +124,7 @@ public class TopicDispatcherDefault<C> implements TopicDispatcher<C> ,Intercepto
     /**
      * 执行派发
      */
-    protected void doDispatch(Message<C> message, List<TopicListenerHolder<C>> targets) throws Throwable {
+    protected void doDispatch(Message<P> message, List<TopicListenerHolder<P>> targets) throws Throwable {
         //用 i，可以避免遍历时添加监听的异常
         for (int i = 0; i < targets.size(); i++) {
             targets.get(i).getListener().onEvent(message);

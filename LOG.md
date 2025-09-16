@@ -18,7 +18,7 @@
 
 #### 1.0.5
 
-* 添加 `DamiBus:sendAndRequest(topic, content, def)` 方法
+* 添加 `DamiBus:sendAndRequest(topic, payload, def)` 方法
 
 #### 1.0.4
 

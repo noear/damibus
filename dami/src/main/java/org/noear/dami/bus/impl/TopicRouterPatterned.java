@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023～ noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.dami.bus.impl;
 
 import org.noear.dami.api.impl.MethodTopicListener;
@@ -22,13 +37,13 @@ import java.util.stream.Collectors;
  * @example /a/*, /a/**b
  * @since 1.0
  */
-public class TopicRouterPatterned<C> implements TopicRouter<C> {
+public class TopicRouterPatterned<P> implements TopicRouter<P> {
     static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
      * 主题路由记录
      */
-    private final List<Routing<C>> routingList = new ArrayList<>();
+    private final List<Routing<P>> routingList = new ArrayList<>();
 
     protected final ReentrantLock ROUTING_LIST_LOCK = new ReentrantLock();
 
@@ -36,9 +51,9 @@ public class TopicRouterPatterned<C> implements TopicRouter<C> {
     /**
      * 路由工厂
      */
-    private final RoutingFactory<C> routerFactory;
+    private final RoutingFactory<P> routerFactory;
 
-    public TopicRouterPatterned(RoutingFactory<C> routerFactory) {
+    public TopicRouterPatterned(RoutingFactory<P> routerFactory) {
         super();
         this.routerFactory = routerFactory;
     }
@@ -51,7 +66,7 @@ public class TopicRouterPatterned<C> implements TopicRouter<C> {
      * @param listener 监听器
      */
     @Override
-    public void add(final String topic, final int index, final TopicListener<Message<C>> listener) {
+    public void add(final String topic, final int index, final TopicListener<Message<P>> listener) {
         ROUTING_LIST_LOCK.lock();
         try {
             routingList.add(routerFactory.create(topic, index, listener));
@@ -75,7 +90,7 @@ public class TopicRouterPatterned<C> implements TopicRouter<C> {
      * @param listener 监听器
      */
     @Override
-    public void remove(final String topic, final TopicListener<Message<C>> listener) {
+    public void remove(final String topic, final TopicListener<Message<P>> listener) {
         ROUTING_LIST_LOCK.lock();
         try {
             routingList.removeIf(routing -> routing.matches(topic) && routing.getListener() == listener);
@@ -115,8 +130,8 @@ public class TopicRouterPatterned<C> implements TopicRouter<C> {
      * 路由匹配
      */
     @Override
-    public List<TopicListenerHolder<C>> matching(String topic) {
-        List<TopicListenerHolder<C>> routings = routingList.stream()
+    public List<TopicListenerHolder<P>> matching(String topic) {
+        List<TopicListenerHolder<P>> routings = routingList.stream()
                 .filter(r -> r.matches(topic))
                 .sorted(Comparator.comparing(Routing::getIndex))
                 .collect(Collectors.toList());

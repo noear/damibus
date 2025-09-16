@@ -40,7 +40,7 @@ public class Deom11 {
 #### demo12_request
 
 ```java
-//泛型总线风格。<C>bus()
+//泛型总线风格。<P>bus()
 public class Demo12 {
     static String topic = "demo.hello";
 

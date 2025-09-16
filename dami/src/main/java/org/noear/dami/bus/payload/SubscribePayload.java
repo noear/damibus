@@ -13,49 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.bus;
+package org.noear.dami.bus.payload;
 
-import java.io.Serializable;
+import org.reactivestreams.Subscriber;
 
 /**
- * 事件负载
+ * 订阅核载（响应式流）
  *
  * @author noear
- * @since 1.0
+ * @since 2.0
  */
-public interface Message<P> extends Serializable {
-    /**
-     * 获取附件
-     *
-     * @param key 关键字
-     */
-    <T> T getAttachment(String key);
+public class SubscribePayload<C,R> {
+    private C content;
+    private final Subscriber<R> subscriber;
+
+    public SubscribePayload(C content, Subscriber<R> subscriber) {
+        this.content = content;
+        this.subscriber = subscriber;
+    }
 
     /**
-     * 设置附件
-     *
-     * @param key   关键字
-     * @param value 值
+     * 内容
      */
-    <T> void setAttachment(String key, T value);
+    public C content() {
+        return content;
+    }
 
     /**
-     * 设置处理标识
+     * 获取订阅者
      */
-    void setHandled();
-
-    /**
-     * 获取处理标识（是否已处理）
-     */
-    boolean getHandled();
-
-    /**
-     * 主题
-     */
-    String getTopic();
-
-    /**
-     * 核载
-     */
-    P getPayload();
+    public Subscriber<R> getSubscriber() {
+        return subscriber;
+    }
 }

@@ -7,7 +7,7 @@ public class Dami {
     static final DamiBus bus = new DamiBusImpl<>();
     static final DamiApi api = new DamiApiImpl(Dami::bus);
     //泛型、强类型总线界面
-    public static <C> DamiBus<C> bus() { return bus; }
+    public static <P> DamiBus<P> bus() { return bus; }
     //接口界面
     public static DamiApi api() { return api; }
 }
@@ -36,27 +36,25 @@ public class DamiConfig {
 }
 ```
 
-## 3、DamiBus<C>，总线模式接口
+## 3、DamiBus<P>，总线模式接口
 
 
 ```java
-public interface DamiBus<C> {
+public interface DamiBus<P> {
     //获取超时
     long timeout();
     //拦截
     void intercept(int index, Interceptor interceptor);
     
     //发送（不需要答复）=> 返回是否有订阅处理
-    boolean send(final String topic, final C content);
-    //调用 => 返回响应结果（没有订阅处理，会异常）
-    R call(final String topic, final C content);
+    Message<P> send(final String topic, final P payload);
    
     //监听
-    default void listen(final String topic, final TopicListener<Message<C>> listener) { listen(topic, 0, listener); }
+    default void listen(final String topic, final TopicListener<Message<P>> listener) { listen(topic, 0, listener); }
     //监听
-    void listen(final String topic, final int index, final TopicListener<Message<C>> listener);
+    void listen(final String topic, final int index, final TopicListener<Message<P>> listener);
     //取消监听
-    void unlisten(final String topic, final TopicListener<Message<C>> listener);
+    void unlisten(final String topic, final TopicListener<Message<P>> listener);
 }
 ```
 
@@ -91,11 +89,11 @@ DamiApi::createSender，发送者接口代理情况说明
 | User getUser()   | 返回类型的，call 发送 | 没有监听，会异常。且必须要有答复 |
 
 
-## 5、Message<C>，事件负载接口
+## 5、Message<P>，事件负载接口
 
 
 ```java
-public interface Message<C> extends Serializable {
+public interface Message<P> extends Serializable {
     //获取附件
     <T> T getAttachment(String key);
     //设置附件
@@ -108,7 +106,7 @@ public interface Message<C> extends Serializable {
     //要求答复？
     boolean requiredReply();
     //答复
-    boolean reply(final R content);
+    boolean reply(final R payload);
 
     //唯一标识
     String getGuid();

@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.annotation;
+package org.noear.dami.exception;
 
-import java.lang.annotation.*;
 
 /**
- * 参数注解
+ * Dami 无监听异常
  *
- * @author noear
+ * @author Sorghum
  * @since 1.0
- */
-@Target({ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface Param {
-    /**
-     * 参数名
-     */
-    String value();
+ * */
+public class DamiNoListenException extends DamiException {
+    public DamiNoListenException(String message) {
+        super(message);
+    }
+
+    public DamiNoListenException(Throwable cause) {
+        super(cause);
+    }
 }

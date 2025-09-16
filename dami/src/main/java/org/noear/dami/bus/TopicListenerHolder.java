@@ -1,14 +1,29 @@
+/*
+ * Copyright 2023～ noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.dami.bus;
 
 /**
  * @author noear
  * @since 1.0
  */
-public class TopicListenerHolder<C> {
+public class TopicListenerHolder<P> {
     protected final int index;
-    protected final TopicListener<Message<C>> listener;
+    protected final TopicListener<Message<P>> listener;
 
-    public TopicListenerHolder(int index, TopicListener<Message<C>> listener) {
+    public TopicListenerHolder(int index, TopicListener<Message<P>> listener) {
         this.index = index;
         this.listener = listener;
     }
@@ -23,7 +38,7 @@ public class TopicListenerHolder<C> {
     /**
      * 获取监听器
      */
-    public TopicListener<Message<C>> getListener() {
+    public TopicListener<Message<P>> getListener() {
         return listener;
     }
 

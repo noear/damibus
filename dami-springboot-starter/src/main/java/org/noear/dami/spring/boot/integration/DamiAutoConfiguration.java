@@ -1,7 +1,9 @@
-package org.noear.dami.spring.boot;
+package org.noear.dami.spring.boot.integration;
 
 
 import org.noear.dami.Dami;
+import org.noear.dami.spring.boot.DamiBeanPostProcessor;
+import org.noear.dami.spring.boot.DamiImportBeanDefinitionRegistrar;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

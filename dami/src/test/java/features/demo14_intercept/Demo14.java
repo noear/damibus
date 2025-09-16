@@ -1,6 +1,7 @@
 package features.demo14_intercept;
 
 import org.junit.jupiter.api.Test;
+import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
 
@@ -9,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Demo14 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
-    DamiBus<String, String> busStr = new DamiBusImpl<>();
+    DamiBus<String> busStr = Dami.newBus();
 
     @Test
     public void main() {
@@ -17,8 +18,8 @@ public class Demo14 {
 
         //拦截
         busStr.intercept(0, (message, chain) -> {
-            System.err.println(payload);
-            chain.doIntercept(payload);
+            System.err.println(message);
+            chain.doIntercept(message);
             testObserver.incrementAndGet();
         });
 

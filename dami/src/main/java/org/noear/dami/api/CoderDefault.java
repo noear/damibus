@@ -1,7 +1,23 @@
+/*
+ * Copyright 2023～ noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.dami.api;
 
 import org.noear.dami.annotation.Param;
 import org.noear.dami.bus.Message;
+import org.noear.dami.bus.payload.RequestPayload;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -20,7 +36,7 @@ public class CoderDefault implements Coder {
      *
      * @param method 方法
      * @param args   参数
-     * @return 负载内容
+     * @return 请求核载内容
      */
     @Override
     public Object encode(Method method, Object[] args) {
@@ -54,7 +70,7 @@ public class CoderDefault implements Coder {
      */
     @Override
     public Object[] decode(Method method, Message message) {
-        Map<String, Object> map = (Map<String, Object>) message.getContent();
+        Map<String, Object> map = ((RequestPayload<Map<String, Object>, Object>) message.getPayload()).content();
 
         //构建执行参数（可以与发送者的参数，略有不同）
         Object[] args = new Object[method.getParameterCount()];

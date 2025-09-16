@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023～ noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.dami.bus;
 
 import java.util.List;
@@ -5,10 +20,10 @@ import java.util.List;
 /**
  * 主题路由器
  *
- * @param <C>
+ * @param <P>
  * @author kongweiguang
  */
-public interface TopicRouter<C> {
+public interface TopicRouter<P> {
     /**
      * 添加监听
      *
@@ -16,7 +31,7 @@ public interface TopicRouter<C> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    void add(final String topic, final int index, final TopicListener<Message<C>> listener);
+    void add(final String topic, final int index, final TopicListener<Message<P>> listener);
 
 
     /**
@@ -25,7 +40,7 @@ public interface TopicRouter<C> {
      * @param topic    主题
      * @param listener 监听器
      */
-    void remove(final String topic, final TopicListener<Message<C>> listener);
+    void remove(final String topic, final TopicListener<Message<P>> listener);
 
     /**
      * 移除监听
@@ -37,7 +52,7 @@ public interface TopicRouter<C> {
     /**
      * 路由匹配
      */
-    List<TopicListenerHolder<C>> matching(final String topic);
+    List<TopicListenerHolder<P>> matching(final String topic);
 
     /**
      * 计数

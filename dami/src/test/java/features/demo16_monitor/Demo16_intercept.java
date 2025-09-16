@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Demo16_intercept {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
-    DamiBus<String, String> busStr = new DamiBusImpl<>();
+    DamiBus<String> busStr = new DamiBusImpl<>();
 
     @Test
     public void main() throws Exception {

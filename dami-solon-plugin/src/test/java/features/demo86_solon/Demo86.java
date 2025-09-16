@@ -18,11 +18,11 @@ public class Demo86 {
     }
 
     @DamiTopic("demo86.event.user")
-    public static class UserListener implements TopicListener<Message<User, Object>> {
+    public static class UserListener implements TopicListener<Message<User>> {
 
         @Override
-        public void onEvent(Message<User, Object> payload) throws Throwable {
-            System.out.println(payload.getContent());
+        public void onEvent(Message<User> message) throws Throwable {
+            System.out.println(message.getPayload());
         }
     }
 }

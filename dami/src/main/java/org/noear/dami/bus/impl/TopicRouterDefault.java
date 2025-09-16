@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023～ noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.dami.bus.impl;
 
 import org.noear.dami.api.impl.MethodTopicListener;
@@ -19,13 +34,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author noear
  * @since 1.0
  */
-public class TopicRouterDefault<C> implements TopicRouter<C> {
+public class TopicRouterDefault<P> implements TopicRouter<P> {
     static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
      * 主题监听管道
      */
-    private final Map<String, TopicListenPipeline<C>> pipelineMap = new LinkedHashMap<>();
+    private final Map<String, TopicListenPipeline<P>> pipelineMap = new LinkedHashMap<>();
 
     protected final ReentrantLock PIPELINE_MAP_LOCK = new ReentrantLock();
 
@@ -41,10 +56,10 @@ public class TopicRouterDefault<C> implements TopicRouter<C> {
      * @param listener 监听器
      */
     @Override
-    public void add(final String topic, final int index, final TopicListener<Message<C>> listener) {
+    public void add(final String topic, final int index, final TopicListener<Message<P>> listener) {
         PIPELINE_MAP_LOCK.lock();
         try {
-            final TopicListenPipeline<C> pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline<>());
+            final TopicListenPipeline<P> pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline<>());
             pipeline.add(index, listener);
         } finally {
             PIPELINE_MAP_LOCK.unlock();
@@ -66,10 +81,10 @@ public class TopicRouterDefault<C> implements TopicRouter<C> {
      * @param listener 监听器
      */
     @Override
-    public void remove(final String topic, final TopicListener<Message<C>> listener) {
+    public void remove(final String topic, final TopicListener<Message<P>> listener) {
         PIPELINE_MAP_LOCK.lock();
         try {
-            final TopicListenPipeline<C> pipeline = pipelineMap.get(topic);
+            final TopicListenPipeline<P> pipeline = pipelineMap.get(topic);
             if (pipeline != null) {
                 pipeline.remove(listener);
             }
@@ -109,8 +124,8 @@ public class TopicRouterDefault<C> implements TopicRouter<C> {
      * 路由匹配
      */
     @Override
-    public List<TopicListenerHolder<C>> matching(String topic) {
-        final TopicListenPipeline<C> pipeline = pipelineMap.get(topic);
+    public List<TopicListenerHolder<P>> matching(String topic) {
+        final TopicListenPipeline<P> pipeline = pipelineMap.get(topic);
 
         if (pipeline == null) {
             return null;

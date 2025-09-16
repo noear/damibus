@@ -5,25 +5,29 @@ import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.Message;
 import org.noear.dami.bus.TopicListener;
+import org.noear.dami.bus.payload.RequestPayload;
 import org.noear.dami.solon.annotation.DamiTopic;
 import org.noear.solon.test.SolonTest;
 
 @SolonTest
 public class Demo80 {
     @Test
-    public void main() {
-        DamiBus<String, String> bus = Dami.<String, String>bus();
+    public void main() throws Throwable {
+        DamiBus<RequestPayload<String, String>> bus = Dami.bus();
 
-        System.out.println(bus.call("user.demo", "solon"));
+        System.out.println(bus.send("user.demo", new RequestPayload<>("solon"))
+                .getPayload()
+                .getResponse()
+                .get());
     }
 
     @DamiTopic("user.demo")
-    public static class UserEventListener implements TopicListener<Message<String, String>> {
+    public static class UserEventListener implements TopicListener<Message<RequestPayload<String, String>>> {
         @Override
-        public void onEvent(Message<String, String> message) throws Throwable {
-            if (payload.requiredReply()) {
-                payload.reply("Hi " + payload.getContent());
-            }
+        public void onEvent(Message<RequestPayload<String, String>> message) throws Throwable {
+            message.getPayload()
+                    .getResponse()
+                    .complete("Hi " + message.getPayload().content());
         }
     }
 }

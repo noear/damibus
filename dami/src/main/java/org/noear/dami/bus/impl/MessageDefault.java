@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023～ noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.dami.bus.impl;
 
 import org.noear.dami.bus.Message;
@@ -12,9 +27,9 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  */
-public class MessageDefault<C> implements Message<C>, Serializable {
+public class MessageDefault<P> implements Message<P>, Serializable {
     private final String topic;
-    private final C content;
+    private final P payload;
 
     //附件
     private Map<String, Object> attachments;
@@ -23,11 +38,11 @@ public class MessageDefault<C> implements Message<C>, Serializable {
 
     /**
      * @param topic 主题
-     * @param content 内容
+     * @param payload 核载
      * */
-    public MessageDefault(final String topic, final C content) {
+    public MessageDefault(final String topic, final P payload) {
         this.topic = topic;
-        this.content = content;
+        this.payload = payload;
     }
 
     /**
@@ -78,18 +93,18 @@ public class MessageDefault<C> implements Message<C>, Serializable {
     }
 
     /**
-     * 内容
+     * 核载
      */
     @Override
-    public C getContent() {
-        return content;
+    public P getPayload() {
+        return payload;
     }
 
     @Override
     public String toString() {
         return "Message{" +
                 ", topic='" + topic + '\'' +
-                ", content=" + content +
+                ", payload=" + payload +
                 ", attachments=" + attachments +
                 '}';
     }

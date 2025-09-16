@@ -1,1 +1,1 @@
-org.noear.dami.spring.boot.DamiAutoConfiguration
+org.noear.dami.spring.boot.integration.DamiAutoConfiguration

@@ -1,4 +1,21 @@
+/*
+ * Copyright 2023～ noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.dami.bus;
+
+import java.util.function.Consumer;
 
 /**
  * 大米总线（提供 Local Procedure Call 服务）
@@ -6,21 +23,21 @@ package org.noear.dami.bus;
  * @author noear
  * @since 1.0
  */
-public interface DamiBus<C> {
+public interface DamiBus<P> {
     /**
      * 拦截
      *
      * @param index       顺序位
      * @param interceptor 拦截器
      */
-    void intercept(int index, Interceptor<C> interceptor);
+    void intercept(int index, Interceptor<P> interceptor);
 
     /**
      * 拦截
      *
      * @param interceptor 拦截器
      */
-    default void intercept(Interceptor<C> interceptor) {
+    default void intercept(Interceptor<P> interceptor) {
         intercept(0, interceptor);
     }
 
@@ -28,56 +45,22 @@ public interface DamiBus<C> {
      * 发送（不需要答复）
      *
      * @param topic   主题
-     * @param content 内容
-     * @return 是否有订阅
+     * @param payload 核载
+     * @return 消息
      */
-    boolean send(final String topic, final C content);
+    default Message<P> send(final String topic, final P payload) {
+        return send(topic, payload, null);
+    }
 
-//    /**
-//     * 调用（要求有一个答复）
-//     *
-//     * @param topic   主题
-//     * @param content 内容
-//     * @return 响应结果
-//     */
-//    default R call(final String topic, final C content) {
-//        return call(topic, content, 3000);
-//    }
-//
-//    /**
-//     * 调用（要求有一个答复）
-//     *
-//     * @param topic   主题
-//     * @param content 内容
-//     * @param timeout 超时（毫秒）
-//     * @return 响应结果
-//     */
-//    default R call(final String topic, final C content, long timeout) {
-//        return call(topic, content, timeout, null);
-//    }
-//
-//    /**
-//     * 调用（要求有一个答复）
-//     *
-//     * @param topic    主题
-//     * @param content  内容
-//     * @param fallback 应急处理（如果没有返回）
-//     * @return 响应结果
-//     */
-//    default R call(final String topic, final C content, Supplier<R> fallback) {
-//        return call(topic, content, 3000, fallback);
-//    }
-//
-//    /**
-//     * 调用（要求有一个答复）
-//     *
-//     * @param topic    主题
-//     * @param content  内容
-//     * @param timeout  超时（毫秒）
-//     * @param fallback 应急处理（如果没有返回）
-//     * @return 响应结果
-//     */
-//    R call(final String topic, final C content, long timeout, Supplier<R> fallback);
+    /**
+     * 发送（不需要答复）
+     *
+     * @param topic    主题
+     * @param payload  核载
+     * @param fallback 应急处理（当没有订阅时执行）
+     * @return 消息
+     */
+    Message<P> send(final String topic, final P payload, Consumer<P> fallback);
 
 
     /**
@@ -86,7 +69,7 @@ public interface DamiBus<C> {
      * @param topic    主题
      * @param listener 监听
      */
-    default void listen(final String topic, final TopicListener<Message<C>> listener) {
+    default void listen(final String topic, final TopicListener<Message<P>> listener) {
         listen(topic, 0, listener);
     }
 
@@ -97,7 +80,7 @@ public interface DamiBus<C> {
      * @param index    顺序位
      * @param listener 监听
      */
-    void listen(final String topic, final int index, final TopicListener<Message<C>> listener);
+    void listen(final String topic, final int index, final TopicListener<Message<P>> listener);
 
     /**
      * 取消监听
@@ -105,7 +88,7 @@ public interface DamiBus<C> {
      * @param topic    主题
      * @param listener 监听
      */
-    void unlisten(final String topic, final TopicListener<Message<C>> listener);
+    void unlisten(final String topic, final TopicListener<Message<P>> listener);
 
     /**
      * 取消监听（主题下的所有监听）
@@ -117,76 +100,5 @@ public interface DamiBus<C> {
     /**
      * 路由器
      */
-    TopicRouter<C> router();
-
-    /// ////////////////
-
-//    /**
-//     * 发送并请求（会等待响应）
-//     *
-//     * @param topic   主题
-//     * @param content 内容
-//     * @return 响应结果
-//     * @deprecated 1.1.0 （简化模式，更名为 call） {@link #call(String, Object)}
-//     */
-//    @Deprecated
-//    default R sendAndRequest(final String topic, final C content) {
-//        return sendAndRequest(topic, content, 3000);
-//    }
-//
-//    /**
-//     * 发送并请求（会等待响应）
-//     *
-//     * @param topic   主题
-//     * @param content 内容
-//     * @param timeout 超时（毫秒）
-//     * @return 响应结果
-//     * @deprecated 1.1.0 （简化模式，更名为 call） {@link #call(String, Object, long)}
-//     */
-//    @Deprecated
-//    default R sendAndRequest(final String topic, final C content, long timeout) {
-//        return sendAndRequest(topic, content, timeout, null);
-//    }
-//
-//    /**
-//     * 发送并请求（会等待响应）
-//     *
-//     * @param topic    主题
-//     * @param content  内容
-//     * @param fallback 应急处理（如果没有返回）
-//     * @return 响应结果
-//     * @deprecated 1.1.0 （简化模式，更名为 call） {@link #call(String, Object, Supplier)}
-//     */
-//    @Deprecated
-//    default R sendAndRequest(final String topic, final C content, Supplier<R> fallback) {
-//        return sendAndRequest(topic, content, 3000, fallback);
-//    }
-//
-//    /**
-//     * 发送并请求（会等待响应）
-//     *
-//     * @param topic    主题
-//     * @param content  内容
-//     * @param timeout  超时（毫秒）
-//     * @param fallback 应急处理（如果没有返回）
-//     * @return 响应结果
-//     * @deprecated 1.1.0 （简化模式，更名为 call） {@link #call(String, Object, long, Supplier)}
-//     */
-//    @Deprecated
-//    default R sendAndRequest(final String topic, final C content, long timeout, Supplier<R> fallback) {
-//        return call(topic, content, timeout, fallback);
-//    }
-//
-//
-//    /**
-//     * 发送并订阅
-//     *
-//     * @param topic    主题
-//     * @param content  内容
-//     * @param consumer 消费者
-//     * @return 是否有订阅目标
-//     * @deprecated 1.1.0 （简化模式，不再支持流调用）
-//     */
-//    @Deprecated
-//    boolean sendAndSubscribe(final String topic, final C content, final Consumer<R> consumer);
+    TopicRouter<P> router();
 }

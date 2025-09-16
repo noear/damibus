@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Demo16_dispatcher {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
-    DamiBus<String, String> busStr = new DamiBusImpl<String, String>()
+    DamiBus<String> busStr = new DamiBusImpl<String>()
             .topicDispatcher(new TopicDispatcherMonitor<>());
 
     @Test

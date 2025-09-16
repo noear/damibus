@@ -13,19 +13,19 @@ import java.util.concurrent.TimeUnit;
 public class Demo23 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.<String,String>bus()
-    DamiBus<String, Long> bus = new DamiBusImpl<>();
+    DamiBus<String> bus = new DamiBusImpl<>();
 
     @Test
     public void main() throws InterruptedException {
-        final TopicListener<Message<String, Long>> aListener = message -> {
-            System.out.println("i'm a:" + payload);
+        final TopicListener<Message<String>> aListener = message -> {
+            System.out.println("i'm a:" + message);
         };
-        final TopicListener<Message<String, Long>> bListener = payload -> {
-            System.out.println("i'm b:" + payload);
+        final TopicListener<Message<String>> bListener = message -> {
+            System.out.println("i'm b:" + message);
         };
 
-        final TopicListener<Message<String, Long>> cListener = payload -> {
-            System.out.println("i'm b:" + payload);
+        final TopicListener<Message<String>> cListener = message -> {
+            System.out.println("i'm b:" + message);
         };
         //监听事件
         bus.listen(topic, aListener);

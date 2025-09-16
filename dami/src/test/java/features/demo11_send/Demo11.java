@@ -1,17 +1,15 @@
 package features.demo11_send;
 
 import org.junit.jupiter.api.Test;
+import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.bus.impl.IdGeneratorGuid;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Demo11 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
-    DamiBus<String, String> busStr = new DamiBusImpl<String,String>()
-            .idGenerator(new IdGeneratorGuid());
+    DamiBus<String> busStr = Dami.newBus();
 
     @Test
     public void main() throws Exception {
