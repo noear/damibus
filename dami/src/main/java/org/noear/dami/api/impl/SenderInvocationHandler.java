@@ -16,7 +16,7 @@
 package org.noear.dami.api.impl;
 
 import org.noear.dami.api.DamiApi;
-import org.noear.dami.bus.Message;
+import org.noear.dami.bus.Result;
 import org.noear.dami.bus.payload.RequestPayload;
 import org.noear.dami.exception.DamiNoListenException;
 
@@ -60,7 +60,7 @@ public class SenderInvocationHandler implements InvocationHandler {
                 }
             }
         } else {
-            Message<RequestPayload> message = damiApi.bus().send(topic, new RequestPayload(content));
+            Result<RequestPayload> message = damiApi.bus().send(topic, new RequestPayload(content));
 
             if (message.getHandled()) {
                 result = message

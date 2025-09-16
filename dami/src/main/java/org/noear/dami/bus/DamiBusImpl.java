@@ -96,7 +96,7 @@ public class DamiBusImpl<P> implements DamiBus<P>, DamiBusConfigurator<P> {
      * @return 消息
      */
     @Override
-    public Message<P> send(final String topic, final P payload, Consumer<P> fallback) {
+    public Result<P> send(final String topic, final P payload, Consumer<P> fallback) {
         AssertUtil.assertTopic(topic);
 
         Message<P> message = factory.create(topic, payload);

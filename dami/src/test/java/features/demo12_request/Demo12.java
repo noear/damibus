@@ -1,34 +1,27 @@
-package features.demo12_call;
+package features.demo12_request;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
 import org.noear.dami.bus.payload.RequestPayload;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class Demo12_async {
+public class Demo12 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
     DamiBus<RequestPayload<String, String>> busStr = Dami.newBus();
 
     @Test
     public void main() throws Exception {
-        CountDownLatch testObserver = new CountDownLatch(3);
-
+        AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
         busStr.listen(topic, message -> {
-            CompletableFuture.runAsync(() -> {
-                System.out.println(Thread.currentThread());
-                System.err.println(message);
+            System.out.println(Thread.currentThread());
+            System.err.println(message);
 
-                message.getPayload()
-                        .getResponse()
-                        .complete("hi!");
-            });
+            message.getPayload().getResponse().complete("hi!");
         });
 
         System.out.println(Thread.currentThread());
@@ -38,6 +31,8 @@ public class Demo12_async {
                 .getPayload()
                 .getResponse()
                 .get();
+
+        busStr.send(topic, new RequestPayload<>("world"), r -> r.getResponse().complete("def"));
 
         System.out.println(rst1);
         assert "hi!".equals(rst1);

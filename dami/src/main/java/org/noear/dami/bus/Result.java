@@ -15,34 +15,19 @@
  */
 package org.noear.dami.bus;
 
-import java.io.Serializable;
-
 /**
- * 事件负载
+ * 发送结果
  *
  * @author noear
- * @since 1.0
+ * @since 2.0
  */
-public interface Message<P> extends Result<P>, Serializable {
+public interface Result<P> {
     /**
      * 获取附件
      *
      * @param key 关键字
      */
     <T> T getAttachment(String key);
-
-    /**
-     * 设置附件
-     *
-     * @param key   关键字
-     * @param value 值
-     */
-    <T> void setAttachment(String key, T value);
-
-    /**
-     * 设置处理标识
-     */
-    void setHandled();
 
     /**
      * 获取处理标识（是否已处理）
