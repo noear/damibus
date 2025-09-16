@@ -39,7 +39,7 @@ public class DamiConfig {
      *
      * @param payloadFactory 负载工厂
      */
-    public static void configure(PayloadFactory payloadFactory) {
+    public static void configure(MessageFactory payloadFactory) {
         if (payloadFactory != null) {
             ((DamiBusConfigurator) Dami.bus).payloadFactory(payloadFactory);
         }

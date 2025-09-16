@@ -6,7 +6,7 @@ package org.noear.dami.bus;
  * @author noear
  * @since 1.0
  */
-public interface TopicDispatcher<C,R> {
+public interface TopicDispatcher<C> {
     /**
      * 添加拦截器
      */
@@ -15,5 +15,5 @@ public interface TopicDispatcher<C,R> {
     /**
      * 派发
      */
-    void dispatch(Payload<C, R> payload, TopicRouter<C, R> router);
+    void dispatch(Message<C> payload, TopicRouter<C> router);
 }

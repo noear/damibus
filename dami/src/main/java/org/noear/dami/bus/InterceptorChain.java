@@ -8,23 +8,23 @@ import java.util.List;
  * @author noear
  * @since 1.0
  */
-public class InterceptorChain<C, R> {
+public class InterceptorChain<C> {
     private final List<InterceptorEntity> interceptors;
-    private final List<TopicListenerHolder<C, R>> targets;
+    private final List<TopicListenerHolder<C>> targets;
     private int interceptorIndex = 0;
-    public InterceptorChain(List<InterceptorEntity> interceptors, List<TopicListenerHolder<C, R>> targets){
+    public InterceptorChain(List<InterceptorEntity> interceptors, List<TopicListenerHolder<C>> targets){
         this.interceptors = interceptors;
         this.targets = targets;
     }
 
-    public List<TopicListenerHolder<C, R>> getTargets() {
+    public List<TopicListenerHolder<C>> getTargets() {
         return targets;
     }
 
     /**
      * 拦截
      * */
-    public void doIntercept(Payload<C, R> payload) {
+    public void doIntercept(Message<C> payload) {
         interceptors.get(interceptorIndex++).doIntercept(payload, this);
     }
 }

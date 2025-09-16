@@ -1,7 +1,7 @@
 package org.noear.dami.api;
 
 import org.noear.dami.annotation.Param;
-import org.noear.dami.bus.Payload;
+import org.noear.dami.bus.Message;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -53,7 +53,7 @@ public class CoderDefault implements Coder {
      * @return 方法参数
      */
     @Override
-    public Object[] decode(Method method, Payload payload) {
+    public Object[] decode(Method method, Message payload) {
         Map<String, Object> map = (Map<String, Object>) payload.getContent();
 
         //构建执行参数（可以与发送者的参数，略有不同）
@@ -62,7 +62,7 @@ public class CoderDefault implements Coder {
 
         for (int i = 0, len = method.getParameterCount(); i < len; i++) {
             Parameter p1 = parameters[i];
-            if (Payload.class.isAssignableFrom(p1.getType())) {
+            if (Message.class.isAssignableFrom(p1.getType())) {
                 args[i] = payload;
             } else {
                 String name = p1.getName();

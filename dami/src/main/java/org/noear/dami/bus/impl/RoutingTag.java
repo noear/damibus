@@ -1,6 +1,6 @@
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.bus.Payload;
+import org.noear.dami.bus.Message;
 import org.noear.dami.bus.TopicListener;
 
 import java.util.*;
@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author kamosama
  * @since 1.0
  */
-public class RoutingTag<C, R> extends Routing<C, R> {
+public class RoutingTag<C> extends Routing<C> {
     private final List<String> tags;
     private final String topic;
 
@@ -21,7 +21,7 @@ public class RoutingTag<C, R> extends Routing<C, R> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public RoutingTag(String expr, int index, TopicListener<Payload<C, R>> listener) {
+    public RoutingTag(String expr, int index, TopicListener<Message<C>> listener) {
         super(expr, index, listener);
 
         List<String> exprList = TopicTags.get(expr);

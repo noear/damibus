@@ -6,14 +6,14 @@ package org.noear.dami.bus;
  * @author noear
  * @since 1.0
  */
-public class InterceptorEntity<C, R> implements Interceptor<C,R> {
+public class InterceptorEntity<C> implements Interceptor<C> {
     /**
      * 顺排序位（排完后，按先进后出策略执行）
      */
     private final int index;
-    private final Interceptor<C, R> real;
+    private final Interceptor<C> real;
 
-    public InterceptorEntity(int index, Interceptor<C, R> real) {
+    public InterceptorEntity(int index, Interceptor<C> real) {
         this.index = index;
         this.real = real;
     }
@@ -28,7 +28,7 @@ public class InterceptorEntity<C, R> implements Interceptor<C,R> {
     /**
      * 获取原拦截器
      */
-    public Interceptor<C, R> getReal() {
+    public Interceptor<C> getReal() {
         return real;
     }
 
@@ -36,7 +36,7 @@ public class InterceptorEntity<C, R> implements Interceptor<C,R> {
      * 拦截
      */
     @Override
-    public void doIntercept(Payload<C, R> payload, InterceptorChain<C, R> chain) {
+    public void doIntercept(Message<C> payload, InterceptorChain<C> chain) {
         real.doIntercept(payload, chain);
     }
 }

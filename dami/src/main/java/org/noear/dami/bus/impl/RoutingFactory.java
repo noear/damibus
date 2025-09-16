@@ -1,6 +1,6 @@
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.bus.Payload;
+import org.noear.dami.bus.Message;
 import org.noear.dami.bus.TopicListener;
 
 /**
@@ -9,7 +9,7 @@ import org.noear.dami.bus.TopicListener;
  * @author kamosama
  * @since 1.0
  * */
-public interface RoutingFactory<C, R> {
+public interface RoutingFactory<C> {
     /**
      * 创建路由记录
      *
@@ -17,5 +17,5 @@ public interface RoutingFactory<C, R> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    Routing<C, R> create(final String topic, final int index, final TopicListener<Payload<C, R>> listener);
+    Routing<C> create(final String topic, final int index, final TopicListener<Message<C>> listener);
 }

@@ -4,7 +4,6 @@ import org.noear.dami.bus.*;
 import org.noear.dami.exception.DamiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
@@ -19,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author noear
  * @since 1.0
  */
-public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interceptor<C,R> {
+public class TopicDispatcherDefault<C> implements TopicDispatcher<C> ,Interceptor<C> {
     static final Logger log = LoggerFactory.getLogger(TopicDispatcherDefault.class);
     /**
      * 拦截器
@@ -62,12 +61,12 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
      * 执行拦截
      */
     @Override
-    public void doIntercept(Payload<C, R> payload, InterceptorChain<C, R> chain) {
+    public void doIntercept(Message<C> payload, InterceptorChain<C> chain) {
         if (log.isTraceEnabled()) {
             log.trace("{}", payload);
         }
 
-        final List<TopicListenerHolder<C, R>> targets = chain.getTargets();
+        final List<TopicListenerHolder<C>> targets = chain.getTargets();
 
         if (targets != null && targets.size() > 0) {
             try {
@@ -91,26 +90,26 @@ public class TopicDispatcherDefault<C,R> implements TopicDispatcher<C,R> ,Interc
      * 派发
      */
     @Override
-    public void dispatch(Payload<C, R> payload, TopicRouter<C, R> router) {
+    public void dispatch(Message<C> payload, TopicRouter<C> router) {
         AssertUtil.assertTopic(payload.getTopic());
 
-        try {
-            MDC.put("dami-plid", payload.getPlid());
+//        try {
+//            MDC.put("dami-plid", payload.getPlid());
 
             //获取路由匹配结果
-            List<TopicListenerHolder<C, R>> targets = router.matching(payload.getTopic());
+            List<TopicListenerHolder<C>> targets = router.matching(payload.getTopic());
 
             //转成拦截链处理
             new InterceptorChain<>(interceptors, targets).doIntercept(payload);
-        } finally {
-            MDC.remove("dami-plid");
-        }
+//        } finally {
+//            MDC.remove("dami-plid");
+//        }
     }
 
     /**
      * 执行派发
      */
-    protected void doDispatch(Payload<C, R> payload, List<TopicListenerHolder<C, R>> targets) throws Throwable {
+    protected void doDispatch(Message<C> payload, List<TopicListenerHolder<C>> targets) throws Throwable {
         //用 i，可以避免遍历时添加监听的异常
         for (int i = 0; i < targets.size(); i++) {
             targets.get(i).getListener().onEvent(payload);

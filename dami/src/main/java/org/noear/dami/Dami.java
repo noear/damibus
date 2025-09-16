@@ -18,7 +18,7 @@ public class Dami {
     /**
      * 总线界面
      */
-    public static <C, R> DamiBus<C, R> bus() {
+    public static <C> DamiBus<C> bus() {
         return bus;
     }
 
@@ -34,7 +34,7 @@ public class Dami {
     /**
      * 新建总线界面
      */
-    public static <C, R> DamiBus<C, R> newBus() {
+    public static <C> DamiBus<C> newBus() {
         return new DamiBusImpl<>();
     }
 

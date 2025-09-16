@@ -1,6 +1,6 @@
 package org.noear.dami.api;
 
-import org.noear.dami.bus.Payload;
+import org.noear.dami.bus.Message;
 
 import java.lang.reflect.Method;
 
@@ -27,5 +27,5 @@ public interface Coder {
      * @param payload 负载
      * @return 方法参数
      */
-    Object[] decode(Method method, Payload payload) throws Throwable;
+    Object[] decode(Method method, Message payload) throws Throwable;
 }

@@ -2,7 +2,7 @@ package org.noear.dami.api.impl;
 
 import org.noear.dami.api.DamiApi;
 import org.noear.dami.bus.TopicListener;
-import org.noear.dami.bus.Payload;
+import org.noear.dami.bus.Message;
 
 import java.lang.reflect.Method;
 
@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.0
  */
-public class MethodTopicListener implements TopicListener<Payload<Object,Object>> {
+public class MethodTopicListener implements TopicListener<Message<Object,Object>> {
     private DamiApi damiApi;
     private Object target;
     private Method method;
@@ -24,7 +24,7 @@ public class MethodTopicListener implements TopicListener<Payload<Object,Object>
     }
 
     @Override
-    public void onEvent(Payload payload) throws Throwable {
+    public void onEvent(Message payload) throws Throwable {
         //解码
         Object[] args = damiApi.coder().decode(method, payload);
 

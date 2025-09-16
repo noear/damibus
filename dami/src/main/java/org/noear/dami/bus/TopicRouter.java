@@ -6,10 +6,9 @@ import java.util.List;
  * 主题路由器
  *
  * @param <C>
- * @param <R>
  * @author kongweiguang
  */
-public interface TopicRouter<C, R> {
+public interface TopicRouter<C> {
     /**
      * 添加监听
      *
@@ -17,7 +16,7 @@ public interface TopicRouter<C, R> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    void add(final String topic, final int index, final TopicListener<Payload<C, R>> listener);
+    void add(final String topic, final int index, final TopicListener<Message<C>> listener);
 
 
     /**
@@ -26,7 +25,7 @@ public interface TopicRouter<C, R> {
      * @param topic    主题
      * @param listener 监听器
      */
-    void remove(final String topic, final TopicListener<Payload<C, R>> listener);
+    void remove(final String topic, final TopicListener<Message<C>> listener);
 
     /**
      * 移除监听
@@ -38,7 +37,7 @@ public interface TopicRouter<C, R> {
     /**
      * 路由匹配
      */
-    List<TopicListenerHolder<C, R>> matching(final String topic);
+    List<TopicListenerHolder<C>> matching(final String topic);
 
     /**
      * 计数

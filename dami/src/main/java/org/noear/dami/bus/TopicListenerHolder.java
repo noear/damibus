@@ -4,11 +4,11 @@ package org.noear.dami.bus;
  * @author noear
  * @since 1.0
  */
-public class TopicListenerHolder<C,R> {
+public class TopicListenerHolder<C> {
     protected final int index;
-    protected final TopicListener<Payload<C,R>> listener;
+    protected final TopicListener<Message<C>> listener;
 
-    public TopicListenerHolder(int index, TopicListener<Payload<C,R>> listener) {
+    public TopicListenerHolder(int index, TopicListener<Message<C>> listener) {
         this.index = index;
         this.listener = listener;
     }
@@ -23,7 +23,7 @@ public class TopicListenerHolder<C,R> {
     /**
      * 获取监听器
      */
-    public TopicListener<Payload<C, R>> getListener() {
+    public TopicListener<Message<C>> getListener() {
         return listener;
     }
 

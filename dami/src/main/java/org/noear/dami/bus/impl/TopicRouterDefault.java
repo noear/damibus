@@ -1,7 +1,7 @@
 package org.noear.dami.bus.impl;
 
 import org.noear.dami.api.impl.MethodTopicListener;
-import org.noear.dami.bus.Payload;
+import org.noear.dami.bus.Message;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.TopicListenerHolder;
 import org.noear.dami.bus.TopicRouter;
@@ -19,13 +19,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author noear
  * @since 1.0
  */
-public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
+public class TopicRouterDefault<C> implements TopicRouter<C> {
     static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
      * 主题监听管道
      */
-    private final Map<String, TopicListenPipeline<C, R>> pipelineMap = new LinkedHashMap<>();
+    private final Map<String, TopicListenPipeline<C>> pipelineMap = new LinkedHashMap<>();
 
     protected final ReentrantLock PIPELINE_MAP_LOCK = new ReentrantLock();
 
@@ -41,10 +41,10 @@ public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
      * @param listener 监听器
      */
     @Override
-    public void add(final String topic, final int index, final TopicListener<Payload<C, R>> listener) {
+    public void add(final String topic, final int index, final TopicListener<Message<C>> listener) {
         PIPELINE_MAP_LOCK.lock();
         try {
-            final TopicListenPipeline<C, R> pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline<>());
+            final TopicListenPipeline<C> pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline<>());
             pipeline.add(index, listener);
         } finally {
             PIPELINE_MAP_LOCK.unlock();
@@ -66,10 +66,10 @@ public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
      * @param listener 监听器
      */
     @Override
-    public void remove(final String topic, final TopicListener<Payload<C, R>> listener) {
+    public void remove(final String topic, final TopicListener<Message<C>> listener) {
         PIPELINE_MAP_LOCK.lock();
         try {
-            final TopicListenPipeline<C, R> pipeline = pipelineMap.get(topic);
+            final TopicListenPipeline<C> pipeline = pipelineMap.get(topic);
             if (pipeline != null) {
                 pipeline.remove(listener);
             }
@@ -109,8 +109,8 @@ public class TopicRouterDefault<C, R> implements TopicRouter<C, R> {
      * 路由匹配
      */
     @Override
-    public List<TopicListenerHolder<C, R>> matching(String topic) {
-        final TopicListenPipeline<C, R> pipeline = pipelineMap.get(topic);
+    public List<TopicListenerHolder<C>> matching(String topic) {
+        final TopicListenPipeline<C> pipeline = pipelineMap.get(topic);
 
         if (pipeline == null) {
             return null;

@@ -1,8 +1,6 @@
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.bus.Acceptor;
-import org.noear.dami.bus.Payload;
-import org.noear.dami.exception.DamiException;
+import org.noear.dami.bus.Message;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -14,8 +12,7 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  */
-public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
-    private final String plid;
+public class PayloadDefault<C> implements Message<C>, Serializable {
     private final String topic;
     private final C content;
 
@@ -23,19 +20,14 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
     private Map<String, Object> attachments;
     //处理标识
     private boolean handled;
-    //答复接收器
-    private final transient Acceptor<R> acceptor;
 
     /**
      * @param topic 主题
      * @param content 内容
-     * @param acceptor 答复接收器
      * */
-    public PayloadDefault(final  String plid, final String topic, final C content, Acceptor<R> acceptor) {
-        this.plid = plid;
+    public PayloadDefault(final String topic, final C content) {
         this.topic = topic;
         this.content = content;
-        this.acceptor = acceptor;
     }
 
     /**
@@ -78,71 +70,6 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
     }
 
     /**
-     * 要求答复
-     *
-     * @since 1.1.0
-     */
-    @Override
-    public boolean requiredReply() {
-        return acceptor != null;
-    }
-
-    /**
-     * 是否为请求（是的话，需要答复）
-     *
-     * @deprecated 1.1.0 （简化模式，不再支持流调用）
-     */
-    @Override
-    public boolean isRequest() {
-        if (acceptor != null) {
-            return acceptor.isSingle();
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @deprecated 1.1.0 （简化模式，不再支持流调用）
-     * */
-    @Deprecated
-    @Override
-    public boolean isSubscribe() {
-        if (acceptor != null) {
-            return !acceptor.isSingle();
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * 答复
-     *
-     * @param content 内容
-     */
-    @Override
-    public boolean reply(final R content) {
-        if (acceptor == null) {
-            throw new DamiException("This payload does not support a reply");
-        }
-
-        if (acceptor.isDone()) {
-            return false;
-        }
-
-        return acceptor.accept(content);
-    }
-
-
-    /**
-     * 唯一标识
-     */
-    @Override
-    public String getPlid() {
-        return plid;
-    }
-
-    /**
      * 主题
      */
     @Override
@@ -161,7 +88,6 @@ public class PayloadDefault<C, R> implements Payload<C, R>, Serializable {
     @Override
     public String toString() {
         return "Payload{" +
-                "plid='" + plid + '\'' +
                 ", topic='" + topic + '\'' +
                 ", content=" + content +
                 ", attachments=" + attachments +

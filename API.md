@@ -7,7 +7,7 @@ public class Dami {
     static final DamiBus bus = new DamiBusImpl<>();
     static final DamiApi api = new DamiApiImpl(Dami::bus);
     //泛型、强类型总线界面
-    public static <C, R> DamiBus<C, R> bus() { return bus; }
+    public static <C> DamiBus<C> bus() { return bus; }
     //接口界面
     public static DamiApi api() { return api; }
 }
@@ -36,11 +36,11 @@ public class DamiConfig {
 }
 ```
 
-## 3、DamiBus<C, R>，总线模式接口
+## 3、DamiBus<C>，总线模式接口
 
 
 ```java
-public interface DamiBus<C, R> {
+public interface DamiBus<C> {
     //获取超时
     long timeout();
     //拦截
@@ -52,11 +52,11 @@ public interface DamiBus<C, R> {
     R call(final String topic, final C content);
    
     //监听
-    default void listen(final String topic, final TopicListener<Payload<C, R>> listener) { listen(topic, 0, listener); }
+    default void listen(final String topic, final TopicListener<Payload<C>> listener) { listen(topic, 0, listener); }
     //监听
-    void listen(final String topic, final int index, final TopicListener<Payload<C, R>> listener);
+    void listen(final String topic, final int index, final TopicListener<Payload<C>> listener);
     //取消监听
-    void unlisten(final String topic, final TopicListener<Payload<C, R>> listener);
+    void unlisten(final String topic, final TopicListener<Payload<C>> listener);
 }
 ```
 
@@ -91,11 +91,11 @@ DamiApi::createSender，发送者接口代理情况说明
 | User getUser()   | 返回类型的，call 发送 | 没有监听，会异常。且必须要有答复 |
 
 
-## 5、Payload<C, R>，事件负载接口
+## 5、Payload<C>，事件负载接口
 
 
 ```java
-public interface Payload<C, R> extends Serializable {
+public interface Payload<C> extends Serializable {
     //获取附件
     <T> T getAttachment(String key);
     //设置附件

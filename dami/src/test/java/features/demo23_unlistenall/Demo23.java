@@ -3,7 +3,7 @@ package features.demo23_unlistenall;
 import org.junit.jupiter.api.Test;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.bus.Payload;
+import org.noear.dami.bus.Message;
 import org.noear.dami.bus.TopicListener;
 
 import java.util.concurrent.CompletableFuture;
@@ -17,14 +17,14 @@ public class Demo23 {
 
     @Test
     public void main() throws InterruptedException {
-        final TopicListener<Payload<String, Long>> aListener = payload -> {
+        final TopicListener<Message<String, Long>> aListener = payload -> {
             System.out.println("i'm a:" + payload);
         };
-        final TopicListener<Payload<String, Long>> bListener = payload -> {
+        final TopicListener<Message<String, Long>> bListener = payload -> {
             System.out.println("i'm b:" + payload);
         };
 
-        final TopicListener<Payload<String, Long>> cListener = payload -> {
+        final TopicListener<Message<String, Long>> cListener = payload -> {
             System.out.println("i'm b:" + payload);
         };
         //监听事件

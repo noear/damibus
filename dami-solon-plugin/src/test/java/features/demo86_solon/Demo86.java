@@ -4,7 +4,7 @@ package features.demo86_solon;
 import org.junit.jupiter.api.Test;
 
 import org.noear.dami.Dami;
-import org.noear.dami.bus.Payload;
+import org.noear.dami.bus.Message;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.solon.annotation.DamiTopic;
 import org.noear.solon.test.SolonTest;
@@ -18,10 +18,10 @@ public class Demo86 {
     }
 
     @DamiTopic("demo86.event.user")
-    public static class UserListener implements TopicListener<Payload<User, Object>> {
+    public static class UserListener implements TopicListener<Message<User, Object>> {
 
         @Override
-        public void onEvent(Payload<User, Object> payload) throws Throwable {
+        public void onEvent(Message<User, Object> payload) throws Throwable {
             System.out.println(payload.getContent());
         }
     }

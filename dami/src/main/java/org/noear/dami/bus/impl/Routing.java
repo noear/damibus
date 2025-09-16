@@ -1,6 +1,6 @@
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.bus.Payload;
+import org.noear.dami.bus.Message;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.TopicListenerHolder;
 
@@ -10,7 +10,7 @@ import org.noear.dami.bus.TopicListenerHolder;
  * @author noear
  * @since 1.0
  * */
-public class Routing<C, R> extends TopicListenerHolder<C,R> {
+public class Routing<C> extends TopicListenerHolder<C> {
     private final String expr;
 
     /**
@@ -18,7 +18,7 @@ public class Routing<C, R> extends TopicListenerHolder<C,R> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public Routing(String expr, int index, TopicListener<Payload<C, R>> listener) {
+    public Routing(String expr, int index, TopicListener<Message<C>> listener) {
         super(index, listener);
         this.expr = expr;
     }

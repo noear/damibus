@@ -109,7 +109,7 @@ public class Deom11 {
 #### demo12_call
 
 ```java
-//泛型总线风格。<C,R>bus()
+//泛型总线风格。<C>bus()
 public class Demo12 {
     static String topic = "demo.hello";
 
