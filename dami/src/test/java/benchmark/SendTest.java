@@ -12,7 +12,7 @@ public class SendTest {
         });
 
         long start = System.currentTimeMillis();
-        for (int i = 0; i < 10_000_000; i++) {
+        for (int i = 0; i < 40_000_000; i++) {
             Dami.bus().send("test.demo", "1");
         }
         System.out.println(System.currentTimeMillis() - start + "::" + count);
