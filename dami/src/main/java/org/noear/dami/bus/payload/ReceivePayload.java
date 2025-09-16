@@ -15,25 +15,32 @@
  */
 package org.noear.dami.bus.payload;
 
-import java.util.concurrent.CompletableFuture;
+import org.noear.dami.bus.AssertUtil;
+
+import java.io.Serializable;
 
 /**
- * 请求核载
+ * 可接收核载
  *
  * @author noear
  * @since 2.0
  */
-public class RequestPayload<C,R> extends ReceivePayload<C,CompletableFuture<R>> {
-    public RequestPayload(C content) {
-        this(content, new CompletableFuture<>());
+public class ReceivePayload<C,Rec> implements Serializable {
+    private final C context;
+    private final transient Rec receiver;
+
+    public ReceivePayload(C context, Rec receiver) {
+        AssertUtil.notNull(receiver, "The receiver can not be null");
+
+        this.context = context;
+        this.receiver = receiver;
     }
 
-    public RequestPayload(C content, CompletableFuture<R> responseFuture) {
-        super(content, responseFuture);
+    public C getContext() {
+        return context;
     }
 
-    @Override
-    public CompletableFuture<R> getReceiver() {
-        return super.getReceiver();
+    public Rec getReceiver() {
+        return receiver;
     }
 }

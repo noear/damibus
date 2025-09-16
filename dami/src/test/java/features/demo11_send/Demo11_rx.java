@@ -21,7 +21,7 @@ public class Demo11_rx {
         //监听事件
         bus.listen(topic, message -> {
             System.err.println(message);
-            message.getPayload().getSubscriber().onNext("hello");
+            message.getPayload().getReceiver().onNext("hello");
             testObserver.incrementAndGet();
         });
 

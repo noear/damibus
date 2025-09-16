@@ -24,7 +24,7 @@ public class Demo90 {
 
         System.out.println(bus.send("user.demo", new RequestPayload<>("solon"))
                 .getPayload()
-                .getResponse()
+                .getReceiver()
                 .get());
     }
 
@@ -32,7 +32,7 @@ public class Demo90 {
     public static class UserEventListener implements TopicListener<Message<RequestPayload<String, String>>> {
         @Override
         public void onEvent(Message<RequestPayload<String, String>> message) throws Throwable {
-            message.getPayload().getResponse().complete("Hi " + message.getPayload().content());
+            message.getPayload().getReceiver().complete("Hi " + message.getPayload().getContext());
         }
     }
 }

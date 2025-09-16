@@ -1,4 +1,4 @@
-package features.demo15_patterned;
+package features.demo16_patterned;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.bus.DamiBus;

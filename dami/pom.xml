@@ -39,7 +39,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-rx</artifactId>
+            <artifactId>solon-web-rx</artifactId>
             <version>${solon.version}</version>
             <scope>test</scope>
         </dependency>

@@ -1,16 +1,23 @@
-package features.demo12_request;
+package features.demo13_subscribe;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.payload.RequestPayload;
+import org.noear.dami.bus.payload.ReceivePayload;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Demo12 {
+/**
+ *
+ * @author noear 2025/9/16 created
+ *
+ */
+public class Demo13 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
-    DamiBus<RequestPayload<String, String>> busStr = Dami.newBus();
+    DamiBus<ReceivePayload<String, FluxSink<String>>> busStr = Dami.newBus();
 
     @Test
     public void main() throws Exception {
@@ -21,20 +28,18 @@ public class Demo12 {
             System.out.println(Thread.currentThread());
             System.err.println(message);
 
-            message.getPayload().getReceiver().complete("hi!");
+            message.getPayload().getReceiver().next("hi!");
+            message.getPayload().getReceiver().complete();
         });
 
         System.out.println(Thread.currentThread());
 
         //发送事件
-        String rst1 = busStr.send(topic, new RequestPayload<>("world"))
-                .getPayload()
-                .getReceiver()
-                .get();
 
-        busStr.send(topic, new RequestPayload<>("world"), r -> r.getReceiver().complete("def"));
-
-        System.out.println(rst1);
-        assert "hi!".equals(rst1);
+        Flux.<String>create(sink -> {
+            busStr.send(topic, new ReceivePayload<>("world", sink), r -> {
+                r.getReceiver().isCancelled();
+            });
+        });
     }
 }

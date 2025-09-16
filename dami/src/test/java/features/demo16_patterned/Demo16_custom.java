@@ -1,4 +1,4 @@
-package features.demo15_patterned;
+package features.demo16_patterned;
 
 import org.noear.dami.Dami;
 import org.noear.dami.DamiConfig;
@@ -7,7 +7,7 @@ import org.noear.dami.bus.impl.RoutingPath;
 import org.noear.dami.bus.impl.TopicRouterPatterned;
 
 
-public class Demo15_custom {
+public class Demo16_custom {
     public static void main(String[] args){
         //::切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
 

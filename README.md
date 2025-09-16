@@ -188,7 +188,7 @@ public class Demo15_path {
 
         //拦截
         Dami.bus().listen("demo/a/*", (message) -> {
-            System.err.println(message);
+            System.err.println(message.getPayload());
         });
 
         //发送事件
@@ -206,7 +206,7 @@ public class Demo15_tag {
 
         //拦截
         Dami.bus().listen("demo.a:id", (message) -> {
-            System.err.println(message);
+            System.err.println(message.getPayload());
         });
 
         //发送事件

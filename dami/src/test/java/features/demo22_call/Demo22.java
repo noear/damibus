@@ -20,14 +20,14 @@ public class Demo22 {
         bus.listen(topic, message -> {
             System.err.println(message);
 
-            message.getPayload().getResponse().complete("hi!");
+            message.getPayload().getReceiver().complete("hi!");
         });
 
 
         //发送事件
         String rst1 = bus.send(topic, new RequestPayload<>(2L))
                 .getPayload()
-                .getResponse()
+                .getReceiver()
                 .get();
 
         System.out.println(rst1);

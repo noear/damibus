@@ -23,26 +23,14 @@ import org.reactivestreams.Subscriber;
  * @author noear
  * @since 2.0
  */
-public class SubscribePayload<C,R> {
-    private C content;
-    private final Subscriber<R> subscriber;
+public class SubscribePayload<C,R> extends ReceivePayload<C, Subscriber<R>> {
 
     public SubscribePayload(C content, Subscriber<R> subscriber) {
-        this.content = content;
-        this.subscriber = subscriber;
+        super(content, subscriber);
     }
 
-    /**
-     * 内容
-     */
-    public C content() {
-        return content;
-    }
-
-    /**
-     * 获取订阅者
-     */
-    public Subscriber<R> getSubscriber() {
-        return subscriber;
+    @Override
+    public Subscriber<R> getReceiver() {
+        return super.getReceiver();
     }
 }

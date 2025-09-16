@@ -1,13 +1,12 @@
-package features.demo13_attachmemt;
+package features.demo14_attachmemt;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Demo13 {
+public class Demo14 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
     DamiBus<String> busStr = Dami.newBus();

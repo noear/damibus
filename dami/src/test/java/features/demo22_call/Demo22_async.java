@@ -23,7 +23,7 @@ public class Demo22_async {
                 System.out.println(Thread.currentThread());
                 System.err.println(message);
 
-                message.getPayload().getResponse().complete("hi!");
+                message.getPayload().getReceiver().complete("hi!");
             });
         });
 
@@ -31,7 +31,7 @@ public class Demo22_async {
         //发送事件
         String rst1 = bus.send(topic, new RequestPayload<>(2L))
                 .getPayload()
-                .getResponse()
+                .getReceiver()
                 .get();
 
         System.out.println(rst1);

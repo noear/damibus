@@ -25,7 +25,7 @@ public class Demo12_async {
                 System.err.println(message);
 
                 message.getPayload()
-                        .getResponse()
+                        .getReceiver()
                         .complete("hi!");
             });
         });
@@ -35,7 +35,7 @@ public class Demo12_async {
         //发送事件
         String rst1 = busStr.send(topic, new RequestPayload<>("world"))
                 .getPayload()
-                .getResponse()
+                .getReceiver()
                 .get();
 
         System.out.println(rst1);

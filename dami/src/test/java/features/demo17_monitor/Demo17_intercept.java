@@ -1,29 +1,32 @@
-package features.demo16_monitor;
+package features.demo17_monitor;
 
 import org.junit.jupiter.api.Test;
-import org.noear.dami.Dami;
-import org.noear.dami.DamiConfig;
-import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
+import org.noear.dami.bus.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author noear 2023/10/13 created
  */
-public class Demo16_dispatcher {
+public class Demo17_intercept {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
-    DamiBus<String> busStr = new DamiBusImpl<String>()
-            .topicDispatcher(new TopicDispatcherMonitor<>());
+    DamiBus<String> busStr = new DamiBusImpl<>();
 
     @Test
     public void main() throws Exception {
+        busStr.intercept((message, chain) -> {
+            System.out.println("开始监视...");
+            chain.getTargets().forEach(e->System.out.println(e.getListener()));
+            chain.doIntercept(message);
+            System.out.println("结速监视...");
+        });
+
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
         busStr.listen(topic, message -> {
-            System.out.println(message);
+            System.err.println(message);
             testObserver.incrementAndGet();
         });
 

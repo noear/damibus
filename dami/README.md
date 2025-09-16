@@ -22,11 +22,11 @@ public class Deom11 {
     public static void main(String[] args) {
         //监听事件
         Dami.bus().listen(topic, message -> {
-            System.err.println(message); //可以有多个订阅
+            System.err.println(message.getPayload()); //可以有多个订阅
         });
         Dami.bus().listen(topic, message -> {
             CompletableFuture.runAsync(()-> { //也可以异步消费
-                System.err.println(message);
+                System.err.println(message.getPayload());
             });
         });
 
@@ -37,6 +37,7 @@ public class Deom11 {
 }
 ```
 
+
 #### demo12_request
 
 ```java
@@ -46,17 +47,20 @@ public class Demo12 {
 
     public static void main(String[] args) {
         //监听事件
-        Dami.<String,String>bus().listen(topic, message -> {
+        Dami.<RequestPayload<String,String>>bus().listen(topic, message -> {
             System.err.println(message);
 
-            if (message.requiredReply()) {
-                message.reply("hi!"); 
-            }
+            message.getPayload().getResponse().complete("hi!");
         });
 
 
-        //发送事件
-        String rst1 = Dami.<String,String>bus().call(topic, "world"); //要求有返回值
+        //发送事件 //要求有答复（即，返回值）
+        String rst1 = Dami.<RequestPayload<String,String>>bus().send(topic, new RequestPayload<>("world"))
+                .getPayload()
+                .getResponse()
+                .get();
+        //发送事件 //要求有答复（即，返回值） //支持应急处理（或降级处理）（没有订阅时触发时）
+        //String rst1 = Dami.<RequestPayload<String,String>>bus().send(topic, new RequestPayload<>("world"), r -> r.getResponse().complete("def"))...;
         System.out.println(rst1);
     }
 }

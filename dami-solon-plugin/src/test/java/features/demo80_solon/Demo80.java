@@ -17,7 +17,7 @@ public class Demo80 {
 
         System.out.println(bus.send("user.demo", new RequestPayload<>("solon"))
                 .getPayload()
-                .getResponse()
+                .getReceiver()
                 .get());
     }
 
@@ -26,8 +26,8 @@ public class Demo80 {
         @Override
         public void onEvent(Message<RequestPayload<String, String>> message) throws Throwable {
             message.getPayload()
-                    .getResponse()
-                    .complete("Hi " + message.getPayload().content());
+                    .getReceiver()
+                    .complete("Hi " + message.getPayload().getContext());
         }
     }
 }

@@ -65,7 +65,7 @@ public class SenderInvocationHandler implements InvocationHandler {
             if (message.getHandled()) {
                 result = message
                         .getPayload()
-                        .getResponse()
+                        .getReceiver()
                         .get();
             } else {
                 if (method.isDefault()) {

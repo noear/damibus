@@ -47,7 +47,7 @@ public class MethodTopicListener implements TopicListener<Message<RequestPayload
         //执行
         Object rst = method.invoke(target, args);
 
-        message.getPayload().getResponse().complete(rst);
+        message.getPayload().getReceiver().complete(rst);
     }
 
     @Override
