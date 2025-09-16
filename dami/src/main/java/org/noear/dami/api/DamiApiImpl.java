@@ -20,6 +20,7 @@ import org.noear.dami.api.impl.MethodTopicListener;
 import org.noear.dami.api.impl.MethodTopicListenerRecord;
 import org.noear.dami.api.impl.SenderInvocationHandler;
 import org.noear.dami.bus.DamiBus;
+import org.noear.dami.bus.payload.RequestPayload;
 import org.noear.dami.exception.DamiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 /**
@@ -97,6 +100,37 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
     }
 
     /**
+     * 调用
+     */
+    @Override
+    public <C, R> CompletableFuture<R> call(String topic, C content, Supplier<R> fallback) {
+        if (fallback == null) {
+            return ((DamiBus<RequestPayload<C, R>>) bus())
+                    .send(topic, new RequestPayload<>(content))
+                    .getPayload()
+                    .getReceiver();
+        } else {
+            return ((DamiBus<RequestPayload<C, R>>) bus())
+                    .send(topic, new RequestPayload<>(content), r -> {
+                        r.getReceiver().complete(fallback.get());
+                    })
+                    .getPayload()
+                    .getReceiver();
+        }
+    }
+
+    /**
+     * 处理
+     */
+    @Override
+    public <C, R> void handle(String topic, BiConsumer<C, CompletableFuture<R>> consumer) {
+        ((DamiBus<RequestPayload<C, R>>) bus())
+                .listen(topic, msg -> {
+                    consumer.accept(msg.getPayload().getContext(), msg.getPayload().getReceiver());
+                });
+    }
+
+    /**
      * 创建发送器代理
      *
      * @param topicMapping 主题映射
@@ -136,7 +170,7 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
 
             for (Method m1 : findMethods(listenerClz)) {
                 //不能是 Object 申明的方法
-                if(m1.getDeclaringClass() != Object.class) {
+                if (m1.getDeclaringClass() != Object.class) {
                     String topic = getMethodTopic(topicMapping, m1.getName());
                     MethodTopicListener listener = new MethodTopicListener(this, listenerObj, m1);
 

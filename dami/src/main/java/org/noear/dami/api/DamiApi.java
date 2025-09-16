@@ -16,7 +16,11 @@
 package org.noear.dami.api;
 
 import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.payload.RequestPayload;
+import org.reactivestreams.Publisher;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 /**
  * 大米接口（提供 Local Procedure Call 服务）
@@ -34,7 +38,38 @@ public interface DamiApi {
      * 获取关联总线
      *
      */
-    DamiBus<RequestPayload> bus();
+    <P> DamiBus<P> bus();
+
+    /// /////////////////
+
+    /**
+     * 调用
+     */
+    default <C, R> CompletableFuture<R> call(String topic, C content) {
+        return call(topic, content, null);
+    }
+
+    /**
+     * 调用
+     *
+     * @param fallback 应用处理（或降级处理）
+     */
+    <C, R> CompletableFuture<R> call(String topic, C content, Supplier<R> fallback);
+
+    /**
+     * 处理
+     */
+    <C, R> void handle(String topic, BiConsumer<C, CompletableFuture<R>> consumer);
+
+    /// ////////////////
+
+//    /**
+//     * 调用
+//     */
+//    <C, R> Publisher<R> stream(String topic, C content);
+
+
+    /// ////////////////
 
     /**
      * 创建发送器代理

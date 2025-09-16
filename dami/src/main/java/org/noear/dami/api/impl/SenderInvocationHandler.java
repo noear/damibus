@@ -60,7 +60,7 @@ public class SenderInvocationHandler implements InvocationHandler {
                 }
             }
         } else {
-            Result<RequestPayload> message = damiApi.bus().send(topic, new RequestPayload(content));
+            Result<RequestPayload> message = damiApi.<RequestPayload>bus().send(topic, new RequestPayload(content));
 
             if (message.getHandled()) {
                 result = message
