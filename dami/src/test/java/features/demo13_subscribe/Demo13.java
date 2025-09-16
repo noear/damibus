@@ -36,12 +36,8 @@ public class Demo13 {
 
         //发送事件
         api.<String, String>stream(topic, "world").subscribe(new SimpleSubscriber<>()
-                .doOnSubscribe(subs -> {
-                    subs.request(1);
-                })
-                .doOnNext((s, item) -> {
-                    System.out.println(Thread.currentThread());
-                    s.request(1);
+                .doOnNext(item -> {
+                    System.out.println(item);
                 }));
     }
 }
