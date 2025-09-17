@@ -206,7 +206,6 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     @Override
     public <C, R> void onStream(String topic, BiConsumer<C, Subscriber<? super R>> consumer) {
         this.<SubscribePayload<C, R>>listen(topic, message -> {
-
             consumer.accept(message.getPayload().getContext(), message.getPayload().getReceiver());
         });
     }
