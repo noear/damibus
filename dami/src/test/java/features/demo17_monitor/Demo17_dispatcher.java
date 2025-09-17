@@ -20,8 +20,8 @@ public class Demo17_dispatcher {
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        busStr.listen(topic, message -> {
-            System.out.println(message);
+        busStr.listen(topic, event -> {
+            System.out.println(event);
             testObserver.incrementAndGet();
         });
 

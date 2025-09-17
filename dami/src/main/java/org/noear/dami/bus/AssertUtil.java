@@ -26,7 +26,7 @@ public class AssertUtil {
      * 断言不断 null
      *
      * @param obj 对象
-     * @param msg 描述消息
+     * @param msg 描述
      * @since 2.0
      */
     public static void notNull(Object obj, String msg) {

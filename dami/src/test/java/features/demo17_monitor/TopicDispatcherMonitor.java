@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class TopicDispatcherMonitor extends TopicDispatcherDefault {
     @Override
-    protected void doDispatch(Event message, List<TopicListenerHolder> targets) throws Throwable {
+    protected void doDispatch(Event event, List<TopicListenerHolder> targets) throws Throwable {
         //开始监视...
         System.out.println("开始监视...");
 
@@ -22,7 +22,7 @@ public class TopicDispatcherMonitor extends TopicDispatcherDefault {
 
             //发送前监视...
             System.out.println("发送前监视...");
-            listener.onEvent(message);
+            listener.onEvent(event);
             //发送后监视...
             System.out.println("发送后监视...");
         }

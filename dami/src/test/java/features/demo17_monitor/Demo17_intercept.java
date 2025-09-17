@@ -15,18 +15,18 @@ public class Demo17_intercept {
 
     @Test
     public void main() throws Exception {
-        busStr.<String>intercept((message, chain) -> {
+        busStr.<String>intercept((event, chain) -> {
             System.out.println("开始监视...");
             chain.getTargets().forEach(e->System.out.println(e.getListener()));
-            chain.doIntercept(message);
+            chain.doIntercept(event);
             System.out.println("结速监视...");
         });
 
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        busStr.<String>listen(topic, message -> {
-            System.err.println(message);
+        busStr.<String>listen(topic, event -> {
+            System.err.println(event);
             testObserver.incrementAndGet();
         });
 

@@ -24,8 +24,8 @@ public class Demo23 {
             System.out.println("i'm b:" + event);
         };
 
-        final TopicListener<Event<String>> cListener = message -> {
-            System.out.println("i'm b:" + message);
+        final TopicListener<Event<String>> cListener = event -> {
+            System.out.println("i'm b:" + event);
         };
         //监听事件
         bus.listen(topic, aListener);

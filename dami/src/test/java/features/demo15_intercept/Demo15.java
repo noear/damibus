@@ -16,9 +16,9 @@ public class Demo15 {
         AtomicInteger testObserver = new AtomicInteger();
 
         //拦截
-        busStr.<String>intercept(0, (message, chain) -> {
-            System.err.println(message);
-            chain.doIntercept(message);
+        busStr.<String>intercept(0, (event, chain) -> {
+            System.err.println(event);
+            chain.doIntercept(event);
             testObserver.incrementAndGet();
         });
 

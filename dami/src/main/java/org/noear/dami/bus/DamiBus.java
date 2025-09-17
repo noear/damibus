@@ -51,7 +51,7 @@ public interface DamiBus {
      *
      * @param topic   主题
      * @param payload 核载
-     * @return 消息
+     * @return 结果
      */
     default <P> Result<P> send(final String topic, final P payload) {
         return send(topic, payload, null);
@@ -63,7 +63,7 @@ public interface DamiBus {
      * @param topic    主题
      * @param payload  核载
      * @param fallback 应急处理（当没有订阅时执行）
-     * @return 消息
+     * @return 结果
      */
     <P> Result<P> send(final String topic, final P payload, Consumer<P> fallback);
 

@@ -21,8 +21,8 @@ public class Demo86 {
     public static class UserListener implements TopicListener<Event<User>> {
 
         @Override
-        public void onEvent(Event<User> message) throws Throwable {
-            System.out.println(message.getPayload());
+        public void onEvent(Event<User> event) throws Throwable {
+            System.out.println(event.getPayload());
         }
     }
 }

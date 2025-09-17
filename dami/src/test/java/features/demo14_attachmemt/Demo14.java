@@ -16,9 +16,9 @@ public class Demo14 {
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        busStr.<String>listen(topic, 1, message -> {
-            System.err.println(message);
-            message.setAttachment("name", "noear");
+        busStr.<String>listen(topic, 1, event -> {
+            System.err.println(event);
+            event.setAttachment("name", "noear");
             testObserver.incrementAndGet();
         });
 

@@ -23,8 +23,8 @@ package org.noear.dami.exception;
  * @since 1.0
  * */
 public class DamiNoListenException extends DamiException {
-    public DamiNoListenException(String message) {
-        super(message);
+    public DamiNoListenException(String event) {
+        super(event);
     }
 
     public DamiNoListenException(Throwable cause) {

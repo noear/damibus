@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DamiInterceptorImpl implements Interceptor {
     @Override
-    public void doIntercept(Event message, InterceptorChain chain) {
-        System.out.println("拦截：" + message);
-        chain.doIntercept(message);
+    public void doIntercept(Event event, InterceptorChain chain) {
+        System.out.println("拦截：" + event);
+        chain.doIntercept(event);
     }
 }

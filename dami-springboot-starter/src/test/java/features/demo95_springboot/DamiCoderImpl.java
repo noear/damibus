@@ -18,8 +18,8 @@ public class DamiCoderImpl implements Coder {
     }
 
     @Override
-    public Object[] decode(Method method, Event message) throws Throwable {
+    public Object[] decode(Method method, Event event) throws Throwable {
         System.out.println("要解码了");
-        return coder.decode(method, message);
+        return coder.decode(method, event);
     }
 }

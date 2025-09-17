@@ -31,8 +31,8 @@ public class Demo90 {
     @DamiTopic("user.demo")
     public static class UserEventListener implements TopicListener<Event<RequestPayload<String, String>>> {
         @Override
-        public void onEvent(Event<RequestPayload<String, String>> message) throws Throwable {
-            message.getPayload().getReceiver().complete("Hi " + message.getPayload().getContext());
+        public void onEvent(Event<RequestPayload<String, String>> event) throws Throwable {
+            event.getPayload().getReceiver().complete("Hi " + event.getPayload().getContext());
         }
     }
 }

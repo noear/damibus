@@ -17,8 +17,8 @@ public class Demo16_path {
         AtomicInteger testObserver = new AtomicInteger();
 
         //拦截
-        busStr.listen("demo.a.*", (message) -> {
-            System.err.println(message);
+        busStr.listen("demo.a.*", (event) -> {
+            System.err.println(event);
             testObserver.incrementAndGet();
         });
 

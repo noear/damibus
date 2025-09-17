@@ -19,9 +19,9 @@ public class Demo11_rx {
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        bus.<SubscribePayload<String, String>>listen(topic, message -> {
-            System.err.println(message);
-            message.getPayload().getReceiver().onNext("hello");
+        bus.<SubscribePayload<String, String>>listen(topic, event -> {
+            System.err.println(event);
+            event.getPayload().getReceiver().onNext("hello");
             testObserver.incrementAndGet();
         });
 

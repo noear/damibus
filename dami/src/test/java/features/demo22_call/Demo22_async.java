@@ -16,10 +16,10 @@ public class Demo22_async {
         System.out.println(Thread.currentThread());
 
         //监听事件
-        bus.<Long, String>onCall(topic, (message, resp) -> {
+        bus.<Long, String>onCall(topic, (event, resp) -> {
             CompletableFuture.runAsync(() -> {
                 System.out.println(Thread.currentThread());
-                System.err.println(message);
+                System.err.println(event);
 
                 resp.complete("hi!");
             });
