@@ -23,8 +23,8 @@ package org.noear.dami.exception;
  * @since 1.0
  * */
 public class DamiException extends RuntimeException {
-    public DamiException(String message) {
-        super(message);
+    public DamiException(String event) {
+        super(event);
     }
 
     public DamiException(Throwable cause) {

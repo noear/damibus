@@ -52,11 +52,11 @@ public class DamiConfig {
     /**
      * 配置总线的负载工厂
      *
-     * @param messageFactory 负载工厂
+     * @param eventFactory 负载工厂
      */
-    public static void configure(MessageFactory messageFactory) {
-        if (messageFactory != null) {
-            ((DamiBusConfigurator) Dami.bus).messageFactory(messageFactory);
+    public static void configure(EventFactory eventFactory) {
+        if (eventFactory != null) {
+            ((DamiBusConfigurator) Dami.bus).eventFactory(eventFactory);
         }
     }
 

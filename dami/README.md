@@ -21,12 +21,12 @@ public class Deom11 {
 
     public static void main(String[] args) {
         //监听事件
-        Dami.bus().listen(topic, message -> {
-            System.err.println(message.getPayload()); //可以有多个订阅
+        Dami.bus().listen(topic, event -> {
+            System.err.println(event.getPayload()); //可以有多个订阅
         });
-        Dami.bus().listen(topic, message -> {
+        Dami.bus().listen(topic, event -> {
             CompletableFuture.runAsync(()-> { //也可以异步消费
-                System.err.println(message.getPayload());
+                System.err.println(event.getPayload());
             });
         });
 
@@ -47,8 +47,8 @@ public class Demo12 {
 
     public static void main(String[] args) {
         //监听事件（当调用时）
-        Dami.bus().<String, String>onCall(topic, (message, sink) -> {
-            System.err.println(message);
+        Dami.bus().<String, String>onCall(topic, (event, sink) -> {
+            System.err.println(event);
 
             sink.complete("hi!");
         });
@@ -71,8 +71,8 @@ public class Demo13 {
 
     public static void main(String[] args) {
         //监听事件（当流时）
-        Dami.bus().<String, String>onStream(topic, (message, sink) -> {
-            System.err.println(message);
+        Dami.bus().<String, String>onStream(topic, (event, sink) -> {
+            System.err.println(event);
 
             subs.onNext("hello");
         });
@@ -143,8 +143,8 @@ public class Demo15_path {
         DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
 
         //拦截
-        Dami.bus().listen("demo/a/*", (message) -> {
-            System.err.println(message);
+        Dami.bus().listen("demo/a/*", (event) -> {
+            System.err.println(event);
         });
 
         //发送事件
@@ -161,8 +161,8 @@ public class Demo15_tag {
         DamiConfig.configure(new TopicRouterPatterned(RoutingTag::new));
 
         //拦截
-        Dami.bus().listen("demo.a:id", (message) -> {
-            System.err.println(message);
+        Dami.bus().listen("demo.a:id", (event) -> {
+            System.err.println(event);
         });
 
         //发送事件

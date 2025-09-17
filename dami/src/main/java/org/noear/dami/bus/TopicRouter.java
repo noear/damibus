@@ -30,7 +30,7 @@ public interface TopicRouter {
      * @param index    顺序位
      * @param listener 监听器
      */
-    <P> void add(final String topic, final int index, final TopicListener<Message<P>> listener);
+    <P> void add(final String topic, final int index, final TopicListener<Event<P>> listener);
 
 
     /**
@@ -39,7 +39,7 @@ public interface TopicRouter {
      * @param topic    主题
      * @param listener 监听器
      */
-    <P> void remove(final String topic, final TopicListener<Message<P>> listener);
+    <P> void remove(final String topic, final TopicListener<Event<P>> listener);
 
     /**
      * 移除监听

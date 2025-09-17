@@ -51,18 +51,18 @@ public class SenderInvocationHandler implements InvocationHandler {
         Object content = damiApi.coder().encode(method, args); //
 
         Object result = null;
-        Result<RequestPayload> message = damiApi.bus().send(topic, new RequestPayload(content));
+        Result<RequestPayload> event = damiApi.bus().send(topic, new RequestPayload(content));
 
         if (method.getReturnType() == void.class) { //不能用大写的 Void.class（不然对不上）
-            if (message.getHandled() == false) {
+            if (event.getHandled() == false) {
                 if (method.isDefault()) {
                     //如果没有订阅，且有默认实现
                     MethodHandlerUtils.invokeDefault(proxy, method, args);
                 }
             }
         } else {
-            if (message.getHandled()) {
-                result = message
+            if (event.getHandled()) {
+                result = event
                         .getPayload()
                         .getReceiver()
                         .get();

@@ -15,7 +15,7 @@
  */
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.bus.Message;
+import org.noear.dami.bus.Event;
 import org.noear.dami.bus.TopicListener;
 
 import java.util.*;
@@ -36,7 +36,7 @@ public class RoutingTag<P> extends Routing<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public RoutingTag(String expr, int index, TopicListener<Message<P>> listener) {
+    public RoutingTag(String expr, int index, TopicListener<Event<P>> listener) {
         super(expr, index, listener);
 
         List<String> exprList = TopicTags.get(expr);

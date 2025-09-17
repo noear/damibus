@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.Message;
+import org.noear.dami.bus.Event;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.payload.RequestPayload;
 import org.noear.dami.spring.boot.annotation.DamiTopic;
@@ -29,9 +29,9 @@ public class Demo90 {
     }
 
     @DamiTopic("user.demo")
-    public static class UserEventListener implements TopicListener<Message<RequestPayload<String, String>>> {
+    public static class UserEventListener implements TopicListener<Event<RequestPayload<String, String>>> {
         @Override
-        public void onEvent(Message<RequestPayload<String, String>> message) throws Throwable {
+        public void onEvent(Event<RequestPayload<String, String>> message) throws Throwable {
             message.getPayload().getReceiver().complete("Hi " + message.getPayload().getContext());
         }
     }

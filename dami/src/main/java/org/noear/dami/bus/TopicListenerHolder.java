@@ -21,9 +21,9 @@ package org.noear.dami.bus;
  */
 public class TopicListenerHolder<P> {
     protected final int index;
-    protected final TopicListener<Message<P>> listener;
+    protected final TopicListener<Event<P>> listener;
 
-    public TopicListenerHolder(int index, TopicListener<Message<P>> listener) {
+    public TopicListenerHolder(int index, TopicListener<Event<P>> listener) {
         this.index = index;
         this.listener = listener;
     }
@@ -38,7 +38,7 @@ public class TopicListenerHolder<P> {
     /**
      * 获取监听器
      */
-    public TopicListener<Message<P>> getListener() {
+    public TopicListener<Event<P>> getListener() {
         return listener;
     }
 

@@ -21,7 +21,6 @@ import org.reactivestreams.Subscriber;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * 大米总线（提供 Local Procedure Call 服务）
@@ -75,7 +74,7 @@ public interface DamiBus {
      * @param topic    主题
      * @param listener 监听
      */
-    default <P> void listen(final String topic, final TopicListener<Message<P>> listener) {
+    default <P> void listen(final String topic, final TopicListener<Event<P>> listener) {
         listen(topic, 0, listener);
     }
 
@@ -86,7 +85,7 @@ public interface DamiBus {
      * @param index    顺序位
      * @param listener 监听
      */
-    <P> void listen(final String topic, final int index, final TopicListener<Message<P>> listener);
+    <P> void listen(final String topic, final int index, final TopicListener<Event<P>> listener);
 
     /**
      * 取消监听
@@ -94,7 +93,7 @@ public interface DamiBus {
      * @param topic    主题
      * @param listener 监听
      */
-    <P> void unlisten(final String topic, final TopicListener<Message<P>> listener);
+    <P> void unlisten(final String topic, final TopicListener<Event<P>> listener);
 
     /**
      * 取消监听（主题下的所有监听）

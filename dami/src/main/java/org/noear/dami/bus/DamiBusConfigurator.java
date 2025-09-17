@@ -35,5 +35,5 @@ public interface DamiBusConfigurator extends DamiBus {
     /**
      * 配置事件负载工厂
      */
-    DamiBusConfigurator messageFactory(MessageFactory factory);
+    DamiBusConfigurator eventFactory(EventFactory factory);
 }

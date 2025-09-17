@@ -15,7 +15,7 @@
  */
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.bus.Message;
+import org.noear.dami.bus.Event;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.TopicListenerHolder;
 
@@ -37,7 +37,7 @@ public final class TopicListenPipeline {
      *
      * @param listener 监听器
      */
-    public <P> void add(final TopicListener<Message<P>> listener) {
+    public <P> void add(final TopicListener<Event<P>> listener) {
         add(0, listener);
     }
 
@@ -47,7 +47,7 @@ public final class TopicListenPipeline {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public <P> void add(final int index, final TopicListener<Message<P>> listener) {
+    public <P> void add(final int index, final TopicListener<Event<P>> listener) {
         list.add(new TopicListenerHolder(index, listener));
         list.sort(Comparator.comparing(TopicListenerHolder::getIndex));
     }
@@ -57,7 +57,7 @@ public final class TopicListenPipeline {
      *
      * @param listener 监听器
      */
-    public <P> void remove(final TopicListener<Message<P>> listener) {
+    public <P> void remove(final TopicListener<Event<P>> listener) {
         list.removeIf(e -> e.getListener().equals(listener));
     }
 

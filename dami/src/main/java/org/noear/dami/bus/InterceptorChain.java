@@ -39,7 +39,7 @@ public class InterceptorChain<P> {
     /**
      * 拦截
      * */
-    public void doIntercept(Message<P> message) {
-        interceptors.get(interceptorIndex++).doIntercept(message, this);
+    public void doIntercept(Event<P> event) {
+        interceptors.get(interceptorIndex++).doIntercept(event, this);
     }
 }

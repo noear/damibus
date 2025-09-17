@@ -20,9 +20,9 @@ public class Demo11_async {
         CountDownLatch testObserver = new CountDownLatch(1);
 
         //监听事件
-        busStr.<String>listen(topic, message -> {
+        busStr.<String>listen(topic, event -> {
             CompletableFuture.runAsync(()-> {
-                System.err.println(message);
+                System.err.println(event);
                 testObserver.countDown();
             });
         });

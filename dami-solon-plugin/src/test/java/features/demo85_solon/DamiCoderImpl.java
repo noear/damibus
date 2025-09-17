@@ -2,7 +2,7 @@ package features.demo85_solon;
 
 import org.noear.dami.api.Coder;
 import org.noear.dami.api.CoderDefault;
-import org.noear.dami.bus.Message;
+import org.noear.dami.bus.Event;
 import org.noear.solon.annotation.Component;
 
 import java.lang.reflect.Method;
@@ -18,8 +18,8 @@ public class DamiCoderImpl implements Coder {
     }
 
     @Override
-    public Object[] decode(Method method, Message message) throws Throwable {
+    public Object[] decode(Method method, Event event) throws Throwable {
         System.out.println("要解码了");
-        return coder.decode(method, message);
+        return coder.decode(method, event);
     }
 }

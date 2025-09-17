@@ -15,7 +15,7 @@
  */
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.bus.Message;
+import org.noear.dami.bus.Event;
 import org.noear.dami.bus.TopicListener;
 
 /**
@@ -32,5 +32,5 @@ public interface RoutingFactory {
      * @param index    顺序位
      * @param listener 监听器
      */
-    <P> Routing create(final String topic, final int index, final TopicListener<Message<P>> listener);
+    <P> Routing create(final String topic, final int index, final TopicListener<Event<P>> listener);
 }

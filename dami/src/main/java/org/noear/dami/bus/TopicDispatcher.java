@@ -30,5 +30,5 @@ public interface TopicDispatcher {
     /**
      * 派发
      */
-    void dispatch(Message message, TopicRouter router);
+    void dispatch(Event event, TopicRouter router);
 }

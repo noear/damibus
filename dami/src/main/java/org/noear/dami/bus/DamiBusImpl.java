@@ -24,7 +24,6 @@ import org.reactivestreams.Subscriber;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * 大米总线实现
@@ -38,7 +37,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     //调度器
     private TopicDispatcher dispatcher;
     //负载工厂
-    private MessageFactory factory;
+    private EventFactory factory;
 
     public DamiBusImpl(TopicRouter router) {
         if (router == null) {
@@ -47,7 +46,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
             this.router = router;
         }
 
-        this.factory = MessageDefault::new;
+        this.factory = EventDefault::new;
         this.dispatcher = new TopicDispatcherDefault();
     }
 
@@ -76,7 +75,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     /**
      * 设置事件负载工厂
      */
-    public DamiBusConfigurator messageFactory(MessageFactory factory) {
+    public DamiBusConfigurator eventFactory(EventFactory factory) {
         if (factory != null) {
             this.factory = factory;
         }
@@ -106,17 +105,17 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     public <P> Result<P> send(final String topic, final P payload, Consumer<P> fallback) {
         AssertUtil.assertTopic(topic);
 
-        Message<P> message = factory.create(topic, payload);
+        Event<P> event = factory.create(topic, payload);
 
-        dispatcher.dispatch(message, router);
+        dispatcher.dispatch(event, router);
 
-        if (message.getHandled() == false) {
+        if (event.getHandled() == false) {
             if (fallback != null) {
                 fallback.accept(payload);
             }
         }
 
-        return message;
+        return event;
     }
 
 
@@ -128,7 +127,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * @param listener 监听
      */
     @Override
-    public <P> void listen(final String topic, final int index, final TopicListener<Message<P>> listener) {
+    public <P> void listen(final String topic, final int index, final TopicListener<Event<P>> listener) {
         router.add(topic, index, listener);
     }
 
@@ -139,7 +138,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * @param listener 监听
      */
     @Override
-    public <P> void unlisten(final String topic, final TopicListener<Message<P>> listener) {
+    public <P> void unlisten(final String topic, final TopicListener<Event<P>> listener) {
         router.remove(topic, listener);
     }
 
@@ -213,8 +212,8 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      */
     @Override
     public <C, R> void onStream(String topic, BiConsumer<C, Subscriber<? super R>> consumer) {
-        this.<SubscribePayload<C, R>>listen(topic, message -> {
-            consumer.accept(message.getPayload().getContext(), message.getPayload().getReceiver());
+        this.<SubscribePayload<C, R>>listen(topic, event -> {
+            consumer.accept(event.getPayload().getContext(), event.getPayload().getReceiver());
         });
     }
 }

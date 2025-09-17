@@ -91,12 +91,12 @@ public class Deom11 {
 
     public static void main(String[] args) {
         //监听事件
-        Dami.bus().listen(topic, message -> {
-            System.err.println(message); //可以有多个订阅
+        Dami.bus().listen(topic, event -> {
+            System.err.println(event); //可以有多个订阅
         });
-        Dami.bus().listen(topic, message -> {
+        Dami.bus().listen(topic, event -> {
             CompletableFuture.runAsync(()-> { //也可以异步消费
-                System.err.println(message);
+                System.err.println(event);
             });
         });
 
@@ -116,10 +116,10 @@ public class Demo12 {
 
     public static void main(String[] args) {
         //监听事件
-        Dami.<RequestPayload<String,String>>bus().listen(topic, message -> {
-            System.err.println(message);
+        Dami.<RequestPayload<String,String>>bus().listen(topic, event -> {
+            System.err.println(event);
 
-            message.getPayload().getResponse().complete("hi!");
+            event.getPayload().getResponse().complete("hi!");
         });
 
 
@@ -187,8 +187,8 @@ public class Demo15_path {
         DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
 
         //拦截
-        Dami.bus().listen("demo/a/*", (message) -> {
-            System.err.println(message.getPayload());
+        Dami.bus().listen("demo/a/*", (event) -> {
+            System.err.println(event.getPayload());
         });
 
         //发送事件
@@ -205,8 +205,8 @@ public class Demo15_tag {
         DamiConfig.configure(new TopicRouterPatterned(RoutingTag::new));
 
         //拦截
-        Dami.bus().listen("demo.a:id", (message) -> {
-            System.err.println(message.getPayload());
+        Dami.bus().listen("demo.a:id", (event) -> {
+            System.err.println(event.getPayload());
         });
 
         //发送事件

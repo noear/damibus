@@ -15,7 +15,7 @@
  */
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.bus.Message;
+import org.noear.dami.bus.Event;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  */
-public class MessageDefault<P> implements Message<P>, Serializable {
+public class EventDefault<P> implements Event<P>, Serializable {
     private final String topic;
     private final P payload;
 
@@ -40,7 +40,7 @@ public class MessageDefault<P> implements Message<P>, Serializable {
      * @param topic 主题
      * @param payload 核载
      * */
-    public MessageDefault(final String topic, final P payload) {
+    public EventDefault(final String topic, final P payload) {
         this.topic = topic;
         this.payload = payload;
     }
@@ -102,7 +102,7 @@ public class MessageDefault<P> implements Message<P>, Serializable {
 
     @Override
     public String toString() {
-        return "Message{" +
+        return "Event{" +
                 ", topic='" + topic + '\'' +
                 ", payload=" + payload +
                 ", attachments=" + attachments +

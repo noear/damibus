@@ -15,47 +15,18 @@
  */
 package org.noear.dami.bus;
 
-import java.io.Serializable;
-
 /**
- * 事件负载
+ * 事件工厂
  *
  * @author noear
  * @since 1.0
  */
-public interface Message<P> extends Result<P>, Serializable {
+public interface EventFactory<P> {
     /**
-     * 获取附件
+     * 创建
      *
-     * @param key 关键字
+     * @param topic    主题
+     * @param payload  核载
      */
-    <T> T getAttachment(String key);
-
-    /**
-     * 设置附件
-     *
-     * @param key   关键字
-     * @param value 值
-     */
-    <T> void setAttachment(String key, T value);
-
-    /**
-     * 设置处理标识
-     */
-    void setHandled();
-
-    /**
-     * 获取处理标识（是否已处理）
-     */
-    boolean getHandled();
-
-    /**
-     * 主题
-     */
-    String getTopic();
-
-    /**
-     * 核载
-     */
-    P getPayload();
+    Event<P> create(final String topic, final P payload);
 }

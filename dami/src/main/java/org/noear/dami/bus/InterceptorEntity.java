@@ -51,7 +51,7 @@ public class InterceptorEntity<P> implements Interceptor<P> {
      * 拦截
      */
     @Override
-    public void doIntercept(Message<P> message, InterceptorChain<P> chain) {
-        real.doIntercept(message, chain);
+    public void doIntercept(Event<P> event, InterceptorChain<P> chain) {
+        real.doIntercept(event, chain);
     }
 }

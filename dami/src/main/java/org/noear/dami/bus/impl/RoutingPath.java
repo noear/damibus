@@ -15,7 +15,7 @@
  */
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.bus.Message;
+import org.noear.dami.bus.Event;
 import org.noear.dami.bus.TopicListener;
 
 import java.util.regex.Pattern;
@@ -32,7 +32,7 @@ public class RoutingPath<P> extends Routing<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public RoutingPath(String expr, int index, TopicListener<Message<P>> listener) {
+    public RoutingPath(String expr, int index, TopicListener<Event<P>> listener) {
         super(expr, index, listener);
 
         if (expr.contains("*")) {
