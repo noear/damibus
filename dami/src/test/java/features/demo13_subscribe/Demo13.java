@@ -6,7 +6,6 @@ import org.noear.dami.bus.DamiBus;
 import org.noear.solon.rx.SimpleSubscriber;
 import org.noear.solon.rx.SimpleSubscription;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxProcessor;
 
 /**
  *
@@ -22,7 +21,7 @@ public class Demo13 {
     @Test
     public void main() throws Exception {
         //监听事件
-        bus.<String, String>feed(topic, (req, subs) -> {
+        bus.<String, String>onStream(topic, (req, subs) -> {
             System.out.println(Thread.currentThread());
             System.err.println(req);
 
@@ -40,8 +39,16 @@ public class Demo13 {
         System.out.println(Thread.currentThread());
 
         //发送事件
+//        bus.<String, String>stream(topic, "world")
+//                .subscribe(new SimpleSubscriber<>()
+//                        .doOnNext(item -> {
+//                            System.out.println(Thread.currentThread());
+//                            System.out.println(item);
+//                        }));
+
         Flux.from(bus.<String, String>stream(topic, "world"))
                 .doOnNext(item -> {
+                    System.out.println(Thread.currentThread());
                     System.out.println(item);
                 })
                 .subscribe();

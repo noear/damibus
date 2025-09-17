@@ -3,10 +3,8 @@ package features.demo22_call;
 import org.junit.jupiter.api.Test;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.bus.payload.RequestPayload;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
 
 public class Demo22_async {
     static String topic = "demo.hello";
@@ -18,7 +16,7 @@ public class Demo22_async {
         System.out.println(Thread.currentThread());
 
         //监听事件
-        bus.<Long, String>handle(topic, (message, resp) -> {
+        bus.<Long, String>onCall(topic, (message, resp) -> {
             CompletableFuture.runAsync(() -> {
                 System.out.println(Thread.currentThread());
                 System.err.println(message);

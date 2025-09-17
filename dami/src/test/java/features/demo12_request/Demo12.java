@@ -16,7 +16,7 @@ public class Demo12 {
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        bus.<String, String>handle(topic, (req, resp) -> {
+        bus.<String, String>onCall(topic, (req, resp) -> {
             System.out.println(Thread.currentThread());
             System.err.println(req);
 

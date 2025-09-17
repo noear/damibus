@@ -127,9 +127,9 @@ public interface DamiBus {
     <C, R> CompletableFuture<R> call(String topic, C content, Supplier<R> fallback);
 
     /**
-     * 处理
+     * 当调用时
      */
-    <C, R> void handle(String topic, BiConsumer<C, CompletableFuture<R>> consumer);
+    <C, R> void onCall(String topic, BiConsumer<C, CompletableFuture<R>> consumer);
 
     /// ////////////////
 
@@ -139,7 +139,7 @@ public interface DamiBus {
     <C, R> Publisher<R> stream(String topic, C content);
 
     /**
-     * 输出
+     * 当流时
      */
-    <C, R> void feed(String topic, BiConsumer<C, Subscriber<? super R>> consumer);
+    <C, R> void onStream(String topic, BiConsumer<C, Subscriber<? super R>> consumer);
 }

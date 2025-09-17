@@ -3,7 +3,6 @@ package features.demo22_call;
 import org.junit.jupiter.api.Test;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.bus.payload.RequestPayload;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,7 +16,7 @@ public class Demo22 {
         AtomicInteger testObserver = new AtomicInteger();
 
         //处理事件
-        bus.<Long, String>handle(topic, (req, resp) -> {
+        bus.<Long, String>onCall(topic, (req, resp) -> {
             System.err.println(req);
 
             resp.complete("hi!");

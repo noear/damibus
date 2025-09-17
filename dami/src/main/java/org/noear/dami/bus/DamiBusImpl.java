@@ -184,7 +184,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * 处理
      */
     @Override
-    public <C, R> void handle(String topic, BiConsumer<C, CompletableFuture<R>> consumer) {
+    public <C, R> void onCall(String topic, BiConsumer<C, CompletableFuture<R>> consumer) {
         this.<RequestPayload<C, R>>listen(topic, msg -> {
             consumer.accept(msg.getPayload().getContext(), msg.getPayload().getReceiver());
         });
@@ -204,7 +204,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * 提供（流）
      */
     @Override
-    public <C, R> void feed(String topic, BiConsumer<C, Subscriber<? super R>> consumer) {
+    public <C, R> void onStream(String topic, BiConsumer<C, Subscriber<? super R>> consumer) {
         this.<SubscribePayload<C, R>>listen(topic, message -> {
 
             consumer.accept(message.getPayload().getContext(), message.getPayload().getReceiver());
