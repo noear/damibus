@@ -16,11 +16,11 @@ public class Demo12 {
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        bus.<String, String>onCall(topic, (req, resp) -> {
+        bus.<String, String>onCall(topic, (content, sink) -> {
             System.out.println(Thread.currentThread());
-            System.err.println(req);
+            System.err.println(content);
 
-            resp.complete("hi!");
+            sink.complete("hi!");
         });
 
         System.out.println(Thread.currentThread());

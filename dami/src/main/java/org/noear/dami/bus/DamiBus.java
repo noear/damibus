@@ -124,7 +124,7 @@ public interface DamiBus {
      *
      * @param fallback 应用处理（或降级处理）
      */
-    <C, R> CompletableFuture<R> call(String topic, C content, Supplier<R> fallback);
+    <C, R> CompletableFuture<R> call(String topic, C content, Consumer<CompletableFuture<R>> fallback);
 
     /**
      * 当调用时
@@ -136,7 +136,16 @@ public interface DamiBus {
     /**
      * 流
      */
-    <C, R> Publisher<R> stream(String topic, C content);
+    default <C, R> Publisher<R> stream(String topic, C content) {
+        return stream(topic, content, null);
+    }
+
+    /**
+     * 流
+     *
+     * @param fallback 应用处理（或降级处理）
+     */
+    <C, R> Publisher<R> stream(String topic, C content, Consumer<Subscriber<? super R>> fallback);
 
     /**
      * 当流时

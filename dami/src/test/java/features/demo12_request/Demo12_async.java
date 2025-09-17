@@ -15,12 +15,12 @@ public class Demo12_async {
     public void main() throws Exception {
 
         //监听事件
-        bus.<String, String>onCall(topic, (req, resp) -> {
+        bus.<String, String>onCall(topic, (content, sink) -> {
             CompletableFuture.runAsync(() -> {
                 System.out.println(Thread.currentThread());
-                System.err.println(req);
+                System.err.println(content);
 
-                resp.complete("hi!");
+                sink.complete("hi!");
             });
         });
 

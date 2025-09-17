@@ -46,25 +46,48 @@ public class Demo12 {
     static String topic = "demo.hello";
 
     public static void main(String[] args) {
-        //监听事件
-        Dami.<RequestPayload<String,String>>bus().listen(topic, message -> {
+        //监听事件（当调用时）
+        Dami.bus().<String, String>onCall(topic, (message, sink) -> {
             System.err.println(message);
 
-            message.getPayload().getResponse().complete("hi!");
+            sink.complete("hi!");
         });
 
 
-        //发送事件 //要求有答复（即，返回值）
-        String rst1 = Dami.<RequestPayload<String,String>>bus().send(topic, new RequestPayload<>("world"))
-                .getPayload()
-                .getResponse()
-                .get();
-        //发送事件 //要求有答复（即，返回值） //支持应急处理（或降级处理）（没有订阅时触发时）
-        //String rst1 = Dami.<RequestPayload<String,String>>bus().send(topic, new RequestPayload<>("world"), r -> r.getResponse().complete("def"))...;
+        //发送事件 
+        String rst1 = Dami.bus().<String, String>call(topic, "world").get();
+        //发送事件//支持应急处理（或降级处理）（没有订阅时触发时）
+        //String rst1 = Dami.bus().<String, String>call(topic, "world", () -> "def").get();
         System.out.println(rst1);
     }
 }
 ```
+
+### demo13_subscribe
+
+```java
+public class Demo13 {
+    static String topic = "demo.hello";
+
+    public static void main(String[] args) {
+        //监听事件（当流时）
+        Dami.bus().<String, String>onStream(topic, (message, sink) -> {
+            System.err.println(message);
+
+            subs.onNext("hello");
+        });
+
+        System.out.println(Thread.currentThread());
+
+        //发送事件
+        Dami.bus().<String, String>stream(topic, "world").subscribe(new SimpleSubscriber<>()
+                .doOnNext(item -> {
+                    System.out.println(item);
+                }));
+    }
+}
+```
+
 
 #### demo31_api
 

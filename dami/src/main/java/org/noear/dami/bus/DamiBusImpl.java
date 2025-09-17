@@ -166,14 +166,14 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * 调用
      */
     @Override
-    public <C, R> CompletableFuture<R> call(String topic, C content, Supplier<R> fallback) {
+    public <C, R> CompletableFuture<R> call(String topic, C content, Consumer<CompletableFuture<R>> fallback) {
         if (fallback == null) {
             return this.<RequestPayload<C, R>>send(topic, new RequestPayload<>(content))
                     .getPayload()
                     .getReceiver();
         } else {
             return this.<RequestPayload<C, R>>send(topic, new RequestPayload<>(content), r -> {
-                        r.getReceiver().complete(fallback.get());
+                        fallback.accept(r.getReceiver());
                     })
                     .getPayload()
                     .getReceiver();
@@ -194,10 +194,18 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * 流
      */
     @Override
-    public <C, R> Publisher<R> stream(String topic, C content) {
-        return subscriber -> {
-            this.<SubscribePayload<C, R>>send(topic, new SubscribePayload<>(content, subscriber));
-        };
+    public <C, R> Publisher<R> stream(String topic, C content, Consumer<Subscriber<? super R>> fallback) {
+        if (fallback == null) {
+            return subscriber -> {
+                this.<SubscribePayload<C, R>>send(topic, new SubscribePayload<>(content, subscriber));
+            };
+        } else {
+            return subscriber -> {
+                this.<SubscribePayload<C, R>>send(topic, new SubscribePayload<>(content, subscriber), r -> {
+                    fallback.accept(r.getReceiver());
+                });
+            };
+        }
     }
 
     /**

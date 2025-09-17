@@ -21,16 +21,16 @@ public class Demo13 {
     @Test
     public void main() throws Exception {
         //监听事件
-        bus.<String, String>onStream(topic, (req, subs) -> {
+        bus.<String, String>onStream(topic, (content, sink) -> {
             System.out.println(Thread.currentThread());
-            System.err.println(req);
+            System.err.println(content);
 
-            subs.onNext("hello");
+            sink.onNext("hello");
 
-//            subs.onSubscribe(new SimpleSubscription()
+//            sink.onSubscribe(new SimpleSubscription()
 //                    .onRequest((s, l) -> {
 //                        for (int i = 0; i < l; i++) {
-//                            subs.onNext("test");
+//                            sink.onNext("test");
 //                        }
 //                        s.cancel();
 //                    }));
@@ -39,18 +39,18 @@ public class Demo13 {
         System.out.println(Thread.currentThread());
 
         //发送事件
-//        bus.<String, String>stream(topic, "world")
-//                .subscribe(new SimpleSubscriber<>()
-//                        .doOnNext(item -> {
-//                            System.out.println(Thread.currentThread());
-//                            System.out.println(item);
-//                        }));
+        bus.<String, String>stream(topic, "world")
+                .subscribe(new SimpleSubscriber<>()
+                        .doOnNext(item -> {
+                            System.out.println(Thread.currentThread());
+                            System.out.println(item);
+                        }));
 
-        Flux.from(bus.<String, String>stream(topic, "world"))
-                .doOnNext(item -> {
-                    System.out.println(Thread.currentThread());
-                    System.out.println(item);
-                })
-                .subscribe();
+//        Flux.from(bus.<String, String>stream(topic, "world"))
+//                .doOnNext(item -> {
+//                    System.out.println(Thread.currentThread());
+//                    System.out.println(item);
+//                })
+//                .subscribe();
     }
 }
