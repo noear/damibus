@@ -9,14 +9,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Demo15 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
-    DamiBus<String> busStr = Dami.newBus();
+    DamiBus busStr = Dami.newBus();
 
     @Test
     public void main() {
         AtomicInteger testObserver = new AtomicInteger();
 
         //拦截
-        busStr.intercept(0, (message, chain) -> {
+        busStr.<String>intercept(0, (message, chain) -> {
             System.err.println(message);
             chain.doIntercept(message);
             testObserver.incrementAndGet();

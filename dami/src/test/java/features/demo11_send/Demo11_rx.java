@@ -14,12 +14,12 @@ public class Demo11_rx {
 
     @Test
     public void main() throws Exception {
-        DamiBus<SubscribePayload<String, String>> bus = Dami.newBus();
+        DamiBus bus = Dami.newBus();
 
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        bus.listen(topic, message -> {
+        bus.<SubscribePayload<String, String>>listen(topic, message -> {
             System.err.println(message);
             message.getPayload().getReceiver().onNext("hello");
             testObserver.incrementAndGet();

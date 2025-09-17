@@ -12,7 +12,7 @@ public class Demo16_path {
     @Test
     public void test1_a() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingPath::new));
+        DamiBus busStr = new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -33,7 +33,7 @@ public class Demo16_path {
     @Test
     public void test1_b() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingPath::new));
+        DamiBus busStr = new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -54,7 +54,7 @@ public class Demo16_path {
     @Test
     public void test2_a() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingPath::new));
+        DamiBus busStr = new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -75,7 +75,7 @@ public class Demo16_path {
     @Test
     public void test2_b() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingPath::new));
+        DamiBus busStr = new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -96,12 +96,12 @@ public class Demo16_path {
     @Test
     public void test2_c() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus<String> busStr = new DamiBusImpl<>(new TopicRouterPatterned<>(RoutingPath::new));
+        DamiBus busStr = new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
         //拦截
-        busStr.listen("demo/*/**", (payload) -> {
+        busStr.<String>listen("demo/*/**", (payload) -> {
             System.err.println(payload);
             testObserver.incrementAndGet();
         });

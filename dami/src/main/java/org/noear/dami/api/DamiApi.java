@@ -39,41 +39,7 @@ public interface DamiApi {
      * 获取关联总线
      *
      */
-    <P> DamiBus<P> bus();
-
-    /// /////////////////
-
-    /**
-     * 调用
-     */
-    default <C, R> CompletableFuture<R> call(String topic, C content) {
-        return call(topic, content, null);
-    }
-
-    /**
-     * 调用
-     *
-     * @param fallback 应用处理（或降级处理）
-     */
-    <C, R> CompletableFuture<R> call(String topic, C content, Supplier<R> fallback);
-
-    /**
-     * 处理
-     */
-    <C, R> void handle(String topic, BiConsumer<C, CompletableFuture<R>> consumer);
-
-    /// ////////////////
-
-    /**
-     * 流
-     */
-    <C, R> Publisher<R> stream(String topic, C content);
-
-    /**
-     * 输出
-     */
-    <C, R> void feed(String topic, BiConsumer<C, Subscriber<? super R>> consumer);
-
+    DamiBus bus();
 
     /// ////////////////
 

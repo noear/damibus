@@ -34,13 +34,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author noear
  * @since 1.0
  */
-public class TopicRouterDefault<P> implements TopicRouter<P> {
+public class TopicRouterDefault implements TopicRouter {
     static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
      * 主题监听管道
      */
-    private final Map<String, TopicListenPipeline<P>> pipelineMap = new LinkedHashMap<>();
+    private final Map<String, TopicListenPipeline> pipelineMap = new LinkedHashMap<>();
 
     protected final ReentrantLock PIPELINE_MAP_LOCK = new ReentrantLock();
 
@@ -56,10 +56,10 @@ public class TopicRouterDefault<P> implements TopicRouter<P> {
      * @param listener 监听器
      */
     @Override
-    public void add(final String topic, final int index, final TopicListener<Message<P>> listener) {
+    public <P> void add(final String topic, final int index, final TopicListener<Message<P>> listener) {
         PIPELINE_MAP_LOCK.lock();
         try {
-            final TopicListenPipeline<P> pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline<>());
+            final TopicListenPipeline pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline());
             pipeline.add(index, listener);
         } finally {
             PIPELINE_MAP_LOCK.unlock();
@@ -81,10 +81,10 @@ public class TopicRouterDefault<P> implements TopicRouter<P> {
      * @param listener 监听器
      */
     @Override
-    public void remove(final String topic, final TopicListener<Message<P>> listener) {
+    public <P> void remove(final String topic, final TopicListener<Message<P>> listener) {
         PIPELINE_MAP_LOCK.lock();
         try {
-            final TopicListenPipeline<P> pipeline = pipelineMap.get(topic);
+            final TopicListenPipeline pipeline = pipelineMap.get(topic);
             if (pipeline != null) {
                 pipeline.remove(listener);
             }
@@ -124,8 +124,8 @@ public class TopicRouterDefault<P> implements TopicRouter<P> {
      * 路由匹配
      */
     @Override
-    public List<TopicListenerHolder<P>> matching(String topic) {
-        final TopicListenPipeline<P> pipeline = pipelineMap.get(topic);
+    public List<TopicListenerHolder> matching(String topic) {
+        final TopicListenPipeline pipeline = pipelineMap.get(topic);
 
         if (pipeline == null) {
             return null;

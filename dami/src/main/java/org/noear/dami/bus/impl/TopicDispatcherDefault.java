@@ -33,7 +33,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author noear
  * @since 1.0
  */
-public class TopicDispatcherDefault<P> implements TopicDispatcher<P> ,Interceptor<P> {
+public class TopicDispatcherDefault implements TopicDispatcher ,Interceptor {
     static final Logger log = LoggerFactory.getLogger(TopicDispatcherDefault.class);
     /**
      * 拦截器
@@ -76,12 +76,12 @@ public class TopicDispatcherDefault<P> implements TopicDispatcher<P> ,Intercepto
      * 执行拦截
      */
     @Override
-    public void doIntercept(Message<P> message, InterceptorChain<P> chain) {
+    public  void doIntercept(Message message, InterceptorChain chain) {
         if (log.isTraceEnabled()) {
             log.trace("{}", message);
         }
 
-        final List<TopicListenerHolder<P>> targets = chain.getTargets();
+        final List<TopicListenerHolder> targets = chain.getTargets();
 
         if (targets != null && targets.size() > 0) {
             try {
@@ -105,14 +105,14 @@ public class TopicDispatcherDefault<P> implements TopicDispatcher<P> ,Intercepto
      * 派发
      */
     @Override
-    public void dispatch(Message<P> message, TopicRouter<P> router) {
+    public void dispatch(Message message, TopicRouter router) {
         AssertUtil.assertTopic(message.getTopic());
 
 //        try {
 //            MDC.put("dami-plid", message.getPlid());
 
             //获取路由匹配结果
-            List<TopicListenerHolder<P>> targets = router.matching(message.getTopic());
+            List<TopicListenerHolder> targets = router.matching(message.getTopic());
 
             //转成拦截链处理
             new InterceptorChain<>(interceptors, targets).doIntercept(message);
@@ -124,7 +124,7 @@ public class TopicDispatcherDefault<P> implements TopicDispatcher<P> ,Intercepto
     /**
      * 执行派发
      */
-    protected void doDispatch(Message<P> message, List<TopicListenerHolder<P>> targets) throws Throwable {
+    protected void doDispatch(Message message, List<TopicListenerHolder> targets) throws Throwable {
         //用 i，可以避免遍历时添加监听的异常
         for (int i = 0; i < targets.size(); i++) {
             targets.get(i).getListener().onEvent(message);

@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class Demo90 {
     @Test
     public void main() throws Exception {
-        DamiBus<RequestPayload<String, String>> bus = Dami.bus();
+        DamiBus bus = Dami.bus();
 
         System.out.println(bus.send("user.demo", new RequestPayload<>("solon"))
                 .getPayload()

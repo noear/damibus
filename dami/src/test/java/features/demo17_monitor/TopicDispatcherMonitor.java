@@ -10,15 +10,15 @@ import java.util.List;
 /**
  * @author noear 2023/10/13 created
  */
-public class TopicDispatcherMonitor<P> extends TopicDispatcherDefault<P> {
+public class TopicDispatcherMonitor extends TopicDispatcherDefault {
     @Override
-    protected void doDispatch(Message<P> message, List<TopicListenerHolder<P>> targets) throws Throwable {
+    protected void doDispatch(Message message, List<TopicListenerHolder> targets) throws Throwable {
         //开始监视...
         System.out.println("开始监视...");
 
         //用 i，可以避免遍历时添加监听的异常
         for (int i = 0; i < targets.size(); i++) {
-            TopicListener<Message<P>> listener = targets.get(i).getListener();
+            TopicListener<Message> listener = targets.get(i).getListener();
 
             //发送前监视...
             System.out.println("发送前监视...");

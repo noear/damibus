@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Demo21 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.<String,String>bus()
-    DamiBus<String> bus = new DamiBusImpl<>();
+    DamiBus bus = new DamiBusImpl();
 
     @Test
     public void main() {

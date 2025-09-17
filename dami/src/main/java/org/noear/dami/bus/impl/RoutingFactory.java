@@ -24,7 +24,7 @@ import org.noear.dami.bus.TopicListener;
  * @author kamosama
  * @since 1.0
  * */
-public interface RoutingFactory<P> {
+public interface RoutingFactory {
     /**
      * 创建路由记录
      *
@@ -32,5 +32,5 @@ public interface RoutingFactory<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    Routing<P> create(final String topic, final int index, final TopicListener<Message<P>> listener);
+    <P> Routing create(final String topic, final int index, final TopicListener<Message<P>> listener);
 }

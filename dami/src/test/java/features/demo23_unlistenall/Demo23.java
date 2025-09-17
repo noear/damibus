@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class Demo23 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.<String,String>bus()
-    DamiBus<String> bus = new DamiBusImpl<>();
+    DamiBus bus = new DamiBusImpl();
 
     @Test
     public void main() throws InterruptedException {

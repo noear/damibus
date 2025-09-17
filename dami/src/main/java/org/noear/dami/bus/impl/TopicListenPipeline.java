@@ -29,15 +29,15 @@ import java.util.List;
  * @author noear
  * @since 1.0
  */
-public final class TopicListenPipeline<P> {
-    private final List<TopicListenerHolder<P>> list = new ArrayList<>();
+public final class TopicListenPipeline {
+    private final List<TopicListenerHolder> list = new ArrayList<>();
 
     /**
      * 添加监听
      *
      * @param listener 监听器
      */
-    public void add(final TopicListener<Message<P>> listener) {
+    public <P> void add(final TopicListener<Message<P>> listener) {
         add(0, listener);
     }
 
@@ -47,8 +47,8 @@ public final class TopicListenPipeline<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public void add(final int index, final TopicListener<Message<P>> listener) {
-        list.add(new TopicListenerHolder<>(index, listener));
+    public <P> void add(final int index, final TopicListener<Message<P>> listener) {
+        list.add(new TopicListenerHolder(index, listener));
         list.sort(Comparator.comparing(TopicListenerHolder::getIndex));
     }
 
@@ -57,11 +57,11 @@ public final class TopicListenPipeline<P> {
      *
      * @param listener 监听器
      */
-    public void remove(final TopicListener<Message<P>> listener) {
+    public <P> void remove(final TopicListener<Message<P>> listener) {
         list.removeIf(e -> e.getListener().equals(listener));
     }
 
-    public List<TopicListenerHolder<P>> getList() {
+    public List<TopicListenerHolder> getList() {
         return list;
     }
 

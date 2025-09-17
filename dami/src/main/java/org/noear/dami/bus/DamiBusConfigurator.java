@@ -21,19 +21,19 @@ package org.noear.dami.bus;
  * @author noear
  * @since 1.0
  */
-public interface DamiBusConfigurator<P> extends DamiBus<P> {
+public interface DamiBusConfigurator extends DamiBus {
     /**
      * 配置主题路由器
      */
-    DamiBusConfigurator<P> topicRouter(TopicRouter<P> router);
+    DamiBusConfigurator topicRouter(TopicRouter router);
 
     /**
      * 配置主题调度器
      */
-    DamiBusConfigurator<P> topicDispatcher(TopicDispatcher<P> dispatcher);
+    DamiBusConfigurator topicDispatcher(TopicDispatcher dispatcher);
 
     /**
      * 配置事件负载工厂
      */
-    DamiBusConfigurator<P> messageFactory(MessageFactory<P> factory);
+    DamiBusConfigurator messageFactory(MessageFactory factory);
 }

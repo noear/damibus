@@ -102,52 +102,6 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
         return busSupplier.get();
     }
 
-    /**
-     * 调用
-     */
-    @Override
-    public <C, R> CompletableFuture<R> call(String topic, C content, Supplier<R> fallback) {
-        if (fallback == null) {
-            return ((DamiBus<RequestPayload<C, R>>) bus())
-                    .send(topic, new RequestPayload<>(content))
-                    .getPayload()
-                    .getReceiver();
-        } else {
-            return ((DamiBus<RequestPayload<C, R>>) bus())
-                    .send(topic, new RequestPayload<>(content), r -> {
-                        r.getReceiver().complete(fallback.get());
-                    })
-                    .getPayload()
-                    .getReceiver();
-        }
-    }
-
-    /**
-     * 处理
-     */
-    @Override
-    public <C, R> void handle(String topic, BiConsumer<C, CompletableFuture<R>> consumer) {
-        ((DamiBus<RequestPayload<C, R>>) bus())
-                .listen(topic, msg -> {
-                    consumer.accept(msg.getPayload().getContext(), msg.getPayload().getReceiver());
-                });
-    }
-
-    @Override
-    public <C, R> Publisher<R> stream(String topic, C content) {
-        return subscriber -> {
-            ((DamiBus<SubscribePayload<C, R>>) bus())
-                    .send(topic, new SubscribePayload<>(content, subscriber));
-        };
-    }
-
-    @Override
-    public <C, R> void feed(String topic, BiConsumer<C, Subscriber<? super R>> consumer) {
-        ((DamiBus<SubscribePayload<C, R>>) bus()).listen(topic, message -> {
-
-            consumer.accept(message.getPayload().getContext(), message.getPayload().getReceiver());
-        });
-    }
 
     /// ///////
 

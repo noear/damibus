@@ -13,14 +13,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Demo11_async {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
-    DamiBus<String> busStr = Dami.newBus();
+    DamiBus busStr = Dami.newBus();
 
     @Test
     public void main() throws Exception {
         CountDownLatch testObserver = new CountDownLatch(1);
 
         //监听事件
-        busStr.listen(topic, message -> {
+        busStr.<String>listen(topic, message -> {
             CompletableFuture.runAsync(()-> {
                 System.err.println(message);
                 testObserver.countDown();

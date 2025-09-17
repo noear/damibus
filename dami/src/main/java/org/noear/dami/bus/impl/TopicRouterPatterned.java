@@ -37,13 +37,13 @@ import java.util.stream.Collectors;
  * @example /a/*, /a/**b
  * @since 1.0
  */
-public class TopicRouterPatterned<P> implements TopicRouter<P> {
+public class TopicRouterPatterned implements TopicRouter {
     static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
      * 主题路由记录
      */
-    private final List<Routing<P>> routingList = new ArrayList<>();
+    private final List<Routing> routingList = new ArrayList<>();
 
     protected final ReentrantLock ROUTING_LIST_LOCK = new ReentrantLock();
 
@@ -51,9 +51,9 @@ public class TopicRouterPatterned<P> implements TopicRouter<P> {
     /**
      * 路由工厂
      */
-    private final RoutingFactory<P> routerFactory;
+    private final RoutingFactory routerFactory;
 
-    public TopicRouterPatterned(RoutingFactory<P> routerFactory) {
+    public TopicRouterPatterned(RoutingFactory routerFactory) {
         super();
         this.routerFactory = routerFactory;
     }
@@ -66,7 +66,7 @@ public class TopicRouterPatterned<P> implements TopicRouter<P> {
      * @param listener 监听器
      */
     @Override
-    public void add(final String topic, final int index, final TopicListener<Message<P>> listener) {
+    public <P> void add(final String topic, final int index, final TopicListener<Message<P>> listener) {
         ROUTING_LIST_LOCK.lock();
         try {
             routingList.add(routerFactory.create(topic, index, listener));
@@ -90,7 +90,7 @@ public class TopicRouterPatterned<P> implements TopicRouter<P> {
      * @param listener 监听器
      */
     @Override
-    public void remove(final String topic, final TopicListener<Message<P>> listener) {
+    public <P> void remove(final String topic, final TopicListener<Message<P>> listener) {
         ROUTING_LIST_LOCK.lock();
         try {
             routingList.removeIf(routing -> routing.matches(topic) && routing.getListener() == listener);
@@ -130,8 +130,8 @@ public class TopicRouterPatterned<P> implements TopicRouter<P> {
      * 路由匹配
      */
     @Override
-    public List<TopicListenerHolder<P>> matching(String topic) {
-        List<TopicListenerHolder<P>> routings = routingList.stream()
+    public List<TopicListenerHolder> matching(String topic) {
+        List<TopicListenerHolder> routings = routingList.stream()
                 .filter(r -> r.matches(topic))
                 .sorted(Comparator.comparing(Routing::getIndex))
                 .collect(Collectors.toList());

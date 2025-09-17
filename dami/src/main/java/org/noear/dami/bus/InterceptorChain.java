@@ -25,14 +25,14 @@ import java.util.List;
  */
 public class InterceptorChain<P> {
     private final List<InterceptorEntity> interceptors;
-    private final List<TopicListenerHolder<P>> targets;
+    private final List<TopicListenerHolder> targets;
     private int interceptorIndex = 0;
-    public InterceptorChain(List<InterceptorEntity> interceptors, List<TopicListenerHolder<P>> targets){
+    public InterceptorChain(List<InterceptorEntity> interceptors, List<TopicListenerHolder> targets){
         this.interceptors = interceptors;
         this.targets = targets;
     }
 
-    public List<TopicListenerHolder<P>> getTargets() {
+    public List<TopicListenerHolder> getTargets() {
         return targets;
     }
 

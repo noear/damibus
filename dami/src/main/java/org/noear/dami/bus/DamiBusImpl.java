@@ -16,8 +16,15 @@
 package org.noear.dami.bus;
 
 import org.noear.dami.bus.impl.*;
+import org.noear.dami.bus.payload.RequestPayload;
+import org.noear.dami.bus.payload.SubscribePayload;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * 大米总线实现
@@ -25,23 +32,23 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  */
-public class DamiBusImpl<P> implements DamiBus<P>, DamiBusConfigurator<P> {
+public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     //路由器
-    private TopicRouter<P> router;
+    private TopicRouter router;
     //调度器
-    private TopicDispatcher<P> dispatcher;
+    private TopicDispatcher dispatcher;
     //负载工厂
-    private MessageFactory<P> factory;
+    private MessageFactory factory;
 
-    public DamiBusImpl(TopicRouter<P> router) {
+    public DamiBusImpl(TopicRouter router) {
         if (router == null) {
-            this.router = new TopicRouterDefault<>();
+            this.router = new TopicRouterDefault();
         } else {
             this.router = router;
         }
 
         this.factory = MessageDefault::new;
-        this.dispatcher = new TopicDispatcherDefault<>();
+        this.dispatcher = new TopicDispatcherDefault();
     }
 
     public DamiBusImpl() {
@@ -51,7 +58,7 @@ public class DamiBusImpl<P> implements DamiBus<P>, DamiBusConfigurator<P> {
     /**
      * 设置主题路由器
      */
-    public DamiBusConfigurator<P> topicRouter(TopicRouter<P> router) {
+    public DamiBusConfigurator topicRouter(TopicRouter router) {
         if (router != null) {
             this.router = router;
         }
@@ -59,7 +66,7 @@ public class DamiBusImpl<P> implements DamiBus<P>, DamiBusConfigurator<P> {
     }
 
     @Override
-    public DamiBusConfigurator<P> topicDispatcher(TopicDispatcher<P> dispatcher) {
+    public DamiBusConfigurator topicDispatcher(TopicDispatcher dispatcher) {
         if (dispatcher != null) {
             this.dispatcher = dispatcher;
         }
@@ -69,7 +76,7 @@ public class DamiBusImpl<P> implements DamiBus<P>, DamiBusConfigurator<P> {
     /**
      * 设置事件负载工厂
      */
-    public DamiBusConfigurator<P> messageFactory(MessageFactory<P> factory) {
+    public DamiBusConfigurator messageFactory(MessageFactory factory) {
         if (factory != null) {
             this.factory = factory;
         }
@@ -96,7 +103,7 @@ public class DamiBusImpl<P> implements DamiBus<P>, DamiBusConfigurator<P> {
      * @return 消息
      */
     @Override
-    public Result<P> send(final String topic, final P payload, Consumer<P> fallback) {
+    public <P> Result<P> send(final String topic, final P payload, Consumer<P> fallback) {
         AssertUtil.assertTopic(topic);
 
         Message<P> message = factory.create(topic, payload);
@@ -121,7 +128,7 @@ public class DamiBusImpl<P> implements DamiBus<P>, DamiBusConfigurator<P> {
      * @param listener 监听
      */
     @Override
-    public void listen(final String topic, final int index, final TopicListener<Message<P>> listener) {
+    public <P> void listen(final String topic, final int index, final TopicListener<Message<P>> listener) {
         router.add(topic, index, listener);
     }
 
@@ -132,7 +139,7 @@ public class DamiBusImpl<P> implements DamiBus<P>, DamiBusConfigurator<P> {
      * @param listener 监听
      */
     @Override
-    public void unlisten(final String topic, final TopicListener<Message<P>> listener) {
+    public <P> void unlisten(final String topic, final TopicListener<Message<P>> listener) {
         router.remove(topic, listener);
     }
 
@@ -149,7 +156,58 @@ public class DamiBusImpl<P> implements DamiBus<P>, DamiBusConfigurator<P> {
     /**
      * 路由器
      */
-    public TopicRouter<P> router() {
+    public TopicRouter router() {
         return this.router;
+    }
+
+    /// ////////////////////////
+
+    /**
+     * 调用
+     */
+    @Override
+    public <C, R> CompletableFuture<R> call(String topic, C content, Supplier<R> fallback) {
+        if (fallback == null) {
+            return this.<RequestPayload<C, R>>send(topic, new RequestPayload<>(content))
+                    .getPayload()
+                    .getReceiver();
+        } else {
+            return this.<RequestPayload<C, R>>send(topic, new RequestPayload<>(content), r -> {
+                        r.getReceiver().complete(fallback.get());
+                    })
+                    .getPayload()
+                    .getReceiver();
+        }
+    }
+
+    /**
+     * 处理
+     */
+    @Override
+    public <C, R> void handle(String topic, BiConsumer<C, CompletableFuture<R>> consumer) {
+        this.<RequestPayload<C, R>>listen(topic, msg -> {
+            consumer.accept(msg.getPayload().getContext(), msg.getPayload().getReceiver());
+        });
+    }
+
+    /**
+     * 流
+     */
+    @Override
+    public <C, R> Publisher<R> stream(String topic, C content) {
+        return subscriber -> {
+            this.<SubscribePayload<C, R>>send(topic, new SubscribePayload<>(content, subscriber));
+        };
+    }
+
+    /**
+     * 提供（流）
+     */
+    @Override
+    public <C, R> void feed(String topic, BiConsumer<C, Subscriber<? super R>> consumer) {
+        this.<SubscribePayload<C, R>>listen(topic, message -> {
+
+            consumer.accept(message.getPayload().getContext(), message.getPayload().getReceiver());
+        });
     }
 }

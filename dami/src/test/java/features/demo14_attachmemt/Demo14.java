@@ -9,21 +9,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Demo14 {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
-    DamiBus<String> busStr = Dami.newBus();
+    DamiBus busStr = Dami.newBus();
 
     @Test
     public void main() {
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        busStr.listen(topic, 1, message -> {
+        busStr.<String>listen(topic, 1, message -> {
             System.err.println(message);
             message.setAttachment("name", "noear");
             testObserver.incrementAndGet();
         });
 
         //监听事件
-        busStr.listen(topic, 2, payload -> {
+        busStr.<String>listen(topic, 2, payload -> {
             System.err.println(payload);
             testObserver.incrementAndGet();
         });

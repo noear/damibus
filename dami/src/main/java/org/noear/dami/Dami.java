@@ -27,13 +27,13 @@ import org.noear.dami.bus.DamiBusImpl;
  * @since 1.0
  */
 public class Dami {
-    static DamiBus bus = new DamiBusImpl<>();
+    static DamiBus bus = new DamiBusImpl();
     static DamiApi api = new DamiApiImpl(Dami::bus);
 
     /**
      * 总线界面
      */
-    public static <P> DamiBus<P> bus() {
+    public static DamiBus bus() {
         return bus;
     }
 
@@ -49,8 +49,8 @@ public class Dami {
     /**
      * 新建总线界面
      */
-    public static <P> DamiBus<P> newBus() {
-        return new DamiBusImpl<>();
+    public static DamiBus newBus() {
+        return new DamiBusImpl();
     }
 
     /**

@@ -13,7 +13,7 @@ import org.noear.solon.test.SolonTest;
 public class Demo80 {
     @Test
     public void main() throws Throwable {
-        DamiBus<RequestPayload<String, String>> bus = Dami.bus();
+        DamiBus bus = Dami.bus();
 
         System.out.println(bus.send("user.demo", new RequestPayload<>("solon"))
                 .getPayload()

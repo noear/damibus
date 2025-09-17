@@ -15,7 +15,13 @@
  */
 package org.noear.dami.bus;
 
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * 大米总线（提供 Local Procedure Call 服务）
@@ -23,21 +29,21 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  */
-public interface DamiBus<P> {
+public interface DamiBus {
     /**
      * 拦截
      *
      * @param index       顺序位
      * @param interceptor 拦截器
      */
-    void intercept(int index, Interceptor<P> interceptor);
+    <P> void intercept(int index, Interceptor<P> interceptor);
 
     /**
      * 拦截
      *
      * @param interceptor 拦截器
      */
-    default void intercept(Interceptor<P> interceptor) {
+    default <P> void intercept(Interceptor<P> interceptor) {
         intercept(0, interceptor);
     }
 
@@ -48,7 +54,7 @@ public interface DamiBus<P> {
      * @param payload 核载
      * @return 消息
      */
-    default Result<P> send(final String topic, final P payload) {
+    default <P> Result<P> send(final String topic, final P payload) {
         return send(topic, payload, null);
     }
 
@@ -60,7 +66,7 @@ public interface DamiBus<P> {
      * @param fallback 应急处理（当没有订阅时执行）
      * @return 消息
      */
-    Result<P> send(final String topic, final P payload, Consumer<P> fallback);
+    <P> Result<P> send(final String topic, final P payload, Consumer<P> fallback);
 
 
     /**
@@ -69,7 +75,7 @@ public interface DamiBus<P> {
      * @param topic    主题
      * @param listener 监听
      */
-    default void listen(final String topic, final TopicListener<Message<P>> listener) {
+    default <P> void listen(final String topic, final TopicListener<Message<P>> listener) {
         listen(topic, 0, listener);
     }
 
@@ -80,7 +86,7 @@ public interface DamiBus<P> {
      * @param index    顺序位
      * @param listener 监听
      */
-    void listen(final String topic, final int index, final TopicListener<Message<P>> listener);
+    <P> void listen(final String topic, final int index, final TopicListener<Message<P>> listener);
 
     /**
      * 取消监听
@@ -88,7 +94,7 @@ public interface DamiBus<P> {
      * @param topic    主题
      * @param listener 监听
      */
-    void unlisten(final String topic, final TopicListener<Message<P>> listener);
+    <P> void unlisten(final String topic, final TopicListener<Message<P>> listener);
 
     /**
      * 取消监听（主题下的所有监听）
@@ -100,5 +106,40 @@ public interface DamiBus<P> {
     /**
      * 路由器
      */
-    TopicRouter<P> router();
+    TopicRouter router();
+
+    /// ///////////////////////////
+
+    /// /////////////////
+
+    /**
+     * 调用
+     */
+    default <C, R> CompletableFuture<R> call(String topic, C content) {
+        return call(topic, content, null);
+    }
+
+    /**
+     * 调用
+     *
+     * @param fallback 应用处理（或降级处理）
+     */
+    <C, R> CompletableFuture<R> call(String topic, C content, Supplier<R> fallback);
+
+    /**
+     * 处理
+     */
+    <C, R> void handle(String topic, BiConsumer<C, CompletableFuture<R>> consumer);
+
+    /// ////////////////
+
+    /**
+     * 流
+     */
+    <C, R> Publisher<R> stream(String topic, C content);
+
+    /**
+     * 输出
+     */
+    <C, R> void feed(String topic, BiConsumer<C, Subscriber<? super R>> consumer);
 }

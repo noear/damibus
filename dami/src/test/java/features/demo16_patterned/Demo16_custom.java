@@ -16,7 +16,7 @@ public class Demo16_custom {
         //::应用
 
         //拦截
-        Dami.bus().listen("demo/*/**", System.err::println);
+        Dami.bus().<String>listen("demo/*/**", System.err::println);
 
         //发送事件
         Dami.bus().send("demo/a/1", "world1");
