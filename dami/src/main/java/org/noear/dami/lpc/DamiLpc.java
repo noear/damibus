@@ -34,7 +34,7 @@ public interface DamiLpc extends DamiBusExtension {
     /// ////////////////
 
     /**
-     * 创建消费者代理
+     * 创建服务消费者（接口代理）
      *
      * @param topicMapping 主题映射
      * @param consumerApi  消费者接口
@@ -42,7 +42,7 @@ public interface DamiLpc extends DamiBusExtension {
     <T> T createConsumer(String topicMapping, Class<T> consumerApi);
 
     /**
-     * 注册服务（一个服务，只能监听一个主题）
+     * 注册服务实现（一个服务，只能监听一个主题）
      *
      * @param topicMapping 主题映射
      * @param serviceObj   服务实现类
@@ -52,7 +52,7 @@ public interface DamiLpc extends DamiBusExtension {
     }
 
     /**
-     * 注册服务（一个服务，只能监听一个主题）
+     * 注册服务实现（一个服务，只能监听一个主题）
      *
      * @param topicMapping 主题映射
      * @param index        顺序位
@@ -61,7 +61,7 @@ public interface DamiLpc extends DamiBusExtension {
     void registerService(String topicMapping, int index, Object serviceObj);
 
     /**
-     * 注销服务
+     * 注销服务实现
      *
      * @param topicMapping 主题映射
      * @param serviceObj   服务实现类

@@ -104,7 +104,7 @@ public class EventDefault<P> implements Event<P>, Serializable {
     @Override
     public String toString() {
         return "Event{" +
-                ", topic='" + topic + '\'' +
+                "topic='" + topic + '\'' +
                 ", payload=" + payload +
                 ", attachments=" + attachments +
                 '}';

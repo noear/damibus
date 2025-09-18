@@ -103,7 +103,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     /// ///////
 
     /**
-     * 创建发送器代理
+     * 创建服务消费者（接口代理）
      *
      * @param topicMapping 主题映射
      * @param consumerApi  消费者接口
@@ -120,7 +120,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     }
 
     /**
-     * 注册监听者实例（一个监听类，只能监听一个主题）
+     * 注册服务实现（一个服务，只能监听一个主题）
      *
      * @param topicMapping 主题映射
      * @param index        顺序位
@@ -163,7 +163,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     }
 
     /**
-     * 取消注册监听者实例
+     * 注销服务实现
      *
      * @param topicMapping 主题映射
      * @param serviceObj   服务实现类

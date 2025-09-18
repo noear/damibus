@@ -47,8 +47,8 @@ public interface DamiBus extends DamiBusExtension, DamiBusCall, DamiBusStream {
     /**
      * 发送（不需要答复）
      *
-     * @param topic   主题
-     * @param payload 荷载
+     * @param topic   事件主题
+     * @param payload 事件荷载
      * @return 结果
      */
     default <P> Result<P> send(final String topic, final P payload) {
@@ -58,8 +58,8 @@ public interface DamiBus extends DamiBusExtension, DamiBusCall, DamiBusStream {
     /**
      * 发送（不需要答复）
      *
-     * @param topic    主题
-     * @param payload  荷载
+     * @param topic    事件主题
+     * @param payload  事件荷载
      * @param fallback 应急处理（当没有订阅时执行）
      * @return 结果
      */
@@ -69,7 +69,7 @@ public interface DamiBus extends DamiBusExtension, DamiBusCall, DamiBusStream {
     /**
      * 监听
      *
-     * @param topic    主题
+     * @param topic    事件主题
      * @param listener 监听
      */
     default <P> void listen(final String topic, final TopicListener<Event<P>> listener) {
@@ -79,7 +79,7 @@ public interface DamiBus extends DamiBusExtension, DamiBusCall, DamiBusStream {
     /**
      * 监听
      *
-     * @param topic    主题
+     * @param topic    事件主题
      * @param index    顺序位
      * @param listener 监听
      */
@@ -88,7 +88,7 @@ public interface DamiBus extends DamiBusExtension, DamiBusCall, DamiBusStream {
     /**
      * 取消监听
      *
-     * @param topic    主题
+     * @param topic    事件主题
      * @param listener 监听
      */
     <P> void unlisten(final String topic, final TopicListener<Event<P>> listener);
@@ -96,7 +96,7 @@ public interface DamiBus extends DamiBusExtension, DamiBusCall, DamiBusStream {
     /**
      * 取消监听（主题下的所有监听）
      *
-     * @param topic 主题
+     * @param topic 事件主题
      */
     void unlisten(final String topic);
 

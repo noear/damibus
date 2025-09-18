@@ -54,7 +54,7 @@ public class Demo12 {
         });
 
 
-        //发送事件 
+        //发送事件（调用） 
         String rst1 = Dami.bus().<String, String>call(topic, "world").get();
         //发送事件//支持应急处理（或降级处理）（没有订阅时触发时）
         //String rst1 = Dami.bus().<String, String>call(topic, "world", () -> "def").get();
@@ -74,12 +74,12 @@ public class Demo13 {
         Dami.bus().<String, String>onStream(topic, (event, sink) -> {
             System.err.println(event);
 
-            subs.onNext("hello");
+            sink.onNext("hello");
         });
 
         System.out.println(Thread.currentThread());
 
-        //发送事件
+        //发送事件（流）
         Dami.bus().<String, String>stream(topic, "world").subscribe(new SimpleSubscriber<>()
                 .doOnNext(item -> {
                     System.out.println(item);
@@ -94,14 +94,15 @@ public class Demo13 {
 使用 ioc 适配版本更简便，详情：[dami-solon-plugin](dami-solon-plugin)、[dami-springboot-starter](dami-springboot-starter)
 
 ```java
-//接口风格
-public interface EventUser {
+//服务消费者接口
+public interface UserService {
     void onCreated(Long userId, String name);
+
     Long getUserId(String name);
 }
 
-//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，但会带来依赖关系）
-public class EventUserListener1 { // implements EventUser
+//通过约定保持与 UserService 相同的接口定义（或者实现 UserService 接口，但会带来依赖关系）
+public class UserServiceImpl { // implements UserService
     public void onCreated(Long userId, String name) {
         System.err.println("onCreated: userId=" + userId + ", name=" + name);
     }
@@ -113,20 +114,20 @@ public class EventUserListener1 { // implements EventUser
 
 public class Demo31 {
     public static void main(String[] args) {
-        //注册监听器
-        EventUserListener1 userEventListener = new EventUserListener1();
-        api.registerListener(topicMapping, userEventListener);
+        //注册服务实现
+        UserServiceImpl userServiceImpl = new UserServiceImpl();
+        Dami.lpc().registerService(topicMapping, userServiceImpl);
 
-        //生成发送器
-        EventUser eventUser = api.createSender(topicMapping, EventUser.class);
+        //创建服务消费者（接口代理）
+        UserService userService = Dami.lpc().createConsumer(topicMapping, UserService.class);
 
         //发送测试
-        eventUser.onCreated(1L, "noear");
-        Long userId = eventUser.getUserId("dami");
+        userService.onCreated(1L, "noear");
+        Long userId = userService.getUserId("dami");
         System.err.println("收到：响应：userId：" + userId);
 
-        //注销监听器
-        api.unregisterListener(topicMapping, userEventListener);
+        //注销服务实现
+        Dami.lpc().unregisterService(topicMapping, userServiceImpl);
     }
 }
 ```
