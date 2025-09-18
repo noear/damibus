@@ -15,6 +15,7 @@
  */
 package org.noear.dami2.bus;
 
+import org.noear.dami2.bus.route.TopicRouter;
 import org.noear.dami2.bus.route.TopicRouterDefault;
 
 import java.util.function.Consumer;

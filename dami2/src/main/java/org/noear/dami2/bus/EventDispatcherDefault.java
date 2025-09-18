@@ -15,6 +15,7 @@
  */
 package org.noear.dami2.bus;
 
+import org.noear.dami2.bus.route.TopicRouter;
 import org.noear.dami2.exception.DamiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

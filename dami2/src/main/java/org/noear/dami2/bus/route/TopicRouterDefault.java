@@ -19,7 +19,6 @@ import org.noear.dami2.bus.EventListenPipeline;
 import org.noear.dami2.lpc.impl.ServiceMethodEventListener;
 import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.EventListenerHolder;
-import org.noear.dami2.bus.TopicRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

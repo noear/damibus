@@ -16,7 +16,7 @@
 package org.noear.dami2.lpc;
 
 import org.noear.dami2.lpc.impl.ServiceMethodEventListener;
-import org.noear.dami2.bus.TopicListenRecord;
+import org.noear.dami2.lpc.impl.TopicListenRecord;
 import org.noear.dami2.lpc.impl.ConsumerInvocationHandler;
 import org.noear.dami2.bus.DamiBus;
 import org.noear.dami2.exception.DamiException;

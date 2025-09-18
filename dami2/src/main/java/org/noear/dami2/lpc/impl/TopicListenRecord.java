@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus;
+package org.noear.dami2.lpc.impl;
+
+import org.noear.dami2.bus.EventListener;
 
 /**
  * 主题监听记录（构建主题与监听器关联）

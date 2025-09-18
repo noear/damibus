@@ -15,6 +15,7 @@
  */
 package org.noear.dami2;
 
+import org.noear.dami2.bus.route.TopicRouter;
 import org.noear.dami2.lpc.Coder;
 import org.noear.dami2.lpc.DamiLpc;
 import org.noear.dami2.lpc.DamiLpcConfigurator;

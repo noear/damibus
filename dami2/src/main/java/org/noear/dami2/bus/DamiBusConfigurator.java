@@ -15,6 +15,8 @@
  */
 package org.noear.dami2.bus;
 
+import org.noear.dami2.bus.route.TopicRouter;
+
 /**
  * 大米总线配置器
  *
