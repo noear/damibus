@@ -28,6 +28,7 @@ public class Demo00 {
 
         //发送调用事件
         String rst = Dami.bus().<String, String>call(topic, "hello").get();
+        System.err.println(rst);
     }
 
     public void case_stream() {
