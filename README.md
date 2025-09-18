@@ -92,7 +92,7 @@ public class Deom11 {
     public static void main(String[] args) {
         //监听事件
         Dami.bus().listen(topic, event -> {
-            System.err.println(event); //可以有多个订阅
+            System.err.println(event.getPayload()); //可以有多个订阅
         });
         Dami.bus().listen(topic, event -> {
             CompletableFuture.runAsync(()-> { //也可以异步消费

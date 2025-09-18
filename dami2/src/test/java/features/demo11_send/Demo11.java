@@ -17,7 +17,7 @@ public class Demo11 {
 
         //监听事件
         busStr.<String>listen(topic, event -> {
-            System.err.println(event);
+            System.err.println(event.getPayload());
             testObserver.incrementAndGet();
         });
 
