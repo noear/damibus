@@ -1,4 +1,4 @@
-package features.demo33_api_def;
+package features.demo33_lpc_def;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami2.annotation.Param;
