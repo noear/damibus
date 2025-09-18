@@ -13,52 +13,49 @@
 </dependency>
 ```
 
-#### demo90_springboot （注解）
+#### demo91_springboot （注解）
 
 ```java
 @EnableAutoConfiguration
-@SpringBootTest(classes = Demo90.class)
-@ComponentScan("features.demo90_springboot")
-public class Demo90 {
+@SpringBootTest(classes = Demo91.class)
+@ComponentScan("features.demo91_springboot")
+public class Demo91 {
     @Test
-    public void main() {
-        DamiBus<String, String> bus = Dami.<String, String>bus();
-
-        System.out.println(bus.call("user.demo", "solon"));
+    public void main() throws Exception {
+        System.out.println(Dami.bus().call("user.demo", "solon")
+                .get());
     }
 
     @DamiTopic("user.demo")
-    public static class UserEventListener implements TopicListener<Event<String, String>> {
+    public static class UserEventListener implements CallTopicListener<String, String> {
         @Override
-        public void onEvent(Event<String, String> event) throws Throwable {
-            if (event.requiredReply()) {
-                event.reply("Hi " + event.getContent());
-            }
+        public void onCall(Event<CallPayload<String, String>> event, String content, CompletableFuture<String> receiver) {
+            receiver.complete("Hi " + content);
         }
     }
 }
 ```
 
-#### demo91_springboot （无依赖实现效果）
+#### demo92_springboot （无依赖实现效果）
 
 ```java
-@DamiTopic("event.user")
+@DamiTopic("demo92.event.user")
 public interface EventUserService {
     User getUser(long userId); //方法的主题 = topicMapping + "." + method.getName() //方法不能重名
 }
 
 //通过约定保持与 EventUserService 相同的接口定义（或者实现 EventUserService 接口，这个会带来依赖关系）
-@DamiTopic("event.user")
-public class EventUserServiceListener { // implements EventUserService // 它相当于是个实现类
+@DamiTopic("demo91.event.user")
+public class EventUserServiceImpl { // implements EventUserService // 它相当于是个实现类
     public User getUser(long userId) {
         return new User(userId);
     }
 }
 
 @EnableAutoConfiguration
-@SpringBootTest(classes = Demo91.class)
-@ComponentScan("features.demo91_springboot")
-public class Demo91 {
+@SpringBootTest(classes = Demo92.class)
+@ComponentScan("features.demo92_springboot")
+public class Demo92 {
     @Autowired
     EventUserService eventUserService;
 
@@ -71,22 +68,22 @@ public class Demo91 {
 ```
 
 
-#### demo92_springboot （无依赖实现效果）
+#### demo93_springboot （无依赖实现效果）
 
 ```java
-@DamiTopic("demo92.event.user")
+@DamiTopic("demo93.event.user")
 public interface EventUserNotices {
     void onCreated(long userId, String name);
 }
 
-@DamiTopic("demo92.event.user")
-public class EventUserNoticesListener { // implements EventUserNotices
+@DamiTopic("demo93.event.user")
+public class EventUserNoticesListener {
     public void onCreated(long userId, String name) {
         System.err.println("1-onCreated: userId=" +userId);
     }
 }
 
-@DamiTopic(value="demo92.event.user", index=2) //可以控制监听顺序
+@DamiTopic(value = "demo93.event.user", index = 2) //可以控制监听顺序
 public class EventUserNoticesListener2 { // implements EventUserNotices
     public void onCreated(long userId, String name) {
         System.err.println("2-onCreated: userId=" +userId);
@@ -94,15 +91,15 @@ public class EventUserNoticesListener2 { // implements EventUserNotices
 }
 
 @EnableAutoConfiguration
-@SpringBootTest(classes = Demo92.class)
-@ComponentScan("features.demo92_springboot")
-public class Demo91 {
+@SpringBootTest(classes = Demo93.class)
+@ComponentScan("features.demo93_springboot")
+public class Demo93 {
     @Autowired
     EventUserNotices eventUserNotices;
 
     @Test
     public void main(){
-        eventUserNotices.onCreated(92, "noear");
+        eventUserNotices.onCreated(99, "noear");
     }
 }
 ```

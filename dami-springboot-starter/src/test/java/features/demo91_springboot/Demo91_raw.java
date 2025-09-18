@@ -3,33 +3,36 @@ package features.demo91_springboot;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.dami.Dami;
+import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.Event;
+import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.receivable.CallPayload;
-import org.noear.dami.bus.receivable.CallTopicListener;
 import org.noear.dami.spring.boot.annotation.DamiTopic;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.concurrent.CompletableFuture;
-
 @ContextConfiguration
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
 @ComponentScan("features.demo91_springboot")
-public class Demo91 {
+public class Demo91_raw {
     @Test
     public void main() throws Exception {
-        System.out.println(Dami.bus().call("user.demo", "solon")
+        DamiBus bus = Dami.bus();
+
+        System.out.println(bus.send("user.demo", new CallPayload<>("solon"))
+                .getPayload()
+                .getReceiver()
                 .get());
     }
 
     @DamiTopic("user.demo")
-    public static class UserEventListener implements CallTopicListener<String, String> {
+    public static class UserEventListener implements TopicListener<Event<CallPayload<String, String>>> {
         @Override
-        public void onCall(Event<CallPayload<String, String>> event, String content, CompletableFuture<String> receiver) {
-            receiver.complete("Hi " + content);
+        public void onEvent(Event<CallPayload<String, String>> event) throws Throwable {
+            event.getPayload().getReceiver().complete("Hi " + event.getPayload().getContent());
         }
     }
 }

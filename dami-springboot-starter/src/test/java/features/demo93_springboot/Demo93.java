@@ -18,6 +18,6 @@ public class Demo93 {
 
     @Test
     public void main(){
-        eventUserNotices.onCreated(92, "noear");
+        eventUserNotices.onCreated(99, "noear");
     }
 }
