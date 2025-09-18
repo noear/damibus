@@ -47,7 +47,7 @@ public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusEx
     }
 
     /**
-     * 发送（不需要答复）
+     * 发送事件
      *
      * @param topic   事件主题
      * @param payload 事件荷载
@@ -58,7 +58,7 @@ public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusEx
     }
 
     /**
-     * 发送（不需要答复）
+     * 发送事件
      *
      * @param topic    事件主题
      * @param payload  事件荷载
@@ -67,36 +67,55 @@ public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusEx
      */
     <P> Result<P> send(final String topic, final P payload, Consumer<P> fallback);
 
+    /**
+     * 发送事件
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    default <P> Result<P> send(Event<P> event) {
+        return send(event, null);
+    }
 
     /**
-     * 监听
+     * 发送事件
+     *
+     * @param event    事件
+     * @param fallback 应急处理（当没有订阅时执行）
+     * @return 结果
+     */
+    <P> Result<P> send(Event<P> event, Consumer<P> fallback);
+
+
+    /**
+     * 监听事件
      *
      * @param topic    事件主题
-     * @param listener 监听
+     * @param listener 监听器
      */
     default <P> void listen(final String topic, final EventListener<P> listener) {
         listen(topic, 0, listener);
     }
 
     /**
-     * 监听
+     * 监听事件
      *
      * @param topic    事件主题
      * @param index    顺序位
-     * @param listener 监听
+     * @param listener 监听器
      */
     <P> void listen(final String topic, final int index, final EventListener<P> listener);
 
     /**
-     * 取消监听
+     * 取消事件监听
      *
      * @param topic    事件主题
-     * @param listener 监听
+     * @param listener 监听器
      */
     <P> void unlisten(final String topic, final EventListener<P> listener);
 
     /**
-     * 取消监听（主题下的所有监听）
+     * 取消事件监听（主题下的所有监听）
      *
      * @param topic 事件主题
      */

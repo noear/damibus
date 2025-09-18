@@ -16,6 +16,7 @@
 package org.noear.dami2.bus;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 事件实体
@@ -26,21 +27,6 @@ import java.io.Serializable;
  */
 public interface Event<P> extends Result<P>, Serializable {
     /**
-     * 获取附件
-     *
-     * @param key 关键字
-     */
-    <T> T getAttachment(String key);
-
-    /**
-     * 设置附件
-     *
-     * @param key   关键字
-     * @param value 值
-     */
-    <T> void setAttachment(String key, T value);
-
-    /**
      * 设置处理标识
      */
     void setHandled();
@@ -49,6 +35,11 @@ public interface Event<P> extends Result<P>, Serializable {
      * 获取处理标识（是否已处理）
      */
     boolean getHandled();
+
+    /**
+     * 获取附件
+     */
+    Map<String, Object> getAttach();
 
     /**
      * 主题

@@ -90,9 +90,9 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     }
 
     /**
-     * 发送（不需要答复）
+     * 发送事件
      *
-     * @param topic    主题
+     * @param topic    事件主题
      * @param payload  荷载
      * @param fallback 应急处理（当没有订阅时执行）
      * @return 结果
@@ -103,24 +103,35 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
 
         Event<P> event = factory.create(topic, payload);
 
+        return send(event, fallback);
+    }
+
+    /**
+     * 发送事件
+     *
+     * @param event    事件
+     * @param fallback 应急处理（当没有订阅时执行）
+     * @return 结果
+     */
+    @Override
+    public <P> Result<P> send(Event<P> event, Consumer<P> fallback) {
         dispatcher.dispatch(event, router);
 
         if (event.getHandled() == false) {
             if (fallback != null) {
-                fallback.accept(payload);
+                fallback.accept(event.getPayload());
             }
         }
 
         return event;
     }
 
-
     /**
-     * 监听
+     * 监听事件
      *
-     * @param topic    主题
+     * @param topic    事件主题
      * @param index    顺序位
-     * @param listener 监听
+     * @param listener 监听器
      */
     @Override
     public <P> void listen(final String topic, final int index, final EventListener<P> listener) {
@@ -130,8 +141,8 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     /**
      * 取消监听
      *
-     * @param topic    主题
-     * @param listener 监听
+     * @param topic    事件主题
+     * @param listener 监听器
      */
     @Override
     public <P> void unlisten(final String topic, final EventListener<P> listener) {
@@ -141,7 +152,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     /**
      * 取消监听
      *
-     * @param topic 主题
+     * @param topic 事件主题
      */
     @Override
     public void unlisten(String topic) {
@@ -155,6 +166,9 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
         return this.router;
     }
 
+    /**
+     * 当前总线
+     */
     @Override
     public DamiBus bus() {
         return this;

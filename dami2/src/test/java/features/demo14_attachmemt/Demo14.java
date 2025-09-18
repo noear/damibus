@@ -18,7 +18,7 @@ public class Demo14 {
         //监听事件
         busStr.<String>listen(topic, 1, event -> {
             System.err.println(event);
-            event.setAttachment("name", "noear");
+            event.getAttach().put("name", "noear");
             testObserver.incrementAndGet();
         });
 

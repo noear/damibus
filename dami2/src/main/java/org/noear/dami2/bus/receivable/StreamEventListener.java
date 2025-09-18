@@ -32,6 +32,7 @@ public interface StreamEventListener<C,R> extends EventListener<StreamPayload<C,
      * @param event 事件
      */
     default void onEvent(Event<StreamPayload<C, R>> event) throws Throwable {
-        onStream(event, true, event.getPayload().getContent(), event.getPayload().getReceiver());
+        //之所以4个参数，是为了与 CallEventHandler （个数上）有错开
+        onStream(event, event.getAttach(), event.getPayload().getContent(), event.getPayload().getReceiver());
     }
 }

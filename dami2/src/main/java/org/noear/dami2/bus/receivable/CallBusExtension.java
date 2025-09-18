@@ -29,21 +29,21 @@ import java.util.function.Consumer;
  */
 public interface CallBusExtension extends DamiBusExtension {
     /**
-     * 调用
+     * 发送调用事件
      */
     default <C, R> CompletableFuture<R> call(String topic, C content) {
         return call(topic, content, null);
     }
 
     /**
-     * 调用
+     * 发送调用事件
      */
     default <C, R> CompletableFuture<R> call(String topic, C content, Consumer<CompletableFuture<R>> fallback) {
         return callAsResult(topic, content, fallback).getPayload().getReceiver();
     }
 
     /**
-     * 调用
+     * 发送调用事件
      */
     default <C, R> Result<CallPayload<C, R>> callAsResult(String topic, C content, Consumer<CompletableFuture<R>> fallback) {
         if (fallback == null) {
@@ -56,10 +56,24 @@ public interface CallBusExtension extends DamiBusExtension {
     }
 
     /**
-     * 当调用时
+     * 监听调用事件
+     *
+     * @param topic   事件主题
+     * @param handler 调用事件处理
      */
     default <C, R> void listen(String topic, CallEventHandler<C, R> handler) {
-        bus().<CallPayload<C, R>>listen(topic, event -> {
+        listen(topic, 0, handler);
+    }
+
+    /**
+     * 监听调用事件
+     *
+     * @param topic   事件主题
+     * @param index   顺序位
+     * @param handler 调用事件处理
+     */
+    default <C, R> void listen(String topic, int index, CallEventHandler<C, R> handler) {
+        bus().<CallPayload<C, R>>listen(topic, index, event -> {
             handler.onCall(event, event.getPayload().getContent(), event.getPayload().getReceiver());
         });
     }

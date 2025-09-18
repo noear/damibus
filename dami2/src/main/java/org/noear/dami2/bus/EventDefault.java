@@ -31,46 +31,28 @@ public class EventDefault<P> implements Event<P>, Serializable {
     private final P payload;
 
     //附件
-    private Map<String, Object> attachments;
+    private Map<String, Object> attach;
     //处理标识
     private boolean handled;
 
     /**
-     * @param topic 主题
+     * @param topic   主题
      * @param payload 荷载
-     * */
+     *
+     */
     public EventDefault(final String topic, final P payload) {
+        this(topic, payload, null);
+    }
+
+    /**
+     * @param topic   主题
+     * @param payload 荷载
+     *
+     */
+    public EventDefault(final String topic, final P payload, final Map<String, Object> attach) {
         this.topic = topic;
         this.payload = payload;
-    }
-
-    /**
-     * 获取附件
-     *
-     * @param key 关键字
-     */
-    @Override
-    public <T> T getAttachment(String key) {
-        if (attachments == null) {
-            return null;
-        }
-
-        return (T) attachments.get(key);
-    }
-
-    /**
-     * 设置附件
-     *
-     * @param key   关键字
-     * @param value 值
-     */
-    @Override
-    public <T> void setAttachment(String key, T value) {
-        if (attachments == null) {
-            attachments = new HashMap<>();
-        }
-
-        attachments.put(key, value);
+        this.attach = attach;
     }
 
     @Override
@@ -84,7 +66,19 @@ public class EventDefault<P> implements Event<P>, Serializable {
     }
 
     /**
-     * 主题
+     * 获取附件
+     */
+    @Override
+    public Map<String, Object> getAttach() {
+        if (attach == null) {
+            attach = new HashMap<>();
+        }
+
+        return attach;
+    }
+
+    /**
+     * 获取主题
      */
     @Override
     public String getTopic() {
@@ -92,7 +86,7 @@ public class EventDefault<P> implements Event<P>, Serializable {
     }
 
     /**
-     * 荷载
+     * 获取荷载
      */
     @Override
     public P getPayload() {
@@ -104,7 +98,7 @@ public class EventDefault<P> implements Event<P>, Serializable {
         return "Event{" +
                 "topic='" + topic + '\'' +
                 ", payload=" + payload +
-                ", attachments=" + attachments +
+                ", attach=" + attach +
                 '}';
     }
 }

@@ -29,14 +29,14 @@ import java.util.function.Consumer;
  */
 public interface StreamBusExtension extends DamiBusExtension {
     /**
-     * 生成流（响应式流）
+     * 发送流事件
      */
     default <C, R> Publisher<R> stream(String topic, C content) {
         return stream(topic, content, null);
     }
 
     /**
-     * 生成流（响应式流）
+     * 发送流事件
      */
     default <C, R> Publisher<R> stream(String topic, C content, Consumer<Subscriber<? super R>> fallback) {
         if (fallback == null) {
@@ -53,11 +53,25 @@ public interface StreamBusExtension extends DamiBusExtension {
     }
 
     /**
-     * 当生成流时
+     * 监听流事件
+     *
+     * @param topic   事件主题
+     * @param handler 流事件处理
      */
     default <C, R> void listen(String topic, StreamEventHandler<C, R> handler) {
-        bus().<StreamPayload<C, R>>listen(topic, event -> {
-            handler.onStream(event, true, event.getPayload().getContent(), event.getPayload().getReceiver());
+        listen(topic, 0, handler);
+    }
+
+    /**
+     * 监听流事件
+     *
+     * @param topic   事件主题
+     * @param index   顺序位
+     * @param handler 流事件处理
+     */
+    default <C, R> void listen(String topic, int index, StreamEventHandler<C, R> handler) {
+        bus().<StreamPayload<C, R>>listen(topic, index, event -> {
+            handler.onStream(event, event.getAttach(), event.getPayload().getContent(), event.getPayload().getReceiver());
         });
     }
 }

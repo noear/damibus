@@ -15,6 +15,8 @@
  */
 package org.noear.dami2.bus;
 
+import java.util.Map;
+
 /**
  * 发送结果
  *
@@ -23,16 +25,14 @@ package org.noear.dami2.bus;
  */
 public interface Result<P> {
     /**
-     * 获取附件
-     *
-     * @param key 关键字
-     */
-    <T> T getAttachment(String key);
-
-    /**
      * 获取处理标识（是否已处理）
      */
     boolean getHandled();
+
+    /**
+     * 获取附件
+     */
+    Map<String, Object> getAttach();
 
     /**
      * 主题

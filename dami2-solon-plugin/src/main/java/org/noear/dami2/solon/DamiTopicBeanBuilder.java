@@ -39,7 +39,7 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
             bw.context().beanExtractOrProxy(bw);
 
             if (EventListener.class.isAssignableFrom(clz)) {
-                Dami.bus().listen(anno.value(), anno.index(), bw.raw());
+                Dami.bus().listen(anno.value(), anno.index(), (EventListener) bw.raw());
             } else {
                 Dami.lpc().registerService(anno.value(), anno.index(), bw.raw());
             }
