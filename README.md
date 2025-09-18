@@ -118,10 +118,10 @@ public class Demo12 {
 
     public static void main(String[] args) throws Exception {
         //监听事件（调用事件）
-        Dami.bus().<String, String>listen(topic, (event, data, receiver) -> {
+        Dami.bus().<String, String>listen(topic, (event, data, data) -> {
             System.err.println(data);
 
-            receiver.complete("hi!");
+            data.complete("hi!");
         });
 
 

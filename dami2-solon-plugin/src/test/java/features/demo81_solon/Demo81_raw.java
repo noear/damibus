@@ -14,7 +14,7 @@ public class Demo81_raw {
     public void main() throws Throwable {
         System.out.println(Dami.bus().send("user.demo", new CallPayload<>("solon"))
                 .getPayload()
-                .getReceiver()
+                .getSink()
                 .get());
     }
 
@@ -23,7 +23,7 @@ public class Demo81_raw {
         @Override
         public void onEvent(Event<CallPayload<String, String>> event) throws Throwable {
             event.getPayload()
-                    .getReceiver()
+                    .getSink()
                     .complete("Hi " + event.getPayload().getData());
         }
     }

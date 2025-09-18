@@ -48,7 +48,7 @@ public interface CallBusExtension extends DamiBusExtension {
      * @return 接收器
      */
     default <D, R> CompletableFuture<R> call(String topic, D data, Consumer<CompletableFuture<R>> fallback) {
-        return callAsResult(topic, data, fallback).getPayload().getReceiver();
+        return callAsResult(topic, data, fallback).getPayload().getSink();
     }
 
     /**
@@ -75,7 +75,7 @@ public interface CallBusExtension extends DamiBusExtension {
             return bus().send(topic, new CallPayload<>(data));
         } else {
             return bus().send(topic, new CallPayload<>(data), r -> {
-                fallback.accept(r.getReceiver());
+                fallback.accept(r.getSink());
             });
         }
     }
@@ -99,7 +99,7 @@ public interface CallBusExtension extends DamiBusExtension {
      */
     default <D, R> void listen(String topic, int index, CallEventHandler<D, R> handler) {
         bus().<CallPayload<D, R>>listen(topic, index, event -> {
-            handler.onCall(event, event.getPayload().getData(), event.getPayload().getReceiver());
+            handler.onCall(event, event.getPayload().getData(), event.getPayload().getSink());
         });
     }
 }

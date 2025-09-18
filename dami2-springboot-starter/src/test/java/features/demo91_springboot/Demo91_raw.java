@@ -24,7 +24,7 @@ public class Demo91_raw {
 
         System.out.println(bus.send("user.demo", new CallPayload<>("solon"))
                 .getPayload()
-                .getReceiver()
+                .getSink()
                 .get());
     }
 
@@ -32,7 +32,7 @@ public class Demo91_raw {
     public static class UserEventListener implements EventListener<CallPayload<String, String>> {
         @Override
         public void onEvent(Event<CallPayload<String, String>> event) throws Throwable {
-            event.getPayload().getReceiver().complete("Hi " + event.getPayload().getData());
+            event.getPayload().getSink().complete("Hi " + event.getPayload().getData());
         }
     }
 }

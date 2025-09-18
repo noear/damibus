@@ -47,7 +47,7 @@ public class ServiceMethodEventListener implements EventListener<CallPayload> {
         //执行
         Object rst = method.invoke(target, args);
 
-        event.getPayload().getReceiver().complete(rst);
+        event.getPayload().getSink().complete(rst);
     }
 
     @Override

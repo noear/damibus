@@ -25,19 +25,19 @@ import org.reactivestreams.Subscriber;
  */
 public class StreamPayload<D, R> extends ReceivablePayload<D, Subscriber<R>> {
     /**
-     * @param data     数据
-     * @param receiver 接收器
+     * @param data 数据
+     * @param sink 接收器
      *
      */
-    public StreamPayload(D data, Subscriber<R> receiver) {
-        super(data, receiver);
+    public StreamPayload(D data, Subscriber<R> sink) {
+        super(data, sink);
     }
 
     /**
      * 接收器
      */
     @Override
-    public Subscriber<R> getReceiver() {
-        return super.getReceiver();
+    public Subscriber<R> getSink() {
+        return super.getSink();
     }
 }

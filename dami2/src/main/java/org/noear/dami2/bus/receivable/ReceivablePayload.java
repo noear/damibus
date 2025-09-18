@@ -27,18 +27,18 @@ import java.io.Serializable;
  */
 public class ReceivablePayload<D,Rec> implements Serializable {
     private final D data;
-    private final transient Rec receiver;
+    private final transient Rec sink;
 
     /**
      * @param data     数据
-     * @param receiver 接收器
+     * @param sink 接收器
      *
      */
-    public ReceivablePayload(D data, Rec receiver) {
-        AssertUtil.notNull(receiver, "The receiver can not be null");
+    public ReceivablePayload(D data, Rec sink) {
+        AssertUtil.notNull(sink, "The data can not be null");
 
         this.data = data;
-        this.receiver = receiver;
+        this.sink = sink;
     }
 
     /**
@@ -51,7 +51,7 @@ public class ReceivablePayload<D,Rec> implements Serializable {
     /**
      * 接收器
      */
-    public Rec getReceiver() {
-        return receiver;
+    public Rec getSink() {
+        return sink;
     }
 }

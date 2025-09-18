@@ -66,7 +66,7 @@ public class ConsumerInvocationHandler implements InvocationHandler {
         } else {
             //有返回结果
             if (event.getHandled()) {
-                result = event.getPayload().getReceiver().get();
+                result = event.getPayload().getSink().get();
             } else {
                 if (method.isDefault()) {
                     //如果没有订阅，且有默认实现（相当于降级处理）

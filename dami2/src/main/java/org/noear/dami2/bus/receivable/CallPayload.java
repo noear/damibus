@@ -32,18 +32,18 @@ public class CallPayload<D,R> extends ReceivablePayload<D, CompletableFuture<R>>
     }
 
     /**
-     * @param data  数据
-     * @param receiver 接收器
+     * @param data 数据
+     * @param sink 接收器
      */
-    public CallPayload(D data, CompletableFuture<R> receiver) {
-        super(data, receiver);
+    public CallPayload(D data, CompletableFuture<R> sink) {
+        super(data, sink);
     }
 
     /**
      * 接收器
      */
     @Override
-    public CompletableFuture<R> getReceiver() {
-        return super.getReceiver();
+    public CompletableFuture<R> getSink() {
+        return super.getSink();
     }
 }

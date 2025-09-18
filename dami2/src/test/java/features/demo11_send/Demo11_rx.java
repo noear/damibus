@@ -22,8 +22,8 @@ public class Demo11_rx {
         //监听事件
         bus.<StreamPayload<String, String>>listen(topic, event -> {
             System.err.println(event);
-            event.getPayload().getReceiver().onNext("hello");
-            event.getPayload().getReceiver().onComplete();
+            event.getPayload().getSink().onNext("hello");
+            event.getPayload().getSink().onComplete();
             testObserver.incrementAndGet();
         });
 

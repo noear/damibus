@@ -46,7 +46,7 @@ public interface StreamBusExtension extends DamiBusExtension {
         } else {
             return subscriber -> {
                 bus().send(topic, new StreamPayload<>(data, subscriber), r -> {
-                    fallback.accept(r.getReceiver());
+                    fallback.accept(r.getSink());
                 });
             };
         }
@@ -71,7 +71,7 @@ public interface StreamBusExtension extends DamiBusExtension {
      */
     default <D, R> void listen(String topic, int index, StreamEventHandler<D, R> handler) {
         bus().<StreamPayload<D, R>>listen(topic, index, event -> {
-            handler.onStream(event, event.getAttach(), event.getPayload().getData(), event.getPayload().getReceiver());
+            handler.onStream(event, event.getAttach(), event.getPayload().getData(), event.getPayload().getSink());
         });
     }
 }

@@ -32,6 +32,6 @@ public interface CallEventListener<D,R> extends EventListener<CallPayload<D, R>>
      * @param event 事件
      */
     default void onEvent(Event<CallPayload<D, R>> event) throws Throwable {
-        onCall(event, event.getPayload().getData(), event.getPayload().getReceiver());
+        onCall(event, event.getPayload().getData(), event.getPayload().getSink());
     }
 }
