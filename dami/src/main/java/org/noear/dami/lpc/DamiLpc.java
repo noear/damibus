@@ -22,6 +22,7 @@ import org.noear.dami.bus.DamiBusExtension;
  *
  * @author noear
  * @since 1.0
+ * @since 2.0
  */
 public interface DamiLpc extends DamiBusExtension {
     /**

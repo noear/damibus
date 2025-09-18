@@ -16,6 +16,8 @@
 package org.noear.dami.bus;
 
 /**
+ * 主题监听器持有人（添加序位支持）
+ *
  * @author noear
  * @since 1.0
  */

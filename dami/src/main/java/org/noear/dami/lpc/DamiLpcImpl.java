@@ -17,7 +17,7 @@ package org.noear.dami.lpc;
 
 import org.noear.dami.Dami;
 import org.noear.dami.lpc.impl.ServiceMethodTopicListener;
-import org.noear.dami.lpc.impl.ServiceMethodTopicListenerRecord;
+import org.noear.dami.bus.TopicListenRecord;
 import org.noear.dami.lpc.impl.ConsumerInvocationHandler;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.exception.DamiException;
@@ -38,6 +38,7 @@ import java.util.function.Supplier;
  *
  * @author noear
  * @since 1.0
+ * @since 2.0
  */
 public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     static final Logger log = LoggerFactory.getLogger(DamiLpcImpl.class);
@@ -45,7 +46,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     /**
      * 监听器缓存（注销时用）
      */
-    private Map<Class<?>, List<ServiceMethodTopicListenerRecord>> serviceMap = new HashMap<>();
+    private Map<Class<?>, List<TopicListenRecord>> serviceMap = new HashMap<>();
     private ReentrantLock SERVICE_MAP_LOCK = new ReentrantLock();
 
     /**
@@ -137,7 +138,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
             }
 
             //开始注册
-            List<ServiceMethodTopicListenerRecord> listenerRecords = new ArrayList<>();
+            List<TopicListenRecord> listenerRecords = new ArrayList<>();
 
             for (Method m1 : findMethods(serviceClz)) {
                 //不能是 Object 申明的方法
@@ -145,7 +146,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
                     String topic = getMethodTopic(topicMapping, m1.getName());
                     ServiceMethodTopicListener listener = new ServiceMethodTopicListener(this, serviceObj, m1);
 
-                    listenerRecords.add(new ServiceMethodTopicListenerRecord(topic, listener));
+                    listenerRecords.add(new TopicListenRecord(topic, listener));
                     bus().listen(topic, index, listener);
                 }
             }
@@ -171,10 +172,10 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     public void unregisterService(String topicMapping, Object serviceObj) {
         SERVICE_MAP_LOCK.lock();
         try {
-            List<ServiceMethodTopicListenerRecord> tmp = serviceMap.remove(serviceObj.getClass());
+            List<TopicListenRecord> tmp = serviceMap.remove(serviceObj.getClass());
 
             if (tmp != null) {
-                for (ServiceMethodTopicListenerRecord r1 : tmp) {
+                for (TopicListenRecord r1 : tmp) {
                     bus().unlisten(r1.getTopic(), r1.getListener());
                 }
             }

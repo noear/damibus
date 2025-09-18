@@ -13,34 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.lpc.impl;
+package org.noear.dami.bus;
 
 /**
- * 方法主题监听器记录
+ * 主题监听记录（构建主题与监听器关联）
  *
  * @author noear
  * @since 1.0
+ * @since 2.0
  */
-public class ServiceMethodTopicListenerRecord {
+public class TopicListenRecord<L extends TopicListener> {
     private String topic;
-    private ServiceMethodTopicListener listener;
+    private L listener;
 
-    public ServiceMethodTopicListenerRecord(String topic, ServiceMethodTopicListener listener) {
+    public TopicListenRecord(String topic, L listener) {
         this.topic = topic;
         this.listener = listener;
     }
 
     /**
      * 主题
-     * */
+     */
     public String getTopic() {
         return topic;
     }
 
     /**
      * 方法主题监听器
-     * */
-    public ServiceMethodTopicListener getListener() {
+     */
+    public L getListener() {
         return listener;
     }
 }

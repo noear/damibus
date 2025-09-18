@@ -18,10 +18,11 @@ package org.noear.dami.bus;
 import java.io.Serializable;
 
 /**
- * 事件
+ * 事件实体
  *
  * @author noear
  * @since 1.0
+ * @since 2.0
  */
 public interface Event<P> extends Result<P>, Serializable {
     /**

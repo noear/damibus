@@ -20,6 +20,7 @@ package org.noear.dami.bus;
  *
  * @author noear
  * @since 1.0
+ * @since 2.0
  */
 public interface EventFactory<P> {
     /**

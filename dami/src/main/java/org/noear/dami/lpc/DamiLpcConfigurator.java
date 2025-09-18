@@ -20,6 +20,7 @@ package org.noear.dami.lpc;
  *
  * @author noear
  * @since 1.0
+ * @since 2.0
  */
 public interface DamiLpcConfigurator extends DamiLpc {
     /**

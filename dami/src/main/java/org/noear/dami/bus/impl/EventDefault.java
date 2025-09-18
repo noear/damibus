@@ -22,10 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 事件负载本地实现
+ * 事件实体实现
  *
  * @author noear
  * @since 1.0
+ * @since 2.0
  */
 public class EventDefault<P> implements Event<P>, Serializable {
     private final String topic;
