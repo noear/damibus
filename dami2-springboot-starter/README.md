@@ -8,7 +8,7 @@
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>damibus-springboot-starter</artifactId>
+    <artifactId>dami2-springboot-starter</artifactId>
     <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -36,7 +36,7 @@ public class Demo91 {
 }
 ```
 
-#### demo92_springboot （无依赖实现效果）
+#### demo92_springboot （lpc 无依赖实现效果）
 
 ```java
 @DamiTopic("demo92.event.user")

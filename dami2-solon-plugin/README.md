@@ -8,7 +8,7 @@
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>damibus-solon-plugin</artifactId>
+    <artifactId>dami2-solon-plugin</artifactId>
     <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```

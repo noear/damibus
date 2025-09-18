@@ -72,7 +72,7 @@ DamiBus，专为单体多模块之间通讯解耦而设计（尤其是未知模�
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>dami</artifactId>
+    <artifactId>dami2</artifactId>
     <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
