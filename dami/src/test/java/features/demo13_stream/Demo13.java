@@ -24,6 +24,7 @@ public class Demo13 {
             System.err.println(content);
 
             sink.onNext("hello");
+            sink.onComplete();
 
 //            sink.onSubscribe(new SimpleSubscription()
 //                    .onRequest((s, l) -> {
