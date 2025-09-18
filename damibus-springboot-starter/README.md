@@ -8,7 +8,7 @@
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>dami-springboot-starter</artifactId>
+    <artifactId>damibus-springboot-starter</artifactId>
     <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```

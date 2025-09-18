@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>dami-parent</artifactId>
+    <artifactId>damibus-parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -49,28 +49,28 @@
     </properties>
 
     <modules>
-        <module>../dami</module>
-        <module>../dami-solon-plugin</module>
-        <module>../dami-springboot-starter</module>
+        <module>../damibus</module>
+        <module>../damibus-solon-plugin</module>
+        <module>../damibus-springboot-starter</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>dami</artifactId>
+                <artifactId>damibus</artifactId>
                 <version>${dami.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>dami-solon-plugin</artifactId>
+                <artifactId>damibus-solon-plugin</artifactId>
                 <version>${dami.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>dami-springboot-starter</artifactId>
+                <artifactId>damibus-springboot-starter</artifactId>
                 <version>${dami.version}</version>
             </dependency>
         </dependencies>

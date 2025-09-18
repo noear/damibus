@@ -7,7 +7,7 @@
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>dami</artifactId>
+    <artifactId>damibus</artifactId>
     <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```

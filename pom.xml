@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>dami_java</artifactId>
+    <artifactId>damibus_java</artifactId>
     <version>dev</version>
     <packaging>pom</packaging>
 
@@ -17,7 +17,7 @@
     </properties>
     
     <modules>
-        <module>dami-parent</module>
+        <module>damibus-parent</module>
     </modules>
     
 </project>

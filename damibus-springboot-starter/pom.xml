@@ -6,19 +6,19 @@
 
     <parent>
         <groupId>org.noear</groupId>
-        <artifactId>dami-parent</artifactId>
+        <artifactId>damibus-parent</artifactId>
         <version>2.0.0-SNAPSHOT</version>
-        <relativePath>../dami-parent/pom.xml</relativePath>
+        <relativePath>../damibus-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>dami-springboot-starter</artifactId>
+    <artifactId>damibus-springboot-starter</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>dami</artifactId>
+            <artifactId>damibus</artifactId>
         </dependency>
 
         <dependency>
