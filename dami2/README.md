@@ -45,7 +45,7 @@ public class Demo12 {
 
     public static void main(String[] args) {
         //监听调用事件
-        Dami.bus().<String, String>onCall(topic, (event, sink) -> {
+        Dami.bus().<String, String>listen(topic, (event, sink) -> {
             System.err.println(event);
 
             sink.complete("hi!");
@@ -69,7 +69,7 @@ public class Demo13 {
 
     public static void main(String[] args) {
         //监听流事件
-        Dami.bus().<String, String>onStream(topic, (event, sink) -> {
+        Dami.bus().<String, String>listen(topic, (event, i, content, sink) -> {
             System.err.println(event);
 
             sink.onNext("hello");

@@ -12,7 +12,7 @@ public class Demo22 {
     @Test
     public void main() throws Exception {
         //处理事件
-        bus.<Long, String>onCall(topic, (event,req, resp) -> {
+        bus.<Long, String>listen(topic, (event,req, resp) -> {
             System.err.println(req);
 
             resp.complete("hi!");

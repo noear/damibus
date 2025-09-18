@@ -17,7 +17,6 @@ package org.noear.dami2.bus.receivable;
 
 import org.noear.dami2.bus.Event;
 import org.noear.dami2.bus.EventListener;
-import org.reactivestreams.Subscriber;
 
 /**
  * 生成流监听器
@@ -26,22 +25,13 @@ import org.reactivestreams.Subscriber;
  * @since 2.0
  */
 @FunctionalInterface
-public interface StreamEventListener<C,R> extends EventListener<StreamPayload<C, R>> {
+public interface StreamEventListener<C,R> extends EventListener<StreamPayload<C, R>> , StreamEventHandler<C,R> {
     /**
      * 处理监听事件
      *
      * @param event 事件
      */
     default void onEvent(Event<StreamPayload<C, R>> event) throws Throwable {
-        onStream(event, event.getPayload().getContent(), event.getPayload().getReceiver());
+        onStream(event, true, event.getPayload().getContent(), event.getPayload().getReceiver());
     }
-
-    /**
-     * 处理流事件（由 onEvent 转发简化）
-     *
-     * @param event    事件
-     * @param content  荷载内容
-     * @param receiver 荷载接收器
-     */
-    void onStream(Event<StreamPayload<C, R>> event, C content, Subscriber<R> receiver);
 }

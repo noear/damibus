@@ -19,7 +19,7 @@ public class Demo13 {
     @Test
     public void main() throws Exception {
         //监听事件
-        bus.<String, String>onStream(topic, (event,content, sink) -> {
+        bus.<String, String>listen(topic, (event, i,content, sink) -> {
             System.out.println(Thread.currentThread());
             System.err.println(content);
 

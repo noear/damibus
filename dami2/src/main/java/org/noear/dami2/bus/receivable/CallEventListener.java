@@ -18,8 +18,6 @@ package org.noear.dami2.bus.receivable;
 import org.noear.dami2.bus.Event;
 import org.noear.dami2.bus.EventListener;
 
-import java.util.concurrent.CompletableFuture;
-
 /**
  * 调用监听器
  *
@@ -27,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
  * @since 2.0
  */
 @FunctionalInterface
-public interface CallEventListener<C,R> extends EventListener<CallPayload<C, R>> {
+public interface CallEventListener<C,R> extends EventListener<CallPayload<C, R>>, CallEventHandler<C,R> {
     /**
      * 处理监听事件
      *
@@ -36,13 +34,4 @@ public interface CallEventListener<C,R> extends EventListener<CallPayload<C, R>>
     default void onEvent(Event<CallPayload<C, R>> event) throws Throwable {
         onCall(event, event.getPayload().getContent(), event.getPayload().getReceiver());
     }
-
-    /**
-     * 处理调用事件（由 onEvent 转发简化）
-     *
-     * @param event    事件
-     * @param content  荷载内容
-     * @param receiver 荷载接收器
-     */
-    void onCall(Event<CallPayload<C, R>> event, C content, CompletableFuture<R> receiver);
 }

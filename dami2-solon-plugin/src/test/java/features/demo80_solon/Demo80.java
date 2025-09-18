@@ -12,7 +12,7 @@ public class Demo80 {
 
     public static void main(String[] args) throws Exception {
         //监听事件（调用事件）
-        Dami.bus().<String, String>onCall(topic, (event, content, receiver) -> {
+        Dami.bus().<String, String>listen(topic, (event, content, receiver) -> {
             System.err.println(event);
 
             receiver.complete("hi!");

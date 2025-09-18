@@ -16,7 +16,7 @@ public class Demo22_async {
         System.out.println(Thread.currentThread());
 
         //监听事件
-        bus.<Long, String>onCall(topic, (event, content, resp) -> {
+        bus.<Long, String>listen(topic, (event, content, resp) -> {
             CompletableFuture.runAsync(() -> {
                 System.out.println(Thread.currentThread());
                 System.err.println(content);
