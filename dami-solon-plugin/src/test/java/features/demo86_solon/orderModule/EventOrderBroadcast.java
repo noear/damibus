@@ -1,4 +1,4 @@
-package features.demo85_solon.orderModule;
+package features.demo86_solon.orderModule;
 
 import org.noear.dami.solon.annotation.DamiTopic;
 

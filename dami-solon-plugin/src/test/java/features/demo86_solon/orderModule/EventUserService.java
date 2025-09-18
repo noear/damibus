@@ -1,6 +1,6 @@
-package features.demo85_solon.orderModule;
+package features.demo86_solon.orderModule;
 
-import features.demo85_solon.baseModule.User;
+import features.demo86_solon.baseModule.User;
 import org.noear.dami.solon.annotation.DamiTopic;
 
 /**
