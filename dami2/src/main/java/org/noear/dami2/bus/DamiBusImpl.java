@@ -42,7 +42,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
             this.router = router;
         }
 
-        this.factory = EventDefault::new;
+        this.factory = SimpleEvent::new;
         this.dispatcher = new EventDispatcherDefault();
     }
 

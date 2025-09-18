@@ -20,13 +20,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 事件默认实现
+ * 事件简单的实现
  *
  * @author noear
  * @since 1.0
  * @since 2.0
  */
-public class EventDefault<P> implements Event<P>, Serializable {
+public class SimpleEvent<P> implements Event<P>, Serializable {
     private final String topic;
     private final P payload;
 
@@ -40,7 +40,7 @@ public class EventDefault<P> implements Event<P>, Serializable {
      * @param payload 荷载
      *
      */
-    public EventDefault(final String topic, final P payload) {
+    public SimpleEvent(final String topic, final P payload) {
         this(topic, payload, null);
     }
 
@@ -49,7 +49,7 @@ public class EventDefault<P> implements Event<P>, Serializable {
      * @param payload 荷载
      *
      */
-    public EventDefault(final String topic, final P payload, final Map<String, Object> attach) {
+    public SimpleEvent(final String topic, final P payload, final Map<String, Object> attach) {
         this.topic = topic;
         this.payload = payload;
         this.attach = attach;

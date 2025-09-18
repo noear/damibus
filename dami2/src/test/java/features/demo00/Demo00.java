@@ -21,9 +21,9 @@ public class Demo00 {
 
     public void case_call() throws Exception {
         //监听调用事件
-        Dami.bus().listen(topic, (event, data, future) -> {
+        Dami.bus().listen(topic, (event, data, sink) -> {
             System.err.println(data);
-            future.complete("hi!");
+            sink.complete("hi!");
         });
 
         //发送调用事件
@@ -33,10 +33,10 @@ public class Demo00 {
 
     public void case_stream() {
         //监听流事件
-        Dami.bus().<String, String>listen(topic, (event, att, data, subscriber) -> {
+        Dami.bus().<String, String>listen(topic, (event, att, data, sink) -> {
             System.err.println(data);
-            subscriber.onNext("hi");
-            subscriber.onComplete();
+            sink.onNext("hi");
+            sink.onComplete();
         });
 
         //发送流事件
