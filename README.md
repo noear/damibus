@@ -2,8 +2,13 @@
   DamiBus
 </h1>
 <p align="center">
-	<strong>单本多模块过程调用框架（主打解耦）</strong>
+	<strong>单本（本地）多模块过程调用框架（主打解耦）</strong>
 </p>
+
+<p align="center">
+	<a href="https://solon.noear.org/article/damibus">https://solon.noear.org/article/damibus</a>
+</p>
+
 
 <p align="center">
     <a target="_blank" href="https://search.maven.org/artifact/org.noear/dami2">
