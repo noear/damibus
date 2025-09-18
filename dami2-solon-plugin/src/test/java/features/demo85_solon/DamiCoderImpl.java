@@ -1,5 +1,6 @@
 package features.demo85_solon;
 
+import org.noear.dami2.bus.receivable.CallPayload;
 import org.noear.dami2.lpc.Coder;
 import org.noear.dami2.lpc.CoderDefault;
 import org.noear.dami2.bus.Event;
@@ -18,7 +19,7 @@ public class DamiCoderImpl implements Coder {
     }
 
     @Override
-    public Object[] decode(Method method, Event event) throws Throwable {
+    public Object[] decode(Method method, Event<CallPayload> event) throws Throwable {
         System.out.println("要解码了");
         return coder.decode(method, event);
     }
