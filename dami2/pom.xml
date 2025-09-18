@@ -38,9 +38,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-web-rx</artifactId>
-            <version>${solon.version}</version>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            <version>3.7.9</version>
             <scope>test</scope>
         </dependency>
 

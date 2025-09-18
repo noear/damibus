@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.noear.dami2.Dami;
 import org.noear.dami2.bus.DamiBus;
 import org.noear.dami2.bus.receivable.StreamPayload;
-import org.noear.solon.rx.SimpleSubscriber;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -22,16 +23,35 @@ public class Demo11_rx {
         bus.<StreamPayload<String, String>>listen(topic, event -> {
             System.err.println(event);
             event.getPayload().getReceiver().onNext("hello");
+            event.getPayload().getReceiver().onComplete();
             testObserver.incrementAndGet();
         });
 
 
         //发送事件
-        bus.send(topic, new StreamPayload<>("world", new SimpleSubscriber<String>()
-                .doOnNext(item -> {
-                    System.err.println(item);
-                })));
+        bus.send(topic, new StreamPayload<>("world", new Subscriber<String>() {
+            @Override
+            public void onSubscribe(Subscription subscription) {
 
-        assert testObserver.get() == 1;
+            }
+
+            @Override
+            public void onNext(String s) {
+                System.err.println(s);
+                testObserver.incrementAndGet();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        }));
+
+        assert testObserver.get() == 2;
     }
 }
