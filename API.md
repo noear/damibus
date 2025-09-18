@@ -103,7 +103,8 @@ public interface Event<P> extends Serializable {
     <T> T getAttachment(String key);
     //设置附件
     <T> void setAttachment(String key, T value);
-    //设置处理标识
+    
+    //设置处理标识（如果有监听，会标为已处理）
     void setHandled();
     //获取处理标识
     boolean getHandled();
@@ -119,8 +120,8 @@ public interface Event<P> extends Serializable {
 ## 6、TopicListener<Event>，主题监听接口
 
 ```java
-public interface TopicListener<Event> {
+public interface TopicListener<P> {
     //处理监听事件
-    void onEvent(final Event event) throws Throwable;
+    void onEvent(final Event<P> event) throws Throwable;
 }
 ```
