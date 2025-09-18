@@ -18,7 +18,7 @@ package org.noear.dami2.solon.integration;
 import org.noear.dami2.Dami;
 import org.noear.dami2.DamiConfig;
 import org.noear.dami2.lpc.Coder;
-import org.noear.dami2.bus.Interceptor;
+import org.noear.dami2.bus.intercept.EventInterceptor;
 import org.noear.dami2.solon.DamiTopicBeanBuilder;
 import org.noear.dami2.solon.annotation.DamiTopic;
 import org.noear.solon.core.AppContext;
@@ -34,7 +34,7 @@ public class DamiSolonPlugin implements Plugin {
     public void start(AppContext context) throws Throwable {
         context.beanBuilderAdd(DamiTopic.class, new DamiTopicBeanBuilder());
 
-        context.subWrapsOfType(Interceptor.class, wrap -> {
+        context.subWrapsOfType(EventInterceptor.class, wrap -> {
             Dami.bus().intercept(wrap.index(), wrap.raw());
         });
 

@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus;
+package org.noear.dami2.bus.intercept;
+
+import org.noear.dami2.bus.Event;
+import org.noear.dami2.bus.EventListenerHolder;
 
 import java.util.List;
 

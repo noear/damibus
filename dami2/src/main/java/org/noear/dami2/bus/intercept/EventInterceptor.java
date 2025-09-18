@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus;
+package org.noear.dami2.bus.intercept;
+
+import org.noear.dami2.bus.Event;
 
 /**
- * 拦截器
+ * 事件拦截器
  *
  * @author noear
  * @since 1.0
  */
-public interface Interceptor<P> {
+public interface EventInterceptor<P> {
     /**
      * 拦截
      *

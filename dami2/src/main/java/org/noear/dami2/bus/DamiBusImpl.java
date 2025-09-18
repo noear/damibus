@@ -15,6 +15,7 @@
  */
 package org.noear.dami2.bus;
 
+import org.noear.dami2.bus.intercept.EventInterceptor;
 import org.noear.dami2.bus.route.TopicRouter;
 import org.noear.dami2.bus.route.TopicRouterDefault;
 
@@ -84,7 +85,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * @param interceptor 拦截器
      */
     @Override
-    public void intercept(int index, Interceptor interceptor) {
+    public void intercept(int index, EventInterceptor interceptor) {
         dispatcher.addInterceptor(index, interceptor);
     }
 

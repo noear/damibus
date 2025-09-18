@@ -15,6 +15,7 @@
  */
 package org.noear.dami2.bus;
 
+import org.noear.dami2.bus.intercept.EventInterceptor;
 import org.noear.dami2.bus.receivable.CallBusExtension;
 import org.noear.dami2.bus.receivable.StreamBusExtension;
 import org.noear.dami2.bus.route.TopicRouter;
@@ -34,14 +35,14 @@ public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusEx
      * @param index       顺序位
      * @param interceptor 拦截器
      */
-    <P> void intercept(int index, Interceptor<P> interceptor);
+    <P> void intercept(int index, EventInterceptor<P> interceptor);
 
     /**
      * 拦截
      *
      * @param interceptor 拦截器
      */
-    default <P> void intercept(Interceptor<P> interceptor) {
+    default <P> void intercept(EventInterceptor<P> interceptor) {
         intercept(0, interceptor);
     }
 

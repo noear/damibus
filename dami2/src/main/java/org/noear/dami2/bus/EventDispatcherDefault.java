@@ -15,6 +15,9 @@
  */
 package org.noear.dami2.bus;
 
+import org.noear.dami2.bus.intercept.EventInterceptor;
+import org.noear.dami2.bus.intercept.InterceptorChain;
+import org.noear.dami2.bus.intercept.InterceptorEntity;
 import org.noear.dami2.bus.route.TopicRouter;
 import org.noear.dami2.exception.DamiException;
 import org.slf4j.Logger;
@@ -33,7 +36,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author noear
  * @since 1.0
  */
-public class EventDispatcherDefault implements EventDispatcher,Interceptor {
+public class EventDispatcherDefault implements EventDispatcher, EventInterceptor {
     static final Logger log = LoggerFactory.getLogger(EventDispatcherDefault.class);
     /**
      * 拦截器
@@ -53,7 +56,7 @@ public class EventDispatcherDefault implements EventDispatcher,Interceptor {
      * @param interceptor 拦截器
      */
     @Override
-    public void addInterceptor(int index, Interceptor interceptor) {
+    public void addInterceptor(int index, EventInterceptor interceptor) {
         INTERCEPTORS_LOCK.lock();
         try {
             interceptors.add(new InterceptorEntity(index, interceptor));

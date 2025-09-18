@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus;
+package org.noear.dami2.bus.intercept;
+
+import org.noear.dami2.bus.Event;
 
 /**
  * 拦截器实体。存放拦截器和顺序位
@@ -21,14 +23,14 @@ package org.noear.dami2.bus;
  * @author noear
  * @since 1.0
  */
-public class InterceptorEntity<P> implements Interceptor<P> {
+public class InterceptorEntity<P> implements EventInterceptor<P> {
     /**
      * 顺排序位（排完后，按先进后出策略执行）
      */
     private final int index;
-    private final Interceptor<P> real;
+    private final EventInterceptor<P> real;
 
-    public InterceptorEntity(int index, Interceptor<P> real) {
+    public InterceptorEntity(int index, EventInterceptor<P> real) {
         this.index = index;
         this.real = real;
     }
@@ -43,7 +45,7 @@ public class InterceptorEntity<P> implements Interceptor<P> {
     /**
      * 获取原拦截器
      */
-    public Interceptor<P> getReal() {
+    public EventInterceptor<P> getReal() {
         return real;
     }
 

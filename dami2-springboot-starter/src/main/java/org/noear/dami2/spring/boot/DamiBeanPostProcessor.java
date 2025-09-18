@@ -3,7 +3,7 @@ package org.noear.dami2.spring.boot;
 import org.noear.dami2.Dami;
 import org.noear.dami2.DamiConfig;
 import org.noear.dami2.lpc.Coder;
-import org.noear.dami2.bus.Interceptor;
+import org.noear.dami2.bus.intercept.EventInterceptor;
 import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.exception.DamiException;
 import org.noear.dami2.spring.boot.annotation.DamiTopic;
@@ -69,8 +69,8 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
             }
         }
 
-        if (bean instanceof Interceptor) {
-            Dami.bus().intercept((Interceptor) bean);
+        if (bean instanceof EventInterceptor) {
+            Dami.bus().intercept((EventInterceptor) bean);
         }
 
         if (bean instanceof Coder) {

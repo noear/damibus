@@ -15,6 +15,7 @@
  */
 package org.noear.dami2.bus;
 
+import org.noear.dami2.bus.intercept.EventInterceptor;
 import org.noear.dami2.bus.route.TopicRouter;
 
 /**
@@ -27,7 +28,7 @@ public interface EventDispatcher {
     /**
      * 添加拦截器
      */
-    void addInterceptor(int index, Interceptor interceptor);
+    void addInterceptor(int index, EventInterceptor interceptor);
 
     /**
      * 派发
