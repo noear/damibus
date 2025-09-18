@@ -1,5 +1,4 @@
-
-## 1、Dami，操作主类
+### 1、Dami，操作主类
 
 
 ```java
@@ -19,12 +18,12 @@ public class Dami {
 }
 ```
 
-## 2、Dami，配置操作类
+### 2、Dami，配置操作类
 
 ```java
 public class DamiConfig {
     //配置总线的事件路由器
-    public static void configure(TopicRouter eventRouter);
+    public static void configure(EventRouter eventRouter);
     //配置总线的事件调度器
     public static void configure(EventDispatcher eventDispatcher);
     //配置总线的事件工厂
@@ -40,22 +39,26 @@ public class DamiConfig {
 }
 ```
 
-## 3、DamiBus<P>，总线模式接口
+### 3、`DamiBus<P>`，总线模式接口
 
 
 ```java
 public interface DamiBus {
-    //拦截
-    <P> void intercept(int index, Interceptor<P> interceptor);
-    <P> void intercept(Interceptor<P> interceptor);
+    //拦截事件
+    <P> void intercept(int index, EventInterceptor<P> interceptor);
+    <P> void intercept(EventInterceptor<P> interceptor);
     
-    //发送（不需要答复）=> 返回是否有订阅处理
+    //发送事件
     <P> Result<P> send(final String topic, final P payload);
     <P> Result<P> send(final String topic, final P payload, Consumer<P> fallback);
+    
+    //发送事件
+    <P> Result<P> send(final Event<P> event);
+    <P> Result<P> send(final Event<P> event, Consumer<P> fallback);
    
-    //监听
+    //监听事件
     <P> void listen(final String topic, final TopicListener<P> listener);
-    //监听
+    //监听事件
     <P> void listen(final String topic, final int index, final TopicListener<P> listener);
     //取消监听
     <P> void unlisten(final String topic, final TopicListener<P> listener);
@@ -63,15 +66,39 @@ public interface DamiBus {
 
     //路由器
     TopicRouter router();
+    
+    //----------------------------
+    // 通过继承 CallBusExtension 获得
+    
+    //发送调用事件
+    default <D, R> CompletableFuture<R> call(String topic, D data);
+    default <D, R> CompletableFuture<R> call(String topic, D data, Consumer<CompletableFuture<R>> fallback);
+    default <D, R> Result<CallPayload<D, R>> callAsResult(String topic, D data);
+    default <D, R> Result<CallPayload<D, R>> callAsResult(String topic, D data, Consumer<CompletableFuture<R>> fallback);
+    
+    //监听调用事件
+    default <D, R> void listen(String topic, CallEventHandler<D, R> handler);
+    default <D, R> void listen(String topic, int index, CallEventHandler<D, R> handler);
+    
+    //----------------------------
+    // 通过继承 StreamBusExtension  获得
+   
+    //发送流事件
+    default <D, R> Publisher<R> stream(String topic, D data);
+    default <D, R> Publisher<R> stream(String topic, D data, Consumer<Subscriber<? super R>> fallback);
+    
+    //监听流事件
+    default <D, R> void listen(String topic, StreamEventHandler<D, R> handler);
+    default <D, R> void listen(String topic, int index, StreamEventHandler<D, R> handler);
 }
 ```
 
 
-## 4、DamiLpc，接口模式接口
+### 4、DamiLpc，接口模式接口（lpc, 本地过程调用）
 
 
 ```java
-public interface DamiLpc {
+public interface DamiLpc extends DamiBusExtension {
     //获取编码器
     Coder coder();
     
@@ -81,34 +108,32 @@ public interface DamiLpc {
     //注册服务实现（一个服务，只能监听一个主题）
     void registerService(String topicMapping, Object serviceObj);
     void registerService(String topicMapping, int index, Object serviceObj);
+    
     //注销服务实现
     void unregisterService(String topicMapping, Object serviceObj);
 }
 ```
 
-DamiApi::createSender，发送者接口代理情况说明
+DamiApi::createConsumer，创建服务消费者情况说明
 
 | 用例               | 对应总线接口                   | 说明               |
 |------------------|--------------------------|------------------|
-| void onCreated() | 返回为空的，send 发送            | 没有监听，不会异常        |
-| User getUser()   | 返回类型的，call 发送 | 没有监听，会异常。且必须要有答复 |
+| void onCreated() | 返回为空的，call 发送            | 没有监听，不会异常        |
+| User getUser()    | 返回类型的，call 发送 | 没有监听，会异常。且必须要有答复 |
 
 
-## 5、Event<P>，事件接口
+### 5、`Event<P>`，事件负载接口
 
 
 ```java
 public interface Event<P> extends Serializable {
-    //获取附件
-    <T> T getAttachment(String key);
-    //设置附件
-    <T> void setAttachment(String key, T value);
-    
     //设置处理标识（如果有监听，会标为已处理）
     void setHandled();
     //获取处理标识
     boolean getHandled();
 
+    //附件
+    Map<String, Object> getAttach();
     //主题
     String getTopic();
     //荷载
@@ -117,11 +142,28 @@ public interface Event<P> extends Serializable {
 
 ```
 
-## 6、EventListener<P>，事件监听接口
+### 6、`EventListener<P>`，事件监听接口
 
 ```java
+@FunctionalInterface
 public interface EventListener<P> {
     //处理监听事件
     void onEvent(final Event<P> event) throws Throwable;
+}
+
+@FunctionalInterface
+public interface CallEventListener<D,R> extends EventListener<CallPayload<D, R>>, CallEventHandler<D,R> {
+    //处理监听事件
+    default void onEvent(Event<CallPayload<D, R>> event) throws Throwable {
+        onCall(event, event.getPayload().getData(), event.getPayload().getSink());
+    }
+}
+
+@FunctionalInterface
+public interface StreamEventListener<D, R> extends EventListener<StreamPayload<D, R>> , StreamEventHandler<D,R> {
+    //处理监听事件
+    default void onEvent(Event<StreamPayload<D, R>> event) throws Throwable {
+        onStream(event, event.getAttach(), event.getPayload().getData(), event.getPayload().getSink());
+    }
 }
 ```
