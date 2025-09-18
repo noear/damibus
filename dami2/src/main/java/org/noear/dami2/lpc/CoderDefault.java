@@ -35,8 +35,8 @@ public class CoderDefault implements Coder {
      * 编码
      *
      * @param method 方法
-     * @param args   参数
-     * @return 请求核载内容
+     * @param args   方法参数
+     * @return 荷载数据
      */
     @Override
     public Object encode(Method method, Object[] args) {
@@ -64,13 +64,13 @@ public class CoderDefault implements Coder {
     /**
      * 解码
      *
-     * @param method  方法
-     * @param event 负载
+     * @param method 方法
+     * @param event  事件
      * @return 方法参数
      */
     @Override
-    public Object[] decode(Method method, Event event) {
-        Map<String, Object> map = ((CallPayload<Map<String, Object>, Object>) event.getPayload()).getData();
+    public Object[] decode(Method method, Event<CallPayload> event) {
+        Map<String, Object> map = (Map<String, Object>) event.getPayload().getData();
 
         //构建执行参数（可以与发送者的参数，略有不同）
         Object[] args = new Object[method.getParameterCount()];

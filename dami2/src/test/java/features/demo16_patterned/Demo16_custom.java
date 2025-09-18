@@ -4,7 +4,7 @@ import org.noear.dami2.Dami;
 import org.noear.dami2.DamiConfig;
 import org.noear.dami2.bus.DamiBusImpl;
 import org.noear.dami2.bus.route.RoutingPath;
-import org.noear.dami2.bus.route.TopicRouterPatterned;
+import org.noear.dami2.bus.route.EventRouterPatterned;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -13,7 +13,7 @@ public class Demo16_custom {
     public static void main(String[] args) {
         //::切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
 
-        DamiConfig.configure(new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new)));
+        DamiConfig.configure(new DamiBusImpl(new EventRouterPatterned(RoutingPath::new)));
 
         //::应用
         AtomicInteger testObserver = new AtomicInteger();

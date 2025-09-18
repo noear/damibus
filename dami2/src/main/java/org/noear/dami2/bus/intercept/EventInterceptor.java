@@ -27,8 +27,8 @@ public interface EventInterceptor<P> {
     /**
      * 拦截
      *
-     * @param event 事件负载
-     * @param chain   拦截链
+     * @param event 事件
+     * @param chain 拦截链
      */
     void doIntercept(Event<P> event, InterceptorChain<P> chain);
 }

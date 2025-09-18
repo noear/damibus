@@ -18,7 +18,7 @@ package org.noear.dami2.bus;
 import org.noear.dami2.bus.intercept.EventInterceptor;
 import org.noear.dami2.bus.intercept.InterceptorChain;
 import org.noear.dami2.bus.intercept.InterceptorEntity;
-import org.noear.dami2.bus.route.TopicRouter;
+import org.noear.dami2.bus.route.EventRouter;
 import org.noear.dami2.exception.DamiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +108,7 @@ public class EventDispatcherDefault implements EventDispatcher, EventInterceptor
      * 派发
      */
     @Override
-    public void dispatch(Event event, TopicRouter router) {
+    public void dispatch(Event event, EventRouter router) {
         AssertUtil.assertTopic(event.getTopic());
 
         //获取路由匹配结果

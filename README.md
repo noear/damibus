@@ -178,7 +178,7 @@ public class Demo31 {
 ```
 
 
-### 定制能力（详见主题路由器：[TopicRouter.md](TopicRouter.md)）
+### 定制能力（详见事件路由器：[TopicRouter.md](TopicRouter.md)）
 
 ```java
 public class Demo15_path {

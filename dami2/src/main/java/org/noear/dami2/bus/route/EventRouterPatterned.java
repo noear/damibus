@@ -29,17 +29,17 @@ import java.util.stream.Collectors;
 
 
 /**
- * 主题路由器（模式匹配实现方案；支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
+ * 事件路由器（模式匹配实现方案；支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
  *
  * @author noear
  * @example /a/*, /a/**b
  * @since 1.0
  */
-public class TopicRouterPatterned implements TopicRouter {
-    static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
+public class EventRouterPatterned implements EventRouter {
+    static final Logger log = LoggerFactory.getLogger(EventRouterDefault.class);
 
     /**
-     * 主题路由记录
+     * 路由记录
      */
     private final List<Routing> routingList = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class TopicRouterPatterned implements TopicRouter {
      */
     private final RoutingFactory routerFactory;
 
-    public TopicRouterPatterned(RoutingFactory routerFactory) {
+    public EventRouterPatterned(RoutingFactory routerFactory) {
         super();
         this.routerFactory = routerFactory;
     }

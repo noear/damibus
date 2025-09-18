@@ -28,13 +28,13 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 主题路由器（默认啥希表实现方案）
+ * 事件路由器（默认啥希表实现方案）
  *
  * @author noear
  * @since 1.0
  */
-public class TopicRouterDefault implements TopicRouter {
-    static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
+public class EventRouterDefault implements EventRouter {
+    static final Logger log = LoggerFactory.getLogger(EventRouterDefault.class);
 
     /**
      * 主题监听管道
@@ -43,7 +43,7 @@ public class TopicRouterDefault implements TopicRouter {
 
     protected final ReentrantLock PIPELINE_MAP_LOCK = new ReentrantLock();
 
-    public TopicRouterDefault() {
+    public EventRouterDefault() {
         super();
     }
 

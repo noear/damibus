@@ -23,11 +23,11 @@ public class Dami {
 
 ```java
 public class DamiConfig {
-    //配置总线的主题路由器
-    public static void configure(TopicRouter topicRouter);
-    //配置总线的主题调度器
-    public static void configure(TopicDispatcher topicDispatcher);
-    //配置总线的负载工厂
+    //配置总线的事件路由器
+    public static void configure(TopicRouter eventRouter);
+    //配置总线的事件调度器
+    public static void configure(EventDispatcher eventDispatcher);
+    //配置总线的事件工厂
     public static void configure(EventFactory eventFactory);
 
     //配置接口模式的编解码器
@@ -94,7 +94,7 @@ DamiApi::createSender，发送者接口代理情况说明
 | User getUser()   | 返回类型的，call 发送 | 没有监听，会异常。且必须要有答复 |
 
 
-## 5、Event<P>，事件负载接口
+## 5、Event<P>，事件接口
 
 
 ```java

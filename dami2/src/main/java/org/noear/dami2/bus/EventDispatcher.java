@@ -16,7 +16,7 @@
 package org.noear.dami2.bus;
 
 import org.noear.dami2.bus.intercept.EventInterceptor;
-import org.noear.dami2.bus.route.TopicRouter;
+import org.noear.dami2.bus.route.EventRouter;
 
 /**
  * 主题调度器
@@ -33,5 +33,5 @@ public interface EventDispatcher {
     /**
      * 派发
      */
-    void dispatch(Event event, TopicRouter router);
+    void dispatch(Event event, EventRouter router);
 }

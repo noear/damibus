@@ -18,7 +18,7 @@ package org.noear.dami2.bus;
 import org.noear.dami2.bus.intercept.EventInterceptor;
 import org.noear.dami2.bus.receivable.CallBusExtension;
 import org.noear.dami2.bus.receivable.StreamBusExtension;
-import org.noear.dami2.bus.route.TopicRouter;
+import org.noear.dami2.bus.route.EventRouter;
 
 import java.util.function.Consumer;
 
@@ -124,5 +124,5 @@ public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusEx
     /**
      * 路由器
      */
-    TopicRouter router();
+    EventRouter router();
 }

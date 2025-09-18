@@ -15,7 +15,7 @@
  */
 package org.noear.dami2.bus;
 
-import org.noear.dami2.bus.route.TopicRouter;
+import org.noear.dami2.bus.route.EventRouter;
 
 /**
  * 大米总线配置器
@@ -25,17 +25,17 @@ import org.noear.dami2.bus.route.TopicRouter;
  */
 public interface DamiBusConfigurator extends DamiBus {
     /**
-     * 配置主题路由器
+     * 配置事件路由器
      */
-    DamiBusConfigurator topicRouter(TopicRouter router);
+    DamiBusConfigurator eventRouter(EventRouter router);
 
     /**
-     * 配置主题调度器
+     * 配置事件调度器
      */
-    DamiBusConfigurator topicDispatcher(EventDispatcher dispatcher);
+    DamiBusConfigurator eventDispatcher(EventDispatcher dispatcher);
 
     /**
-     * 配置事件负载工厂
+     * 配置事件工厂
      */
     DamiBusConfigurator eventFactory(EventFactory factory);
 }

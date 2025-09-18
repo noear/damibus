@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.dami2.bus.DamiBus;
 import org.noear.dami2.bus.DamiBusImpl;
 import org.noear.dami2.bus.route.RoutingPath;
-import org.noear.dami2.bus.route.TopicRouterPatterned;
+import org.noear.dami2.bus.route.EventRouterPatterned;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,7 +12,7 @@ public class Demo16_path {
     @Test
     public void test1_a() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus busStr = new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new));
+        DamiBus busStr = new DamiBusImpl(new EventRouterPatterned(RoutingPath::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -33,7 +33,7 @@ public class Demo16_path {
     @Test
     public void test1_b() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus busStr = new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new));
+        DamiBus busStr = new DamiBusImpl(new EventRouterPatterned(RoutingPath::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -54,7 +54,7 @@ public class Demo16_path {
     @Test
     public void test2_a() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus busStr = new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new));
+        DamiBus busStr = new DamiBusImpl(new EventRouterPatterned(RoutingPath::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -75,7 +75,7 @@ public class Demo16_path {
     @Test
     public void test2_b() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus busStr = new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new));
+        DamiBus busStr = new DamiBusImpl(new EventRouterPatterned(RoutingPath::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 
@@ -96,7 +96,7 @@ public class Demo16_path {
     @Test
     public void test2_c() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus busStr = new DamiBusImpl(new TopicRouterPatterned(RoutingPath::new));
+        DamiBus busStr = new DamiBusImpl(new EventRouterPatterned(RoutingPath::new));
 
         AtomicInteger testObserver = new AtomicInteger();
 

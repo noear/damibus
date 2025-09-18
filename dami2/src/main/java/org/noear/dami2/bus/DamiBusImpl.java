@@ -16,8 +16,8 @@
 package org.noear.dami2.bus;
 
 import org.noear.dami2.bus.intercept.EventInterceptor;
-import org.noear.dami2.bus.route.TopicRouter;
-import org.noear.dami2.bus.route.TopicRouterDefault;
+import org.noear.dami2.bus.route.EventRouter;
+import org.noear.dami2.bus.route.EventRouterDefault;
 
 import java.util.function.Consumer;
 
@@ -29,15 +29,15 @@ import java.util.function.Consumer;
  */
 public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     //路由器
-    private TopicRouter router;
+    private EventRouter router;
     //调度器
     private EventDispatcher dispatcher;
-    //负载工厂
+    //生成器
     private EventFactory factory;
 
-    public DamiBusImpl(TopicRouter router) {
+    public DamiBusImpl(EventRouter router) {
         if (router == null) {
-            this.router = new TopicRouterDefault();
+            this.router = new EventRouterDefault();
         } else {
             this.router = router;
         }
@@ -51,9 +51,9 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     }
 
     /**
-     * 设置主题路由器
+     * 设置事件路由器
      */
-    public DamiBusConfigurator topicRouter(TopicRouter router) {
+    public DamiBusConfigurator eventRouter(EventRouter router) {
         if (router != null) {
             this.router = router;
         }
@@ -61,7 +61,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     }
 
     @Override
-    public DamiBusConfigurator topicDispatcher(EventDispatcher dispatcher) {
+    public DamiBusConfigurator eventDispatcher(EventDispatcher dispatcher) {
         if (dispatcher != null) {
             this.dispatcher = dispatcher;
         }
@@ -69,7 +69,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     }
 
     /**
-     * 设置事件负载工厂
+     * 设置事件事件工厂
      */
     public DamiBusConfigurator eventFactory(EventFactory factory) {
         if (factory != null) {
@@ -162,7 +162,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     /**
      * 路由器
      */
-    public TopicRouter router() {
+    public EventRouter router() {
         return this.router;
     }
 

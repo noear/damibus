@@ -15,7 +15,7 @@
  */
 package org.noear.dami2;
 
-import org.noear.dami2.bus.route.TopicRouter;
+import org.noear.dami2.bus.route.EventRouter;
 import org.noear.dami2.lpc.Coder;
 import org.noear.dami2.lpc.DamiLpc;
 import org.noear.dami2.lpc.DamiLpcConfigurator;
@@ -29,31 +29,31 @@ import org.noear.dami2.bus.*;
  */
 public class DamiConfig {
     /**
-     * 配置总线的主体路由器
+     * 配置总线的事件路由器
      *
-     * @param topicRouter 主题路由器
+     * @param eventRouter 事件路由器
      */
-    public static void configure(TopicRouter topicRouter) {
-        if (topicRouter != null) {
-            ((DamiBusConfigurator) Dami.bus).topicRouter(topicRouter);
+    public static void configure(EventRouter eventRouter) {
+        if (eventRouter != null) {
+            ((DamiBusConfigurator) Dami.bus).eventRouter(eventRouter);
         }
     }
 
     /**
-     * 配置总线的主题调度器
+     * 配置总线的事件调度器
      *
-     * @param topicDispatcher 主题调度器
+     * @param eventDispatcher 事件调度器
      */
-    public static void configure(EventDispatcher topicDispatcher) {
-        if (topicDispatcher != null) {
-            ((DamiBusConfigurator) Dami.bus).topicDispatcher(topicDispatcher);
+    public static void configure(EventDispatcher eventDispatcher) {
+        if (eventDispatcher != null) {
+            ((DamiBusConfigurator) Dami.bus).eventDispatcher(eventDispatcher);
         }
     }
 
     /**
-     * 配置总线的负载工厂
+     * 配置总线的事件工厂
      *
-     * @param eventFactory 负载工厂
+     * @param eventFactory 事件工厂
      */
     public static void configure(EventFactory eventFactory) {
         if (eventFactory != null) {

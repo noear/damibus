@@ -13,7 +13,7 @@ public class Demo17_dispatcher {
     static String topic = "demo.hello";
     //定义实例，避免单测干扰 //开发时用：Dami.bus()
     DamiBus busStr = new DamiBusImpl()
-            .topicDispatcher(new TopicDispatcherMonitor());
+            .eventDispatcher(new TopicDispatcherMonitor());
 
     @Test
     public void main() throws Exception {

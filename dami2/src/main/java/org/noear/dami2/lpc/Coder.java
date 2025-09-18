@@ -16,6 +16,7 @@
 package org.noear.dami2.lpc;
 
 import org.noear.dami2.bus.Event;
+import org.noear.dami2.bus.receivable.CallPayload;
 
 import java.lang.reflect.Method;
 
@@ -30,17 +31,17 @@ public interface Coder {
      * 编码
      *
      * @param method 方法
-     * @param args   参数
-     * @return 负载内容
+     * @param args   方法参数
+     * @return 荷载数据
      */
     Object encode(Method method, Object[] args) throws Throwable;
 
     /**
      * 解码
      *
-     * @param method  方法
-     * @param event 负载
+     * @param method 方法
+     * @param event  事件
      * @return 方法参数
      */
-    Object[] decode(Method method, Event event) throws Throwable;
+    Object[] decode(Method method, Event<CallPayload> event) throws Throwable;
 }

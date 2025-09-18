@@ -21,11 +21,11 @@ import org.noear.dami2.bus.EventListenerHolder;
 import java.util.List;
 
 /**
- * 主题路由器
+ * 事件路由器
  *
  * @author kongweiguang
  */
-public interface TopicRouter {
+public interface EventRouter {
     /**
      * 添加监听
      *
