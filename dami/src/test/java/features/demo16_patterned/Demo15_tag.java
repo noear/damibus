@@ -1,10 +1,10 @@
 package features.demo16_patterned;
 
 import org.junit.jupiter.api.Test;
-import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.bus.impl.RoutingTag;
-import org.noear.dami.bus.impl.TopicRouterPatterned;
+import org.noear.dami2.bus.DamiBus;
+import org.noear.dami2.bus.DamiBusImpl;
+import org.noear.dami2.bus.impl.RoutingTag;
+import org.noear.dami2.bus.impl.TopicRouterPatterned;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

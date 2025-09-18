@@ -6,7 +6,7 @@ import features.demo96_springboot.userModule.UserService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.dami.spring.boot.annotation.DamiScan;
+import org.noear.dami2.spring.boot.annotation.DamiScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;

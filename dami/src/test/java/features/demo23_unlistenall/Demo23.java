@@ -1,10 +1,10 @@
 package features.demo23_unlistenall;
 
 import org.junit.jupiter.api.Test;
-import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.bus.Event;
-import org.noear.dami.bus.TopicListener;
+import org.noear.dami2.bus.DamiBus;
+import org.noear.dami2.bus.DamiBusImpl;
+import org.noear.dami2.bus.Event;
+import org.noear.dami2.bus.TopicListener;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;

@@ -4,10 +4,10 @@ import features.demo31_api.module1.EventUserListener1;
 import features.demo31_api.module2.EventUser;
 
 import org.junit.jupiter.api.Test;
-import org.noear.dami.lpc.DamiLpc;
-import org.noear.dami.lpc.DamiLpcImpl;
-import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
+import org.noear.dami2.lpc.DamiLpc;
+import org.noear.dami2.lpc.DamiLpcImpl;
+import org.noear.dami2.bus.DamiBus;
+import org.noear.dami2.bus.DamiBusImpl;
 
 public class Demo31 {
     static String topicMapping = "demo.user";

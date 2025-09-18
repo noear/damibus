@@ -2,11 +2,11 @@ package features.demo91_springboot;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.dami.Dami;
-import org.noear.dami.bus.Event;
-import org.noear.dami.bus.receivable.CallPayload;
-import org.noear.dami.bus.receivable.CallTopicListener;
-import org.noear.dami.spring.boot.annotation.DamiTopic;
+import org.noear.dami2.Dami;
+import org.noear.dami2.bus.Event;
+import org.noear.dami2.bus.receivable.CallPayload;
+import org.noear.dami2.bus.receivable.CallTopicListener;
+import org.noear.dami2.spring.boot.annotation.DamiTopic;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;

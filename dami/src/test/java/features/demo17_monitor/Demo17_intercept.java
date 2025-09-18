@@ -1,7 +1,7 @@
 package features.demo17_monitor;
 
 import org.junit.jupiter.api.Test;
-import org.noear.dami.bus.*;
+import org.noear.dami2.bus.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

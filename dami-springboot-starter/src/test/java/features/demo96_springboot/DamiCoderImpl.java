@@ -1,8 +1,8 @@
 package features.demo96_springboot;
 
-import org.noear.dami.lpc.Coder;
-import org.noear.dami.lpc.CoderDefault;
-import org.noear.dami.bus.Event;
+import org.noear.dami2.lpc.Coder;
+import org.noear.dami2.lpc.CoderDefault;
+import org.noear.dami2.bus.Event;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;

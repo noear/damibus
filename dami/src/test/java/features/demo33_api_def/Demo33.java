@@ -1,12 +1,12 @@
 package features.demo33_api_def;
 
 import org.junit.jupiter.api.Test;
-import org.noear.dami.annotation.Param;
-import org.noear.dami.lpc.DamiLpc;
-import org.noear.dami.lpc.DamiLpcImpl;
-import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.exception.DamiException;
+import org.noear.dami2.annotation.Param;
+import org.noear.dami2.lpc.DamiLpc;
+import org.noear.dami2.lpc.DamiLpcImpl;
+import org.noear.dami2.bus.DamiBus;
+import org.noear.dami2.bus.DamiBusImpl;
+import org.noear.dami2.exception.DamiException;
 
 public class Demo33 {
     static String topicMapping = "demo.user";

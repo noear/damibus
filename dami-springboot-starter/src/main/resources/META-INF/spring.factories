@@ -1,4 +1,4 @@
 
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.noear.dami.spring.boot.integration.DamiAutoConfiguration
+  org.noear.dami2.spring.boot.integration.DamiAutoConfiguration

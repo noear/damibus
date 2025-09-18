@@ -1,6 +1,6 @@
 package features.demo82_solon;
 
-import org.noear.dami.solon.annotation.DamiTopic;
+import org.noear.dami2.solon.annotation.DamiTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

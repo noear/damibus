@@ -1,6 +1,6 @@
 package features.demo95_springboot.liveModule;
 
-import org.noear.dami.spring.boot.annotation.DamiTopic;
+import org.noear.dami2.spring.boot.annotation.DamiTopic;
 
 
 /**

@@ -1,6 +1,6 @@
 package benchmark;
 
-import org.noear.dami.Dami;
+import org.noear.dami2.Dami;
 
 public class SendTest {
     static Integer count = 0;

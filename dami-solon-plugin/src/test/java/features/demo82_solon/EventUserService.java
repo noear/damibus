@@ -1,6 +1,6 @@
 package features.demo82_solon;
 
-import org.noear.dami.solon.annotation.DamiTopic;
+import org.noear.dami2.solon.annotation.DamiTopic;
 
 /**
  * 基于事件的，用户服务接口（要向别人拿的）

@@ -1,12 +1,11 @@
 package features.demo81_solon;
 
 import org.junit.jupiter.api.Test;
-import org.noear.dami.Dami;
-import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.Event;
-import org.noear.dami.bus.TopicListener;
-import org.noear.dami.bus.receivable.CallPayload;
-import org.noear.dami.solon.annotation.DamiTopic;
+import org.noear.dami2.Dami;
+import org.noear.dami2.bus.Event;
+import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.receivable.CallPayload;
+import org.noear.dami2.solon.annotation.DamiTopic;
 import org.noear.solon.test.SolonTest;
 
 @SolonTest

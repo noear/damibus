@@ -1,8 +1,8 @@
 package features.demo85_solon;
 
-import org.noear.dami.lpc.Coder;
-import org.noear.dami.lpc.CoderDefault;
-import org.noear.dami.bus.Event;
+import org.noear.dami2.lpc.Coder;
+import org.noear.dami2.lpc.CoderDefault;
+import org.noear.dami2.bus.Event;
 import org.noear.solon.annotation.Component;
 
 import java.lang.reflect.Method;

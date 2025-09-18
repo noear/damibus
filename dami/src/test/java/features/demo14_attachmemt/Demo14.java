@@ -1,8 +1,8 @@
 package features.demo14_attachmemt;
 
 import org.junit.jupiter.api.Test;
-import org.noear.dami.Dami;
-import org.noear.dami.bus.DamiBus;
+import org.noear.dami2.Dami;
+import org.noear.dami2.bus.DamiBus;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

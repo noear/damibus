@@ -1,10 +1,10 @@
 package features.demo16_patterned;
 
-import org.noear.dami.Dami;
-import org.noear.dami.DamiConfig;
-import org.noear.dami.bus.DamiBusImpl;
-import org.noear.dami.bus.impl.RoutingPath;
-import org.noear.dami.bus.impl.TopicRouterPatterned;
+import org.noear.dami2.Dami;
+import org.noear.dami2.DamiConfig;
+import org.noear.dami2.bus.DamiBusImpl;
+import org.noear.dami2.bus.impl.RoutingPath;
+import org.noear.dami2.bus.impl.TopicRouterPatterned;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

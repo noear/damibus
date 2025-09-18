@@ -1,9 +1,9 @@
 package features.demo17_monitor;
 
-import org.noear.dami.bus.Event;
-import org.noear.dami.bus.TopicListener;
-import org.noear.dami.bus.TopicListenerHolder;
-import org.noear.dami.bus.impl.TopicDispatcherDefault;
+import org.noear.dami2.bus.Event;
+import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.TopicListenerHolder;
+import org.noear.dami2.bus.impl.TopicDispatcherDefault;
 
 import java.util.List;
 

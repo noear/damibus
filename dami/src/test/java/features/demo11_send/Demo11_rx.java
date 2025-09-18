@@ -1,9 +1,9 @@
 package features.demo11_send;
 
 import org.junit.jupiter.api.Test;
-import org.noear.dami.Dami;
-import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.receivable.StreamPayload;
+import org.noear.dami2.Dami;
+import org.noear.dami2.bus.DamiBus;
+import org.noear.dami2.bus.receivable.StreamPayload;
 import org.noear.solon.rx.SimpleSubscriber;
 
 import java.util.concurrent.atomic.AtomicInteger;
