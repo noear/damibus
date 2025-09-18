@@ -8,7 +8,7 @@
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami2</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0-M1</version>
 </dependency>
 ```
 
@@ -54,7 +54,7 @@ public class Demo12 {
 
         //发送调用事件
         String rst1 = Dami.bus().<String, String>call(topic, "world").get();
-        //发送事件//支持应急处理（当没有计阅时启用）
+        //发送事件//支持应急处理（当没有订阅时启用）
         //String rst1 = Dami.bus().<String, String>call(topic, "world", () -> "def").get();
         System.out.println(rst1);
     }

@@ -44,7 +44,7 @@ public interface CallBusExtension extends DamiBusExtension {
      *
      * @param topic    事件主题
      * @param data     数据
-     * @param fallback 应急处理（当没有计阅时启用）
+     * @param fallback 应急处理（当没有订阅时启用）
      * @return 接收器
      */
     default <D, R> CompletableFuture<R> call(String topic, D data, Consumer<CompletableFuture<R>> fallback) {
@@ -67,7 +67,7 @@ public interface CallBusExtension extends DamiBusExtension {
      *
      * @param topic    事件主题
      * @param data     数据
-     * @param fallback 应急处理（当没有计阅时启用）
+     * @param fallback 应急处理（当没有订阅时启用）
      * @return 结果
      */
     default <D, R> Result<CallPayload<D, R>> callAsResult(String topic, D data, Consumer<CompletableFuture<R>> fallback) {

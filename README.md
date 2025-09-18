@@ -75,7 +75,7 @@ DamiBus，专为单体多模块之间通讯解耦而设计（尤其是未知模�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami2</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0-M1</version>
 </dependency>
 ```
 
@@ -87,7 +87,6 @@ DamiBus，专为单体多模块之间通讯解耦而设计（尤其是未知模�
 #### demo21_send
 
 ```java
-//总线风格。bus()
 public class Deom11 {
     static String topic = "demo.hello";
 
@@ -96,12 +95,6 @@ public class Deom11 {
         Dami.bus().listen(topic, event -> {
             System.err.println(event.getPayload()); //可以有多个订阅
         });
-        Dami.bus().listen(topic, event -> {
-            CompletableFuture.runAsync(()-> { //也可以异步消费
-                System.err.println(event);
-            });
-        });
-
 
         //发送事件
         Dami.bus().send(topic, "{name:'noear',say:'hello'}");
@@ -112,22 +105,21 @@ public class Deom11 {
 #### demo12_call
 
 ```java
-//泛型总线风格。<P>bus()
 public class Demo12 {
     static String topic = "demo.hello";
 
     public static void main(String[] args) throws Exception {
         //监听事件（调用事件）
-        Dami.bus().<String, String>listen(topic, (event, data, data) -> {
+        Dami.bus().<String, String>listen(topic, (event, data, sink) -> {
             System.err.println(data);
 
-            data.complete("hi!");
+            sink.complete("hi!");
         });
 
 
         //发送事件（调用）
         String rst1 = Dami.bus().<String, String>call(topic, "world").get();
-        //发送事件（调用） //支持应急处理（当没有计阅时启用）
+        //发送事件（调用） //支持应急处理（当没有订阅时启用）
         //String rst1 = Dami.bus().<String, String>call(topic, "world", r -> r.complete("def")).get();
         System.out.println(rst1);
     }
@@ -178,7 +170,7 @@ public class Demo31 {
 ```
 
 
-### 定制能力（详见事件路由器：[TopicRouter.md](TopicRouter.md)）
+### 定制能力（详见事件路由器：[Router.md](Router.md)）
 
 ```java
 public class Demo15_path {

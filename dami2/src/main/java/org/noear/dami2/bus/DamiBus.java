@@ -62,7 +62,7 @@ public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusEx
      *
      * @param topic    事件主题
      * @param payload  事件荷载
-     * @param fallback 应急处理（当没有计阅时启用）
+     * @param fallback 应急处理（当没有订阅时启用）
      * @return 结果
      */
     <P> Result<P> send(final String topic, final P payload, Consumer<P> fallback);
@@ -81,7 +81,7 @@ public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusEx
      * 发送事件
      *
      * @param event    事件
-     * @param fallback 应急处理（当没有计阅时启用）
+     * @param fallback 应急处理（当没有订阅时启用）
      * @return 结果
      */
     <P> Result<P> send(Event<P> event, Consumer<P> fallback);
