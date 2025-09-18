@@ -6,12 +6,12 @@
 
     <parent>
         <groupId>org.noear</groupId>
-        <artifactId>damibus-parent</artifactId>
+        <artifactId>dami2-parent</artifactId>
         <version>2.0.0-SNAPSHOT</version>
-        <relativePath>../damibus-parent/pom.xml</relativePath>
+        <relativePath>../dami2-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>damibus</artifactId>
+    <artifactId>dami2</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
