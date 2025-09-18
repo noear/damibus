@@ -21,11 +21,11 @@ package org.noear.dami.lpc.impl;
  * @author noear
  * @since 1.0
  */
-public class MethodTopicListenerRecord {
+public class ServiceMethodTopicListenerRecord {
     private String topic;
-    private MethodTopicListener listener;
+    private ServiceMethodTopicListener listener;
 
-    public MethodTopicListenerRecord(String topic, MethodTopicListener listener) {
+    public ServiceMethodTopicListenerRecord(String topic, ServiceMethodTopicListener listener) {
         this.topic = topic;
         this.listener = listener;
     }
@@ -40,7 +40,7 @@ public class MethodTopicListenerRecord {
     /**
      * 方法主题监听器
      * */
-    public MethodTopicListener getListener() {
+    public ServiceMethodTopicListener getListener() {
         return listener;
     }
 }

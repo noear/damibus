@@ -16,9 +16,9 @@
 package org.noear.dami.lpc;
 
 import org.noear.dami.Dami;
-import org.noear.dami.lpc.impl.MethodTopicListener;
-import org.noear.dami.lpc.impl.MethodTopicListenerRecord;
-import org.noear.dami.lpc.impl.SenderInvocationHandler;
+import org.noear.dami.lpc.impl.ServiceMethodTopicListener;
+import org.noear.dami.lpc.impl.ServiceMethodTopicListenerRecord;
+import org.noear.dami.lpc.impl.ConsumerInvocationHandler;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.exception.DamiException;
 import org.slf4j.Logger;
@@ -45,8 +45,8 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     /**
      * 监听器缓存（注销时用）
      */
-    private Map<Class<?>, List<MethodTopicListenerRecord>> listenerMap = new HashMap<>();
-    private ReentrantLock LISTENERMAP_LOCK = new ReentrantLock();
+    private Map<Class<?>, List<ServiceMethodTopicListenerRecord>> serviceMap = new HashMap<>();
+    private ReentrantLock SERVICE_MAP_LOCK = new ReentrantLock();
 
     /**
      * 编码解器
@@ -109,7 +109,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
      */
     @Override
     public <T> T createConsumer(String topicMapping, Class<T> consumerApi) {
-        Object tmp = Proxy.newProxyInstance(consumerApi.getClassLoader(), new Class[]{consumerApi}, new SenderInvocationHandler(this, consumerApi, topicMapping));
+        Object tmp = Proxy.newProxyInstance(consumerApi.getClassLoader(), new Class[]{consumerApi}, new ConsumerInvocationHandler(this, consumerApi, topicMapping));
 
         if (log.isDebugEnabled()) {
             log.debug("This sender created successfully(@{}.*): {}", topicMapping, consumerApi.getName());
@@ -129,31 +129,31 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     public void registerService(String topicMapping, int index, Object serviceObj) {
         Class<?> serviceClz = serviceObj.getClass();
 
-        LISTENERMAP_LOCK.lock();
+        SERVICE_MAP_LOCK.lock();
         try {
             //防止重复注册
-            if (listenerMap.containsKey(serviceClz)) {
+            if (serviceMap.containsKey(serviceClz)) {
                 throw new DamiException("This listener is registered: " + serviceClz.getName());
             }
 
             //开始注册
-            List<MethodTopicListenerRecord> listenerRecords = new ArrayList<>();
+            List<ServiceMethodTopicListenerRecord> listenerRecords = new ArrayList<>();
 
             for (Method m1 : findMethods(serviceClz)) {
                 //不能是 Object 申明的方法
                 if (m1.getDeclaringClass() != Object.class) {
                     String topic = getMethodTopic(topicMapping, m1.getName());
-                    MethodTopicListener listener = new MethodTopicListener(this, serviceObj, m1);
+                    ServiceMethodTopicListener listener = new ServiceMethodTopicListener(this, serviceObj, m1);
 
-                    listenerRecords.add(new MethodTopicListenerRecord(topic, listener));
+                    listenerRecords.add(new ServiceMethodTopicListenerRecord(topic, listener));
                     bus().listen(topic, index, listener);
                 }
             }
 
             //为了注销时，移掉对应的实例
-            listenerMap.put(serviceClz, listenerRecords);
+            serviceMap.put(serviceClz, listenerRecords);
         } finally {
-            LISTENERMAP_LOCK.unlock();
+            SERVICE_MAP_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {
@@ -169,17 +169,17 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
      */
     @Override
     public void unregisterService(String topicMapping, Object serviceObj) {
-        LISTENERMAP_LOCK.lock();
+        SERVICE_MAP_LOCK.lock();
         try {
-            List<MethodTopicListenerRecord> tmp = listenerMap.remove(serviceObj.getClass());
+            List<ServiceMethodTopicListenerRecord> tmp = serviceMap.remove(serviceObj.getClass());
 
             if (tmp != null) {
-                for (MethodTopicListenerRecord r1 : tmp) {
+                for (ServiceMethodTopicListenerRecord r1 : tmp) {
                     bus().unlisten(r1.getTopic(), r1.getListener());
                 }
             }
         } finally {
-            LISTENERMAP_LOCK.unlock();
+            SERVICE_MAP_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {

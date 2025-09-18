@@ -16,14 +16,12 @@
 package org.noear.dami.lpc.impl;
 
 import org.noear.dami.bus.receivable.CallPayload;
-import org.noear.dami.bus.receivable.ReceivablePayload;
 import org.noear.dami.lpc.DamiLpc;
 import org.noear.dami.bus.Result;
 import org.noear.dami.exception.DamiNoListenException;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * 发送者接口的调用代理
@@ -31,12 +29,12 @@ import java.util.concurrent.CompletableFuture;
  * @author noear
  * @since 1.0
  */
-public class SenderInvocationHandler implements InvocationHandler {
+public class ConsumerInvocationHandler implements InvocationHandler {
     private final DamiLpc damiApi;
     private Class<?> interfaceClz;
     private final String topicMapping;
 
-    public SenderInvocationHandler(DamiLpc damiApi, Class<?> interfaceClz, String topicMapping) {
+    public ConsumerInvocationHandler(DamiLpc damiApi, Class<?> interfaceClz, String topicMapping) {
         this.damiApi = damiApi;
         this.interfaceClz = interfaceClz;
         this.topicMapping = topicMapping;

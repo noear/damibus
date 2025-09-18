@@ -13,8 +13,6 @@ public class Demo22 {
 
     @Test
     public void main() throws Exception {
-        AtomicInteger testObserver = new AtomicInteger();
-
         //处理事件
         bus.<Long, String>onCall(topic, (req, resp) -> {
             System.err.println(req);

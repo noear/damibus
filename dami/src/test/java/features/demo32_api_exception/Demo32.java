@@ -12,7 +12,7 @@ import org.noear.dami.exception.DamiException;
 
 public class Demo32 {
     static String topicMapping = "demo.user";
-    //定义实例，避免单测干扰 //开发时用：Dami.api()
+    //定义实例，避免单测干扰 //开发时用：Dami.lpc()
     DamiBus bus = new DamiBusImpl();
     DamiLpc api = new DamiLpcImpl(bus);
 

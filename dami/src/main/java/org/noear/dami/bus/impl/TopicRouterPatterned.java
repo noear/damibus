@@ -15,7 +15,7 @@
  */
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.lpc.impl.MethodTopicListener;
+import org.noear.dami.lpc.impl.ServiceMethodTopicListener;
 import org.noear.dami.bus.Event;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.TopicListenerHolder;
@@ -75,7 +75,7 @@ public class TopicRouterPatterned implements TopicRouter {
         }
 
         if (log.isDebugEnabled()) {
-            if (MethodTopicListener.class.isAssignableFrom(listener.getClass())) {
+            if (ServiceMethodTopicListener.class.isAssignableFrom(listener.getClass())) {
                 log.debug("TopicRouter listener added(@{}): {}", topic, listener);
             } else {
                 log.debug("TopicRouter listener added(@{}): {}", topic, listener.getClass().getName());
@@ -99,7 +99,7 @@ public class TopicRouterPatterned implements TopicRouter {
         }
 
         if (log.isDebugEnabled()) {
-            if (MethodTopicListener.class.isAssignableFrom(listener.getClass())) {
+            if (ServiceMethodTopicListener.class.isAssignableFrom(listener.getClass())) {
                 log.debug("TopicRouter listener removed(@{}): {}", topic, listener);
             } else {
                 log.debug("TopicRouter listener removed(@{}): {}", topic, listener.getClass().getName());
