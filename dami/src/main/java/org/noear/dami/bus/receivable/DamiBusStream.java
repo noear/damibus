@@ -58,7 +58,7 @@ public interface DamiBusStream extends DamiBusExtension {
      */
     default <C, R> void onStream(String topic, BiConsumer<C, Subscriber<? super R>> consumer) {
         bus().<StreamPayload<C, R>>listen(topic, event -> {
-            consumer.accept(event.getPayload().getContext(), event.getPayload().getReceiver());
+            consumer.accept(event.getPayload().getContent(), event.getPayload().getReceiver());
         });
     }
 }

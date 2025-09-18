@@ -15,43 +15,32 @@
  */
 package org.noear.dami.bus.receivable;
 
-import org.noear.dami.bus.AssertUtil;
-
-import java.io.Serializable;
+import org.noear.dami.bus.Event;
+import org.noear.dami.bus.TopicListener;
+import org.reactivestreams.Subscriber;
 
 /**
- * 可接收的荷载
+ * 流主题监听器
  *
  * @author noear
  * @since 2.0
  */
-public class ReceivablePayload<C,Rec> implements Serializable {
-    private final C content;
-    private final transient Rec receiver;
-
+public interface StreamTopicListener<C,R> extends TopicListener<Event<StreamPayload<C, R>>> {
     /**
-     * @param content  荷载内容
-     * @param receiver 接收器
+     * 处理监听事件
      *
+     * @param event 事件
      */
-    public ReceivablePayload(C content, Rec receiver) {
-        AssertUtil.notNull(receiver, "The receiver can not be null");
-
-        this.content = content;
-        this.receiver = receiver;
+    default void onEvent(Event<StreamPayload<C, R>> event) throws Throwable {
+        onStream(event, event.getPayload().getContent(), event.getPayload().getReceiver());
     }
 
     /**
-     * 内容
+     * 处理流事件（由 onEvent 转发简化）
+     *
+     * @param event    事件
+     * @param content  荷载内容
+     * @param receiver 荷载接收器
      */
-    public C getContent() {
-        return content;
-    }
-
-    /**
-     * 接收器
-     */
-    public Rec getReceiver() {
-        return receiver;
-    }
+    void onStream(Event<StreamPayload<C, R>> event, C content, Subscriber<R> receiver);
 }

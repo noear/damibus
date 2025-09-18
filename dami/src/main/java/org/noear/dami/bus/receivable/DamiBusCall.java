@@ -60,7 +60,7 @@ public interface DamiBusCall extends DamiBusExtension {
      */
     default <C, R> void onCall(String topic, BiConsumer<C, CompletableFuture<R>> consumer) {
         bus().<CallPayload<C, R>>listen(topic, msg -> {
-            consumer.accept(msg.getPayload().getContext(), msg.getPayload().getReceiver());
+            consumer.accept(msg.getPayload().getContent(), msg.getPayload().getReceiver());
         });
     }
 }

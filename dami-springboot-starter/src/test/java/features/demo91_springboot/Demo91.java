@@ -32,7 +32,7 @@ public class Demo91 {
     public static class UserEventListener implements TopicListener<Event<CallPayload<String, String>>> {
         @Override
         public void onEvent(Event<CallPayload<String, String>> event) throws Throwable {
-            event.getPayload().getReceiver().complete("Hi " + event.getPayload().getContext());
+            event.getPayload().getReceiver().complete("Hi " + event.getPayload().getContent());
         }
     }
 }

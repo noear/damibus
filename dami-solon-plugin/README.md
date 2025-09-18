@@ -15,49 +15,45 @@
 
 如果涉及类加载器隔离：请在主程序标为编译，在其它模块标为可选。
 
-#### demo80_solon （注解）
+#### demo81_solon （注解）
 
 ```java
 @SolonTest
-public class Demo80 {
+public class Demo81 {
     @Test
-    public void main() {
-        DamiBus<String, String> bus = Dami.<String, String>bus();
-        
-        System.out.println(bus.call("user.demo", "solon"));
+    public void main() throws Throwable {
+        System.out.println(Dami.bus().call("user.demo", "solon").get());
     }
 
     @DamiTopic("user.demo")
-    public static class UserEventListener implements TopicListener<Event<String, String>> {
+    public static class UserEventListener implements CallTopicListener<String, String> {
         @Override
-        public void onEvent(Event<String, String> event) throws Throwable {
-            if (event.requiredReply()) {
-                event.reply("Hi " + event.getContent());
-            }
+        public void onCall(Event<CallPayload<String, String>> event, String content, CompletableFuture<String> receiver) {
+            receiver.complete("Hi " + content);
         }
     }
 }
 ```
 
 
-#### demo81_solon （无依赖实现效果）
+#### demo82_solon （无依赖实现效果）
 
 ```java
-@DamiTopic("event.user")
+@DamiTopic("demo82.event.user")
 public interface EventUserService {
     User getUser(long userId); //方法的主题 = topicMapping + "." + method.getName() //方法不能重名
 }
 
 //通过约定保持与 EventUserService 相同的接口定义（或者实现 EventUserService 接口，这个会带来依赖关系）
-@DamiTopic("event.user")
-public class EventUserServiceListener { // implements EventUserService // 它相当于是个实现类
+@DamiTopic("demo82.event.user")
+public class EventUserServiceImpl { // implements EventUserService // 它相当于是个实现类
     public User getUser(long userId) {
         return new User(userId);
     }
 }
 
 @SolonTest
-public class Demo81 {
+public class Demo82 {
     @Inject
     EventUserService eventUserService;
 
@@ -70,36 +66,38 @@ public class Demo81 {
 ```
 
 
-#### demo82_solon （广播效果）
+#### demo83_solon （广播效果）
 
 ```java
-@DamiTopic("demo82.event.user")
+@DamiTopic("demo83.event.user")
 public interface EventUserNotices {
     void onCreated(long userId, String name);
 }
 
-@DamiTopic("demo82.event.user")
-public class EventUserNoticesListener { // implements EventUserNotices
+@DamiTopic("demo83.event.user")
+public class EventUserNoticesListener {
     public void onCreated(long userId, String name) {
         System.err.println("1-onCreated: userId=" +userId);
     }
 }
 
-@DamiTopic(value="demo82.event.user", index=2) //可以控制监听顺序
+
+@DamiTopic(value = "demo83.event.user", index = 2) //可以控制监听顺序
 public class EventUserNoticesListener2 { // implements EventUserNotices
     public void onCreated(long userId, String name) {
         System.err.println("2-onCreated: userId=" +userId);
     }
 }
 
+
 @SolonTest
-public class Demo82 {
+public class Demo83 {
     @Inject
     EventUserNotices eventUserNotices;
 
     @Test
     public void main() {
-        eventUserNotices.onCreated(82, "noear");
+        eventUserNotices.onCreated(99, "noear");
     }
 }
 ```
