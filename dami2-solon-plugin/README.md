@@ -1,5 +1,5 @@
 
-## dami-solon-plugin 示例
+## dami2-solon-plugin 示例
 
 更多详情，请查看 [src/test/java/features](src/test/java/features)
 
