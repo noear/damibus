@@ -35,7 +35,7 @@ public class ReceivablePayload<D,Rec> implements Serializable {
      *
      */
     public ReceivablePayload(D data, Rec sink) {
-        AssertUtil.notNull(sink, "The data can not be null");
+        AssertUtil.notNull(sink, "The sink can not be null");
 
         this.data = data;
         this.sink = sink;
