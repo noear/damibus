@@ -31,25 +31,25 @@ public interface CallBusExtension extends DamiBusExtension {
     /**
      * 发送调用事件
      */
-    default <C, R> CompletableFuture<R> call(String topic, C content) {
-        return call(topic, content, null);
+    default <D, R> CompletableFuture<R> call(String topic, D data) {
+        return call(topic, data, null);
     }
 
     /**
      * 发送调用事件
      */
-    default <C, R> CompletableFuture<R> call(String topic, C content, Consumer<CompletableFuture<R>> fallback) {
-        return callAsResult(topic, content, fallback).getPayload().getReceiver();
+    default <D, R> CompletableFuture<R> call(String topic, D data, Consumer<CompletableFuture<R>> fallback) {
+        return callAsResult(topic, data, fallback).getPayload().getReceiver();
     }
 
     /**
      * 发送调用事件
      */
-    default <C, R> Result<CallPayload<C, R>> callAsResult(String topic, C content, Consumer<CompletableFuture<R>> fallback) {
+    default <D, R> Result<CallPayload<D, R>> callAsResult(String topic, D data, Consumer<CompletableFuture<R>> fallback) {
         if (fallback == null) {
-            return bus().send(topic, new CallPayload<>(content));
+            return bus().send(topic, new CallPayload<>(data));
         } else {
-            return bus().send(topic, new CallPayload<>(content), r -> {
+            return bus().send(topic, new CallPayload<>(data), r -> {
                 fallback.accept(r.getReceiver());
             });
         }
@@ -61,7 +61,7 @@ public interface CallBusExtension extends DamiBusExtension {
      * @param topic   事件主题
      * @param handler 调用事件处理
      */
-    default <C, R> void listen(String topic, CallEventHandler<C, R> handler) {
+    default <D, R> void listen(String topic, CallEventHandler<D, R> handler) {
         listen(topic, 0, handler);
     }
 
@@ -72,9 +72,9 @@ public interface CallBusExtension extends DamiBusExtension {
      * @param index   顺序位
      * @param handler 调用事件处理
      */
-    default <C, R> void listen(String topic, int index, CallEventHandler<C, R> handler) {
-        bus().<CallPayload<C, R>>listen(topic, index, event -> {
-            handler.onCall(event, event.getPayload().getContent(), event.getPayload().getReceiver());
+    default <D, R> void listen(String topic, int index, CallEventHandler<D, R> handler) {
+        bus().<CallPayload<D, R>>listen(topic, index, event -> {
+            handler.onCall(event, event.getPayload().getData(), event.getPayload().getReceiver());
         });
     }
 }

@@ -23,20 +23,20 @@ import java.util.concurrent.CompletableFuture;
  * @author noear
  * @since 2.0
  */
-public class CallPayload<C,R> extends ReceivablePayload<C, CompletableFuture<R>> {
+public class CallPayload<D,R> extends ReceivablePayload<D, CompletableFuture<R>> {
     /**
-     * @param context 荷载内容
+     * @param data 数据
      */
-    public CallPayload(C context) {
-        super(context, new CompletableFuture<>());
+    public CallPayload(D data) {
+        super(data, new CompletableFuture<>());
     }
 
     /**
-     * @param context  荷载内容
+     * @param data  数据
      * @param receiver 接收器
      */
-    public CallPayload(C context, CompletableFuture<R> receiver) {
-        super(context, receiver);
+    public CallPayload(D data, CompletableFuture<R> receiver) {
+        super(data, receiver);
     }
 
     /**

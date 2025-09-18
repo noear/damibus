@@ -31,21 +31,21 @@ public interface StreamBusExtension extends DamiBusExtension {
     /**
      * 发送流事件
      */
-    default <C, R> Publisher<R> stream(String topic, C content) {
-        return stream(topic, content, null);
+    default <D, R> Publisher<R> stream(String topic, D data) {
+        return stream(topic, data, null);
     }
 
     /**
      * 发送流事件
      */
-    default <C, R> Publisher<R> stream(String topic, C content, Consumer<Subscriber<? super R>> fallback) {
+    default <D, R> Publisher<R> stream(String topic, D data, Consumer<Subscriber<? super R>> fallback) {
         if (fallback == null) {
             return subscriber -> {
-                bus().send(topic, new StreamPayload<>(content, subscriber));
+                bus().send(topic, new StreamPayload<>(data, subscriber));
             };
         } else {
             return subscriber -> {
-                bus().send(topic, new StreamPayload<>(content, subscriber), r -> {
+                bus().send(topic, new StreamPayload<>(data, subscriber), r -> {
                     fallback.accept(r.getReceiver());
                 });
             };
@@ -58,7 +58,7 @@ public interface StreamBusExtension extends DamiBusExtension {
      * @param topic   事件主题
      * @param handler 流事件处理
      */
-    default <C, R> void listen(String topic, StreamEventHandler<C, R> handler) {
+    default <D, R> void listen(String topic, StreamEventHandler<D, R> handler) {
         listen(topic, 0, handler);
     }
 
@@ -69,9 +69,9 @@ public interface StreamBusExtension extends DamiBusExtension {
      * @param index   顺序位
      * @param handler 流事件处理
      */
-    default <C, R> void listen(String topic, int index, StreamEventHandler<C, R> handler) {
-        bus().<StreamPayload<C, R>>listen(topic, index, event -> {
-            handler.onStream(event, event.getAttach(), event.getPayload().getContent(), event.getPayload().getReceiver());
+    default <D, R> void listen(String topic, int index, StreamEventHandler<D, R> handler) {
+        bus().<StreamPayload<D, R>>listen(topic, index, event -> {
+            handler.onStream(event, event.getAttach(), event.getPayload().getData(), event.getPayload().getReceiver());
         });
     }
 }

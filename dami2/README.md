@@ -69,8 +69,8 @@ public class Demo13 {
 
     public static void main(String[] args) {
         //监听流事件
-        Dami.bus().<String, String>listen(topic, (event, i, content, sink) -> {
-            System.err.println(event);
+        Dami.bus().<String, String>listen(topic, (event, i, data, sink) -> {
+            System.err.println(data);
 
             sink.onNext("hello");
         });

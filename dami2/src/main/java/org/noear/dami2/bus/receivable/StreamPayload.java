@@ -23,14 +23,14 @@ import org.reactivestreams.Subscriber;
  * @author noear
  * @since 2.0
  */
-public class StreamPayload<C,R> extends ReceivablePayload<C, Subscriber<R>> {
+public class StreamPayload<D, R> extends ReceivablePayload<D, Subscriber<R>> {
     /**
-     * @param context  荷载内容
+     * @param data     数据
      * @param receiver 接收器
      *
      */
-    public StreamPayload(C context, Subscriber<R> receiver) {
-        super(context, receiver);
+    public StreamPayload(D data, Subscriber<R> receiver) {
+        super(data, receiver);
     }
 
     /**

@@ -25,27 +25,27 @@ import java.io.Serializable;
  * @author noear
  * @since 2.0
  */
-public class ReceivablePayload<C,Rec> implements Serializable {
-    private final C content;
+public class ReceivablePayload<D,Rec> implements Serializable {
+    private final D data;
     private final transient Rec receiver;
 
     /**
-     * @param content  荷载内容
+     * @param data     数据
      * @param receiver 接收器
      *
      */
-    public ReceivablePayload(C content, Rec receiver) {
+    public ReceivablePayload(D data, Rec receiver) {
         AssertUtil.notNull(receiver, "The receiver can not be null");
 
-        this.content = content;
+        this.data = data;
         this.receiver = receiver;
     }
 
     /**
-     * 内容
+     * 数据
      */
-    public C getContent() {
-        return content;
+    public D getData() {
+        return data;
     }
 
     /**

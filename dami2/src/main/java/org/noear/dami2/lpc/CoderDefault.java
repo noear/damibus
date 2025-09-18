@@ -70,7 +70,7 @@ public class CoderDefault implements Coder {
      */
     @Override
     public Object[] decode(Method method, Event event) {
-        Map<String, Object> map = ((CallPayload<Map<String, Object>, Object>) event.getPayload()).getContent();
+        Map<String, Object> map = ((CallPayload<Map<String, Object>, Object>) event.getPayload()).getData();
 
         //构建执行参数（可以与发送者的参数，略有不同）
         Object[] args = new Object[method.getParameterCount()];

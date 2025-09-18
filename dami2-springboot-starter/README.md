@@ -29,8 +29,8 @@ public class Demo91 {
     @DamiTopic("user.demo")
     public static class UserEventListener implements CallTopicListener<String, String> {
         @Override
-        public void onCall(Event<CallPayload<String, String>> event, String content, CompletableFuture<String> receiver) {
-            receiver.complete("Hi " + content);
+        public void onCall(Event<CallPayload<String, String>> event, String data, CompletableFuture<String> receiver) {
+            receiver.complete("Hi " + data);
         }
     }
 }

@@ -24,7 +24,7 @@ public class Demo81_raw {
         public void onEvent(Event<CallPayload<String, String>> event) throws Throwable {
             event.getPayload()
                     .getReceiver()
-                    .complete("Hi " + event.getPayload().getContent());
+                    .complete("Hi " + event.getPayload().getData());
         }
     }
 }

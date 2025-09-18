@@ -19,9 +19,9 @@ public class Demo13 {
     @Test
     public void main() throws Exception {
         //监听事件
-        bus.<String, String>listen(topic, (event, att,content, sink) -> {
+        bus.<String, String>listen(topic, (event, att,data, sink) -> {
             System.out.println(Thread.currentThread());
-            System.err.println(content);
+            System.err.println(data);
 
             sink.onNext("hello");
             sink.onComplete();

@@ -20,27 +20,46 @@ public class Demo00 {
     }
 
     public void case_call() throws Exception {
-        //监听事件
-        Dami.bus().listen(topic, (event, content, receiver) -> {
+        //监听调用事件
+        Dami.bus().listen(topic, (event, data, receiver) -> {
             System.err.println(event.getPayload());
             receiver.complete("hi!");
         });
 
-        //发送事件
+        //发送调用事件
         String rst = Dami.bus().<String, String>call(topic, "hello").get();
     }
 
     public void case_stream() {
-        //监听事件
-        Dami.bus().listen(topic, (event, att, content, receiver) -> {
+        //监听流事件
+        Dami.bus().listen(topic, (event, att, data, receiver) -> {
             System.err.println(event.getPayload());
             receiver.onNext("hi");
             receiver.onComplete();
         });
 
-        //发送事件
+        //发送流事件
         Flux.from(Dami.bus().stream(topic, "hello")).doOnNext(item -> {
             System.err.println(item);
         });
+    }
+
+    public interface UserService {
+        Long getUserId(String name);
+    }
+
+    public class UserServiceImpl {
+        public Long getUserId(String name) {
+            return 99L;
+        }
+    }
+
+    public void case_lpc() {
+        //注册服务实现（监听问答事件）
+        Dami.lpc().registerService("demo", new  UserServiceImpl());
+
+        //生成服务消费者（发送问题事件）
+        UserService userService = Dami.lpc().createConsumer("demo", UserService.class);
+        userService.getUserId("noear");
     }
 }

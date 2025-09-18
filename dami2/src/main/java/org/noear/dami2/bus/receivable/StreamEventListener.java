@@ -25,14 +25,14 @@ import org.noear.dami2.bus.EventListener;
  * @since 2.0
  */
 @FunctionalInterface
-public interface StreamEventListener<C,R> extends EventListener<StreamPayload<C, R>> , StreamEventHandler<C,R> {
+public interface StreamEventListener<D, R> extends EventListener<StreamPayload<D, R>> , StreamEventHandler<D,R> {
     /**
      * 处理监听事件
      *
      * @param event 事件
      */
-    default void onEvent(Event<StreamPayload<C, R>> event) throws Throwable {
+    default void onEvent(Event<StreamPayload<D, R>> event) throws Throwable {
         //之所以4个参数，是为了与 CallEventHandler （个数上）有错开
-        onStream(event, event.getAttach(), event.getPayload().getContent(), event.getPayload().getReceiver());
+        onStream(event, event.getAttach(), event.getPayload().getData(), event.getPayload().getReceiver());
     }
 }

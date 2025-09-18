@@ -48,12 +48,12 @@ public class ConsumerInvocationHandler implements InvocationHandler {
         }
 
         String topic = topicMapping + "." + method.getName();
-        Object content = damiApi.coder().encode(method, args); //
+        Object data = damiApi.coder().encode(method, args); //
 
         Object result = null;
 
 
-        Result<CallPayload<Object, Object>> event = damiApi.bus().callAsResult(topic, content, null);
+        Result<CallPayload<Object, Object>> event = damiApi.bus().callAsResult(topic, data, null);
 
         if (method.getReturnType() == void.class) { //不能用大写的 Void.class（不然对不上）
             //无返回结果

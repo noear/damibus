@@ -27,13 +27,13 @@ import java.util.Map;
  * @since 2.0
  */
 @FunctionalInterface
-public interface StreamEventHandler<C,R> {
+public interface StreamEventHandler<D,R> {
     /**
      * 处理流事件（由 onEvent 转发简化）
      *
      * @param event    事件
-     * @param content  荷载内容
+     * @param data     数据
      * @param receiver 荷载接收器
      */
-    void onStream(Event<StreamPayload<C, R>> event, Map<String, Object> att, C content, Subscriber<R> receiver);
+    void onStream(Event<StreamPayload<D, R>> event, Map<String, Object> att, D data, Subscriber<R> receiver);
 }

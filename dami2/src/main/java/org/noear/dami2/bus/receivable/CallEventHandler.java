@@ -26,13 +26,13 @@ import java.util.concurrent.CompletableFuture;
  * @since 2.0
  */
 @FunctionalInterface
-public interface CallEventHandler<C,R> {
+public interface CallEventHandler<D,R> {
     /**
      * 处理调用事件（可由 onEvent 转发简化）
      *
      * @param event    事件
-     * @param content  荷载内容
-     * @param receiver 荷载接收器
+     * @param data     数据
+     * @param receiver 接收器
      */
-    void onCall(Event<CallPayload<C, R>> event, C content, CompletableFuture<R> receiver);
+    void onCall(Event<CallPayload<D, R>> event, D data, CompletableFuture<R> receiver);
 }

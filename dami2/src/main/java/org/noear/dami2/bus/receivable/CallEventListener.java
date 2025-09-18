@@ -25,13 +25,13 @@ import org.noear.dami2.bus.EventListener;
  * @since 2.0
  */
 @FunctionalInterface
-public interface CallEventListener<C,R> extends EventListener<CallPayload<C, R>>, CallEventHandler<C,R> {
+public interface CallEventListener<D,R> extends EventListener<CallPayload<D, R>>, CallEventHandler<D,R> {
     /**
      * 处理监听事件
      *
      * @param event 事件
      */
-    default void onEvent(Event<CallPayload<C, R>> event) throws Throwable {
-        onCall(event, event.getPayload().getContent(), event.getPayload().getReceiver());
+    default void onEvent(Event<CallPayload<D, R>> event) throws Throwable {
+        onCall(event, event.getPayload().getData(), event.getPayload().getReceiver());
     }
 }
