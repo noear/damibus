@@ -32,8 +32,11 @@ public interface StreamEventHandler<D,R> {
      * 处理流事件（由 onEvent 转发简化）
      *
      * @param event 事件
+     * @param att   附件
      * @param data  数据
      * @param sink  接收器（subscriber）
      */
     void onStream(Event<StreamPayload<D, R>> event, Map<String, Object> att, D data, Subscriber<R> sink);
+
+    //（4个参数，是为了与 CallEventHandler （个数上）有错开。便于工具推导）
 }
