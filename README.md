@@ -114,22 +114,19 @@ public class Deom11 {
 public class Demo12 {
     static String topic = "demo.hello";
 
-    public static void main(String[] args) {
-        //监听事件
-        Dami.<CallPayload<String,String>>bus().listen(topic, event -> {
+    public static void main(String[] args) throws Exception {
+        //监听事件（调用事件）
+        Dami.bus().<String, String>onCall(topic, (event, content, receiver) -> {
             System.err.println(event);
 
-            event.getPayload().getResponse().complete("hi!");
+            receiver.complete("hi!");
         });
 
 
-        //发送事件 //要求有答复（即，返回值）
-        String rst1 = Dami.<CallPayload<String,String>>bus().send(topic, new CallPayload<>("world"))
-                .getPayload()
-                .getResponse()
-                .get();
-        //发送事件 //要求有答复（即，返回值） //支持应急处理（或降级处理）（没有订阅时触发时）
-        //String rst1 = Dami.<CallPayload<String,String>>bus().send(topic, new CallPayload<>("world"), r -> r.getResponse().complete("def"))...;
+        //发送事件（调用）
+        String rst1 = Dami.bus().<String, String>call(topic, "world").get();
+        //发送事件（调用） //支持应急处理（或降级处理）（没有订阅时触发时）
+        //String rst1 = Dami.bus().<String, String>call(topic, "world", r -> r.complete("def")).get();
         System.out.println(rst1);
     }
 }

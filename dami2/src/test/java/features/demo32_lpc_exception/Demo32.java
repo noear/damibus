@@ -1,7 +1,7 @@
-package features.demo32_api_exception;
+package features.demo32_lpc_exception;
 
-import features.demo32_api_exception.module1.EventUserListenerOfModule1;
-import features.demo32_api_exception.module2.EventUser;
+import features.demo32_lpc_exception.module1.EventUserListenerOfModule1;
+import features.demo32_lpc_exception.module2.EventUser;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami2.lpc.DamiLpc;

@@ -1,7 +1,7 @@
-package features.demo31_api;
+package features.demo31_lpc;
 
-import features.demo31_api.module1.EventUserListener1;
-import features.demo31_api.module2.EventUser;
+import features.demo31_lpc.module1.UserServiceImpl;
+import features.demo31_lpc.module2.UserService;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami2.lpc.DamiLpc;
@@ -17,12 +17,12 @@ public class Demo31 {
 
     @Test
     public void main() {
-        //注册监听器
-        EventUserListener1 userEventListener = new EventUserListener1();
+        //注册服务实现
+        UserServiceImpl userEventListener = new UserServiceImpl();
         lpc.registerService(topicMapping, userEventListener);
 
-        //生成发送器
-        EventUser eventUser = lpc.createConsumer(topicMapping, EventUser.class);
+        //创建服务消费者（接口代理）
+        UserService eventUser = lpc.createConsumer(topicMapping, UserService.class);
 
         //发送测试
         eventUser.onCreated(1L, "noear");
