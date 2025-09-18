@@ -59,12 +59,12 @@ DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模�
 
 ### 与常见的 EventBus、ApiBean 的区别
 
-|    | DamiBus | EventBus | Api | DamiBus 的情况说明                                                      |
-|----|------|----------|-----|--------------------------------------------------------------------|
-| 广播 | 有    | 有        | 无   | 发送(send) + 监听(listen)<br/>以及 Api 模式                                |
-| 请求 | 有    | 无        | 有   | 请求(send(RequestPayload)) + 监听(listen) + 答复(response)<br/>以及 Api 模式 |
-| 订阅 | 有    | 无        | 无   | 请求(send(SubscribePayload)) + 监听(listen) + 答复(subscriber)<br/>以及 Api 模式      |
-| 耦合 | 弱-   | 弱+       | 强++ |                                                                    |
+|    | DamiBus | EventBus | Api | DamiBus 的情况说明                                         |
+|----|------|----------|-----|-------------------------------------------------------|
+| 广播 | 有    | 有        | 无   | 发送(send) + 监听(listen)<br/>以及 Api 模式                   |
+| 请求 | 有    | 无        | 有   | 请求(call) + 监听(listen) + 答复(response)<br/>以及 Api 模式    |
+| 流式 | 有    | 无        | 无   | 请求(stream) + 监听(listen) + 答复(subscriber)<br/>以及 Api 模式 |
+| 耦合 | 弱-   | 弱+       | 强++ |                                                       |
 
 
 ### 依赖配置
@@ -116,7 +116,7 @@ public class Demo12 {
 
     public static void main(String[] args) {
         //监听事件
-        Dami.<RequestPayload<String,String>>bus().listen(topic, event -> {
+        Dami.<CallPayload<String,String>>bus().listen(topic, event -> {
             System.err.println(event);
 
             event.getPayload().getResponse().complete("hi!");
@@ -124,12 +124,12 @@ public class Demo12 {
 
 
         //发送事件 //要求有答复（即，返回值）
-        String rst1 = Dami.<RequestPayload<String,String>>bus().send(topic, new RequestPayload<>("world"))
+        String rst1 = Dami.<CallPayload<String,String>>bus().send(topic, new CallPayload<>("world"))
                 .getPayload()
                 .getResponse()
                 .get();
         //发送事件 //要求有答复（即，返回值） //支持应急处理（或降级处理）（没有订阅时触发时）
-        //String rst1 = Dami.<RequestPayload<String,String>>bus().send(topic, new RequestPayload<>("world"), r -> r.getResponse().complete("def"))...;
+        //String rst1 = Dami.<CallPayload<String,String>>bus().send(topic, new CallPayload<>("world"), r -> r.getResponse().complete("def"))...;
         System.out.println(rst1);
     }
 }

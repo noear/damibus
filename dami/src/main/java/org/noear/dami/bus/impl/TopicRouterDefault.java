@@ -15,7 +15,7 @@
  */
 package org.noear.dami.bus.impl;
 
-import org.noear.dami.api.impl.MethodTopicListener;
+import org.noear.dami.lpc.impl.MethodTopicListener;
 import org.noear.dami.bus.Event;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.TopicListenerHolder;

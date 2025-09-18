@@ -2,7 +2,7 @@ package org.noear.dami.spring.boot;
 
 import org.noear.dami.Dami;
 import org.noear.dami.DamiConfig;
-import org.noear.dami.api.Coder;
+import org.noear.dami.lpc.Coder;
 import org.noear.dami.bus.Interceptor;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.exception.DamiException;
@@ -36,7 +36,7 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
                 Dami.bus().unlisten(topicMapping, (TopicListener) bean);
             } else {
                 //否则使用api移除
-                Dami.api().unregisterListener(topicMapping, bean);
+                Dami.lpc().unregisterService(topicMapping, bean);
             }
         }
     }
@@ -65,7 +65,7 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
                 Dami.bus().listen(topicMapping, damiTopic.index(), (TopicListener) bean);
             } else {
                 //否则使用api注册
-                Dami.api().registerListener(topicMapping, damiTopic.index(), bean);
+                Dami.lpc().registerService(topicMapping, damiTopic.index(), bean);
             }
         }
 

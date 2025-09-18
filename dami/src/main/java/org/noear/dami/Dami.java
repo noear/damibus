@@ -15,8 +15,8 @@
  */
 package org.noear.dami;
 
-import org.noear.dami.api.DamiApi;
-import org.noear.dami.api.DamiApiImpl;
+import org.noear.dami.lpc.DamiLpc;
+import org.noear.dami.lpc.DamiLpcImpl;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
 
@@ -28,7 +28,7 @@ import org.noear.dami.bus.DamiBusImpl;
  */
 public class Dami {
     static DamiBus bus = new DamiBusImpl();
-    static DamiApi api = new DamiApiImpl(Dami::bus);
+    static DamiLpc lpc = new DamiLpcImpl(Dami::bus);
 
     /**
      * 总线界面
@@ -40,8 +40,8 @@ public class Dami {
     /**
      * 接口界面
      */
-    public static DamiApi api() {
-        return api;
+    public static DamiLpc lpc() {
+        return lpc;
     }
 
     /// ///////////////////
@@ -56,7 +56,7 @@ public class Dami {
     /**
      * 新建接口界面
      */
-    public static DamiApi newApi() {
-        return new DamiApiImpl(newBus());
+    public static DamiLpc newLpc() {
+        return new DamiLpcImpl(newBus());
     }
 }

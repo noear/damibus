@@ -3,7 +3,7 @@ package features.demo11_send;
 import org.junit.jupiter.api.Test;
 import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.payload.SubscribePayload;
+import org.noear.dami.bus.receivable.StreamPayload;
 import org.noear.solon.rx.SimpleSubscriber;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,7 +19,7 @@ public class Demo11_rx {
         AtomicInteger testObserver = new AtomicInteger();
 
         //监听事件
-        bus.<SubscribePayload<String, String>>listen(topic, event -> {
+        bus.<StreamPayload<String, String>>listen(topic, event -> {
             System.err.println(event);
             event.getPayload().getReceiver().onNext("hello");
             testObserver.incrementAndGet();
@@ -27,7 +27,7 @@ public class Demo11_rx {
 
 
         //发送事件
-        bus.send(topic, new SubscribePayload<>("world", new SimpleSubscriber<String>()
+        bus.send(topic, new StreamPayload<>("world", new SimpleSubscriber<String>()
                 .doOnNext(item -> {
                     System.err.println(item);
                 })));

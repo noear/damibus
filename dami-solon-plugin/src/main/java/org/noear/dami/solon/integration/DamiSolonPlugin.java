@@ -17,7 +17,7 @@ package org.noear.dami.solon.integration;
 
 import org.noear.dami.Dami;
 import org.noear.dami.DamiConfig;
-import org.noear.dami.api.Coder;
+import org.noear.dami.lpc.Coder;
 import org.noear.dami.bus.Interceptor;
 import org.noear.dami.solon.DamiTopicBeanBuilder;
 import org.noear.dami.solon.annotation.DamiTopic;

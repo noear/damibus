@@ -13,34 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.api.impl;
+package org.noear.dami.lpc;
+
+import org.noear.dami.bus.Event;
+
+import java.lang.reflect.Method;
 
 /**
- * 方法主题监听器记录
+ * 编码器
  *
  * @author noear
  * @since 1.0
  */
-public class MethodTopicListenerRecord {
-    private String topic;
-    private MethodTopicListener listener;
-
-    public MethodTopicListenerRecord(String topic, MethodTopicListener listener) {
-        this.topic = topic;
-        this.listener = listener;
-    }
+public interface Coder {
+    /**
+     * 编码
+     *
+     * @param method 方法
+     * @param args   参数
+     * @return 负载内容
+     */
+    Object encode(Method method, Object[] args) throws Throwable;
 
     /**
-     * 主题
-     * */
-    public String getTopic() {
-        return topic;
-    }
-
-    /**
-     * 方法主题监听器
-     * */
-    public MethodTopicListener getListener() {
-        return listener;
-    }
+     * 解码
+     *
+     * @param method  方法
+     * @param event 负载
+     * @return 方法参数
+     */
+    Object[] decode(Method method, Event event) throws Throwable;
 }

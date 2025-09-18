@@ -15,9 +15,9 @@
  */
 package org.noear.dami;
 
-import org.noear.dami.api.Coder;
-import org.noear.dami.api.DamiApi;
-import org.noear.dami.api.DamiApiConfigurator;
+import org.noear.dami.lpc.Coder;
+import org.noear.dami.lpc.DamiLpc;
+import org.noear.dami.lpc.DamiLpcConfigurator;
 import org.noear.dami.bus.*;
 
 /**
@@ -68,7 +68,7 @@ public class DamiConfig {
      */
     public static void configure(Coder coder) {
         if (coder != null) {
-            ((DamiApiConfigurator) Dami.api).coder(coder);
+            ((DamiLpcConfigurator) Dami.lpc).coder(coder);
         }
     }
 
@@ -88,9 +88,9 @@ public class DamiConfig {
      *
      * @param api 接口实例
      */
-    public static void configure(DamiApi api) {
+    public static void configure(DamiLpc api) {
         if (api != null) {
-            Dami.api = api;
+            Dami.lpc = api;
         }
     }
 }

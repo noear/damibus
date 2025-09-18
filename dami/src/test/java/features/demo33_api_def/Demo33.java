@@ -2,8 +2,8 @@ package features.demo33_api_def;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.annotation.Param;
-import org.noear.dami.api.DamiApi;
-import org.noear.dami.api.DamiApiImpl;
+import org.noear.dami.lpc.DamiLpc;
+import org.noear.dami.lpc.DamiLpcImpl;
 import org.noear.dami.bus.DamiBus;
 import org.noear.dami.bus.DamiBusImpl;
 import org.noear.dami.exception.DamiException;
@@ -12,12 +12,12 @@ public class Demo33 {
     static String topicMapping = "demo.user";
     //定义实例，避免单测干扰 //开发时用：Dami.api()
     DamiBus bus = new DamiBusImpl();
-    DamiApi api = new DamiApiImpl(bus);
+    DamiLpc api = new DamiLpcImpl(bus);
 
     @Test
     public void main() {
-        api.registerListener(topicMapping, new EventDemoImpl());
-        EventDemo eventDemo = api.createSender(topicMapping, EventDemo.class);
+        api.registerService(topicMapping, new EventDemoImpl());
+        EventDemo eventDemo = api.createConsumer(topicMapping, EventDemo.class);
         assert eventDemo.demo1() == 1; //有默认返回值
         eventDemo.demo2();
 

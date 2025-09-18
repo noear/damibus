@@ -13,27 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.bus.payload;
-
-import java.util.concurrent.CompletableFuture;
+package org.noear.dami.bus;
 
 /**
- * 请求核载
+ * 大米总线扩展
  *
  * @author noear
  * @since 2.0
  */
-public class RequestPayload<C,R> extends ReceivePayload<C,CompletableFuture<R>> {
-    public RequestPayload(C content) {
-        this(content, new CompletableFuture<>());
-    }
-
-    public RequestPayload(C content, CompletableFuture<R> responseFuture) {
-        super(content, responseFuture);
-    }
-
-    @Override
-    public CompletableFuture<R> getReceiver() {
-        return super.getReceiver();
-    }
+public interface DamiBusExtension {
+    /**
+     * 获取总线
+     */
+    DamiBus bus();
 }

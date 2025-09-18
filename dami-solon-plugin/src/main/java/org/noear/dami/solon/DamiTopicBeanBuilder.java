@@ -32,7 +32,7 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, DamiTopic anno) throws Throwable {
         if (clz.isInterface()) {
-            Object raw = Dami.api().createSender(anno.value(), clz);
+            Object raw = Dami.lpc().createConsumer(anno.value(), clz);
             bw.context().wrapAndPut(clz, raw);
         } else {
             //增加代理支持
@@ -41,7 +41,7 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
             if (TopicListener.class.isAssignableFrom(clz)) {
                 Dami.bus().listen(anno.value(), anno.index(), bw.raw());
             } else {
-                Dami.api().registerListener(anno.value(), anno.index(), bw.raw());
+                Dami.lpc().registerService(anno.value(), anno.index(), bw.raw());
             }
 
             lifecycleWrap(bw, anno.value());

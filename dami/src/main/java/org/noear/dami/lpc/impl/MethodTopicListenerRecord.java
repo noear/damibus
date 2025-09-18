@@ -13,19 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.api;
+package org.noear.dami.lpc.impl;
 
 /**
- * 大米接口配置器
+ * 方法主题监听器记录
  *
  * @author noear
  * @since 1.0
  */
-public interface DamiApiConfigurator extends  DamiApi{
+public class MethodTopicListenerRecord {
+    private String topic;
+    private MethodTopicListener listener;
+
+    public MethodTopicListenerRecord(String topic, MethodTopicListener listener) {
+        this.topic = topic;
+        this.listener = listener;
+    }
+
     /**
-     * 设置编码器
-     *
-     * @param coder 编码器
-     */
-    DamiApiConfigurator coder(Coder coder);
+     * 主题
+     * */
+    public String getTopic() {
+        return topic;
+    }
+
+    /**
+     * 方法主题监听器
+     * */
+    public MethodTopicListener getListener() {
+        return listener;
+    }
 }

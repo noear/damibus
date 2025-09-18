@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.api.impl;
+package org.noear.dami.lpc.impl;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;

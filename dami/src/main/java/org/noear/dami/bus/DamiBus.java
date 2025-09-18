@@ -15,11 +15,9 @@
  */
 package org.noear.dami.bus;
 
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
+import org.noear.dami.bus.receivable.DamiBusCall;
+import org.noear.dami.bus.receivable.DamiBusStream;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -28,7 +26,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  */
-public interface DamiBus {
+public interface DamiBus extends DamiBusExtension, DamiBusCall, DamiBusStream {
     /**
      * 拦截
      *
@@ -50,7 +48,7 @@ public interface DamiBus {
      * 发送（不需要答复）
      *
      * @param topic   主题
-     * @param payload 核载
+     * @param payload 荷载
      * @return 结果
      */
     default <P> Result<P> send(final String topic, final P payload) {
@@ -61,7 +59,7 @@ public interface DamiBus {
      * 发送（不需要答复）
      *
      * @param topic    主题
-     * @param payload  核载
+     * @param payload  荷载
      * @param fallback 应急处理（当没有订阅时执行）
      * @return 结果
      */
@@ -106,48 +104,4 @@ public interface DamiBus {
      * 路由器
      */
     TopicRouter router();
-
-    /// ///////////////////////////
-
-    /// /////////////////
-
-    /**
-     * 调用
-     */
-    default <C, R> CompletableFuture<R> call(String topic, C content) {
-        return call(topic, content, null);
-    }
-
-    /**
-     * 调用
-     *
-     * @param fallback 应用处理（或降级处理）
-     */
-    <C, R> CompletableFuture<R> call(String topic, C content, Consumer<CompletableFuture<R>> fallback);
-
-    /**
-     * 当调用时
-     */
-    <C, R> void onCall(String topic, BiConsumer<C, CompletableFuture<R>> consumer);
-
-    /// ////////////////
-
-    /**
-     * 流
-     */
-    default <C, R> Publisher<R> stream(String topic, C content) {
-        return stream(topic, content, null);
-    }
-
-    /**
-     * 流
-     *
-     * @param fallback 应用处理（或降级处理）
-     */
-    <C, R> Publisher<R> stream(String topic, C content, Consumer<Subscriber<? super R>> fallback);
-
-    /**
-     * 当流时
-     */
-    <C, R> void onStream(String topic, BiConsumer<C, Subscriber<? super R>> consumer);
 }

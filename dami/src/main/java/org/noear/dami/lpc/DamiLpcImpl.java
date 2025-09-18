@@ -13,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.api;
+package org.noear.dami.lpc;
 
 import org.noear.dami.Dami;
-import org.noear.dami.api.impl.MethodTopicListener;
-import org.noear.dami.api.impl.MethodTopicListenerRecord;
-import org.noear.dami.api.impl.SenderInvocationHandler;
+import org.noear.dami.lpc.impl.MethodTopicListener;
+import org.noear.dami.lpc.impl.MethodTopicListenerRecord;
+import org.noear.dami.lpc.impl.SenderInvocationHandler;
 import org.noear.dami.bus.DamiBus;
-import org.noear.dami.bus.payload.RequestPayload;
-import org.noear.dami.bus.payload.SubscribePayload;
 import org.noear.dami.exception.DamiException;
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,17 +30,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 /**
+ * 大米本地过程调用实现
+ *
  * @author noear
  * @since 1.0
  */
-public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
-    static final Logger log = LoggerFactory.getLogger(DamiApiImpl.class);
+public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
+    static final Logger log = LoggerFactory.getLogger(DamiLpcImpl.class);
 
     /**
      * 监听器缓存（注销时用）
@@ -62,15 +58,15 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
      */
     private final Supplier<DamiBus> busSupplier;
 
-    public DamiApiImpl() {
+    public DamiLpcImpl() {
         this(() -> Dami.bus());
     }
 
-    public DamiApiImpl(DamiBus bus) {
+    public DamiLpcImpl(DamiBus bus) {
         this(() -> bus);
     }
 
-    public DamiApiImpl(Supplier<DamiBus> busSupplier) {
+    public DamiLpcImpl(Supplier<DamiBus> busSupplier) {
         this.busSupplier = busSupplier;
     }
 
@@ -81,7 +77,7 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
      * @param coder 编码器
      */
     @Override
-    public DamiApiConfigurator coder(Coder coder) {
+    public DamiLpcConfigurator coder(Coder coder) {
         if (coder != null) {
             this.coder = coder;
         }
@@ -109,14 +105,14 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
      * 创建发送器代理
      *
      * @param topicMapping 主题映射
-     * @param senderClz    发送器接口类
+     * @param consumerApi  消费者接口
      */
     @Override
-    public <T> T createSender(String topicMapping, Class<T> senderClz) {
-        Object tmp = Proxy.newProxyInstance(senderClz.getClassLoader(), new Class[]{senderClz}, new SenderInvocationHandler(this, senderClz, topicMapping));
+    public <T> T createConsumer(String topicMapping, Class<T> consumerApi) {
+        Object tmp = Proxy.newProxyInstance(consumerApi.getClassLoader(), new Class[]{consumerApi}, new SenderInvocationHandler(this, consumerApi, topicMapping));
 
         if (log.isDebugEnabled()) {
-            log.debug("This sender created successfully(@{}.*): {}", topicMapping, senderClz.getName());
+            log.debug("This sender created successfully(@{}.*): {}", topicMapping, consumerApi.getName());
         }
 
         return (T) tmp;
@@ -127,27 +123,27 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
      *
      * @param topicMapping 主题映射
      * @param index        顺序位
-     * @param listenerObj  监听器实现类
+     * @param serviceObj   服务实现类
      */
     @Override
-    public void registerListener(String topicMapping, int index, Object listenerObj) {
-        Class<?> listenerClz = listenerObj.getClass();
+    public void registerService(String topicMapping, int index, Object serviceObj) {
+        Class<?> serviceClz = serviceObj.getClass();
 
         LISTENERMAP_LOCK.lock();
         try {
             //防止重复注册
-            if (listenerMap.containsKey(listenerClz)) {
-                throw new DamiException("This listener is registered: " + listenerClz.getName());
+            if (listenerMap.containsKey(serviceClz)) {
+                throw new DamiException("This listener is registered: " + serviceClz.getName());
             }
 
             //开始注册
             List<MethodTopicListenerRecord> listenerRecords = new ArrayList<>();
 
-            for (Method m1 : findMethods(listenerClz)) {
+            for (Method m1 : findMethods(serviceClz)) {
                 //不能是 Object 申明的方法
                 if (m1.getDeclaringClass() != Object.class) {
                     String topic = getMethodTopic(topicMapping, m1.getName());
-                    MethodTopicListener listener = new MethodTopicListener(this, listenerObj, m1);
+                    MethodTopicListener listener = new MethodTopicListener(this, serviceObj, m1);
 
                     listenerRecords.add(new MethodTopicListenerRecord(topic, listener));
                     bus().listen(topic, index, listener);
@@ -155,13 +151,13 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
             }
 
             //为了注销时，移掉对应的实例
-            listenerMap.put(listenerClz, listenerRecords);
+            listenerMap.put(serviceClz, listenerRecords);
         } finally {
             LISTENERMAP_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("This listener registered successfully(@{}.*): {}", topicMapping, listenerObj.getClass().getName());
+            log.debug("This listener registered successfully(@{}.*): {}", topicMapping, serviceObj.getClass().getName());
         }
     }
 
@@ -169,13 +165,13 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
      * 取消注册监听者实例
      *
      * @param topicMapping 主题映射
-     * @param listenerObj  监听器实现类
+     * @param serviceObj   服务实现类
      */
     @Override
-    public void unregisterListener(String topicMapping, Object listenerObj) {
+    public void unregisterService(String topicMapping, Object serviceObj) {
         LISTENERMAP_LOCK.lock();
         try {
-            List<MethodTopicListenerRecord> tmp = listenerMap.remove(listenerObj.getClass());
+            List<MethodTopicListenerRecord> tmp = listenerMap.remove(serviceObj.getClass());
 
             if (tmp != null) {
                 for (MethodTopicListenerRecord r1 : tmp) {
@@ -187,16 +183,16 @@ public class DamiApiImpl implements DamiApi, DamiApiConfigurator {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("This listener unregistered successfully(@{}.*): {}", topicMapping, listenerObj.getClass().getName());
+            log.debug("This listener unregistered successfully(@{}.*): {}", topicMapping, serviceObj.getClass().getName());
         }
     }
 
     /**
      * 获取方法
      */
-    protected Method[] findMethods(Class<?> listenerClz) {
+    protected Method[] findMethods(Class<?> serviceClz) {
         //只用公有的方法（支持承断） //old::只用自己申明的方法（不支持承断）
-        return listenerClz.getMethods();
+        return serviceClz.getMethods();
     }
 
     /**

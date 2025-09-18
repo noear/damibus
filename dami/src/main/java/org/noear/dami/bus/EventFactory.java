@@ -26,7 +26,7 @@ public interface EventFactory<P> {
      * 创建
      *
      * @param topic    主题
-     * @param payload  核载
+     * @param payload  荷载
      */
     Event<P> create(final String topic, final P payload);
 }

@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.api.impl;
+package org.noear.dami.lpc.impl;
 
-import org.noear.dami.api.DamiApi;
+import org.noear.dami.bus.receivable.CallPayload;
+import org.noear.dami.bus.receivable.ReceivablePayload;
+import org.noear.dami.lpc.DamiLpc;
 import org.noear.dami.bus.Result;
-import org.noear.dami.bus.payload.RequestPayload;
 import org.noear.dami.exception.DamiNoListenException;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 发送者接口的调用代理
@@ -30,11 +32,11 @@ import java.lang.reflect.Method;
  * @since 1.0
  */
 public class SenderInvocationHandler implements InvocationHandler {
-    private final DamiApi damiApi;
+    private final DamiLpc damiApi;
     private Class<?> interfaceClz;
     private final String topicMapping;
 
-    public SenderInvocationHandler(DamiApi damiApi, Class<?> interfaceClz, String topicMapping) {
+    public SenderInvocationHandler(DamiLpc damiApi, Class<?> interfaceClz, String topicMapping) {
         this.damiApi = damiApi;
         this.interfaceClz = interfaceClz;
         this.topicMapping = topicMapping;
@@ -51,7 +53,10 @@ public class SenderInvocationHandler implements InvocationHandler {
         Object content = damiApi.coder().encode(method, args); //
 
         Object result = null;
-        Result<RequestPayload> event = damiApi.bus().send(topic, new RequestPayload(content));
+
+
+
+        Result<CallPayload<Object,Object>> event = damiApi.bus().callAsResult(topic, content, null);
 
         if (method.getReturnType() == void.class) { //不能用大写的 Void.class（不然对不上）
             if (event.getHandled() == false) {

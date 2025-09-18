@@ -13,34 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.bus.payload;
-
-import org.noear.dami.bus.AssertUtil;
-
-import java.io.Serializable;
+package org.noear.dami.lpc;
 
 /**
- * 可接收核载
+ * 大米接口配置器
  *
  * @author noear
- * @since 2.0
+ * @since 1.0
  */
-public class ReceivePayload<C,Rec> implements Serializable {
-    private final C context;
-    private final transient Rec receiver;
-
-    public ReceivePayload(C context, Rec receiver) {
-        AssertUtil.notNull(receiver, "The receiver can not be null");
-
-        this.context = context;
-        this.receiver = receiver;
-    }
-
-    public C getContext() {
-        return context;
-    }
-
-    public Rec getReceiver() {
-        return receiver;
-    }
+public interface DamiLpcConfigurator extends DamiLpc {
+    /**
+     * 设置编码器
+     *
+     * @param coder 编码器
+     */
+    DamiLpcConfigurator coder(Coder coder);
 }

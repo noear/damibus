@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.api.impl;
+package org.noear.dami.lpc.impl;
 
-import org.noear.dami.api.DamiApi;
+import org.noear.dami.bus.receivable.CallPayload;
+import org.noear.dami.lpc.DamiLpc;
 import org.noear.dami.bus.TopicListener;
 import org.noear.dami.bus.Event;
-import org.noear.dami.bus.payload.RequestPayload;
 
 import java.lang.reflect.Method;
 
@@ -28,19 +28,19 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.0
  */
-public class MethodTopicListener implements TopicListener<Event<RequestPayload>> {
-    private DamiApi damiApi;
+public class MethodTopicListener implements TopicListener<Event<CallPayload>> {
+    private DamiLpc damiApi;
     private Object target;
     private Method method;
 
-    public MethodTopicListener(DamiApi damiApi, Object target, Method method) {
+    public MethodTopicListener(DamiLpc damiApi, Object target, Method method) {
         this.damiApi = damiApi;
         this.target = target;
         this.method = method;
     }
 
     @Override
-    public void onEvent(Event<RequestPayload> event) throws Throwable {
+    public void onEvent(Event<CallPayload> event) throws Throwable {
         //解码
         Object[] args = damiApi.coder().decode(method, event);
 

@@ -16,13 +16,7 @@
 package org.noear.dami.bus;
 
 import org.noear.dami.bus.impl.*;
-import org.noear.dami.bus.payload.RequestPayload;
-import org.noear.dami.bus.payload.SubscribePayload;
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -97,7 +91,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * 发送（不需要答复）
      *
      * @param topic    主题
-     * @param payload  核载
+     * @param payload  荷载
      * @param fallback 应急处理（当没有订阅时执行）
      * @return 结果
      */
@@ -159,61 +153,8 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
         return this.router;
     }
 
-    /// ////////////////////////
-
-    /**
-     * 调用
-     */
     @Override
-    public <C, R> CompletableFuture<R> call(String topic, C content, Consumer<CompletableFuture<R>> fallback) {
-        if (fallback == null) {
-            return this.<RequestPayload<C, R>>send(topic, new RequestPayload<>(content))
-                    .getPayload()
-                    .getReceiver();
-        } else {
-            return this.<RequestPayload<C, R>>send(topic, new RequestPayload<>(content), r -> {
-                        fallback.accept(r.getReceiver());
-                    })
-                    .getPayload()
-                    .getReceiver();
-        }
-    }
-
-    /**
-     * 处理
-     */
-    @Override
-    public <C, R> void onCall(String topic, BiConsumer<C, CompletableFuture<R>> consumer) {
-        this.<RequestPayload<C, R>>listen(topic, msg -> {
-            consumer.accept(msg.getPayload().getContext(), msg.getPayload().getReceiver());
-        });
-    }
-
-    /**
-     * 流
-     */
-    @Override
-    public <C, R> Publisher<R> stream(String topic, C content, Consumer<Subscriber<? super R>> fallback) {
-        if (fallback == null) {
-            return subscriber -> {
-                this.<SubscribePayload<C, R>>send(topic, new SubscribePayload<>(content, subscriber));
-            };
-        } else {
-            return subscriber -> {
-                this.<SubscribePayload<C, R>>send(topic, new SubscribePayload<>(content, subscriber), r -> {
-                    fallback.accept(r.getReceiver());
-                });
-            };
-        }
-    }
-
-    /**
-     * 提供（流）
-     */
-    @Override
-    public <C, R> void onStream(String topic, BiConsumer<C, Subscriber<? super R>> consumer) {
-        this.<SubscribePayload<C, R>>listen(topic, event -> {
-            consumer.accept(event.getPayload().getContext(), event.getPayload().getReceiver());
-        });
+    public DamiBus bus() {
+        return this;
     }
 }

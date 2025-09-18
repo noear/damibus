@@ -40,7 +40,7 @@ public interface Result<P> {
     String getTopic();
 
     /**
-     * 核载
+     * 荷载
      */
     P getPayload();
 }

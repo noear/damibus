@@ -38,7 +38,7 @@ public class EventDefault<P> implements Event<P>, Serializable {
 
     /**
      * @param topic 主题
-     * @param payload 核载
+     * @param payload 荷载
      * */
     public EventDefault(final String topic, final P payload) {
         this.topic = topic;
@@ -93,7 +93,7 @@ public class EventDefault<P> implements Event<P>, Serializable {
     }
 
     /**
-     * 核载
+     * 荷载
      */
     @Override
     public P getPayload() {

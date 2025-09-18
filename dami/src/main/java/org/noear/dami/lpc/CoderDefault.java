@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.api;
+package org.noear.dami.lpc;
 
 import org.noear.dami.annotation.Param;
 import org.noear.dami.bus.Event;
-import org.noear.dami.bus.payload.RequestPayload;
+import org.noear.dami.bus.receivable.CallPayload;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -70,7 +70,7 @@ public class CoderDefault implements Coder {
      */
     @Override
     public Object[] decode(Method method, Event event) {
-        Map<String, Object> map = ((RequestPayload<Map<String, Object>, Object>) event.getPayload()).getContext();
+        Map<String, Object> map = ((CallPayload<Map<String, Object>, Object>) event.getPayload()).getContext();
 
         //构建执行参数（可以与发送者的参数，略有不同）
         Object[] args = new Object[method.getParameterCount()];

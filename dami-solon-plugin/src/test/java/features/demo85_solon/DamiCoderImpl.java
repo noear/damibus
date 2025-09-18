@@ -1,7 +1,7 @@
 package features.demo85_solon;
 
-import org.noear.dami.api.Coder;
-import org.noear.dami.api.CoderDefault;
+import org.noear.dami.lpc.Coder;
+import org.noear.dami.lpc.CoderDefault;
 import org.noear.dami.bus.Event;
 import org.noear.solon.annotation.Component;
 

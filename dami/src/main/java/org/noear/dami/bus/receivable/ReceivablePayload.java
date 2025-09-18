@@ -13,49 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami.bus;
+package org.noear.dami.bus.receivable;
+
+import org.noear.dami.bus.AssertUtil;
 
 import java.io.Serializable;
 
 /**
- * 事件
+ * 可接收的荷载
  *
  * @author noear
- * @since 1.0
+ * @since 2.0
  */
-public interface Event<P> extends Result<P>, Serializable {
+public class ReceivablePayload<C,Rec> implements Serializable {
+    private final C context;
+    private final transient Rec receiver;
+
     /**
-     * 获取附件
+     * @param context  荷载内容
+     * @param receiver 接收器
      *
-     * @param key 关键字
      */
-    <T> T getAttachment(String key);
+    public ReceivablePayload(C context, Rec receiver) {
+        AssertUtil.notNull(receiver, "The receiver can not be null");
+
+        this.context = context;
+        this.receiver = receiver;
+    }
 
     /**
-     * 设置附件
+     * 荷载内容
      *
-     * @param key   关键字
-     * @param value 值
      */
-    <T> void setAttachment(String key, T value);
+    public C getContext() {
+        return context;
+    }
 
     /**
-     * 设置处理标识
+     * 接收器
      */
-    void setHandled();
-
-    /**
-     * 获取处理标识（是否已处理）
-     */
-    boolean getHandled();
-
-    /**
-     * 主题
-     */
-    String getTopic();
-
-    /**
-     * 荷载
-     */
-    P getPayload();
+    public Rec getReceiver() {
+        return receiver;
+    }
 }
