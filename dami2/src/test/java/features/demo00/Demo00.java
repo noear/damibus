@@ -21,9 +21,9 @@ public class Demo00 {
 
     public void case_call() throws Exception {
         //监听调用事件
-        Dami.bus().listen(topic, (event, data, receiver) -> {
-            System.err.println(event.getPayload());
-            receiver.complete("hi!");
+        Dami.bus().listen(topic, (event, data, future) -> {
+            System.err.println(data);
+            future.complete("hi!");
         });
 
         //发送调用事件
@@ -32,14 +32,14 @@ public class Demo00 {
 
     public void case_stream() {
         //监听流事件
-        Dami.bus().listen(topic, (event, att, data, receiver) -> {
-            System.err.println(event.getPayload());
-            receiver.onNext("hi");
-            receiver.onComplete();
+        Dami.bus().<String, String>listen(topic, (event, att, data, subscriber) -> {
+            System.err.println(data);
+            subscriber.onNext("hi");
+            subscriber.onComplete();
         });
 
         //发送流事件
-        Flux.from(Dami.bus().stream(topic, "hello")).doOnNext(item -> {
+        Flux.from(Dami.bus().<String, String>stream(topic, "hello")).doOnNext(item -> {
             System.err.println(item);
         });
     }
@@ -56,7 +56,7 @@ public class Demo00 {
 
     public void case_lpc() {
         //注册服务实现（监听问答事件）
-        Dami.lpc().registerService("demo", new  UserServiceImpl());
+        Dami.lpc().registerService("demo", new UserServiceImpl());
 
         //生成服务消费者（发送问题事件）
         UserService userService = Dami.lpc().createConsumer("demo", UserService.class);
