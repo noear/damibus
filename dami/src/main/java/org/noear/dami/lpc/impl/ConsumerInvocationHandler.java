@@ -75,7 +75,7 @@ public class ConsumerInvocationHandler implements InvocationHandler {
                     result = MethodHandlerUtils.invokeDefault(proxy, method, args);
                 } else {
                     //如果没有默认实现；给出异常提醒
-                    throw new DamiNoListenException("No response subscription");
+                    throw new DamiNoListenException("No listen subscription");
                 }
             }
         }
