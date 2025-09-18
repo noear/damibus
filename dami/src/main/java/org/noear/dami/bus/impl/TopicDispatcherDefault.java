@@ -76,7 +76,7 @@ public class TopicDispatcherDefault implements TopicDispatcher ,Interceptor {
      * 执行拦截
      */
     @Override
-    public  void doIntercept(Event event, InterceptorChain chain) {
+    public void doIntercept(Event event, InterceptorChain chain) {
         if (log.isTraceEnabled()) {
             log.trace("{}", event);
         }
@@ -108,17 +108,12 @@ public class TopicDispatcherDefault implements TopicDispatcher ,Interceptor {
     public void dispatch(Event event, TopicRouter router) {
         AssertUtil.assertTopic(event.getTopic());
 
-//        try {
-//            MDC.put("dami-plid", event.getPlid());
+        //获取路由匹配结果
+        List<TopicListenerHolder> targets = router.matching(event.getTopic());
 
-            //获取路由匹配结果
-            List<TopicListenerHolder> targets = router.matching(event.getTopic());
+        //转成拦截链处理
+        new InterceptorChain<>(interceptors, targets).doIntercept(event);
 
-            //转成拦截链处理
-            new InterceptorChain<>(interceptors, targets).doIntercept(event);
-//        } finally {
-//            MDC.remove("dami-plid");
-//        }
     }
 
     /**
