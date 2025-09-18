@@ -1,10 +1,8 @@
-package features.demo13_subscribe;
+package features.demo13_stream;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
-import org.noear.solon.rx.SimpleSubscriber;
-import org.noear.solon.rx.SimpleSubscription;
 import reactor.core.publisher.Flux;
 
 /**
@@ -39,18 +37,20 @@ public class Demo13 {
         System.out.println(Thread.currentThread());
 
         //发送事件
-        bus.<String, String>stream(topic, "world")
-                .subscribe(new SimpleSubscriber<>()
-                        .doOnNext(item -> {
-                            System.out.println(Thread.currentThread());
-                            System.out.println(item);
-                        }));
+//        bus.<String, String>stream(topic, "world")
+//                .subscribe(new SimpleSubscriber<>()
+//                        .doOnNext(item -> {
+//                            System.out.println(Thread.currentThread());
+//                            System.out.println(item);
+//                        }));
 
-//        Flux.from(bus.<String, String>stream(topic, "world"))
-//                .doOnNext(item -> {
-//                    System.out.println(Thread.currentThread());
-//                    System.out.println(item);
-//                })
-//                .subscribe();
+        String rst = Flux.from(bus.<String, String>stream(topic, "world"))
+                .doOnNext(item -> {
+                    System.out.println(Thread.currentThread());
+                    System.out.println(item);
+                })
+                .blockLast();
+
+        assert "hello".equals(rst);
     }
 }

@@ -15,7 +15,6 @@
 #### demo21_send
 
 ```java
-//总线风格。bus()
 public class Deom11 {
     static String topic = "demo.hello";
 
@@ -38,15 +37,14 @@ public class Deom11 {
 ```
 
 
-#### demo12_request
+#### demo12_call
 
 ```java
-//泛型总线风格。<P>bus()
 public class Demo12 {
     static String topic = "demo.hello";
 
     public static void main(String[] args) {
-        //监听事件（当调用时）
+        //监听调用事件
         Dami.bus().<String, String>onCall(topic, (event, sink) -> {
             System.err.println(event);
 
@@ -54,7 +52,7 @@ public class Demo12 {
         });
 
 
-        //发送事件（调用） 
+        //发送调用事件
         String rst1 = Dami.bus().<String, String>call(topic, "world").get();
         //发送事件//支持应急处理（或降级处理）（没有订阅时触发时）
         //String rst1 = Dami.bus().<String, String>call(topic, "world", () -> "def").get();
@@ -63,14 +61,14 @@ public class Demo12 {
 }
 ```
 
-### demo13_subscribe
+### demo13_stream
 
 ```java
 public class Demo13 {
     static String topic = "demo.hello";
 
     public static void main(String[] args) {
-        //监听事件（当流时）
+        //监听流事件
         Dami.bus().<String, String>onStream(topic, (event, sink) -> {
             System.err.println(event);
 
@@ -79,7 +77,7 @@ public class Demo13 {
 
         System.out.println(Thread.currentThread());
 
-        //发送事件（流）
+        //发送流事件
         Dami.bus().<String, String>stream(topic, "world").subscribe(new SimpleSubscriber<>()
                 .doOnNext(item -> {
                     System.out.println(item);

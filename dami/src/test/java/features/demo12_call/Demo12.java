@@ -1,27 +1,22 @@
-package features.demo12_request;
+package features.demo12_call;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami.Dami;
 import org.noear.dami.bus.DamiBus;
 
-import java.util.concurrent.CompletableFuture;
-
-public class Demo12_async {
+public class Demo12 {
     static String topic = "demo.hello";
-    //定义实例，避免单测干扰 //开发时用：Dami.bus()
+    //定义实例，避免单测干扰 //开发时用：Dami.req()
     DamiBus bus = Dami.newBus();
 
     @Test
     public void main() throws Exception {
-
         //监听事件
         bus.<String, String>onCall(topic, (content, sink) -> {
-            CompletableFuture.runAsync(() -> {
-                System.out.println(Thread.currentThread());
-                System.err.println(content);
+            System.out.println(Thread.currentThread());
+            System.err.println(content);
 
-                sink.complete("hi!");
-            });
+            sink.complete("hi!");
         });
 
         System.out.println(Thread.currentThread());
