@@ -3,14 +3,14 @@ package features.demo17_monitor;
 import org.noear.dami2.bus.Event;
 import org.noear.dami2.bus.TopicListener;
 import org.noear.dami2.bus.TopicListenerHolder;
-import org.noear.dami2.bus.impl.TopicDispatcherDefault;
+import org.noear.dami2.bus.impl.EventDispatcherDefault;
 
 import java.util.List;
 
 /**
  * @author noear 2023/10/13 created
  */
-public class TopicDispatcherMonitor extends TopicDispatcherDefault {
+public class TopicDispatcherMonitor extends EventDispatcherDefault {
     @Override
     protected void doDispatch(Event event, List<TopicListenerHolder> targets) throws Throwable {
         //开始监视...

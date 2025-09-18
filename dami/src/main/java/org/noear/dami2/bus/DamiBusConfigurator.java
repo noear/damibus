@@ -30,7 +30,7 @@ public interface DamiBusConfigurator extends DamiBus {
     /**
      * 配置主题调度器
      */
-    DamiBusConfigurator topicDispatcher(TopicDispatcher dispatcher);
+    DamiBusConfigurator topicDispatcher(EventDispatcher dispatcher);
 
     /**
      * 配置事件负载工厂

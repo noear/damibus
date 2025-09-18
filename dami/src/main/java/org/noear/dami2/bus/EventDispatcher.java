@@ -16,12 +16,12 @@
 package org.noear.dami2.bus;
 
 /**
- * 主题派发器
+ * 主题调度器
  *
  * @author noear
  * @since 1.0
  */
-public interface TopicDispatcher {
+public interface EventDispatcher {
     /**
      * 添加拦截器
      */

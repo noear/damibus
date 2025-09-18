@@ -29,7 +29,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     //路由器
     private TopicRouter router;
     //调度器
-    private TopicDispatcher dispatcher;
+    private EventDispatcher dispatcher;
     //负载工厂
     private EventFactory factory;
 
@@ -41,7 +41,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
         }
 
         this.factory = EventDefault::new;
-        this.dispatcher = new TopicDispatcherDefault();
+        this.dispatcher = new EventDispatcherDefault();
     }
 
     public DamiBusImpl() {
@@ -59,7 +59,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
     }
 
     @Override
-    public DamiBusConfigurator topicDispatcher(TopicDispatcher dispatcher) {
+    public DamiBusConfigurator topicDispatcher(EventDispatcher dispatcher) {
         if (dispatcher != null) {
             this.dispatcher = dispatcher;
         }

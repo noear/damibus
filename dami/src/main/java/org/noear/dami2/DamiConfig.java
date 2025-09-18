@@ -43,7 +43,7 @@ public class DamiConfig {
      *
      * @param topicDispatcher 主题调度器
      */
-    public static void configure(TopicDispatcher topicDispatcher) {
+    public static void configure(EventDispatcher topicDispatcher) {
         if (topicDispatcher != null) {
             ((DamiBusConfigurator) Dami.bus).topicDispatcher(topicDispatcher);
         }

@@ -28,20 +28,20 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 主题派发器默认实现
+ * 事件调度器默认实现
  *
  * @author noear
  * @since 1.0
  */
-public class TopicDispatcherDefault implements TopicDispatcher ,Interceptor {
-    static final Logger log = LoggerFactory.getLogger(TopicDispatcherDefault.class);
+public class EventDispatcherDefault implements EventDispatcher,Interceptor {
+    static final Logger log = LoggerFactory.getLogger(EventDispatcherDefault.class);
     /**
      * 拦截器
      */
     private final List<InterceptorEntity> interceptors = new ArrayList<>();
     private final ReentrantLock INTERCEPTORS_LOCK = new ReentrantLock();
 
-    public TopicDispatcherDefault() {
+    public EventDispatcherDefault() {
         interceptors.add(new InterceptorEntity(Integer.MAX_VALUE, this));
     }
 
