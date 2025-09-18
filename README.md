@@ -210,7 +210,7 @@ public class Demo15_tag {
 
 ### 可无依赖接口实现
 
-详情：[dami-solon-plugin](dami-solon-plugin)、[dami-springboot-starter](dami-springboot-starter)
+详情：[dami2-solon-plugin](dami2-solon-plugin)、[dami2-springboot-starter](dami2-springboot-starter)
 
 ```java
 @DamiTopic("event.user")
