@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.0
  */
-public class ServiceMethodTopicListener implements TopicListener<Event<CallPayload>> {
+public class ServiceMethodTopicListener implements TopicListener<CallPayload> {
     private DamiLpc damiApi;
     private Object target;
     private Method method;

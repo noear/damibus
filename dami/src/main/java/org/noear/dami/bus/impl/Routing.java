@@ -33,7 +33,7 @@ public class Routing<P> extends TopicListenerHolder<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public Routing(String expr, int index, TopicListener<Event<P>> listener) {
+    public Routing(String expr, int index, TopicListener<P> listener) {
         super(index, listener);
         this.expr = expr;
     }

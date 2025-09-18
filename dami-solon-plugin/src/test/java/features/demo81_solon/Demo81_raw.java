@@ -20,7 +20,7 @@ public class Demo81_raw {
     }
 
     @DamiTopic("user.demo")
-    public static class UserEventListener implements TopicListener<Event<CallPayload<String, String>>> {
+    public static class UserEventListener implements TopicListener<CallPayload<String, String>> {
         @Override
         public void onEvent(Event<CallPayload<String, String>> event) throws Throwable {
             event.getPayload()

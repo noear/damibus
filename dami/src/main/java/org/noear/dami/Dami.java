@@ -47,14 +47,14 @@ public class Dami {
     /// ///////////////////
 
     /**
-     * 新建总线界面
+     * 新建总线界面（一般用于测试不相互干扰）
      */
     public static DamiBus newBus() {
         return new DamiBusImpl();
     }
 
     /**
-     * 新建接口界面
+     * 新建接口界面（一般用于测试不相互干扰）
      */
     public static DamiLpc newLpc() {
         return new DamiLpcImpl(newBus());

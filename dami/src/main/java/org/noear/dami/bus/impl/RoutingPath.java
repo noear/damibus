@@ -32,7 +32,7 @@ public class RoutingPath<P> extends Routing<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public RoutingPath(String expr, int index, TopicListener<Event<P>> listener) {
+    public RoutingPath(String expr, int index, TopicListener<P> listener) {
         super(expr, index, listener);
 
         if (expr.contains("*")) {

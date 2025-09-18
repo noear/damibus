@@ -121,7 +121,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * @param listener 监听
      */
     @Override
-    public <P> void listen(final String topic, final int index, final TopicListener<Event<P>> listener) {
+    public <P> void listen(final String topic, final int index, final TopicListener<P> listener) {
         router.add(topic, index, listener);
     }
 
@@ -132,7 +132,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * @param listener 监听
      */
     @Override
-    public <P> void unlisten(final String topic, final TopicListener<Event<P>> listener) {
+    public <P> void unlisten(final String topic, final TopicListener<P> listener) {
         router.remove(topic, listener);
     }
 

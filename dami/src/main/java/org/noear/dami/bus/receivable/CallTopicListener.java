@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
  * @author noear
  * @since 2.0
  */
-public interface CallTopicListener<C,R> extends TopicListener<Event<CallPayload<C, R>>> {
+public interface CallTopicListener<C,R> extends TopicListener<CallPayload<C, R>> {
     /**
      * 处理监听事件
      *

@@ -66,7 +66,7 @@ public class TopicRouterPatterned implements TopicRouter {
      * @param listener 监听器
      */
     @Override
-    public <P> void add(final String topic, final int index, final TopicListener<Event<P>> listener) {
+    public <P> void add(final String topic, final int index, final TopicListener<P> listener) {
         ROUTING_LIST_LOCK.lock();
         try {
             routingList.add(routerFactory.create(topic, index, listener));
@@ -90,7 +90,7 @@ public class TopicRouterPatterned implements TopicRouter {
      * @param listener 监听器
      */
     @Override
-    public <P> void remove(final String topic, final TopicListener<Event<P>> listener) {
+    public <P> void remove(final String topic, final TopicListener<P> listener) {
         ROUTING_LIST_LOCK.lock();
         try {
             routingList.removeIf(routing -> routing.matches(topic) && routing.getListener() == listener);

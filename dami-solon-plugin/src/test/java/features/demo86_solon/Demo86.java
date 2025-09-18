@@ -18,7 +18,7 @@ public class Demo86 {
     }
 
     @DamiTopic("demo86.event.user")
-    public static class UserListener implements TopicListener<Event<User>> {
+    public static class UserListener implements TopicListener<User> {
 
         @Override
         public void onEvent(Event<User> event) throws Throwable {

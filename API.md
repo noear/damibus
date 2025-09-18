@@ -4,12 +4,18 @@
 
 ```java
 public class Dami {
-    static final DamiBus bus = new DamiBusImpl<>();
-    static final DamiApi api = new DamiApiImpl(Dami::bus);
-    //泛型、强类型总线界面
-    public static <P> DamiBus<P> bus() { return bus; }
+    static DamiBus bus = new DamiBusImpl();
+    static DamiLpc lpc = new DamiLpcImpl(Dami::bus);
+
+    //总线界面
+    public static DamiBus bus() {
+        return bus;
+    }
+
     //接口界面
-    public static DamiApi api() { return api; }
+    public static DamiLpc lpc() {
+        return lpc;
+    }
 }
 ```
 
@@ -23,8 +29,6 @@ public class DamiConfig {
     public static void configure(TopicDispatcher topicDispatcher);
     //配置总线的负载工厂
     public static void configure(EventFactory eventFactory);
-    //配置总线的响应超时
-    public static void configure(long timeout);
 
     //配置接口模式的编解码器
     public static void configure(Coder coder);
@@ -32,7 +36,7 @@ public class DamiConfig {
     //配置总线实例
     public static void configure(DamiBus bus);
     //配置接口实例
-    public static void configure(DamiApi api);
+    public static void configure(DamiLpc lpc);
 }
 ```
 
@@ -40,44 +44,45 @@ public class DamiConfig {
 
 
 ```java
-public interface DamiBus<P> {
-    //获取超时
-    long timeout();
+public interface DamiBus {
     //拦截
-    void intercept(int index, Interceptor interceptor);
+    <P> void intercept(int index, Interceptor<P> interceptor);
+    <P> void intercept(Interceptor<P> interceptor);
     
     //发送（不需要答复）=> 返回是否有订阅处理
-    Result<P> send(final String topic, final P payload);
+    <P> Result<P> send(final String topic, final P payload);
+    <P> Result<P> send(final String topic, final P payload, Consumer<P> fallback);
    
     //监听
-    default void listen(final String topic, final TopicListener<Event<P>> listener) { listen(topic, 0, listener); }
+    <P> void listen(final String topic, final TopicListener<P> listener);
     //监听
-    void listen(final String topic, final int index, final TopicListener<Event<P>> listener);
+    <P> void listen(final String topic, final int index, final TopicListener<P> listener);
     //取消监听
-    void unlisten(final String topic, final TopicListener<Event<P>> listener);
+    <P> void unlisten(final String topic, final TopicListener<P> listener);
+    void unlisten(final String topic);
+
+    //路由器
+    TopicRouter router();
 }
 ```
 
 
-## 4、DamiApi，接口模式接口
+## 4、DamiLpc，接口模式接口
 
 
 ```java
-public interface DamiApi {
+public interface DamiLpc {
     //获取编码器
     Coder coder();
-    //获取关联总线
-    DamiBus bus();
     
-    //创建发送器代理
-    <T> T createSender(String topicMapping, Class<T> senderClz);
+    //创建服务消费者（接口代理）
+    <T> T createConsumer(String topicMapping, Class<T> consumerApi);
     
-    //注册监听者实例（一个监听类，只能监听一个主题）
-    default void registerListener(String topicMapping, Object listenerObj) { registerListener(topicMapping, 0, listenerObj); }
-    //注册监听者实例（一个监听类，只能监听一个主题）
-    void registerListener(String topicMapping, int index, Object listenerObj);
-    //取消注册监听者实例
-    void unregisterListener(String topicMapping, Object listenerObj);
+    //注册服务实现（一个服务，只能监听一个主题）
+    void registerService(String topicMapping, Object serviceObj);
+    void registerService(String topicMapping, int index, Object serviceObj);
+    //注销服务实现
+    void unregisterService(String topicMapping, Object serviceObj);
 }
 ```
 
@@ -103,28 +108,13 @@ public interface Event<P> extends Serializable {
     //获取处理标识
     boolean getHandled();
 
-    //要求答复？
-    boolean requiredReply();
-    //答复
-    boolean reply(final R payload);
-
-    //唯一标识
-    String getGuid();
     //主题
     String getTopic();
-    //内容
-    C getContent();
+    //荷载
+    P getPayload();
 }
 
 ```
-
-Message::reply，答复情况说明
-
-| 发送接口              | 答复说明            | 备注                          |
-|-------------------|-----------------|-----------------------------|
-| send()            | 会出异常，提示不支持答复    |  |
-| call() | 第一条答复有效，且必须要有答复 | event.requiredReply() = true  |
-
 
 ## 6、TopicListener<Event>，主题监听接口
 

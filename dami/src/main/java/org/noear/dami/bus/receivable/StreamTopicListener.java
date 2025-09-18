@@ -25,7 +25,7 @@ import org.reactivestreams.Subscriber;
  * @author noear
  * @since 2.0
  */
-public interface StreamTopicListener<C,R> extends TopicListener<Event<StreamPayload<C, R>>> {
+public interface StreamTopicListener<C,R> extends TopicListener<StreamPayload<C, R>> {
     /**
      * 处理监听事件
      *

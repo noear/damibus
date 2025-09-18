@@ -86,11 +86,11 @@ public class DamiConfig {
     /**
      * 配置接口实例
      *
-     * @param api 接口实例
+     * @param lpc 接口实例
      */
-    public static void configure(DamiLpc api) {
-        if (api != null) {
-            Dami.lpc = api;
+    public static void configure(DamiLpc lpc) {
+        if (lpc != null) {
+            Dami.lpc = lpc;
         }
     }
 }

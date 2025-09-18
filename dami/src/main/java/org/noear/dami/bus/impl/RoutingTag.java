@@ -36,7 +36,7 @@ public class RoutingTag<P> extends Routing<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public RoutingTag(String expr, int index, TopicListener<Event<P>> listener) {
+    public RoutingTag(String expr, int index, TopicListener<P> listener) {
         super(expr, index, listener);
 
         List<String> exprList = TopicTags.get(expr);

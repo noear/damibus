@@ -22,11 +22,11 @@ package org.noear.dami.bus;
  * @since 1.0
  */
 @FunctionalInterface
-public interface TopicListener<E> {
+public interface TopicListener<P> {
     /**
      * 处理监听事件
      *
      * @param event 事件
      */
-    void onEvent(final E event) throws Throwable;
+    void onEvent(final Event<P> event) throws Throwable;
 }

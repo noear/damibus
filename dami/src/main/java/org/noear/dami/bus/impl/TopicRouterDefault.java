@@ -56,7 +56,7 @@ public class TopicRouterDefault implements TopicRouter {
      * @param listener 监听器
      */
     @Override
-    public <P> void add(final String topic, final int index, final TopicListener<Event<P>> listener) {
+    public <P> void add(final String topic, final int index, final TopicListener<P> listener) {
         PIPELINE_MAP_LOCK.lock();
         try {
             final TopicListenPipeline pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline());
@@ -81,7 +81,7 @@ public class TopicRouterDefault implements TopicRouter {
      * @param listener 监听器
      */
     @Override
-    public <P> void remove(final String topic, final TopicListener<Event<P>> listener) {
+    public <P> void remove(final String topic, final TopicListener<P> listener) {
         PIPELINE_MAP_LOCK.lock();
         try {
             final TopicListenPipeline pipeline = pipelineMap.get(topic);

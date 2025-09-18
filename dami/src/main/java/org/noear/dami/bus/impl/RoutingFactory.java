@@ -32,5 +32,5 @@ public interface RoutingFactory {
      * @param index    顺序位
      * @param listener 监听器
      */
-    <P> Routing create(final String topic, final int index, final TopicListener<Event<P>> listener);
+    <P> Routing create(final String topic, final int index, final TopicListener<P> listener);
 }
