@@ -19,34 +19,33 @@ import org.noear.dami2.bus.DamiBusExtension;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * 大米总线响应式流扩展
+ * 生成流（响应式流）扩展
  *
  * @author noear
  * @since 2.0
  */
-public interface DamiBusStream extends DamiBusExtension {
+public interface StreamBusExtension extends DamiBusExtension {
     /**
-     * 流
+     * 生成流（响应式流）
      */
     default <C, R> Publisher<R> stream(String topic, C content) {
         return stream(topic, content, null);
     }
 
     /**
-     * 流
+     * 生成流（响应式流）
      */
     default <C, R> Publisher<R> stream(String topic, C content, Consumer<Subscriber<? super R>> fallback) {
         if (fallback == null) {
             return subscriber -> {
-                bus().<StreamPayload<C, ? super R>>send(topic, new StreamPayload<>(content, subscriber));
+                bus().send(topic, new StreamPayload<>(content, subscriber));
             };
         } else {
             return subscriber -> {
-                bus().<StreamPayload<C, ? super R>>send(topic, new StreamPayload<>(content, subscriber), r -> {
+                bus().send(topic, new StreamPayload<>(content, subscriber), r -> {
                     fallback.accept(r.getReceiver());
                 });
             };
@@ -54,11 +53,9 @@ public interface DamiBusStream extends DamiBusExtension {
     }
 
     /**
-     * 当流时
+     * 当生成流时
      */
-    default <C, R> void onStream(String topic, BiConsumer<C, Subscriber<? super R>> consumer) {
-        bus().<StreamPayload<C, R>>listen(topic, event -> {
-            consumer.accept(event.getPayload().getContent(), event.getPayload().getReceiver());
-        });
+    default <C, R> void onStream(String topic, StreamTopicListener<C, R> listener) {
+        bus().listen(topic, listener);
     }
 }

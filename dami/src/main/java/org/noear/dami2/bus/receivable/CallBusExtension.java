@@ -19,15 +19,15 @@ import org.noear.dami2.bus.DamiBusExtension;
 import org.noear.dami2.bus.Result;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * 大米总线响调用扩展
+ * 调用扩展
+ *
  * @author noear
  * @since 2.0
  */
-public interface DamiBusCall extends DamiBusExtension {
+public interface CallBusExtension extends DamiBusExtension {
     /**
      * 调用
      */
@@ -58,9 +58,7 @@ public interface DamiBusCall extends DamiBusExtension {
     /**
      * 当调用时
      */
-    default <C, R> void onCall(String topic, BiConsumer<C, CompletableFuture<R>> consumer) {
-        bus().<CallPayload<C, R>>listen(topic, event -> {
-            consumer.accept(event.getPayload().getContent(), event.getPayload().getReceiver());
-        });
+    default <C, R> void onCall(String topic, CallTopicListener<C, R> listener) {
+        bus().listen(topic, listener);
     }
 }

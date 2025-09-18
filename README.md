@@ -2,7 +2,7 @@
   DamiBus
 </h1>
 <p align="center">
-	<strong>本地多模块过程调用框架（主打解耦）</strong>
+	<strong>单本多模块过程调用框架（主打解耦）</strong>
 </p>
 
 <p align="center">
@@ -45,26 +45,26 @@
 
 
 
-DamiBus，专为本地多模块之间通讯解耦而设计（尤其是未知模块、隔离模块、领域模块）。零依赖。
+DamiBus，专为单体多模块之间通讯解耦而设计（尤其是未知模块、隔离模块、领域模块）。零依赖。
 
 ###  特点
 
-结合总线与响应流的概念，可作事件分发，可作接口调用，可作异步响应。
+结合总线与响应的概念，可作事件分发，可作接口调用，可作响应式流生成，等等...。
 
 * 支持事务传导（同步分发、异常透传）
-* 支持事件标识、拦截器（方便跟踪）
+* 支持拦截器（方便跟踪）
 * 支持监听者排序、附件传递（多监听时，可相互合作）
-* 支持 Bus 和 Api 两种体验风格
+* 支持 Bus 和 Lpc 两种体验风格
 
 
 ### 与常见的 EventBus、ApiBean 的区别
 
-|    | DamiBus | EventBus | Api | DamiBus 的情况说明                                         |
-|----|------|----------|-----|-------------------------------------------------------|
-| 广播 | 有    | 有        | 无   | 发送(send) + 监听(listen)<br/>以及 Api 模式                   |
-| 请求 | 有    | 无        | 有   | 请求(call) + 监听(listen) + 答复(response)<br/>以及 Api 模式    |
-| 流式 | 有    | 无        | 无   | 请求(stream) + 监听(listen) + 答复(subscriber)<br/>以及 Api 模式 |
-| 耦合 | 弱-   | 弱+       | 强++ |                                                       |
+|       | DamiBus | EventBus | ApiBean | 
+|-------|---------|----------|---------|
+| 广播    | 有       | 有        | 无       | 
+| 请求与响应 | 有       | 无        | 有       | 
+| 响应式流  | 有       | 无        | 有       | 
+| 耦合    | 弱-      | 弱+       | 强++     |     
 
 
 ### 依赖配置
@@ -107,7 +107,7 @@ public class Deom11 {
 }
 ```
 
-#### demo12_request
+#### demo12_call
 
 ```java
 //泛型总线风格。<P>bus()
@@ -135,19 +135,20 @@ public class Demo12 {
 }
 ```
 
-#### demo31_api
+#### demo31_lpc
 
 使用 ioc 适配版本更简便，详情：[dami-solon-plugin](dami-solon-plugin)、[dami-springboot-starter](dami-springboot-starter)
 
 ```java
-//接口风格
-public interface EventUser {
+//服务消费者接口
+public interface UserService {
     void onCreated(Long userId, String name);
+
     Long getUserId(String name);
 }
 
-//通过约定保持与 Sender 相同的接口定义（或者实现 UserEventSender 接口，但会带来依赖关系）
-public class EventUserListener1 { // implements EventUser
+//通过约定保持与 UserService 相同的接口定义（或者实现 UserService 接口，但会带来依赖关系）
+public class UserServiceImpl { // implements UserService
     public void onCreated(Long userId, String name) {
         System.err.println("onCreated: userId=" + userId + ", name=" + name);
     }
@@ -159,20 +160,20 @@ public class EventUserListener1 { // implements EventUser
 
 public class Demo31 {
     public static void main(String[] args) {
-        //注册监听器
-        EventUserListener1 userEventListener = new EventUserListener1();
-        api.registerListener(topicMapping, userEventListener);
+        //注册服务实现
+        UserServiceImpl userServiceImpl = new UserServiceImpl();
+        Dami.lpc().registerService(topicMapping, userServiceImpl);
 
-        //生成发送器
-        EventUser eventUser = api.createSender(topicMapping, EventUser.class);
+        //创建服务消费者（接口代理）
+        UserService userService = Dami.lpc().createConsumer(topicMapping, UserService.class);
 
         //发送测试
-        eventUser.onCreated(1L, "noear");
-        Long userId = eventUser.getUserId("dami");
+        userService.onCreated(1L, "noear");
+        Long userId = userService.getUserId("dami");
         System.err.println("收到：响应：userId：" + userId);
 
-        //注销监听器
-        api.unregisterListener(topicMapping, userEventListener);
+        //注销服务实现
+        Dami.lpc().unregisterService(topicMapping, userServiceImpl);
     }
 }
 ```

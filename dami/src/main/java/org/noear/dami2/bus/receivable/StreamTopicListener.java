@@ -20,11 +20,12 @@ import org.noear.dami2.bus.TopicListener;
 import org.reactivestreams.Subscriber;
 
 /**
- * 流主题监听器
+ * 生成流监听器
  *
  * @author noear
  * @since 2.0
  */
+@FunctionalInterface
 public interface StreamTopicListener<C,R> extends TopicListener<StreamPayload<C, R>> {
     /**
      * 处理监听事件

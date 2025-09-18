@@ -15,7 +15,7 @@ public class Demo12_async {
     public void main() throws Exception {
 
         //监听事件
-        bus.<String, String>onCall(topic, (content, sink) -> {
+        bus.<String, String>onCall(topic, (event,content, sink) -> {
             CompletableFuture.runAsync(() -> {
                 System.out.println(Thread.currentThread());
                 System.err.println(content);

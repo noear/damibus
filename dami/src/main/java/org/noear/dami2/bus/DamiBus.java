@@ -15,8 +15,8 @@
  */
 package org.noear.dami2.bus;
 
-import org.noear.dami2.bus.receivable.DamiBusCall;
-import org.noear.dami2.bus.receivable.DamiBusStream;
+import org.noear.dami2.bus.receivable.CallBusExtension;
+import org.noear.dami2.bus.receivable.StreamBusExtension;
 
 import java.util.function.Consumer;
 
@@ -26,7 +26,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  */
-public interface DamiBus extends DamiBusExtension, DamiBusCall, DamiBusStream {
+public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusExtension {
     /**
      * 拦截
      *
