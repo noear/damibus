@@ -1,4 +1,4 @@
-package features.demo92_springboot;
+package features.demo93_springboot;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,14 +11,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ContextConfiguration
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
-@ComponentScan("features.demo92_springboot")
-public class Demo92 {
+@ComponentScan("features.demo93_springboot")
+public class Demo93 {
     @Autowired
-    EventUserService eventUserService;
+    EventUserNotices eventUserNotices;
 
     @Test
     public void main(){
-        User user = eventUserService.getUser(99);
-        assert user.getUserId() == 99;
+        eventUserNotices.onCreated(92, "noear");
     }
 }

@@ -1,4 +1,4 @@
-package features.demo91_springboot;
+package features.demo86_solon;
 
 /**
  * 基础，公用的用户模型

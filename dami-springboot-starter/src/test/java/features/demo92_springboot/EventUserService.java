@@ -1,4 +1,4 @@
-package features.demo91_springboot;
+package features.demo92_springboot;
 
 
 import org.noear.dami.spring.boot.annotation.DamiTopic;

@@ -1,4 +1,4 @@
-package features.demo87_solon;
+package features.demo85_solon.baseModule;
 
 /**
  * 基础，公用的用户模型
