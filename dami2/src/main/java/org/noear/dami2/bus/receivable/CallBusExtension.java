@@ -30,6 +30,10 @@ import java.util.function.Consumer;
 public interface CallBusExtension extends DamiBusExtension {
     /**
      * 发送调用事件
+     *
+     * @param topic 事件主题
+     * @param data  数据
+     * @return 接收器
      */
     default <D, R> CompletableFuture<R> call(String topic, D data) {
         return call(topic, data, null);
@@ -37,6 +41,11 @@ public interface CallBusExtension extends DamiBusExtension {
 
     /**
      * 发送调用事件
+     *
+     * @param topic    事件主题
+     * @param data     数据
+     * @param fallback 应急处理（当没有计阅时启用）
+     * @return 接收器
      */
     default <D, R> CompletableFuture<R> call(String topic, D data, Consumer<CompletableFuture<R>> fallback) {
         return callAsResult(topic, data, fallback).getPayload().getReceiver();
@@ -44,6 +53,22 @@ public interface CallBusExtension extends DamiBusExtension {
 
     /**
      * 发送调用事件
+     *
+     * @param topic 事件主题
+     * @param data  数据
+     * @return 结果
+     */
+    default <D, R> Result<CallPayload<D, R>> callAsResult(String topic, D data) {
+        return callAsResult(topic, data, null);
+    }
+
+    /**
+     * 发送调用事件
+     *
+     * @param topic    事件主题
+     * @param data     数据
+     * @param fallback 应急处理（当没有计阅时启用）
+     * @return 结果
      */
     default <D, R> Result<CallPayload<D, R>> callAsResult(String topic, D data, Consumer<CompletableFuture<R>> fallback) {
         if (fallback == null) {

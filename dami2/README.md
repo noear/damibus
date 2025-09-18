@@ -54,7 +54,7 @@ public class Demo12 {
 
         //发送调用事件
         String rst1 = Dami.bus().<String, String>call(topic, "world").get();
-        //发送事件//支持应急处理（或降级处理）（没有订阅时触发时）
+        //发送事件//支持应急处理（当没有计阅时启用）
         //String rst1 = Dami.bus().<String, String>call(topic, "world", () -> "def").get();
         System.out.println(rst1);
     }

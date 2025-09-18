@@ -94,7 +94,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      *
      * @param topic    事件主题
      * @param payload  荷载
-     * @param fallback 应急处理（当没有订阅时执行）
+     * @param fallback 应急处理（当没有计阅时启用）
      * @return 结果
      */
     @Override
@@ -110,7 +110,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * 发送事件
      *
      * @param event    事件
-     * @param fallback 应急处理（当没有订阅时执行）
+     * @param fallback 应急处理（当没有计阅时启用）
      * @return 结果
      */
     @Override
