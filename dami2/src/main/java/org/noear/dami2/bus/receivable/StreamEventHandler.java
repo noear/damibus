@@ -31,9 +31,9 @@ public interface StreamEventHandler<D,R> {
     /**
      * 处理流事件（由 onEvent 转发简化）
      *
-     * @param event    事件
-     * @param data     数据
-     * @param receiver 荷载接收器
+     * @param event      事件
+     * @param data       数据
+     * @param subscriber 接收器（subscriber）
      */
-    void onStream(Event<StreamPayload<D, R>> event, Map<String, Object> att, D data, Subscriber<R> receiver);
+    void onStream(Event<StreamPayload<D, R>> event, Map<String, Object> att, D data, Subscriber<R> subscriber);
 }

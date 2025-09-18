@@ -30,9 +30,9 @@ public interface CallEventHandler<D,R> {
     /**
      * 处理调用事件（可由 onEvent 转发简化）
      *
-     * @param event    事件
-     * @param data     数据
-     * @param receiver 接收器
+     * @param event  事件
+     * @param data   数据
+     * @param future 接收器（future）
      */
-    void onCall(Event<CallPayload<D, R>> event, D data, CompletableFuture<R> receiver);
+    void onCall(Event<CallPayload<D, R>> event, D data, CompletableFuture<R> future);
 }
