@@ -117,10 +117,10 @@ public interface Event<P> extends Serializable {
 
 ```
 
-## 6、TopicListener<Event>，主题监听接口
+## 6、EventListener<P>，事件监听接口
 
 ```java
-public interface TopicListener<P> {
+public interface EventListener<P> {
     //处理监听事件
     void onEvent(final Event<P> event) throws Throwable;
 }

@@ -55,7 +55,7 @@ public interface StreamBusExtension extends DamiBusExtension {
     /**
      * 当生成流时
      */
-    default <C, R> void onStream(String topic, StreamTopicListener<C, R> listener) {
+    default <C, R> void onStream(String topic, StreamEventListener<C, R> listener) {
         bus().listen(topic, listener);
     }
 }

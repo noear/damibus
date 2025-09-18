@@ -13,20 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus;
+package org.noear.dami2.bus.receivable;
+
+import org.noear.dami2.bus.Event;
+import org.noear.dami2.bus.EventListener;
+import org.reactivestreams.Subscriber;
 
 /**
- * 主题监听器
+ * 生成流监听器
  *
  * @author noear
- * @since 1.0
+ * @since 2.0
  */
 @FunctionalInterface
-public interface TopicListener<P> {
+public interface StreamEventListener<C,R> extends EventListener<StreamPayload<C, R>> {
     /**
      * 处理监听事件
      *
      * @param event 事件
      */
-    void onEvent(final Event<P> event) throws Throwable;
+    default void onEvent(Event<StreamPayload<C, R>> event) throws Throwable {
+        onStream(event, event.getPayload().getContent(), event.getPayload().getReceiver());
+    }
+
+    /**
+     * 处理流事件（由 onEvent 转发简化）
+     *
+     * @param event    事件
+     * @param content  荷载内容
+     * @param receiver 荷载接收器
+     */
+    void onStream(Event<StreamPayload<C, R>> event, C content, Subscriber<R> receiver);
 }

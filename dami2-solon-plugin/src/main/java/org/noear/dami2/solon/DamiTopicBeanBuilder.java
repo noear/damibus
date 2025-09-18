@@ -16,7 +16,7 @@
 package org.noear.dami2.solon;
 
 import org.noear.dami2.Dami;
-import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.solon.annotation.DamiTopic;
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanBuilder;
@@ -38,7 +38,7 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
             //增加代理支持
             bw.context().beanExtractOrProxy(bw);
 
-            if (TopicListener.class.isAssignableFrom(clz)) {
+            if (EventListener.class.isAssignableFrom(clz)) {
                 Dami.bus().listen(anno.value(), anno.index(), bw.raw());
             } else {
                 Dami.lpc().registerService(anno.value(), anno.index(), bw.raw());

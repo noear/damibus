@@ -4,7 +4,7 @@ import org.noear.dami2.Dami;
 import org.noear.dami2.DamiConfig;
 import org.noear.dami2.lpc.Coder;
 import org.noear.dami2.bus.Interceptor;
-import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.exception.DamiException;
 import org.noear.dami2.spring.boot.annotation.DamiTopic;
 import org.springframework.aop.framework.AopProxyUtils;
@@ -31,9 +31,9 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
 
             String topicMapping = damiTopic.value()[0];
 
-            if (bean instanceof TopicListener) {
+            if (bean instanceof EventListener) {
                 //是TopicListener实例则使用bus移除
-                Dami.bus().unlisten(topicMapping, (TopicListener) bean);
+                Dami.bus().unlisten(topicMapping, (EventListener) bean);
             } else {
                 //否则使用api移除
                 Dami.lpc().unregisterService(topicMapping, bean);
@@ -60,9 +60,9 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
 
             String topicMapping = damiTopic.value()[0];
 
-            if (bean instanceof TopicListener) {
+            if (bean instanceof EventListener) {
                 //是TopicListener实例则使用bus注册
-                Dami.bus().listen(topicMapping, damiTopic.index(), (TopicListener) bean);
+                Dami.bus().listen(topicMapping, damiTopic.index(), (EventListener) bean);
             } else {
                 //否则使用api注册
                 Dami.lpc().registerService(topicMapping, damiTopic.index(), bean);

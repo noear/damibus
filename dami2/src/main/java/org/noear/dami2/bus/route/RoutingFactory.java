@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus.impl;
+package org.noear.dami2.bus.route;
 
-import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.EventListener;
 
 /**
  * 路由选择工厂
@@ -31,5 +31,5 @@ public interface RoutingFactory {
      * @param index    顺序位
      * @param listener 监听器
      */
-    <P> Routing create(final String topic, final int index, final TopicListener<P> listener);
+    <P> Routing create(final String topic, final int index, final EventListener<P> listener);
 }

@@ -13,38 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus.impl;
+package org.noear.dami2.bus.route;
 
-import org.noear.dami2.lpc.impl.ServiceMethodTopicListener;
-import org.noear.dami2.bus.TopicListener;
-import org.noear.dami2.bus.TopicListenerHolder;
+import org.noear.dami2.lpc.impl.ServiceMethodEventListener;
+import org.noear.dami2.bus.EventListener;
+import org.noear.dami2.bus.EventListenerHolder;
 import org.noear.dami2.bus.TopicRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
+
 
 /**
- * 主题路由器（默认啥希表实现方案）
+ * 主题路由器（模式匹配实现方案；支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
  *
  * @author noear
+ * @example /a/*, /a/**b
  * @since 1.0
  */
-public class TopicRouterDefault implements TopicRouter {
+public class TopicRouterPatterned implements TopicRouter {
     static final Logger log = LoggerFactory.getLogger(TopicRouterDefault.class);
 
     /**
-     * 主题监听管道
+     * 主题路由记录
      */
-    private final Map<String, TopicListenPipeline> pipelineMap = new LinkedHashMap<>();
+    private final List<Routing> routingList = new ArrayList<>();
 
-    protected final ReentrantLock PIPELINE_MAP_LOCK = new ReentrantLock();
+    protected final ReentrantLock ROUTING_LIST_LOCK = new ReentrantLock();
 
-    public TopicRouterDefault() {
+
+    /**
+     * 路由工厂
+     */
+    private final RoutingFactory routerFactory;
+
+    public TopicRouterPatterned(RoutingFactory routerFactory) {
         super();
+        this.routerFactory = routerFactory;
     }
 
     /**
@@ -55,17 +65,16 @@ public class TopicRouterDefault implements TopicRouter {
      * @param listener 监听器
      */
     @Override
-    public <P> void add(final String topic, final int index, final TopicListener<P> listener) {
-        PIPELINE_MAP_LOCK.lock();
+    public <P> void add(final String topic, final int index, final EventListener<P> listener) {
+        ROUTING_LIST_LOCK.lock();
         try {
-            final TopicListenPipeline pipeline = pipelineMap.computeIfAbsent(topic, t -> new TopicListenPipeline());
-            pipeline.add(index, listener);
+            routingList.add(routerFactory.create(topic, index, listener));
         } finally {
-            PIPELINE_MAP_LOCK.unlock();
+            ROUTING_LIST_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {
-            if (ServiceMethodTopicListener.class.isAssignableFrom(listener.getClass())) {
+            if (ServiceMethodEventListener.class.isAssignableFrom(listener.getClass())) {
                 log.debug("TopicRouter listener added(@{}): {}", topic, listener);
             } else {
                 log.debug("TopicRouter listener added(@{}): {}", topic, listener.getClass().getName());
@@ -80,19 +89,16 @@ public class TopicRouterDefault implements TopicRouter {
      * @param listener 监听器
      */
     @Override
-    public <P> void remove(final String topic, final TopicListener<P> listener) {
-        PIPELINE_MAP_LOCK.lock();
+    public <P> void remove(final String topic, final EventListener<P> listener) {
+        ROUTING_LIST_LOCK.lock();
         try {
-            final TopicListenPipeline pipeline = pipelineMap.get(topic);
-            if (pipeline != null) {
-                pipeline.remove(listener);
-            }
+            routingList.removeIf(routing -> routing.matches(topic) && routing.getListener() == listener);
         } finally {
-            PIPELINE_MAP_LOCK.unlock();
+            ROUTING_LIST_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {
-            if (ServiceMethodTopicListener.class.isAssignableFrom(listener.getClass())) {
+            if (ServiceMethodEventListener.class.isAssignableFrom(listener.getClass())) {
                 log.debug("TopicRouter listener removed(@{}): {}", topic, listener);
             } else {
                 log.debug("TopicRouter listener removed(@{}): {}", topic, listener.getClass().getName());
@@ -106,12 +112,12 @@ public class TopicRouterDefault implements TopicRouter {
      * @param topic 主题
      */
     @Override
-    public void remove(final String topic) {
-        PIPELINE_MAP_LOCK.lock();
+    public void remove(String topic) {
+        ROUTING_LIST_LOCK.lock();
         try {
-            pipelineMap.remove(topic);
+            routingList.removeIf(routing -> routing.matches(topic));
         } finally {
-            PIPELINE_MAP_LOCK.unlock();
+            ROUTING_LIST_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {
@@ -123,13 +129,12 @@ public class TopicRouterDefault implements TopicRouter {
      * 路由匹配
      */
     @Override
-    public List<TopicListenerHolder> matching(String topic) {
-        final TopicListenPipeline pipeline = pipelineMap.get(topic);
+    public List<EventListenerHolder> matching(String topic) {
+        List<EventListenerHolder> routings = routingList.stream()
+                .filter(r -> r.matches(topic))
+                .sorted(Comparator.comparing(Routing::getIndex))
+                .collect(Collectors.toList());
 
-        if (pipeline == null) {
-            return null;
-        } else {
-            return pipeline.getList();
-        }
+        return routings;
     }
 }

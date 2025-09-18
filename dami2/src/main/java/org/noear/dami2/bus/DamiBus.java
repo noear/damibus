@@ -72,7 +72,7 @@ public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusEx
      * @param topic    事件主题
      * @param listener 监听
      */
-    default <P> void listen(final String topic, final TopicListener<P> listener) {
+    default <P> void listen(final String topic, final EventListener<P> listener) {
         listen(topic, 0, listener);
     }
 
@@ -83,7 +83,7 @@ public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusEx
      * @param index    顺序位
      * @param listener 监听
      */
-    <P> void listen(final String topic, final int index, final TopicListener<P> listener);
+    <P> void listen(final String topic, final int index, final EventListener<P> listener);
 
     /**
      * 取消监听
@@ -91,7 +91,7 @@ public interface DamiBus extends DamiBusExtension, CallBusExtension, StreamBusEx
      * @param topic    事件主题
      * @param listener 监听
      */
-    <P> void unlisten(final String topic, final TopicListener<P> listener);
+    <P> void unlisten(final String topic, final EventListener<P> listener);
 
     /**
      * 取消监听（主题下的所有监听）

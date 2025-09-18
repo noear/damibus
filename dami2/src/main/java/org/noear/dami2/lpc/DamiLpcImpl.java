@@ -15,8 +15,7 @@
  */
 package org.noear.dami2.lpc;
 
-import org.noear.dami2.Dami;
-import org.noear.dami2.lpc.impl.ServiceMethodTopicListener;
+import org.noear.dami2.lpc.impl.ServiceMethodEventListener;
 import org.noear.dami2.bus.TopicListenRecord;
 import org.noear.dami2.lpc.impl.ConsumerInvocationHandler;
 import org.noear.dami2.bus.DamiBus;
@@ -58,10 +57,6 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
      * 总线
      */
     private final Supplier<DamiBus> busSupplier;
-
-    public DamiLpcImpl() {
-        this(() -> Dami.bus());
-    }
 
     public DamiLpcImpl(DamiBus bus) {
         this(() -> bus);
@@ -113,7 +108,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
         Object tmp = Proxy.newProxyInstance(consumerApi.getClassLoader(), new Class[]{consumerApi}, new ConsumerInvocationHandler(this, consumerApi, topicMapping));
 
         if (log.isDebugEnabled()) {
-            log.debug("This sender created successfully(@{}.*): {}", topicMapping, consumerApi.getName());
+            log.debug("This consumer created successfully(@{}.*): {}", topicMapping, consumerApi.getName());
         }
 
         return (T) tmp;
@@ -144,7 +139,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
                 //不能是 Object 申明的方法
                 if (m1.getDeclaringClass() != Object.class) {
                     String topic = getMethodTopic(topicMapping, m1.getName());
-                    ServiceMethodTopicListener listener = new ServiceMethodTopicListener(this, serviceObj, m1);
+                    ServiceMethodEventListener listener = new ServiceMethodEventListener(this, serviceObj, m1);
 
                     listenerRecords.add(new TopicListenRecord(topic, listener));
                     bus().listen(topic, index, listener);
@@ -158,7 +153,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("This listener registered successfully(@{}.*): {}", topicMapping, serviceObj.getClass().getName());
+            log.debug("This service registered successfully(@{}.*): {}", topicMapping, serviceObj.getClass().getName());
         }
     }
 
@@ -184,7 +179,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("This listener unregistered successfully(@{}.*): {}", topicMapping, serviceObj.getClass().getName());
+            log.debug("This service unregistered successfully(@{}.*): {}", topicMapping, serviceObj.getClass().getName());
         }
     }
 

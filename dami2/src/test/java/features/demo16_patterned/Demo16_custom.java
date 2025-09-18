@@ -3,8 +3,8 @@ package features.demo16_patterned;
 import org.noear.dami2.Dami;
 import org.noear.dami2.DamiConfig;
 import org.noear.dami2.bus.DamiBusImpl;
-import org.noear.dami2.bus.impl.RoutingPath;
-import org.noear.dami2.bus.impl.TopicRouterPatterned;
+import org.noear.dami2.bus.route.RoutingPath;
+import org.noear.dami2.bus.route.TopicRouterPatterned;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

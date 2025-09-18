@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.noear.dami2.Dami;
 import org.noear.dami2.bus.DamiBus;
 import org.noear.dami2.bus.Event;
-import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.receivable.CallPayload;
 import org.noear.dami2.spring.boot.annotation.DamiTopic;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -29,7 +29,7 @@ public class Demo91_raw {
     }
 
     @DamiTopic("user.demo")
-    public static class UserEventListener implements TopicListener<CallPayload<String, String>> {
+    public static class UserEventListener implements EventListener<CallPayload<String, String>> {
         @Override
         public void onEvent(Event<CallPayload<String, String>> event) throws Throwable {
             event.getPayload().getReceiver().complete("Hi " + event.getPayload().getContent());

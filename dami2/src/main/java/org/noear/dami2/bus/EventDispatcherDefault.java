@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus.impl;
+package org.noear.dami2.bus;
 
-import org.noear.dami2.bus.*;
 import org.noear.dami2.exception.DamiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +80,7 @@ public class EventDispatcherDefault implements EventDispatcher,Interceptor {
             log.trace("{}", event);
         }
 
-        final List<TopicListenerHolder> targets = chain.getTargets();
+        final List<EventListenerHolder> targets = chain.getTargets();
 
         if (targets != null && targets.size() > 0) {
             try {
@@ -109,7 +108,7 @@ public class EventDispatcherDefault implements EventDispatcher,Interceptor {
         AssertUtil.assertTopic(event.getTopic());
 
         //获取路由匹配结果
-        List<TopicListenerHolder> targets = router.matching(event.getTopic());
+        List<EventListenerHolder> targets = router.matching(event.getTopic());
 
         //转成拦截链处理
         new InterceptorChain<>(interceptors, targets).doIntercept(event);
@@ -119,7 +118,7 @@ public class EventDispatcherDefault implements EventDispatcher,Interceptor {
     /**
      * 执行派发
      */
-    protected void doDispatch(Event event, List<TopicListenerHolder> targets) throws Throwable {
+    protected void doDispatch(Event event, List<EventListenerHolder> targets) throws Throwable {
         //用 i，可以避免遍历时添加监听的异常
         for (int i = 0; i < targets.size(); i++) {
             targets.get(i).getListener().onEvent(event);

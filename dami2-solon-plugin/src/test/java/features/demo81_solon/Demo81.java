@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.dami2.Dami;
 import org.noear.dami2.bus.Event;
 import org.noear.dami2.bus.receivable.CallPayload;
-import org.noear.dami2.bus.receivable.CallTopicListener;
+import org.noear.dami2.bus.receivable.CallEventListener;
 import org.noear.dami2.solon.annotation.DamiTopic;
 import org.noear.solon.test.SolonTest;
 
@@ -18,7 +18,7 @@ public class Demo81 {
     }
 
     @DamiTopic("user.demo")
-    public static class UserEventListener implements CallTopicListener<String, String> {
+    public static class UserEventListener implements CallEventListener<String, String> {
         @Override
         public void onCall(Event<CallPayload<String, String>> event, String content, CompletableFuture<String> receiver) {
             receiver.complete("Hi " + content);

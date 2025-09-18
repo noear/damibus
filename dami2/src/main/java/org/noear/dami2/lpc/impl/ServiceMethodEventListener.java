@@ -17,23 +17,23 @@ package org.noear.dami2.lpc.impl;
 
 import org.noear.dami2.bus.receivable.CallPayload;
 import org.noear.dami2.lpc.DamiLpc;
-import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.Event;
 
 import java.lang.reflect.Method;
 
 /**
- * 方法主题监听器
+ * 服务的方法事件监听器
  *
  * @author noear
  * @since 1.0
  */
-public class ServiceMethodTopicListener implements TopicListener<CallPayload> {
+public class ServiceMethodEventListener implements EventListener<CallPayload> {
     private DamiLpc damiApi;
     private Object target;
     private Method method;
 
-    public ServiceMethodTopicListener(DamiLpc damiApi, Object target, Method method) {
+    public ServiceMethodEventListener(DamiLpc damiApi, Object target, Method method) {
         this.damiApi = damiApi;
         this.target = target;
         this.method = method;

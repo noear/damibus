@@ -16,32 +16,33 @@
 package org.noear.dami2.bus.receivable;
 
 import org.noear.dami2.bus.Event;
-import org.noear.dami2.bus.TopicListener;
-import org.reactivestreams.Subscriber;
+import org.noear.dami2.bus.EventListener;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
- * 生成流监听器
+ * 调用监听器
  *
  * @author noear
  * @since 2.0
  */
 @FunctionalInterface
-public interface StreamTopicListener<C,R> extends TopicListener<StreamPayload<C, R>> {
+public interface CallEventListener<C,R> extends EventListener<CallPayload<C, R>> {
     /**
      * 处理监听事件
      *
      * @param event 事件
      */
-    default void onEvent(Event<StreamPayload<C, R>> event) throws Throwable {
-        onStream(event, event.getPayload().getContent(), event.getPayload().getReceiver());
+    default void onEvent(Event<CallPayload<C, R>> event) throws Throwable {
+        onCall(event, event.getPayload().getContent(), event.getPayload().getReceiver());
     }
 
     /**
-     * 处理流事件（由 onEvent 转发简化）
+     * 处理调用事件（由 onEvent 转发简化）
      *
      * @param event    事件
      * @param content  荷载内容
      * @param receiver 荷载接收器
      */
-    void onStream(Event<StreamPayload<C, R>> event, C content, Subscriber<R> receiver);
+    void onCall(Event<CallPayload<C, R>> event, C content, CompletableFuture<R> receiver);
 }

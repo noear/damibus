@@ -60,7 +60,7 @@ public class MethodHandlerUtils {
         /**
          * JDK16+ 新增InvocationHandler.invokeDefault()
          * */
-        if (JAVA_MAJOR_VERSION >= 16) {
+        if (JAVA_MAJOR_VERSION > 15) { //16+
             // https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8253870
             Method[] ms = InvocationHandler.class.getMethods();
 
@@ -81,7 +81,10 @@ public class MethodHandlerUtils {
      * 在代理模式下调用接口的默认的函数
      */
     public static Object invokeDefault(Object proxy, Method method, Object[] args) throws Throwable {
-        if (JAVA_MAJOR_VERSION <= 15) {
+        if (JAVA_MAJOR_VERSION > 15) { //16+
+            Method invoke = invokeDefaultMethod;
+            return invoke.invoke(null, proxy, method, args);
+        } else {
             final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class
                     .getDeclaredConstructor(Class.class);
             constructor.setAccessible(true);
@@ -92,9 +95,6 @@ public class MethodHandlerUtils {
                     .unreflectSpecial(method, clazz)
                     .bindTo(proxy)
                     .invokeWithArguments(args);
-        } else {
-            Method invoke = invokeDefaultMethod;
-            return invoke.invoke(null, proxy, method, args);
         }
     }
 }

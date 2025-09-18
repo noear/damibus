@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import org.noear.dami2.Dami;
 import org.noear.dami2.bus.Event;
-import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.solon.annotation.DamiTopic;
 import org.noear.solon.test.SolonTest;
 
@@ -18,7 +18,7 @@ public class Demo86 {
     }
 
     @DamiTopic("demo86.event.user")
-    public static class UserListener implements TopicListener<User> {
+    public static class UserListener implements EventListener<User> {
 
         @Override
         public void onEvent(Event<User> event) throws Throwable {

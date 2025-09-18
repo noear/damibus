@@ -16,39 +16,17 @@
 package org.noear.dami2.bus;
 
 /**
- * 主题监听器持有人（添加序位支持）
+ * 事件监听器
  *
  * @author noear
  * @since 1.0
  */
-public class TopicListenerHolder<P> {
-    protected final int index;
-    protected final TopicListener<P> listener;
-
-    public TopicListenerHolder(int index, TopicListener<P> listener) {
-        this.index = index;
-        this.listener = listener;
-    }
-
+@FunctionalInterface
+public interface EventListener<P> {
     /**
-     * 获取顺序位
+     * 处理监听事件
+     *
+     * @param event 事件
      */
-    public int getIndex() {
-        return index;
-    }
-
-    /**
-     * 获取监听器
-     */
-    public TopicListener<P> getListener() {
-        return listener;
-    }
-
-    @Override
-    public String toString() {
-        return "TopicListenerHolder{" +
-                "index=" + index +
-                ", listener=" + listener +
-                '}';
-    }
+    void onEvent(final Event<P> event) throws Throwable;
 }

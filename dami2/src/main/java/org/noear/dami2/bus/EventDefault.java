@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus.impl;
-
-import org.noear.dami2.bus.Event;
+package org.noear.dami2.bus;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 事件实体实现
+ * 事件默认实现
  *
  * @author noear
  * @since 1.0

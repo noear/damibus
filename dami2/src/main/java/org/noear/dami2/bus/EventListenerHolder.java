@@ -16,32 +16,39 @@
 package org.noear.dami2.bus;
 
 /**
- * 主题监听记录（构建主题与监听器关联）
+ * 事件监听器持有人（添加序位支持）
  *
  * @author noear
  * @since 1.0
- * @since 2.0
  */
-public class TopicListenRecord<L extends EventListener> {
-    private String topic;
-    private L listener;
+public class EventListenerHolder<P> {
+    protected final int index;
+    protected final EventListener<P> listener;
 
-    public TopicListenRecord(String topic, L listener) {
-        this.topic = topic;
+    public EventListenerHolder(int index, EventListener<P> listener) {
+        this.index = index;
         this.listener = listener;
     }
 
     /**
-     * 主题
+     * 获取顺序位
      */
-    public String getTopic() {
-        return topic;
+    public int getIndex() {
+        return index;
     }
 
     /**
-     * 方法主题监听器
+     * 获取监听器
      */
-    public L getListener() {
+    public EventListener<P> getListener() {
         return listener;
+    }
+
+    @Override
+    public String toString() {
+        return "TopicListenerHolder{" +
+                "index=" + index +
+                ", listener=" + listener +
+                '}';
     }
 }

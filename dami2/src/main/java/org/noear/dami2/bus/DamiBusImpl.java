@@ -15,7 +15,7 @@
  */
 package org.noear.dami2.bus;
 
-import org.noear.dami2.bus.impl.*;
+import org.noear.dami2.bus.route.TopicRouterDefault;
 
 import java.util.function.Consumer;
 
@@ -121,7 +121,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * @param listener 监听
      */
     @Override
-    public <P> void listen(final String topic, final int index, final TopicListener<P> listener) {
+    public <P> void listen(final String topic, final int index, final EventListener<P> listener) {
         router.add(topic, index, listener);
     }
 
@@ -132,7 +132,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
      * @param listener 监听
      */
     @Override
-    public <P> void unlisten(final String topic, final TopicListener<P> listener) {
+    public <P> void unlisten(final String topic, final EventListener<P> listener) {
         router.remove(topic, listener);
     }
 

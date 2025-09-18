@@ -58,7 +58,7 @@ public interface CallBusExtension extends DamiBusExtension {
     /**
      * 当调用时
      */
-    default <C, R> void onCall(String topic, CallTopicListener<C, R> listener) {
+    default <C, R> void onCall(String topic, CallEventListener<C, R> listener) {
         bus().listen(topic, listener);
     }
 }

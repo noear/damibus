@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus.impl;
+package org.noear.dami2.bus.route;
 
-import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.EventListener;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,7 +35,7 @@ public class RoutingTag<P> extends Routing<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public RoutingTag(String expr, int index, TopicListener<P> listener) {
+    public RoutingTag(String expr, int index, EventListener<P> listener) {
         super(expr, index, listener);
 
         List<String> exprList = TopicTags.get(expr);

@@ -17,7 +17,7 @@ package org.noear.dami2.solon;
 
 import org.noear.dami2.Dami;
 import org.noear.dami2.bus.Event;
-import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.EventListener;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.bean.LifecycleBean;
 
@@ -46,8 +46,8 @@ public class ListenerLifecycleWrap implements LifecycleBean {
     public void stop() throws Throwable {
         //停止时自动注销
         for (ListenerRecord r1 : listenerRecords) {
-            if (r1.getListenerObj() instanceof TopicListener) {
-                Dami.bus().unlisten(r1.getTopicMapping(), (TopicListener<Event<Object>>) r1.getListenerObj());
+            if (r1.getListenerObj() instanceof EventListener) {
+                Dami.bus().unlisten(r1.getTopicMapping(), (EventListener<Event<Object>>) r1.getListenerObj());
             } else {
                 Dami.lpc().unregisterService(r1.getTopicMapping(), r1.getListenerObj());
             }

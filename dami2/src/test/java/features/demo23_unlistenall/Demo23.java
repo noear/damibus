@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.dami2.bus.DamiBus;
 import org.noear.dami2.bus.DamiBusImpl;
 import org.noear.dami2.bus.Event;
-import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.EventListener;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
@@ -17,14 +17,14 @@ public class Demo23 {
 
     @Test
     public void main() throws InterruptedException {
-        final TopicListener<Event<String>> aListener = event -> {
+        final EventListener<Event<String>> aListener = event -> {
             System.out.println("i'm a:" + event);
         };
-        final TopicListener<Event<String>> bListener = event -> {
+        final EventListener<Event<String>> bListener = event -> {
             System.out.println("i'm b:" + event);
         };
 
-        final TopicListener<Event<String>> cListener = event -> {
+        final EventListener<Event<String>> cListener = event -> {
             System.out.println("i'm b:" + event);
         };
         //监听事件

@@ -3,7 +3,7 @@ package features.demo81_solon;
 import org.junit.jupiter.api.Test;
 import org.noear.dami2.Dami;
 import org.noear.dami2.bus.Event;
-import org.noear.dami2.bus.TopicListener;
+import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.receivable.CallPayload;
 import org.noear.dami2.solon.annotation.DamiTopic;
 import org.noear.solon.test.SolonTest;
@@ -19,7 +19,7 @@ public class Demo81_raw {
     }
 
     @DamiTopic("user.demo")
-    public static class UserEventListener implements TopicListener<CallPayload<String, String>> {
+    public static class UserEventListener implements EventListener<CallPayload<String, String>> {
         @Override
         public void onEvent(Event<CallPayload<String, String>> event) throws Throwable {
             event.getPayload()

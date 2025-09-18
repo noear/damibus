@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus.impl;
+package org.noear.dami2.bus.route;
 
-import org.noear.dami2.bus.TopicListener;
-import org.noear.dami2.bus.TopicListenerHolder;
+import org.noear.dami2.bus.EventListener;
+import org.noear.dami2.bus.EventListenerHolder;
 
 /**
  * 路由记录
@@ -24,7 +24,7 @@ import org.noear.dami2.bus.TopicListenerHolder;
  * @author noear
  * @since 1.0
  * */
-public class Routing<P> extends TopicListenerHolder<P> {
+public class Routing<P> extends EventListenerHolder<P> {
     private final String expr;
 
     /**
@@ -32,7 +32,7 @@ public class Routing<P> extends TopicListenerHolder<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public Routing(String expr, int index, TopicListener<P> listener) {
+    public Routing(String expr, int index, EventListener<P> listener) {
         super(index, listener);
         this.expr = expr;
     }

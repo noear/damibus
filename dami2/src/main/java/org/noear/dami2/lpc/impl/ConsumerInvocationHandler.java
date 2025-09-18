@@ -24,7 +24,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
- * 发送者接口的调用代理
+ * 消费者的调用代理
  *
  * @author noear
  * @since 1.0
@@ -53,10 +53,10 @@ public class ConsumerInvocationHandler implements InvocationHandler {
         Object result = null;
 
 
-
-        Result<CallPayload<Object,Object>> event = damiApi.bus().callAsResult(topic, content, null);
+        Result<CallPayload<Object, Object>> event = damiApi.bus().callAsResult(topic, content, null);
 
         if (method.getReturnType() == void.class) { //不能用大写的 Void.class（不然对不上）
+            //无返回结果
             if (event.getHandled() == false) {
                 if (method.isDefault()) {
                     //如果没有订阅，且有默认实现
@@ -64,18 +64,16 @@ public class ConsumerInvocationHandler implements InvocationHandler {
                 }
             }
         } else {
+            //有返回结果
             if (event.getHandled()) {
-                result = event
-                        .getPayload()
-                        .getReceiver()
-                        .get();
+                result = event.getPayload().getReceiver().get();
             } else {
                 if (method.isDefault()) {
-                    //如果没有订阅，且有默认实现
+                    //如果没有订阅，且有默认实现（相当于降级处理）
                     result = MethodHandlerUtils.invokeDefault(proxy, method, args);
                 } else {
                     //如果没有默认实现；给出异常提醒
-                    throw new DamiNoListenException("No listen subscription");
+                    throw new DamiNoListenException("No listen implementation");
                 }
             }
         }
@@ -100,7 +98,7 @@ public class ConsumerInvocationHandler implements InvocationHandler {
 
     @Override
     public String toString() {
-        return "SenderInvocationHandler{" +
+        return "ConsumerInvocationHandler{" +
                 "interfaceClz=" + interfaceClz +
                 ", topicMapping='" + topicMapping + '\'' +
                 '}';

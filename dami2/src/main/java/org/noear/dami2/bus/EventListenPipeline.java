@@ -13,30 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.dami2.bus.impl;
-
-import org.noear.dami2.bus.TopicListener;
-import org.noear.dami2.bus.TopicListenerHolder;
+package org.noear.dami2.bus;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * 主题监听管道
+ * 事件监听管道
  *
  * @author noear
  * @since 1.0
  */
-public final class TopicListenPipeline {
-    private final List<TopicListenerHolder> list = new ArrayList<>();
+public final class EventListenPipeline {
+    private final List<EventListenerHolder> list = new ArrayList<>();
 
     /**
      * 添加监听
      *
      * @param listener 监听器
      */
-    public <P> void add(final TopicListener<P> listener) {
+    public <P> void add(final EventListener<P> listener) {
         add(0, listener);
     }
 
@@ -46,9 +43,9 @@ public final class TopicListenPipeline {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public <P> void add(final int index, final TopicListener<P> listener) {
-        list.add(new TopicListenerHolder(index, listener));
-        list.sort(Comparator.comparing(TopicListenerHolder::getIndex));
+    public <P> void add(final int index, final EventListener<P> listener) {
+        list.add(new EventListenerHolder(index, listener));
+        list.sort(Comparator.comparing(EventListenerHolder::getIndex));
     }
 
     /**
@@ -56,11 +53,11 @@ public final class TopicListenPipeline {
      *
      * @param listener 监听器
      */
-    public <P> void remove(final TopicListener<P> listener) {
+    public <P> void remove(final EventListener<P> listener) {
         list.removeIf(e -> e.getListener().equals(listener));
     }
 
-    public List<TopicListenerHolder> getList() {
+    public List<EventListenerHolder> getList() {
         return list;
     }
 
