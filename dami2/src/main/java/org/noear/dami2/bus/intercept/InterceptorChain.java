@@ -29,10 +29,14 @@ import java.util.List;
 public class InterceptorChain<P> {
     private final List<InterceptorEntity> interceptors;
     private final List<EventListenerHolder> targets;
+    private final EventInterceptor<P> lastHandler;
+
     private int interceptorIndex = 0;
-    public InterceptorChain(List<InterceptorEntity> interceptors, List<EventListenerHolder> targets){
+
+    public InterceptorChain(List<InterceptorEntity> interceptors, List<EventListenerHolder> targets, EventInterceptor<P> lastHandler) {
         this.interceptors = interceptors;
         this.targets = targets;
+        this.lastHandler = lastHandler;
     }
 
     public List<EventListenerHolder> getTargets() {
@@ -41,8 +45,15 @@ public class InterceptorChain<P> {
 
     /**
      * 拦截
-     * */
+     *
+     */
     public void doIntercept(Event<P> event) {
-        interceptors.get(interceptorIndex++).doIntercept(event, this);
+        if (interceptorIndex < interceptors.size()) {
+            interceptors.get(interceptorIndex++).doIntercept(event, this);
+        } else {
+            if (lastHandler != null) {
+                lastHandler.doIntercept(event, this);
+            }
+        }
     }
 }

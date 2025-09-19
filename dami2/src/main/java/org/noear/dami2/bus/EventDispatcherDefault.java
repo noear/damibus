@@ -36,18 +36,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author noear
  * @since 1.0
  */
-public class EventDispatcherDefault implements EventDispatcher, EventInterceptor {
+public class EventDispatcherDefault implements EventDispatcher {
     static final Logger log = LoggerFactory.getLogger(EventDispatcherDefault.class);
     /**
      * 拦截器
      */
     private final List<InterceptorEntity> interceptors = new ArrayList<>();
     private final ReentrantLock INTERCEPTORS_LOCK = new ReentrantLock();
-
-    public EventDispatcherDefault() {
-        interceptors.add(new InterceptorEntity(Integer.MAX_VALUE, this));
-    }
-
 
     /**
      * 添加拦截器
@@ -76,10 +71,25 @@ public class EventDispatcherDefault implements EventDispatcher, EventInterceptor
 
 
     /**
-     * 执行拦截
+     * 派发
      */
     @Override
-    public void doIntercept(Event event, InterceptorChain chain) {
+    public void dispatch(Event event, EventRouter router) {
+        AssertUtil.assertTopic(event.getTopic());
+
+        //获取路由匹配结果
+        List<EventListenerHolder> targets = router.matching(event.getTopic());
+
+        //转成拦截链处理
+        new InterceptorChain<>(interceptors, targets, this::doDispatch).doIntercept(event);
+
+    }
+
+
+    /**
+     * 执行调度
+     */
+    protected void doDispatch(Event event, InterceptorChain chain) {
         if (log.isTraceEnabled()) {
             log.trace("{}", event);
         }
@@ -88,7 +98,7 @@ public class EventDispatcherDefault implements EventDispatcher, EventInterceptor
 
         if (targets != null && targets.size() > 0) {
             try {
-                doDispatch(event, chain.getTargets());
+                doDistribute(event, chain.getTargets());
                 event.setHandled();
             } catch (InvocationTargetException e) {
                 throw new DamiException(e.getTargetException());
@@ -105,24 +115,9 @@ public class EventDispatcherDefault implements EventDispatcher, EventInterceptor
     }
 
     /**
-     * 派发
+     * 执行分发
      */
-    @Override
-    public void dispatch(Event event, EventRouter router) {
-        AssertUtil.assertTopic(event.getTopic());
-
-        //获取路由匹配结果
-        List<EventListenerHolder> targets = router.matching(event.getTopic());
-
-        //转成拦截链处理
-        new InterceptorChain<>(interceptors, targets).doIntercept(event);
-
-    }
-
-    /**
-     * 执行派发
-     */
-    protected void doDispatch(Event event, List<EventListenerHolder> targets) throws Throwable {
+    protected void doDistribute(Event event, List<EventListenerHolder> targets) throws Throwable {
         //用 i，可以避免遍历时添加监听的异常
         for (int i = 0; i < targets.size(); i++) {
             targets.get(i).getListener().onEvent(event);
