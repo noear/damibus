@@ -16,6 +16,7 @@
 package org.noear.dami2.bus;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * 发送结果
@@ -43,4 +44,12 @@ public interface Result<P> {
      * 荷载
      */
     P getPayload();
+
+    /**
+     * （有结果后）然后消费
+     */
+    default Result<P> thenConsume(Consumer<Result<P>> consumer) {
+        consumer.accept(this);
+        return this;
+    }
 }
