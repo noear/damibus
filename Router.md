@@ -10,7 +10,7 @@
 如果有需求，程序启动时配置一下：
 
 ```java
-DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
+DamiConfig.configure(new EventRouterPatterned(RoutingPath::new));
 ```
 
 

@@ -66,9 +66,9 @@ public class EventRouterDefault implements EventRouter {
 
         if (log.isDebugEnabled()) {
             if (ProviderMethodEventListener.class.isAssignableFrom(listener.getClass())) {
-                log.debug("TopicRouter listener added(@{}): {}", topic, listener);
+                log.debug("EventRouter listener added(@{}): {}", topic, listener);
             } else {
-                log.debug("TopicRouter listener added(@{}): {}", topic, listener.getClass().getName());
+                log.debug("EventRouter listener added(@{}): {}", topic, listener.getClass().getName());
             }
         }
     }
@@ -93,9 +93,9 @@ public class EventRouterDefault implements EventRouter {
 
         if (log.isDebugEnabled()) {
             if (ProviderMethodEventListener.class.isAssignableFrom(listener.getClass())) {
-                log.debug("TopicRouter listener removed(@{}): {}", topic, listener);
+                log.debug("EventRouter listener removed(@{}): {}", topic, listener);
             } else {
-                log.debug("TopicRouter listener removed(@{}): {}", topic, listener.getClass().getName());
+                log.debug("EventRouter listener removed(@{}): {}", topic, listener.getClass().getName());
             }
         }
     }
@@ -115,7 +115,7 @@ public class EventRouterDefault implements EventRouter {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("TopicRouter listener removed(@{}): all..", topic);
+            log.debug("EventRouter listener removed(@{}): all..", topic);
         }
     }
 

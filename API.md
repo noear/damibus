@@ -65,7 +65,7 @@ public interface DamiBus {
     void unlisten(final String topic);
 
     //路由器
-    TopicRouter router();
+    EventRouter router();
     
     //----------------------------
     // 通过继承 CallBusExtension 获得

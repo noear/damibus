@@ -139,7 +139,7 @@ public class Demo31 {
 public class Demo15_path {
     public void main(){
         //切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
-        DamiConfig.configure(new TopicRouterPatterned(RoutingPath::new));
+        DamiConfig.configure(new EventRouterPatterned(RoutingPath::new));
 
         //拦截
         Dami.bus().listen("demo/a/*", (event) -> {
@@ -157,7 +157,7 @@ public class Demo15_path {
 public class Demo15_tag {
     public void main(){
         //切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
-        DamiConfig.configure(new TopicRouterPatterned(RoutingTag::new));
+        DamiConfig.configure(new EventRouterPatterned(RoutingTag::new));
 
         //拦截
         Dami.bus().listen("demo.a:id", (event) -> {
