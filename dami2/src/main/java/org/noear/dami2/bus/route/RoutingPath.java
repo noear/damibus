@@ -25,7 +25,6 @@ import java.util.regex.Pattern;
 public class RoutingPath<P> extends Routing<P> {
 
     private final Pattern pattern;
-    private final boolean isPatterned;
 
     /**
      * @param expr     表达式（* 表示一段，** 表示不限段）
@@ -35,9 +34,9 @@ public class RoutingPath<P> extends Routing<P> {
     public RoutingPath(String expr, int index, EventListener<P> listener) {
         super(expr, index, listener);
 
-        this.isPatterned = expr.indexOf('*') >= 0;
-
-        if (expr.contains("*")) {
+        if (expr.indexOf('*') < 0) {
+            this.pattern = null;
+        } else {
             expr = expr.replace(".", "\\."); //支持 . 或 / 做为隔断
 
             //替换中间的**值
@@ -53,14 +52,12 @@ public class RoutingPath<P> extends Routing<P> {
             expr = "^" + expr + "$";
 
             this.pattern = Pattern.compile(expr);
-        } else {
-            this.pattern = null;
         }
     }
 
     @Override
     public boolean isPatterned() {
-        return isPatterned;
+        return pattern != null;
     }
 
     /**
@@ -69,18 +66,12 @@ public class RoutingPath<P> extends Routing<P> {
      * @param sentTopic 发送的主题
      */
     public boolean matches(String sentTopic) {
-        // 先检查精确匹配
-        if (isPatterned == false) {
-            if (super.matches(sentTopic)) {
-                return true;
-            }
-        }
-
-        // 再检查模式匹配（如果存在模式）
-        if (pattern != null) {
+        if (pattern == null) {
+            // 检查精确匹配
+            return (super.matches(sentTopic));
+        } else {
+            // 检查模式匹配
             return pattern.matcher(sentTopic).matches();
         }
-
-        return false;
     }
 }
