@@ -15,6 +15,7 @@
  */
 package org.noear.dami2.bus.route;
 
+import org.noear.dami2.bus.EventListenPipeline;
 import org.noear.dami2.lpc.impl.ProviderMethodEventListener;
 import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.EventListenerHolder;
@@ -24,8 +25,9 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -41,9 +43,8 @@ public class EventRouterPatterned implements EventRouter {
     /**
      * 路由记录
      */
-    private final List<Routing> routingList = new ArrayList<>();
-
-    protected final ReentrantLock ROUTING_LIST_LOCK = new ReentrantLock();
+    private final Map<String, EventListenPipeline> exactMatchMap = new ConcurrentHashMap<>();
+    private final List<Routing> patternRoutes = new CopyOnWriteArrayList<>();
 
 
     /**
@@ -65,11 +66,13 @@ public class EventRouterPatterned implements EventRouter {
      */
     @Override
     public <P> void add(final String topic, final int index, final EventListener<P> listener) {
-        ROUTING_LIST_LOCK.lock();
-        try {
-            routingList.add(routerFactory.create(topic, index, listener));
-        } finally {
-            ROUTING_LIST_LOCK.unlock();
+        Routing routing = routerFactory.create(topic, index, listener);
+        if (routing.isPatterned()) {
+            // 模式匹配路由
+            patternRoutes.add(routing);
+        } else {
+            // 精确匹配路由
+            exactMatchMap.computeIfAbsent(topic, k -> new EventListenPipeline()).add(index, listener);
         }
 
         if (log.isDebugEnabled()) {
@@ -89,12 +92,13 @@ public class EventRouterPatterned implements EventRouter {
      */
     @Override
     public <P> void remove(final String topic, final EventListener<P> listener) {
-        ROUTING_LIST_LOCK.lock();
-        try {
-            routingList.removeIf(routing -> routing.matches(topic) && routing.getListener() == listener);
-        } finally {
-            ROUTING_LIST_LOCK.unlock();
+        final EventListenPipeline pipeline = exactMatchMap.get(topic);
+        if (pipeline != null) {
+            pipeline.remove(listener);
         }
+
+        patternRoutes.removeIf(routing -> routing.matches(topic) && routing.getListener() == listener);
+
 
         if (log.isDebugEnabled()) {
             if (ProviderMethodEventListener.class.isAssignableFrom(listener.getClass())) {
@@ -112,12 +116,8 @@ public class EventRouterPatterned implements EventRouter {
      */
     @Override
     public void remove(String topic) {
-        ROUTING_LIST_LOCK.lock();
-        try {
-            routingList.removeIf(routing -> routing.matches(topic));
-        } finally {
-            ROUTING_LIST_LOCK.unlock();
-        }
+        exactMatchMap.remove(topic);
+        patternRoutes.removeIf(routing -> routing.matches(topic));
 
         if (log.isDebugEnabled()) {
             log.debug("EventRouter listener removed(@{}): all..", topic);
@@ -129,11 +129,34 @@ public class EventRouterPatterned implements EventRouter {
      */
     @Override
     public List<EventListenerHolder> matching(String topic) {
-        List<EventListenerHolder> routings = routingList.stream()
-                .filter(r -> r.matches(topic))
-                .sorted(Comparator.comparing(Routing::getIndex))
-                .collect(Collectors.toList());
+        List<EventListenerHolder> result = new ArrayList<>();
 
-        return routings;
+        // 1. 先检查模式匹配（只有需要时才执行）
+        if (!patternRoutes.isEmpty()) {
+            for (Routing routing : patternRoutes) {
+                if (routing.matches(topic)) {
+                    result.add(routing);
+                }
+            }
+        }
+
+        // 2. 再检查精确匹配
+        EventListenPipeline exactMatches = exactMatchMap.get(topic);
+        if (exactMatches != null) {
+            if (result.isEmpty()) {
+                //如果上面没有，则直接返回（减省排序时间）
+                return exactMatches.getList();
+            } else {
+                result.addAll(exactMatches.getList());
+            }
+        }
+
+        if (result.size() < 2) {
+            //少于2条不用排序了（减省排序时间）
+            return result;
+        } else {
+            result.sort(Comparator.comparing(EventListenerHolder::getIndex));
+            return result;
+        }
     }
 }

@@ -22,10 +22,9 @@ import org.noear.dami2.bus.EventListenerHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 事件路由器（默认啥希表实现方案）
@@ -39,13 +38,7 @@ public class EventRouterDefault implements EventRouter {
     /**
      * 主题监听管道
      */
-    private final Map<String, EventListenPipeline> pipelineMap = new LinkedHashMap<>();
-
-    protected final ReentrantLock PIPELINE_MAP_LOCK = new ReentrantLock();
-
-    public EventRouterDefault() {
-        super();
-    }
+    private final Map<String, EventListenPipeline> pipelineMap = new ConcurrentHashMap<>();
 
     /**
      * 添加监听
@@ -56,13 +49,7 @@ public class EventRouterDefault implements EventRouter {
      */
     @Override
     public <P> void add(final String topic, final int index, final EventListener<P> listener) {
-        PIPELINE_MAP_LOCK.lock();
-        try {
-            final EventListenPipeline pipeline = pipelineMap.computeIfAbsent(topic, t -> new EventListenPipeline());
-            pipeline.add(index, listener);
-        } finally {
-            PIPELINE_MAP_LOCK.unlock();
-        }
+        pipelineMap.computeIfAbsent(topic, t -> new EventListenPipeline()).add(index, listener);
 
         if (log.isDebugEnabled()) {
             if (ProviderMethodEventListener.class.isAssignableFrom(listener.getClass())) {
@@ -81,14 +68,9 @@ public class EventRouterDefault implements EventRouter {
      */
     @Override
     public <P> void remove(final String topic, final EventListener<P> listener) {
-        PIPELINE_MAP_LOCK.lock();
-        try {
-            final EventListenPipeline pipeline = pipelineMap.get(topic);
-            if (pipeline != null) {
-                pipeline.remove(listener);
-            }
-        } finally {
-            PIPELINE_MAP_LOCK.unlock();
+        final EventListenPipeline pipeline = pipelineMap.get(topic);
+        if (pipeline != null) {
+            pipeline.remove(listener);
         }
 
         if (log.isDebugEnabled()) {
@@ -107,12 +89,7 @@ public class EventRouterDefault implements EventRouter {
      */
     @Override
     public void remove(final String topic) {
-        PIPELINE_MAP_LOCK.lock();
-        try {
-            pipelineMap.remove(topic);
-        } finally {
-            PIPELINE_MAP_LOCK.unlock();
-        }
+        pipelineMap.remove(topic);
 
         if (log.isDebugEnabled()) {
             log.debug("EventRouter listener removed(@{}): all..", topic);

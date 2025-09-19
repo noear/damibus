@@ -48,6 +48,11 @@ public class RoutingTag<P> extends Routing<P> {
         }
     }
 
+    @Override
+    public boolean isPatterned() {
+        return getExpr().indexOf(':') >= 0;
+    }
+
     /**
      * 匹配
      *
