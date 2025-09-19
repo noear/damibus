@@ -40,10 +40,6 @@ public class RoutingTag<P> extends Routing<P> {
         topicTags = TopicTags.get(expr);
     }
 
-    public String getTopic() {
-        return topicTags.topic;
-    }
-
     @Override
     public boolean isPatterned() {
         return true;//topicTags.tags.size() > 0;

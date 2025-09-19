@@ -66,12 +66,16 @@ public class RoutingPath<P> extends Routing<P> {
      * @param sentTopic 发送的主题
      */
     public boolean matches(String sentTopic) {
-        if (pattern == null) {
-            // 检查精确匹配
-            return (super.matches(sentTopic));
-        } else {
+        // 检查精确匹配
+        if (super.matches(sentTopic)) {
+            return true;
+        }
+
+        if (pattern != null) {
             // 检查模式匹配
             return pattern.matcher(sentTopic).matches();
         }
+
+        return false;
     }
 }

@@ -8,7 +8,7 @@ import org.noear.dami2.bus.route.RoutingPath;
 /**
  * @author noear 2025/9/19 created
  */
-public class RouterTest {
+public class RouterPathTest {
     static int count = 0;
 
     public static void main(String[] args) {
