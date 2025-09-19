@@ -75,21 +75,23 @@ public class EventDispatcherDefault implements EventDispatcher {
      */
     @Override
     public void dispatch(Event event, EventRouter router) {
+        //调度流程：1.拦截；2.预检；3.分发
+
         AssertUtil.assertTopic(event.getTopic());
 
         //获取路由匹配结果
         List<EventListenerHolder> targets = router.matching(event.getTopic());
 
         //转成拦截链处理
-        new InterceptorChain<>(interceptors, targets, this::doDispatch).doIntercept(event);
+        new InterceptorChain<>(interceptors, targets, this::doPrecheck).doIntercept(event);
 
     }
 
 
     /**
-     * 执行调度
+     * 执行预检
      */
-    protected void doDispatch(Event event, InterceptorChain chain) {
+    protected void doPrecheck(Event event, InterceptorChain chain) {
         if (log.isTraceEnabled()) {
             log.trace("{}", event);
         }
