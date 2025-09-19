@@ -105,12 +105,12 @@ public interface DamiLpc extends DamiBusExtension {
     //创建服务消费者（接口代理）
     <T> T createConsumer(String topicMapping, Class<T> consumerApi);
     
-    //注册服务实现（一个服务，只能监听一个主题）
-    void registerService(String topicMapping, Object serviceObj);
-    void registerService(String topicMapping, int index, Object serviceObj);
+    //注册服务提供者（一个服务，只能监听一个主题）
+    void registerProvider(String topicMapping, Object roviderObj);
+    void registerProvider(String topicMapping, int index, Object roviderObj);
     
-    //注销服务实现
-    void unregisterService(String topicMapping, Object serviceObj);
+    //注销服务提供者
+    void unregisterProvider(String topicMapping, Object roviderObj);
 }
 ```
 

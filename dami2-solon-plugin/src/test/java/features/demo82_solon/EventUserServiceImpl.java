@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 基于事件的，用户服务实现（要让别人来拿的）
+ * 基于事件的，用户服务提供者（要让别人来拿的）
  * */
 //通过约定保持与 EventUserService 相同的接口定义（或者实现 EventUserService 接口，这个会带来依赖关系）
 @DamiTopic("demo82.event.user")

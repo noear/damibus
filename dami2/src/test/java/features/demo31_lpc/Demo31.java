@@ -17,9 +17,9 @@ public class Demo31 {
 
     @Test
     public void main() {
-        //注册服务实现
+        //注册服务提供者
         UserServiceImpl userEventListener = new UserServiceImpl();
-        lpc.registerService(topicMapping, userEventListener);
+        lpc.registerProvider(topicMapping, userEventListener);
 
         //创建服务消费者（接口代理）
         UserService eventUser = lpc.createConsumer(topicMapping, UserService.class);
@@ -30,7 +30,7 @@ public class Demo31 {
         System.err.println("收到：响应：userId：" + userId);
 
         //注销监听器
-        lpc.unregisterService(topicMapping, userEventListener);
+        lpc.unregisterProvider(topicMapping, userEventListener);
 
         assert userId != null;
         assert userId == 99L;

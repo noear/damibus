@@ -16,7 +16,7 @@ public class Demo33 {
 
     @Test
     public void main() {
-        api.registerService(topicMapping, new EventDemoImpl());
+        api.registerProvider(topicMapping, new EventDemoImpl());
         EventDemo eventDemo = api.createConsumer(topicMapping, EventDemo.class);
         assert eventDemo.demo1() == 1; //有默认返回值
         eventDemo.demo2();

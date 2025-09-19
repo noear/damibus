@@ -49,7 +49,7 @@ public class ListenerLifecycleWrap implements LifecycleBean {
             if (r1.getListenerObj() instanceof EventListener) {
                 Dami.bus().unlisten(r1.getTopicMapping(), (EventListener<Event<Object>>) r1.getListenerObj());
             } else {
-                Dami.lpc().unregisterService(r1.getTopicMapping(), r1.getListenerObj());
+                Dami.lpc().unregisterProvider(r1.getTopicMapping(), r1.getListenerObj());
             }
         }
     }

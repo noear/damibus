@@ -15,7 +15,7 @@
  */
 package org.noear.dami2.bus.route;
 
-import org.noear.dami2.lpc.impl.ServiceMethodEventListener;
+import org.noear.dami2.lpc.impl.ProviderMethodEventListener;
 import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.EventListenerHolder;
 import org.slf4j.Logger;
@@ -73,7 +73,7 @@ public class EventRouterPatterned implements EventRouter {
         }
 
         if (log.isDebugEnabled()) {
-            if (ServiceMethodEventListener.class.isAssignableFrom(listener.getClass())) {
+            if (ProviderMethodEventListener.class.isAssignableFrom(listener.getClass())) {
                 log.debug("TopicRouter listener added(@{}): {}", topic, listener);
             } else {
                 log.debug("TopicRouter listener added(@{}): {}", topic, listener.getClass().getName());
@@ -97,7 +97,7 @@ public class EventRouterPatterned implements EventRouter {
         }
 
         if (log.isDebugEnabled()) {
-            if (ServiceMethodEventListener.class.isAssignableFrom(listener.getClass())) {
+            if (ProviderMethodEventListener.class.isAssignableFrom(listener.getClass())) {
                 log.debug("TopicRouter listener removed(@{}): {}", topic, listener);
             } else {
                 log.debug("TopicRouter listener removed(@{}): {}", topic, listener.getClass().getName());

@@ -41,7 +41,7 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
             if (EventListener.class.isAssignableFrom(clz)) {
                 Dami.bus().listen(anno.value(), anno.index(), (EventListener) bw.raw());
             } else {
-                Dami.lpc().registerService(anno.value(), anno.index(), bw.raw());
+                Dami.lpc().registerProvider(anno.value(), anno.index(), bw.raw());
             }
 
             lifecycleWrap(bw, anno.value());

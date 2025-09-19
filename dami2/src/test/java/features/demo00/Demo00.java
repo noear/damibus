@@ -56,8 +56,8 @@ public class Demo00 {
     }
 
     public void case_lpc() {
-        //注册服务实现（监听问答事件）
-        Dami.lpc().registerService("demo", new UserServiceImpl());
+        //注册服务提供者（监听问答事件）
+        Dami.lpc().registerProvider("demo", new UserServiceImpl());
 
         //生成服务消费者（发送问题事件）
         UserService userService = Dami.lpc().createConsumer("demo", UserService.class);

@@ -42,29 +42,29 @@ public interface DamiLpc extends DamiBusExtension {
     <T> T createConsumer(String topicMapping, Class<T> consumerApi);
 
     /**
-     * 注册服务实现（一个服务，只能监听一个主题）
+     * 注册服务提供者（一个服务，只能监听一个主题）
      *
      * @param topicMapping 主题映射
-     * @param serviceObj   服务实现类
+     * @param roviderObj   提供者对象
      */
-    default void registerService(String topicMapping, Object serviceObj) {
-        registerService(topicMapping, 0, serviceObj);
+    default void registerProvider(String topicMapping, Object roviderObj) {
+        registerProvider(topicMapping, 0, roviderObj);
     }
 
     /**
-     * 注册服务实现（一个服务，只能监听一个主题）
+     * 注册服务提供者（一个服务，只能监听一个主题）
      *
      * @param topicMapping 主题映射
      * @param index        顺序位
-     * @param serviceObj   服务实现类
+     * @param roviderObj   提供者对象
      */
-    void registerService(String topicMapping, int index, Object serviceObj);
+    void registerProvider(String topicMapping, int index, Object roviderObj);
 
     /**
-     * 注销服务实现
+     * 注销服务提供者
      *
      * @param topicMapping 主题映射
-     * @param serviceObj   服务实现类
+     * @param roviderObj   提供者对象
      */
-    void unregisterService(String topicMapping, Object serviceObj);
+    void unregisterProvider(String topicMapping, Object roviderObj);
 }

@@ -36,7 +36,7 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
                 Dami.bus().unlisten(topicMapping, (EventListener) bean);
             } else {
                 //否则使用api移除
-                Dami.lpc().unregisterService(topicMapping, bean);
+                Dami.lpc().unregisterProvider(topicMapping, bean);
             }
         }
     }
@@ -65,7 +65,7 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
                 Dami.bus().listen(topicMapping, damiTopic.index(), (EventListener) bean);
             } else {
                 //否则使用api注册
-                Dami.lpc().registerService(topicMapping, damiTopic.index(), bean);
+                Dami.lpc().registerProvider(topicMapping, damiTopic.index(), bean);
             }
         }
 

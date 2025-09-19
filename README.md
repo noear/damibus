@@ -157,9 +157,9 @@ public class UserServiceImpl { // implements UserService
 
 public class Demo31 {
     public static void main(String[] args) {
-        //注册服务实现
+        //注册服务提供者
         UserServiceImpl userServiceImpl = new UserServiceImpl();
-        Dami.lpc().registerService(topicMapping, userServiceImpl);
+        Dami.lpc().registerProvider(topicMapping, userServiceImpl);
 
         //创建服务消费者（接口代理）
         UserService userService = Dami.lpc().createConsumer(topicMapping, UserService.class);
@@ -169,8 +169,8 @@ public class Demo31 {
         Long userId = userService.getUserId("dami");
         System.err.println("收到：响应：userId：" + userId);
 
-        //注销服务实现
-        Dami.lpc().unregisterService(topicMapping, userServiceImpl);
+        //注销服务提供者
+        Dami.lpc().unregisterProvider(topicMapping, userServiceImpl);
     }
 }
 ```

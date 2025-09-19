@@ -28,12 +28,12 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.0
  */
-public class ServiceMethodEventListener implements EventListener<CallPayload> {
+public class ProviderMethodEventListener implements EventListener<CallPayload> {
     private DamiLpc damiApi;
     private Object target;
     private Method method;
 
-    public ServiceMethodEventListener(DamiLpc damiApi, Object target, Method method) {
+    public ProviderMethodEventListener(DamiLpc damiApi, Object target, Method method) {
         this.damiApi = damiApi;
         this.target = target;
         this.method = method;

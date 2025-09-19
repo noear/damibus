@@ -22,7 +22,7 @@ public class Demo32 {
 
         //注册监听器
         EventUserListenerOfModule1 userEventListener = new EventUserListenerOfModule1();
-        api.registerService(topicMapping, userEventListener);
+        api.registerProvider(topicMapping, userEventListener);
 
         //生成发送器
         EventUser eventUser = api.createConsumer(topicMapping, EventUser.class);
@@ -37,7 +37,7 @@ public class Demo32 {
         }
 
         //注销监听器
-        api.unregisterService(topicMapping, userEventListener);
+        api.unregisterProvider(topicMapping, userEventListener);
 
         assert testObserver != null;
         assert testObserver.getClass() == RuntimeException.class;

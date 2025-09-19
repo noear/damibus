@@ -15,7 +15,7 @@
  */
 package org.noear.dami2.lpc;
 
-import org.noear.dami2.lpc.impl.ServiceMethodEventListener;
+import org.noear.dami2.lpc.impl.ProviderMethodEventListener;
 import org.noear.dami2.lpc.impl.TopicListenRecord;
 import org.noear.dami2.lpc.impl.ConsumerInvocationHandler;
 import org.noear.dami2.bus.DamiBus;
@@ -45,8 +45,8 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     /**
      * 监听器缓存（注销时用）
      */
-    private Map<Class<?>, List<TopicListenRecord>> serviceMap = new HashMap<>();
-    private ReentrantLock SERVICE_MAP_LOCK = new ReentrantLock();
+    private Map<Class<?>, List<TopicListenRecord>> providerMap = new HashMap<>();
+    private ReentrantLock PROVIDER_MAP_LOCK = new ReentrantLock();
 
     /**
      * 编码解器
@@ -115,31 +115,31 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     }
 
     /**
-     * 注册服务实现（一个服务，只能监听一个主题）
+     * 注册服务提供者（一个服务，只能监听一个主题）
      *
      * @param topicMapping 主题映射
      * @param index        顺序位
-     * @param serviceObj   服务实现类
+     * @param roviderObj   提供者对象
      */
     @Override
-    public void registerService(String topicMapping, int index, Object serviceObj) {
-        Class<?> serviceClz = serviceObj.getClass();
+    public void registerProvider(String topicMapping, int index, Object roviderObj) {
+        Class<?> roviderClz = roviderObj.getClass();
 
-        SERVICE_MAP_LOCK.lock();
+        PROVIDER_MAP_LOCK.lock();
         try {
             //防止重复注册
-            if (serviceMap.containsKey(serviceClz)) {
-                throw new DamiException("This listener is registered: " + serviceClz.getName());
+            if (providerMap.containsKey(roviderClz)) {
+                throw new DamiException("This listener is registered: " + roviderClz.getName());
             }
 
             //开始注册
             List<TopicListenRecord> listenerRecords = new ArrayList<>();
 
-            for (Method m1 : findMethods(serviceClz)) {
+            for (Method m1 : findMethods(roviderClz)) {
                 //不能是 Object 申明的方法
                 if (m1.getDeclaringClass() != Object.class) {
                     String topic = getMethodTopic(topicMapping, m1.getName());
-                    ServiceMethodEventListener listener = new ServiceMethodEventListener(this, serviceObj, m1);
+                    ProviderMethodEventListener listener = new ProviderMethodEventListener(this, roviderObj, m1);
 
                     listenerRecords.add(new TopicListenRecord(topic, listener));
                     bus().listen(topic, index, listener);
@@ -147,27 +147,27 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
             }
 
             //为了注销时，移掉对应的实例
-            serviceMap.put(serviceClz, listenerRecords);
+            providerMap.put(roviderClz, listenerRecords);
         } finally {
-            SERVICE_MAP_LOCK.unlock();
+            PROVIDER_MAP_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("This service registered successfully(@{}.*): {}", topicMapping, serviceObj.getClass().getName());
+            log.debug("This provider registered successfully(@{}.*): {}", topicMapping, roviderObj.getClass().getName());
         }
     }
 
     /**
-     * 注销服务实现
+     * 注销服务提供者
      *
      * @param topicMapping 主题映射
-     * @param serviceObj   服务实现类
+     * @param roviderObj   提供者对象
      */
     @Override
-    public void unregisterService(String topicMapping, Object serviceObj) {
-        SERVICE_MAP_LOCK.lock();
+    public void unregisterProvider(String topicMapping, Object roviderObj) {
+        PROVIDER_MAP_LOCK.lock();
         try {
-            List<TopicListenRecord> tmp = serviceMap.remove(serviceObj.getClass());
+            List<TopicListenRecord> tmp = providerMap.remove(roviderObj.getClass());
 
             if (tmp != null) {
                 for (TopicListenRecord r1 : tmp) {
@@ -175,20 +175,20 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
                 }
             }
         } finally {
-            SERVICE_MAP_LOCK.unlock();
+            PROVIDER_MAP_LOCK.unlock();
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("This service unregistered successfully(@{}.*): {}", topicMapping, serviceObj.getClass().getName());
+            log.debug("This provider unregistered successfully(@{}.*): {}", topicMapping, roviderObj.getClass().getName());
         }
     }
 
     /**
      * 获取方法
      */
-    protected Method[] findMethods(Class<?> serviceClz) {
+    protected Method[] findMethods(Class<?> roviderClz) {
         //只用公有的方法（支持承断） //old::只用自己申明的方法（不支持承断）
-        return serviceClz.getMethods();
+        return roviderClz.getMethods();
     }
 
     /**
