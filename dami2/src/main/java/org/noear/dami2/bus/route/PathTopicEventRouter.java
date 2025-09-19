@@ -37,8 +37,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @example /a/*, /a/**b
  * @since 1.0
  */
-public class PathEventRouter implements EventRouter {
-    static final Logger log = LoggerFactory.getLogger(HashEventRouter.class);
+public class PathTopicEventRouter implements EventRouter {
+    static final Logger log = LoggerFactory.getLogger(HashTopicEventRouter.class);
 
     /**
      * 路由记录
