@@ -16,6 +16,7 @@
 package org.noear.dami2.bus.receivable;
 
 import org.noear.dami2.bus.DamiBusExtension;
+import org.noear.dami2.bus.EventListener;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
@@ -55,23 +56,21 @@ public interface StreamBusExtension extends DamiBusExtension {
     /**
      * 监听流事件
      *
-     * @param topic   事件主题
-     * @param handler 流事件处理
+     * @param topic    事件主题
+     * @param listener 监听器
      */
-    default <D, R> void listen(String topic, StreamEventHandler<D, R> handler) {
-        listen(topic, 0, handler);
+    default <D, R> void listen(String topic, StreamEventListener<D, R> listener) {
+        listen(topic, 0, listener);
     }
 
     /**
      * 监听流事件
      *
-     * @param topic   事件主题
-     * @param index   顺序位
-     * @param handler 流事件处理
+     * @param topic    事件主题
+     * @param index    顺序位
+     * @param listener 监听器
      */
-    default <D, R> void listen(String topic, int index, StreamEventHandler<D, R> handler) {
-        bus().<StreamPayload<D, R>>listen(topic, index, event -> {
-            handler.onStream(event, event.getAttach(), event.getPayload().getData(), event.getPayload().getSink());
-        });
+    default <D, R> void listen(String topic, int index, StreamEventListener<D, R> listener) {
+        bus().listen(topic, index, (EventListener<? extends Object>) listener);
     }
 }

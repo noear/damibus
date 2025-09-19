@@ -16,6 +16,7 @@
 package org.noear.dami2.bus.receivable;
 
 import org.noear.dami2.bus.DamiBusExtension;
+import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.Result;
 
 import java.util.concurrent.CompletableFuture;
@@ -83,23 +84,21 @@ public interface CallBusExtension extends DamiBusExtension {
     /**
      * 监听调用事件
      *
-     * @param topic   事件主题
-     * @param handler 调用事件处理
+     * @param topic    事件主题
+     * @param listener 监听器
      */
-    default <D, R> void listen(String topic, CallEventHandler<D, R> handler) {
-        listen(topic, 0, handler);
+    default <D, R> void listen(String topic, CallEventListener<D, R> listener) {
+        listen(topic, 0, listener);
     }
 
     /**
      * 监听调用事件
      *
-     * @param topic   事件主题
-     * @param index   顺序位
-     * @param handler 调用事件处理
+     * @param topic    事件主题
+     * @param index    顺序位
+     * @param listener 监听器
      */
-    default <D, R> void listen(String topic, int index, CallEventHandler<D, R> handler) {
-        bus().<CallPayload<D, R>>listen(topic, index, event -> {
-            handler.onCall(event, event.getPayload().getData(), event.getPayload().getSink());
-        });
+    default <D, R> void listen(String topic, int index, CallEventListener<D, R> listener) {
+        bus().listen(topic, index, (EventListener<? extends Object>) listener);
     }
 }
