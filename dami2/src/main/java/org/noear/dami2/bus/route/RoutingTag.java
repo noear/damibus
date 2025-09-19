@@ -46,7 +46,7 @@ public class RoutingTag<P> extends Routing<P> {
 
     @Override
     public boolean isPatterned() {
-        return topicTags.tags.size() > 0;
+        return true;//topicTags.tags.size() > 0;
     }
 
     /**

@@ -70,7 +70,7 @@ public class EventRouterPatterned implements EventRouter {
         if (routing.isPatterned()) {
             // 模式匹配路由
             patternRoutes.add(routing);
-        } else {
+        }else {
             // 精确匹配路由
             exactMatchMap.computeIfAbsent(topicExpr, k -> new EventListenPipeline()).add(index, listener);
         }
