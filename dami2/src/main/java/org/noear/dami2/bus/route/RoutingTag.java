@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RoutingTag<P> extends Routing<P> {
     private final List<String> tags;
     private final String topic;
+    private final boolean isPatterned;
 
     /**
      * @param expr     表达式（: 为主题与标签的间隔符；,为标签的间隔符）
@@ -37,6 +38,7 @@ public class RoutingTag<P> extends Routing<P> {
      */
     public RoutingTag(String expr, int index, EventListener<P> listener) {
         super(expr, index, listener);
+        this.isPatterned = expr.indexOf(':') >= 0;
 
         List<String> exprList = TopicTags.get(expr);
         this.topic = exprList.get(0);
@@ -50,7 +52,7 @@ public class RoutingTag<P> extends Routing<P> {
 
     @Override
     public boolean isPatterned() {
-        return getExpr().indexOf(':') >= 0;
+        return isPatterned;
     }
 
     /**

@@ -14,7 +14,7 @@ public class RouterTest {
     public static void main(String[] args) {
         DamiConfig.configure(new EventRouterPatterned(RoutingPath::new));
 
-        Dami.bus().listen("test.demo", e -> {
+        Dami.bus().listen("test.*", e -> {
             count = count + 1;
         });
 
