@@ -33,8 +33,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 1.0
  */
-public class HashEventRouter implements EventRouter {
-    static final Logger log = LoggerFactory.getLogger(HashEventRouter.class);
+public class HashTopicEventRouter implements EventRouter {
+    static final Logger log = LoggerFactory.getLogger(HashTopicEventRouter.class);
 
     /**
      * 主题监听管道
