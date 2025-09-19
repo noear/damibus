@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.EventListenerHolder;
 import org.noear.dami2.bus.route.EventRouter;
-import org.noear.dami2.bus.route.PathEventRouter;
+import org.noear.dami2.bus.route.PathTopicEventRouter;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ class PathEventRouterTest {
 
     @BeforeEach
     void setUp() {
-        router = new PathEventRouter();
+        router = new PathTopicEventRouter();
     }
 
     @Test

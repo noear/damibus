@@ -32,8 +32,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @example /a/*, /a/**b
  * @since 1.0
  */
-public class TagEventRouter implements EventRouter {
-    static final Logger log = LoggerFactory.getLogger(HashEventRouter.class);
+public class TagTopicEventRouter implements EventRouter {
+    static final Logger log = LoggerFactory.getLogger(HashTopicEventRouter.class);
 
     //路由记录
     private final Map<String, List<TagRouting>> topicRoutingMap = new ConcurrentHashMap<>();

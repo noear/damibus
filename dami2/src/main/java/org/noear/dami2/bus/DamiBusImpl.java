@@ -17,7 +17,7 @@ package org.noear.dami2.bus;
 
 import org.noear.dami2.bus.intercept.EventInterceptor;
 import org.noear.dami2.bus.route.EventRouter;
-import org.noear.dami2.bus.route.HashEventRouter;
+import org.noear.dami2.bus.route.HashTopicEventRouter;
 
 import java.util.function.Consumer;
 
@@ -37,7 +37,7 @@ public class DamiBusImpl implements DamiBus, DamiBusConfigurator {
 
     public DamiBusImpl(EventRouter router) {
         if (router == null) {
-            this.router = new HashEventRouter();
+            this.router = new HashTopicEventRouter();
         } else {
             this.router = router;
         }

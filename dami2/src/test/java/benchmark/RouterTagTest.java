@@ -2,9 +2,7 @@ package benchmark;
 
 import org.noear.dami2.Dami;
 import org.noear.dami2.DamiConfig;
-import org.noear.dami2.bus.route.PathEventRouter;
-import org.noear.dami2.bus.route.TagEventRouter;
-import org.noear.dami2.bus.route.TagRouting;
+import org.noear.dami2.bus.route.TagTopicEventRouter;
 
 /**
  * @author noear 2025/9/19 created
@@ -13,7 +11,7 @@ public class RouterTagTest {
     static int count = 0;
 
     public static void main(String[] args) {
-        DamiConfig.configure(new TagEventRouter());
+        DamiConfig.configure(new TagTopicEventRouter());
 
         Dami.bus().listen("test:a", e -> {
             count = count + 1;

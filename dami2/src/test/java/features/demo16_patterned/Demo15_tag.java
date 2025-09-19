@@ -3,9 +3,7 @@ package features.demo16_patterned;
 import org.junit.jupiter.api.Test;
 import org.noear.dami2.bus.DamiBus;
 import org.noear.dami2.bus.DamiBusImpl;
-import org.noear.dami2.bus.route.TagEventRouter;
-import org.noear.dami2.bus.route.TagRouting;
-import org.noear.dami2.bus.route.PathEventRouter;
+import org.noear.dami2.bus.route.TagTopicEventRouter;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -14,7 +12,7 @@ public class Demo15_tag {
     @Test
     public void test3_1() {
         //定义实例，避免单测干扰 //开发时用：Dami.bus()
-        DamiBus busStr = new DamiBusImpl(new TagEventRouter());
+        DamiBus busStr = new DamiBusImpl(new TagTopicEventRouter());
 
         AtomicInteger testObserver = new AtomicInteger();
 

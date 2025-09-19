@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.EventListenerHolder;
 import org.noear.dami2.bus.route.EventRouter;
-import org.noear.dami2.bus.route.TagEventRouter;
+import org.noear.dami2.bus.route.TagTopicEventRouter;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,7 +25,7 @@ public class TagEventRouterTest {
     @BeforeEach
     public void setUp() {
         // 使用 RoutingTag 工厂创建路由
-        router = new TagEventRouter();
+        router = new TagTopicEventRouter();
     }
 
     @Test
