@@ -29,27 +29,27 @@ public interface EventRouter {
     /**
      * 添加监听
      *
-     * @param topic    主题
-     * @param index    顺序位
-     * @param listener 监听器
+     * @param topicExpr 主题表达式
+     * @param index     顺序位
+     * @param listener  监听器
      */
-    <P> void add(final String topic, final int index, final EventListener<P> listener);
+    <P> void add(final String topicExpr, final int index, final EventListener<P> listener);
 
 
     /**
      * 移除监听
      *
-     * @param topic    主题
-     * @param listener 监听器
+     * @param topicExpr 主题表达式
+     * @param listener  监听器
      */
-    <P> void remove(final String topic, final EventListener<P> listener);
+    <P> void remove(final String topicExpr, final EventListener<P> listener);
 
     /**
      * 移除监听
      *
-     * @param topic 主题
+     * @param topicExpr 主题表达式
      */
-    <P> void remove(final String topic);
+    <P> void remove(final String topicExpr);
 
     /**
      * 路由匹配

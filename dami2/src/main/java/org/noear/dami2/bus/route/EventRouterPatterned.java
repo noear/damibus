@@ -60,26 +60,26 @@ public class EventRouterPatterned implements EventRouter {
     /**
      * 添加监听
      *
-     * @param topic    主题
-     * @param index    顺序位
-     * @param listener 监听器
+     * @param topicExpr 主题表达式
+     * @param index     顺序位
+     * @param listener  监听器
      */
     @Override
-    public <P> void add(final String topic, final int index, final EventListener<P> listener) {
-        Routing routing = routerFactory.create(topic, index, listener);
+    public <P> void add(final String topicExpr, final int index, final EventListener<P> listener) {
+        Routing routing = routerFactory.create(topicExpr, index, listener);
         if (routing.isPatterned()) {
             // 模式匹配路由
             patternRoutes.add(routing);
         } else {
             // 精确匹配路由
-            exactMatchMap.computeIfAbsent(topic, k -> new EventListenPipeline()).add(index, listener);
+            exactMatchMap.computeIfAbsent(topicExpr, k -> new EventListenPipeline()).add(index, listener);
         }
 
         if (log.isDebugEnabled()) {
             if (ProviderMethodEventListener.class.isAssignableFrom(listener.getClass())) {
-                log.debug("EventRouter listener added(@{}): {}", topic, listener);
+                log.debug("EventRouter listener added(@{}): {}", topicExpr, listener);
             } else {
-                log.debug("EventRouter listener added(@{}): {}", topic, listener.getClass().getName());
+                log.debug("EventRouter listener added(@{}): {}", topicExpr, listener.getClass().getName());
             }
         }
     }
@@ -87,24 +87,24 @@ public class EventRouterPatterned implements EventRouter {
     /**
      * 移除监听
      *
-     * @param topic    主题
-     * @param listener 监听器
+     * @param topicExpr 主题表达式
+     * @param listener  监听器
      */
     @Override
-    public <P> void remove(final String topic, final EventListener<P> listener) {
-        final EventListenPipeline pipeline = exactMatchMap.get(topic);
+    public <P> void remove(final String topicExpr, final EventListener<P> listener) {
+        final EventListenPipeline pipeline = exactMatchMap.get(topicExpr);
         if (pipeline != null) {
             pipeline.remove(listener);
         }
 
-        patternRoutes.removeIf(routing -> routing.matches(topic) && routing.getListener() == listener);
+        patternRoutes.removeIf(routing -> routing.getExpr().equals(topicExpr) && routing.getListener() == listener);
 
 
         if (log.isDebugEnabled()) {
             if (ProviderMethodEventListener.class.isAssignableFrom(listener.getClass())) {
-                log.debug("EventRouter listener removed(@{}): {}", topic, listener);
+                log.debug("EventRouter listener removed(@{}): {}", topicExpr, listener);
             } else {
-                log.debug("EventRouter listener removed(@{}): {}", topic, listener.getClass().getName());
+                log.debug("EventRouter listener removed(@{}): {}", topicExpr, listener.getClass().getName());
             }
         }
     }
@@ -112,15 +112,15 @@ public class EventRouterPatterned implements EventRouter {
     /**
      * 移除监听
      *
-     * @param topic 主题
+     * @param topicExpr 主题表达式
      */
     @Override
-    public void remove(String topic) {
-        exactMatchMap.remove(topic);
-        patternRoutes.removeIf(routing -> routing.matches(topic));
+    public void remove(String topicExpr) {
+        exactMatchMap.remove(topicExpr);
+        patternRoutes.removeIf(routing -> routing.getExpr().equals(topicExpr));
 
         if (log.isDebugEnabled()) {
-            log.debug("EventRouter listener removed(@{}): all..", topic);
+            log.debug("EventRouter listener removed(@{}): all..", topicExpr);
         }
     }
 
