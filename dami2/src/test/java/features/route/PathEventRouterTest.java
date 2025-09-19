@@ -5,9 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.EventListenerHolder;
-import org.noear.dami2.bus.route.EventRouterPatterned;
-import org.noear.dami2.bus.route.RoutingFactory;
-import org.noear.dami2.bus.route.RoutingPath;
+import org.noear.dami2.bus.route.EventRouter;
+import org.noear.dami2.bus.route.PathEventRouter;
 
 import java.util.List;
 
@@ -16,14 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * EventRouterPatterned 单元测试
  */
-class EventRouterPatternedPathTest {
-    private EventRouterPatterned router;
-    private RoutingFactory routingFactory;
+class PathEventRouterTest {
+    private EventRouter router;
 
     @BeforeEach
     void setUp() {
-        routingFactory = RoutingPath::new;
-        router = new EventRouterPatterned(routingFactory);
+        router = new PathEventRouter();
     }
 
     @Test

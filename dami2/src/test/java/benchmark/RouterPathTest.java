@@ -2,8 +2,8 @@ package benchmark;
 
 import org.noear.dami2.Dami;
 import org.noear.dami2.DamiConfig;
-import org.noear.dami2.bus.route.EventRouterPatterned;
-import org.noear.dami2.bus.route.RoutingPath;
+import org.noear.dami2.bus.route.PathEventRouter;
+import org.noear.dami2.bus.route.PathRouting;
 
 /**
  * @author noear 2025/9/19 created
@@ -12,7 +12,7 @@ public class RouterPathTest {
     static int count = 0;
 
     public static void main(String[] args) {
-        DamiConfig.configure(new EventRouterPatterned(RoutingPath::new));
+        DamiConfig.configure(new PathEventRouter());
 
         Dami.bus().listen("test.*", e -> {
             count = count + 1;

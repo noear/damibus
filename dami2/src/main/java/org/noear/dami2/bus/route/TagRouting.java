@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author kamosama
  * @since 1.0
  */
-public class RoutingTag<P> extends Routing<P> {
+public class TagRouting<P> extends Routing<P> {
     private final TopicTags topicTags;
 
     /**
@@ -34,15 +34,14 @@ public class RoutingTag<P> extends Routing<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public RoutingTag(String expr, int index, EventListener<P> listener) {
+    public TagRouting(String expr, int index, EventListener<P> listener) {
         super(expr, index, listener);
 
         topicTags = TopicTags.get(expr);
     }
 
-    @Override
-    public boolean isPatterned() {
-        return true;//topicTags.tags.size() > 0;
+    public String getTopic() {
+        return topicTags.topic;
     }
 
     /**
@@ -50,14 +49,21 @@ public class RoutingTag<P> extends Routing<P> {
      *
      * @param sentTopic 发送的主题
      */
+    @Override
     public boolean matches(String sentTopic) {
         if (super.matches(sentTopic)) {
             return true;
         }
 
-        TopicTags sentTopicTags = TopicTags.get(sentTopic);
+        return matches(TopicTags.get(sentTopic));
+    }
 
-
+    /**
+     * 匹配
+     *
+     * @param sentTopicTags 发送的主题与标签
+     */
+    public boolean matches(TopicTags sentTopicTags) {
         boolean topicMatch = topicTags.topic.equals(sentTopicTags.topic);
         boolean notHasTags = topicTags.tags.isEmpty() || sentTopicTags.tags.isEmpty();
 

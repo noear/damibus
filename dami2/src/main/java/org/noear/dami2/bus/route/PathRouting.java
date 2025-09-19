@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 /**
  * 监听路由记录（path 模式）
  */
-public class RoutingPath<P> extends Routing<P> {
+public class PathRouting<P> extends Routing<P> {
 
     private final Pattern pattern;
 
@@ -31,7 +31,7 @@ public class RoutingPath<P> extends Routing<P> {
      * @param index    顺序位
      * @param listener 监听器
      */
-    public RoutingPath(String expr, int index, EventListener<P> listener) {
+    public PathRouting(String expr, int index, EventListener<P> listener) {
         super(expr, index, listener);
 
         if (expr.indexOf('*') < 0) {
@@ -55,7 +55,9 @@ public class RoutingPath<P> extends Routing<P> {
         }
     }
 
-    @Override
+    /**
+     * 模式化的
+     */
     public boolean isPatterned() {
         return pattern != null;
     }

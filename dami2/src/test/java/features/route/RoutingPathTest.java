@@ -3,7 +3,7 @@ package features.route;
 
 import org.junit.jupiter.api.Test;
 import org.noear.dami2.bus.EventListener;
-import org.noear.dami2.bus.route.RoutingPath;
+import org.noear.dami2.bus.route.PathRouting;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +16,7 @@ class RoutingPathTest {
     void testExactMatch() {
         // 准备
         EventListener<String> listener = event -> {};
-        RoutingPath<String> routing = new RoutingPath<>("user.created", 0, listener);
+        PathRouting<String> routing = new PathRouting<>("user.created", 0, listener);
 
         // 验证
         assertTrue(routing.matches("user.created"));
@@ -28,7 +28,7 @@ class RoutingPathTest {
     void testSingleStarMatch() {
         // 准备
         EventListener<String> listener = event -> {};
-        RoutingPath<String> routing = new RoutingPath<>("user.*", 0, listener);
+        PathRouting<String> routing = new PathRouting<>("user.*", 0, listener);
 
         // 验证
         assertTrue(routing.matches("user.created"));
@@ -43,7 +43,7 @@ class RoutingPathTest {
     void testDoubleStarMatch() {
         // 准备
         EventListener<String> listener = event -> {};
-        RoutingPath<String> routing = new RoutingPath<>("user.**", 0, listener);
+        PathRouting<String> routing = new PathRouting<>("user.**", 0, listener);
 
         // 验证
         assertTrue(routing.matches("user.created"));
@@ -57,7 +57,7 @@ class RoutingPathTest {
     void testMiddleDoubleStarMatch() {
         // 准备
         EventListener<String> listener = event -> {};
-        RoutingPath<String> routing = new RoutingPath<>("user.**.settings", 0, listener);
+        PathRouting<String> routing = new PathRouting<>("user.**.settings", 0, listener);
 
         // 验证
         assertTrue(routing.matches("user.account.settings"));
@@ -70,7 +70,7 @@ class RoutingPathTest {
     void testComplexPatternMatch() {
         // 准备
         EventListener<String> listener = event -> {};
-        RoutingPath<String> routing = new RoutingPath<>("*.service.*.log", 0, listener);
+        PathRouting<String> routing = new PathRouting<>("*.service.*.log", 0, listener);
 
         // 验证
         assertTrue(routing.matches("user.service.request.log"));
@@ -84,7 +84,7 @@ class RoutingPathTest {
     void testMultipleStarsInPattern() {
         // 准备
         EventListener<String> listener = event -> {};
-        RoutingPath<String> routing = new RoutingPath<>("user.*.*.log", 0, listener);
+        PathRouting<String> routing = new PathRouting<>("user.*.*.log", 0, listener);
 
         // 验证
         assertTrue(routing.matches("user.service.request.log"));
@@ -97,7 +97,7 @@ class RoutingPathTest {
     void testPatternWithMixedStars() {
         // 准备
         EventListener<String> listener = event -> {};
-        RoutingPath<String> routing = new RoutingPath<>("user.*.log.**", 0, listener);
+        PathRouting<String> routing = new PathRouting<>("user.*.log.**", 0, listener);
 
         // 验证
         assertTrue(routing.matches("user.service.log.error"));
@@ -112,14 +112,14 @@ class RoutingPathTest {
         EventListener<String> listener = event -> {};
 
         // 验证精确匹配
-        RoutingPath<String> exactRouting = new RoutingPath<>("user.created", 0, listener);
+        PathRouting<String> exactRouting = new PathRouting<>("user.created", 0, listener);
         assertFalse(exactRouting.isPatterned());
 
         // 验证模式匹配
-        RoutingPath<String> patternRouting = new RoutingPath<>("user.*", 0, listener);
+        PathRouting<String> patternRouting = new PathRouting<>("user.*", 0, listener);
         assertTrue(patternRouting.isPatterned());
 
-        RoutingPath<String> doubleStarRouting = new RoutingPath<>("user.**", 0, listener);
+        PathRouting<String> doubleStarRouting = new PathRouting<>("user.**", 0, listener);
         assertTrue(doubleStarRouting.isPatterned());
     }
 
@@ -130,7 +130,7 @@ class RoutingPathTest {
         String expectedExpr = "user.*.log";
 
         // 执行
-        RoutingPath<String> routing = new RoutingPath<>(expectedExpr, 0, listener);
+        PathRouting<String> routing = new PathRouting<>(expectedExpr, 0, listener);
 
         // 验证
         assertEquals(expectedExpr, routing.getExpr());
@@ -140,7 +140,7 @@ class RoutingPathTest {
     void testSlashSeparatorInPatterns() {
         // 准备
         EventListener<String> listener = event -> {};
-        RoutingPath<String> routing = new RoutingPath<>("user/*/profile", 0, listener);
+        PathRouting<String> routing = new PathRouting<>("user/*/profile", 0, listener);
 
         // 验证
         assertTrue(routing.matches("user/123/profile"));

@@ -38,13 +38,6 @@ public class Routing<P> extends EventListenerHolder<P> {
     }
 
     /**
-     * 有模式化的
-     */
-    public boolean isPatterned() {
-        return false;
-    }
-
-    /**
      * 匹配
      *
      * @param sentTopic 发送的主题

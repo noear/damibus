@@ -37,25 +37,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @example /a/*, /a/**b
  * @since 1.0
  */
-public class EventRouterPatterned implements EventRouter {
-    static final Logger log = LoggerFactory.getLogger(EventRouterDefault.class);
+public class PathEventRouter implements EventRouter {
+    static final Logger log = LoggerFactory.getLogger(HashEventRouter.class);
 
     /**
      * 路由记录
      */
     private final Map<String, EventListenPipeline> exactMatchMap = new ConcurrentHashMap<>();
     private final List<Routing> patternRoutes = new CopyOnWriteArrayList<>();
-
-
-    /**
-     * 路由工厂
-     */
-    private final RoutingFactory routerFactory;
-
-    public EventRouterPatterned(RoutingFactory routerFactory) {
-        super();
-        this.routerFactory = routerFactory;
-    }
 
     /**
      * 添加监听
@@ -66,7 +55,7 @@ public class EventRouterPatterned implements EventRouter {
      */
     @Override
     public <P> void add(final String topicExpr, final int index, final EventListener<P> listener) {
-        Routing routing = routerFactory.create(topicExpr, index, listener);
+        PathRouting routing = new PathRouting(topicExpr, index, listener);
         if (routing.isPatterned()) {
             // 模式匹配路由
             patternRoutes.add(routing);

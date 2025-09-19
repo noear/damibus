@@ -22,6 +22,7 @@ import org.noear.dami2.bus.EventListenerHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,8 +33,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 1.0
  */
-public class EventRouterDefault implements EventRouter {
-    static final Logger log = LoggerFactory.getLogger(EventRouterDefault.class);
+public class HashEventRouter implements EventRouter {
+    static final Logger log = LoggerFactory.getLogger(HashEventRouter.class);
 
     /**
      * 主题监听管道
@@ -104,7 +105,7 @@ public class EventRouterDefault implements EventRouter {
         final EventListenPipeline pipeline = pipelineMap.get(topic);
 
         if (pipeline == null) {
-            return null;
+            return Collections.emptyList();
         } else {
             return pipeline.getList();
         }

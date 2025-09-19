@@ -5,9 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.noear.dami2.bus.EventListener;
 import org.noear.dami2.bus.EventListenerHolder;
-import org.noear.dami2.bus.route.EventRouterPatterned;
-import org.noear.dami2.bus.route.RoutingFactory;
-import org.noear.dami2.bus.route.RoutingTag;
+import org.noear.dami2.bus.route.EventRouter;
+import org.noear.dami2.bus.route.TagEventRouter;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,15 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author noear
  * @since 1.0
  */
-public class EventRouterPatternedWithRoutingTagTest {
-    private EventRouterPatterned router;
-    private RoutingFactory routingFactory;
+public class TagEventRouterTest {
+    private EventRouter router;
 
     @BeforeEach
     public void setUp() {
         // 使用 RoutingTag 工厂创建路由
-        routingFactory = RoutingTag::new;
-        router = new EventRouterPatterned(routingFactory);
+        router = new TagEventRouter();
     }
 
     @Test
