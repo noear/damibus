@@ -65,7 +65,7 @@ public interface DamiBus {
     void unlisten(final String topic);
 
     //路由器
-    EventRouter router();
+    TopicRouter router();
     
     //----------------------------
     // 通过继承 CallBusExtension 获得
@@ -93,6 +93,7 @@ public interface DamiBus {
 }
 ```
 
+通过不同的 lambda 参数个数设计，仍可支持在 listen 时使用 lambda 不冲突（可自动识别）。
 
 ### 4、DamiLpc，接口模式接口（lpc, 本地过程调用）
 
@@ -106,15 +107,20 @@ public interface DamiLpc extends DamiBusExtension {
     <T> T createConsumer(String topicMapping, Class<T> consumerApi);
     
     //注册服务提供者（一个服务，只能监听一个主题）
-    void registerProvider(String topicMapping, Object roviderObj);
-    void registerProvider(String topicMapping, int index, Object roviderObj);
+    void registerProvider(String topicMapping, Object serviceObj);
+    void registerProvider(String topicMapping, int index, Object serviceObj);
     
     //注销服务提供者
-    void unregisterProvider(String topicMapping, Object roviderObj);
+    void unregisterProvider(String topicMapping, Object serviceObj);
 }
 ```
 
-DamiApi::createConsumer，创建服务消费者情况说明
+注意 topicMapping 与 topic 的区别：
+
+* topicMapping 只用于 lpc，每个方法都通过（topicMapping + "." + mehtodName）形成自己的 topic。
+* 提供：lpc 服务的方法名不要相同。否则形成的 topic 会冲突。
+
+创建服务消费者（createConsumer）情况说明：
 
 | 用例               | 对应总线接口                   | 说明               |
 |------------------|--------------------------|------------------|
@@ -139,8 +145,9 @@ public interface Event<P> extends Serializable {
     //荷载
     P getPayload();
 }
-
 ```
+
+事件由：主题、荷载、附件，以入处理标识（是否有监听处理）组成。
 
 ### 6、`EventListener<P>`，事件监听接口
 
