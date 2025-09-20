@@ -2,7 +2,7 @@
 
 更多详情，请查看 [src/test/java/features](src/test/java/features)
 
-#### 依赖配置
+### 依赖配置
 
 ```xml
 <dependency>
@@ -12,7 +12,7 @@
 </dependency>
 ```
 
-#### demo21_send
+### demo11_send
 
 ```java
 public class Deom11 {
@@ -37,16 +37,16 @@ public class Deom11 {
 ```
 
 
-#### demo12_call
+### demo12_call
 
 ```java
 public class Demo12 {
     static String topic = "demo.hello";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         //监听调用事件
-        Dami.bus().<String, String>listen(topic, (event, sink) -> {
-            System.err.println(event);
+        Dami.bus().<String, String>listen(topic, (event, data, sink) -> {
+            System.err.println(data);
 
             sink.complete("hi!");
         });
@@ -54,8 +54,8 @@ public class Demo12 {
 
         //发送调用事件
         String rst1 = Dami.bus().<String, String>call(topic, "world").get();
-        //发送事件//支持应急处理（当没有订阅时启用）
-        //String rst1 = Dami.bus().<String, String>call(topic, "world", () -> "def").get();
+        //发送事件（调用） //支持应急处理（当没有订阅时启用）
+        //String rst1 = Dami.bus().<String, String>call(topic, "world", r -> r.complete("def")).get();
         System.out.println(rst1);
     }
 }
@@ -64,30 +64,28 @@ public class Demo12 {
 ### demo13_stream
 
 ```java
-public class Demo13 {
+public class DemoApp {
     static String topic = "demo.hello";
 
     public static void main(String[] args) {
         //监听流事件
-        Dami.bus().<String, String>listen(topic, (event, i, data, sink) -> {
+        Dami.bus().<String, String>listen(topic, (event, att, data, sink) -> {
             System.err.println(data);
-
-            sink.onNext("hello");
+            sink.onNext("hi");
+            sink.onComplete();
         });
 
-        System.out.println(Thread.currentThread());
-
         //发送流事件
-        Dami.bus().<String, String>stream(topic, "world").subscribe(new SimpleSubscriber<>()
-                .doOnNext(item -> {
-                    System.out.println(item);
-                }));
+        Flux.from(Dami.bus().<String, String>stream(topic, "hello")).doOnNext(item -> {
+            System.err.println(item);
+        }).subscribe();
     }
 }
 ```
 
 
-#### demo31_api
+
+### demo31_api
 
 使用 ioc 适配版本更简便，详情：[dami-solon-plugin](dami-solon-plugin)、[dami-springboot-starter](dami-springboot-starter)
 

@@ -95,7 +95,7 @@ DamiBus，专为本地（单体）多模块之间交互解耦而设计（尤其�
 ### 简单示例
 
 
-#### demo21_send
+#### demo11_send
 
 ```java
 public class Deom11 {
@@ -120,7 +120,7 @@ public class Demo12 {
     static String topic = "demo.hello";
 
     public static void main(String[] args) throws Exception {
-        //监听事件（调用事件）
+        //监听调用事件
         Dami.bus().<String, String>listen(topic, (event, data, sink) -> {
             System.err.println(data);
 
@@ -128,7 +128,7 @@ public class Demo12 {
         });
 
 
-        //发送事件（调用）
+        //发送调用事件
         String rst1 = Dami.bus().<String, String>call(topic, "world").get();
         //发送事件（调用） //支持应急处理（当没有订阅时启用）
         //String rst1 = Dami.bus().<String, String>call(topic, "world", r -> r.complete("def")).get();
@@ -136,6 +136,29 @@ public class Demo12 {
     }
 }
 ```
+
+### demo13_stream
+
+```java
+public class DemoApp {
+    static String topic = "demo.hello";
+
+    public static void main(String[] args) {
+        //监听流事件
+        Dami.bus().<String, String>listen(topic, (event, att, data, sink) -> {
+            System.err.println(data);
+            sink.onNext("hi");
+            sink.onComplete();
+        });
+
+        //发送流事件
+        Flux.from(Dami.bus().<String, String>stream(topic, "hello")).doOnNext(item -> {
+            System.err.println(item);
+        }).subscribe();
+    }
+}
+```
+
 
 #### demo31_lpc
 
