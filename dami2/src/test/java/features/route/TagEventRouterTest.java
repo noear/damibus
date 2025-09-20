@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * EventRouterPatterned + RoutingTag 组合测试
+ * TagTopicEventRouter 测试
  *
  * @author noear
  * @since 1.0

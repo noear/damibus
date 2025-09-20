@@ -94,17 +94,11 @@ public class Demo13 {
 ```java
 //服务消费者接口
 public interface UserService {
-    void onCreated(Long userId, String name);
-
     Long getUserId(String name);
 }
 
 //通过约定保持与 UserService 相同的接口定义（或者实现 UserService 接口，但会带来依赖关系）
 public class UserServiceImpl { // implements UserService
-    public void onCreated(Long userId, String name) {
-        System.err.println("onCreated: userId=" + userId + ", name=" + name);
-    }
-
     public Long getUserId(String name) {
         return Long.valueOf(name.hashCode());
     }
@@ -120,7 +114,6 @@ public class Demo31 {
         UserService userService = Dami.lpc().createConsumer(topicMapping, UserService.class);
 
         //发送测试
-        userService.onCreated(1L, "noear");
         Long userId = userService.getUserId("dami");
         System.err.println("收到：响应：userId：" + userId);
 
@@ -138,8 +131,8 @@ public class Demo31 {
 ```java
 public class Demo15_path {
     public void main(){
-        //切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
-        DamiConfig.configure(new EventRouterPatterned(RoutingPath::new));
+        //切换为 path 模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
+        DamiConfig.configure(new PathTopicEventRouter());
 
         //拦截
         Dami.bus().listen("demo/a/*", (event) -> {
@@ -156,8 +149,8 @@ public class Demo15_path {
 ```java
 public class Demo15_tag {
     public void main(){
-        //切换为模式匹配路由器（支持 * 和 ** 占位符；支持 / 或 . 做为间隔）
-        DamiConfig.configure(new EventRouterPatterned(RoutingTag::new));
+        //切换为 tag 模式匹配路由器（":"前为主题，后按 "," 号分割作为tag）
+        DamiConfig.configure(new TagTopicEventRouter());
 
         //拦截
         Dami.bus().listen("demo.a:id", (event) -> {

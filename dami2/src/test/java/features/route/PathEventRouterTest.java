@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * EventRouterPatterned 单元测试
+ * PathEventRouter 单元测试
  */
 class PathEventRouterTest {
     private EventRouter router;
