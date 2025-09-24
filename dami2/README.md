@@ -87,7 +87,7 @@ public class DemoApp {
 
 ### demo31_api
 
-使用 ioc 适配版本更简便，详情：[dami-solon-plugin](dami-solon-plugin)、[dami-springboot-starter](dami-springboot-starter)
+使用 ioc 适配版本更简便，详情：[dami2-solon-plugin](dami2-solon-plugin)、[dami2-springboot-starter](dami2-springboot-starter)
 
 ```java
 //服务消费者接口
