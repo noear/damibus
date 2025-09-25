@@ -1,10 +1,15 @@
 package features.demo82_solon;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.noear.dami2.Dami;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 @SolonTest
 public class Demo82 {
@@ -13,10 +18,11 @@ public class Demo82 {
     EventUserService eventUserService;
 
     @Test
-    public void main(){
+    public void main() throws Throwable {
         User user = eventUserService.getUser(99);
-        log.debug("{}", user);
+        Assertions.assertEquals(99, user.getUserId());
 
-        assert user.getUserId() == 99;
+        user = Dami.bus().<Map, User>call("demo82.event.user.getUser", Dami.asMap("uid", 99)).get();
+        Assertions.assertEquals(99, user.getUserId());
     }
 }

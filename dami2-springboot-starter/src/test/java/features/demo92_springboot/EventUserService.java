@@ -1,6 +1,7 @@
 package features.demo92_springboot;
 
 
+import org.noear.dami2.annotation.Param;
 import org.noear.dami2.spring.boot.annotation.DamiTopic;
 
 /**
@@ -8,5 +9,5 @@ import org.noear.dami2.spring.boot.annotation.DamiTopic;
  * */
 @DamiTopic("demo92.event.user")
 public interface EventUserService {
-    User getUser(long userId); //方法的主题 = topicMapping + "." + method.getName() //方法不能重名
+    User getUser(@Param("uid") long userId); //方法的主题 = topicMapping + "." + method.getName() //方法不能重名
 }

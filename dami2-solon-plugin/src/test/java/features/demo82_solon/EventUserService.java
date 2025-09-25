@@ -1,5 +1,6 @@
 package features.demo82_solon;
 
+import org.noear.dami2.annotation.Param;
 import org.noear.dami2.solon.annotation.DamiTopic;
 
 /**
@@ -7,5 +8,5 @@ import org.noear.dami2.solon.annotation.DamiTopic;
  * */
 @DamiTopic("demo82.event.user")
 public interface EventUserService {
-    User getUser(long userId); //方法的主题 = topicMapping + "." + method.getName() //方法不能重名
+    User getUser(@Param("uid") long userId); //方法的主题 = topicMapping + "." + method.getName() //方法不能重名
 }

@@ -1,5 +1,6 @@
 package features.demo82_solon;
 
+import org.noear.dami2.annotation.Param;
 import org.noear.dami2.solon.annotation.DamiTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,7 @@ import org.slf4j.LoggerFactory;
 public class EventUserServiceImpl { // implements EventUserService // 它相当于是个实现类
     static final Logger log = LoggerFactory.getLogger(EventUserServiceImpl.class);
 
-    public User getUser(long userId) {
+    public User getUser(@Param("uid") long userId) {
         log.debug("userId={}", userId);
         return new User(userId);
     }
