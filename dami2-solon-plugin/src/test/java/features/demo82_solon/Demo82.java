@@ -3,6 +3,7 @@ package features.demo82_solon;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.noear.dami2.Dami;
+import org.noear.dami2.util.CollUtil;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonTest;
@@ -22,7 +23,7 @@ public class Demo82 {
         User user = eventUserService.getUser(99);
         Assertions.assertEquals(99, user.getUserId());
 
-        user = Dami.bus().<Map, User>call("demo82.event.user.getUser", Dami.asMap("uid", 99)).get();
+        user = Dami.bus().<Map, User>call("demo82.event.user.getUser", CollUtil.asMap("uid", 99)).get();
         Assertions.assertEquals(99, user.getUserId());
     }
 }

@@ -62,19 +62,4 @@ public class Dami {
         return new DamiLpcImpl(newBus());
     }
 
-    //附送一个工具
-
-    public static Map asMap(Object... keyValues) {
-        if (keyValues.length % 2 != 0) {
-            throw new IllegalArgumentException("keyValues.length % 2 != 0");
-        } else {
-            Map map = new LinkedHashMap(keyValues.length / 2);
-
-            for (int i = 0; i < keyValues.length; i += 2) {
-                map.put(keyValues[i], keyValues[i + 1]);
-            }
-
-            return map;
-        }
-    }
 }

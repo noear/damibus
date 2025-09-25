@@ -9,6 +9,7 @@ import org.noear.dami2.lpc.DamiLpcImpl;
 import org.noear.dami2.bus.DamiBus;
 import org.noear.dami2.bus.DamiBusImpl;
 import org.noear.dami2.exception.DamiException;
+import org.noear.dami2.util.CollUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class Demo33 {
         assert eventDemo.demo4(1, 0) == 5;
 
         //用 bus 调
-        Object rst = bus.call(topicMapping + ".demo4", Dami.asMap("b0", 1, "b1", 0)).get();
+        Object rst = bus.call(topicMapping + ".demo4", CollUtil.asMap("b0", 1, "b1", 0)).get();
         Assertions.assertEquals(4, rst);
     }
 
