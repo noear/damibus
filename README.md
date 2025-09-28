@@ -11,6 +11,9 @@
 
 
 <p align="center">
+    <a target="_blank" href="https://deepwiki.com/noear/damibus">
+        <img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki" />
+    </a>
     <a target="_blank" href="https://search.maven.org/artifact/org.noear/dami2">
         <img src="https://img.shields.io/maven-central/v/org.noear/dami2.svg?label=Maven%20Central" alt="Maven" />
     </a>
