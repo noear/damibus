@@ -46,4 +46,12 @@ public class CallPayload<D,R> extends ReceivablePayload<D, CompletableFuture<R>>
     public CompletableFuture<R> getSink() {
         return super.getSink();
     }
+
+    /**
+     * 当异常时
+     */
+    @Override
+    public void onError(Throwable e) {
+        getSink().completeExceptionally(e);
+    }
 }

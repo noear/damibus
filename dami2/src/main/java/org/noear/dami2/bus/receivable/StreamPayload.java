@@ -40,4 +40,12 @@ public class StreamPayload<D, R> extends ReceivablePayload<D, Subscriber<R>> {
     public Subscriber<R> getSink() {
         return super.getSink();
     }
+
+    /**
+     * 当异常时
+     */
+    @Override
+    public void onError(Throwable e) {
+        getSink().onError(e);
+    }
 }

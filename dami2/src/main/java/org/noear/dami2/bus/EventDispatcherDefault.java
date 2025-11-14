@@ -18,6 +18,7 @@ package org.noear.dami2.bus;
 import org.noear.dami2.bus.intercept.EventInterceptor;
 import org.noear.dami2.bus.intercept.InterceptorChain;
 import org.noear.dami2.bus.intercept.InterceptorEntity;
+import org.noear.dami2.bus.receivable.ReceivablePayload;
 import org.noear.dami2.bus.route.EventRouter;
 import org.noear.dami2.exception.DamiException;
 import org.slf4j.Logger;
@@ -102,12 +103,18 @@ public class EventDispatcherDefault implements EventDispatcher {
             try {
                 doDistribute(event, chain.getTargets());
                 event.setHandled();
-            } catch (InvocationTargetException e) {
-                throw new DamiException(e.getTargetException());
-            } catch (UndeclaredThrowableException e) {
-                throw new DamiException(e.getUndeclaredThrowable());
             } catch (Throwable e) {
-                throw new DamiException(e);
+                if (e instanceof InvocationTargetException) {
+                    e = ((InvocationTargetException) e).getTargetException();
+                } else if (e instanceof UndeclaredThrowableException) {
+                    e = ((UndeclaredThrowableException) e).getUndeclaredThrowable();
+                }
+
+                if (event.getPayload() instanceof ReceivablePayload) {
+                    ((ReceivablePayload) event.getPayload()).onError(e);
+                } else {
+                    throw new DamiException(e);
+                }
             }
         } else {
             if (log.isDebugEnabled()) {

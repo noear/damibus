@@ -16,6 +16,7 @@
 package org.noear.dami2.bus.receivable;
 
 import org.noear.dami2.bus.AssertUtil;
+import org.noear.dami2.exception.DamiException;
 
 import java.io.Serializable;
 
@@ -30,7 +31,7 @@ public class ReceivablePayload<D,Rec> implements Serializable {
     private final transient Rec sink;
 
     /**
-     * @param data     数据
+     * @param data 数据
      * @param sink 接收器
      *
      */
@@ -53,5 +54,12 @@ public class ReceivablePayload<D,Rec> implements Serializable {
      */
     public Rec getSink() {
         return sink;
+    }
+
+    /**
+     * 当出错时
+     */
+    public void onError(Throwable e) throws DamiException {
+        throw new DamiException(e);
     }
 }
