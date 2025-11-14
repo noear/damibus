@@ -15,6 +15,7 @@
  */
 package org.noear.dami2.bus.receivable;
 
+import org.noear.dami2.exception.DamiException;
 import org.reactivestreams.Subscriber;
 
 /**
@@ -45,7 +46,7 @@ public class StreamPayload<D, R> extends ReceivablePayload<D, Subscriber<R>> {
      * 当异常时
      */
     @Override
-    public void onError(Throwable e) {
+    public void onError(DamiException e) {
         getSink().onError(e);
     }
 }

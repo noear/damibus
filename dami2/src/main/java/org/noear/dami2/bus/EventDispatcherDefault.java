@@ -102,7 +102,6 @@ public class EventDispatcherDefault implements EventDispatcher {
         if (targets != null && targets.size() > 0) {
             try {
                 doDistribute(event, chain.getTargets());
-                event.setHandled();
             } catch (Throwable e) {
                 if (e instanceof InvocationTargetException) {
                     e = ((InvocationTargetException) e).getTargetException();
@@ -111,10 +110,13 @@ public class EventDispatcherDefault implements EventDispatcher {
                 }
 
                 if (event.getPayload() instanceof ReceivablePayload) {
-                    ((ReceivablePayload) event.getPayload()).onError(e);
+                    ((ReceivablePayload) event.getPayload()).onError(new DamiException(e));
                 } else {
                     throw new DamiException(e);
                 }
+            } finally {
+                //说明是有路由目标的（不触发备用处理）
+                event.setHandled();
             }
         } else {
             if (log.isDebugEnabled()) {

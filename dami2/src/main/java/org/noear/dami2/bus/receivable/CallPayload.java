@@ -15,6 +15,8 @@
  */
 package org.noear.dami2.bus.receivable;
 
+import org.noear.dami2.exception.DamiException;
+
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -51,7 +53,7 @@ public class CallPayload<D,R> extends ReceivablePayload<D, CompletableFuture<R>>
      * 当异常时
      */
     @Override
-    public void onError(Throwable e) {
+    public void onError(DamiException e) {
         getSink().completeExceptionally(e);
     }
 }

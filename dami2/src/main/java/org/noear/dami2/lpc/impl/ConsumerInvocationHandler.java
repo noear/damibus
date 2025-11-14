@@ -22,6 +22,7 @@ import org.noear.dami2.exception.DamiNoListenException;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 消费者的调用代理
@@ -57,7 +58,15 @@ public class ConsumerInvocationHandler implements InvocationHandler {
 
         if (method.getReturnType() == void.class) { //不能用大写的 Void.class（不然对不上）
             //无返回结果
-            if (event.getHandled() == false) {
+            if (event.getHandled()) {
+                if (event.getPayload().getSink().isCompletedExceptionally()) {
+                    try {
+                        event.getPayload().getSink().get();
+                    } catch (ExecutionException e) {
+                        throw e.getCause();
+                    }
+                }
+            } else {
                 if (method.isDefault()) {
                     //如果没有订阅，且有默认实现
                     MethodHandlerUtils.invokeDefault(proxy, method, args);
@@ -66,7 +75,11 @@ public class ConsumerInvocationHandler implements InvocationHandler {
         } else {
             //有返回结果
             if (event.getHandled()) {
-                result = event.getPayload().getSink().get();
+                try {
+                    result = event.getPayload().getSink().get();
+                } catch (ExecutionException e) {
+                    throw e.getCause();
+                }
             } else {
                 if (method.isDefault()) {
                     //如果没有订阅，且有默认实现（相当于降级处理）

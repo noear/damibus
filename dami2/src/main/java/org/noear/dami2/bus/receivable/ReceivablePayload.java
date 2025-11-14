@@ -59,7 +59,7 @@ public class ReceivablePayload<D,Rec> implements Serializable {
     /**
      * 当出错时
      */
-    public void onError(Throwable e) throws DamiException {
-        throw new DamiException(e);
+    public void onError(DamiException e) throws DamiException {
+        throw e;
     }
 }
