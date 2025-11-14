@@ -15,8 +15,7 @@
  */
 package org.noear.dami2.util;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 集合工具
@@ -36,6 +35,19 @@ public class CollUtil {
             }
 
             return map;
+        }
+    }
+
+    /**
+     * 转为一个可变 List
+     */
+    public static <T> List<T> asList(T... ary) {
+        if (ary == null) {
+            return null;
+        } else {
+            List<T> list = new ArrayList<>(ary.length);
+            Collections.addAll(list, ary);
+            return list;
         }
     }
 }
