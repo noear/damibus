@@ -51,7 +51,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
     /**
      * 编码解器
      */
-    private Coder coder = new CoderDefault();
+    private Coder coder = new CoderForName();
 
     /**
      * 总线

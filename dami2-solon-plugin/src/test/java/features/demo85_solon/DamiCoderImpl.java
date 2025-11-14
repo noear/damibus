@@ -2,7 +2,7 @@ package features.demo85_solon;
 
 import org.noear.dami2.bus.receivable.CallPayload;
 import org.noear.dami2.lpc.Coder;
-import org.noear.dami2.lpc.CoderDefault;
+import org.noear.dami2.lpc.CoderForName;
 import org.noear.dami2.bus.Event;
 import org.noear.solon.annotation.Component;
 
@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 
 @Component
 public class DamiCoderImpl implements Coder {
-    Coder coder = new CoderDefault();
+    Coder coder = new CoderForName();
 
     @Override
     public Object encode(Method method, Object[] args) throws Throwable {

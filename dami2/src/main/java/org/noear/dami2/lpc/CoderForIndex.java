@@ -21,21 +21,46 @@ import org.noear.dami2.bus.receivable.CallPayload;
 import java.lang.reflect.Method;
 
 /**
- * 参数名字对齐编码器
+ * 参数序位对齐编码器
  *
  * @author noear
- * @since 1.0
- * @deprecated 2.0 {@link CoderForName}
+ * @since 2.0
  */
-@Deprecated
-public class CoderDefault extends CoderForName {
+public class CoderForIndex implements Coder {
+    /**
+     * 编码
+     *
+     * @param method 方法
+     * @param args   方法参数
+     * @return 荷载数据
+     */
     @Override
     public Object encode(Method method, Object[] args) {
-        return super.encode(method, args);
+        return args;
     }
 
+    /**
+     * 解码
+     *
+     * @param method 方法
+     * @param event  事件
+     * @return 方法参数
+     */
     @Override
     public Object[] decode(Method method, Event<CallPayload> event) {
-        return super.decode(method, event);
+        Object[] argSource = (Object[]) event.getPayload().getData();
+
+        //构建执行参数（可以与发送者的参数，略有不同）
+        Object[] args = new Object[method.getParameterCount()];
+
+        for (int i = 0, len = method.getParameterCount(); i < len; i++) {
+            if (i < argSource.length) {
+                args[i] = argSource[i];
+            } else {
+                args[i] = null;
+            }
+        }
+
+        return args;
     }
 }
