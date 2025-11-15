@@ -4,6 +4,7 @@ import features.demo33_lpc_exception.module1.EventUserListenerOfModule1;
 import features.demo33_lpc_exception.module2.EventUser;
 
 import org.junit.jupiter.api.Test;
+import org.noear.dami2.lpc.CoderForIndex;
 import org.noear.dami2.lpc.DamiLpc;
 import org.noear.dami2.lpc.DamiLpcImpl;
 import org.noear.dami2.bus.DamiBus;
@@ -14,7 +15,7 @@ public class Demo33 {
     static String topicMapping = "demo.user";
     //定义实例，避免单测干扰 //开发时用：Dami.lpc()
     DamiBus bus = new DamiBusImpl();
-    DamiLpc api = new DamiLpcImpl(bus);
+    DamiLpc api = new DamiLpcImpl(bus).coder(new CoderForIndex());
 
     @Test
     public void main() {
