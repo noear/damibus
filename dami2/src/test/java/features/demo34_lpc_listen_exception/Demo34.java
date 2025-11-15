@@ -32,7 +32,7 @@ public class Demo34 {
         } catch (DamiException e) {
             testObserver = e.getCause();
             System.out.println("捕获到异常：");
-            testObserver.printStackTrace();
+            e.printStackTrace();
         }
 
         //注销监听器
