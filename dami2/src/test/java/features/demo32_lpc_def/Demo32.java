@@ -1,8 +1,7 @@
-package features.demo33_lpc_def;
+package features.demo32_lpc_def;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.noear.dami2.Dami;
 import org.noear.dami2.annotation.Param;
 import org.noear.dami2.lpc.DamiLpc;
 import org.noear.dami2.lpc.DamiLpcImpl;
@@ -11,10 +10,7 @@ import org.noear.dami2.bus.DamiBusImpl;
 import org.noear.dami2.exception.DamiException;
 import org.noear.dami2.util.CollUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class Demo33 {
+public class Demo32 {
     static String topicMapping = "demo.user";
     //定义实例，避免单测干扰 //开发时用：Dami.lpc()
     DamiBus bus = new DamiBusImpl();

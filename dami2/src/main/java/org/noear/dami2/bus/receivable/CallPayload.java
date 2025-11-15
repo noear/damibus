@@ -53,7 +53,7 @@ public class CallPayload<D,R> extends ReceivablePayload<D, CompletableFuture<R>>
      * 当异常时
      */
     @Override
-    public void onError(DamiException e) {
+    public void onError(Throwable e) {
         getSink().completeExceptionally(e);
     }
 }

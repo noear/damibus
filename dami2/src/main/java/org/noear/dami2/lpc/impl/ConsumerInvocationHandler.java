@@ -16,6 +16,7 @@
 package org.noear.dami2.lpc.impl;
 
 import org.noear.dami2.bus.receivable.CallPayload;
+import org.noear.dami2.exception.DamiException;
 import org.noear.dami2.lpc.DamiLpc;
 import org.noear.dami2.bus.Result;
 import org.noear.dami2.exception.DamiNoListenException;
@@ -63,7 +64,14 @@ public class ConsumerInvocationHandler implements InvocationHandler {
                     try {
                         event.getPayload().getSink().get();
                     } catch (ExecutionException e) {
-                        throw e.getCause();
+                        Throwable e2 = e.getCause();
+
+                        //确保 lpc 外层收到的总是 DamiException
+                        if(e2 instanceof DamiException){
+                            throw e2;
+                        } else {
+                            throw new DamiException(e2);
+                        }
                     }
                 }
             } else {
@@ -78,7 +86,14 @@ public class ConsumerInvocationHandler implements InvocationHandler {
                 try {
                     result = event.getPayload().getSink().get();
                 } catch (ExecutionException e) {
-                    throw e.getCause();
+                    Throwable e2 = e.getCause();
+
+                    //确保 lpc 外层收到的总是 DamiException
+                    if(e2 instanceof DamiException){
+                        throw e2;
+                    } else {
+                        throw new DamiException(e2);
+                    }
                 }
             } else {
                 if (method.isDefault()) {

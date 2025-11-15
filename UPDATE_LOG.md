@@ -1,4 +1,8 @@
 
+### v2.0.2
+
+* 优化 lpc 异常处理，确保外层收到的总会是 DamiException
+
 ### v2.0.1
 
 * 添加 bus ReceivablePayload:onError 用于监听异常（可以转给接收器 skin）

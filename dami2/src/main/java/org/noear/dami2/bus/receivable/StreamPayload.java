@@ -46,7 +46,7 @@ public class StreamPayload<D, R> extends ReceivablePayload<D, Subscriber<R>> {
      * 当异常时
      */
     @Override
-    public void onError(DamiException e) {
+    public void onError(Throwable e) {
         getSink().onError(e);
     }
 }

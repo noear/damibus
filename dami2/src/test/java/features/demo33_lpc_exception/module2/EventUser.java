@@ -1,4 +1,4 @@
-package features.demo32_lpc_exception.module2;
+package features.demo33_lpc_exception.module2;
 
 /**
  * 提示：需要要支持类隔离的环境，请使用基本类型做为参数与返回

@@ -110,9 +110,13 @@ public class EventDispatcherDefault implements EventDispatcher {
                 }
 
                 if (event.getPayload() instanceof ReceivablePayload) {
-                    ((ReceivablePayload) event.getPayload()).onError(new DamiException(e));
+                    ((ReceivablePayload) event.getPayload()).onError(e);
                 } else {
-                    throw new DamiException(e);
+                    if (e instanceof RuntimeException) {
+                        throw (RuntimeException) e;
+                    } else {
+                        throw new DamiException(e);
+                    }
                 }
             } finally {
                 //说明是有路由目标的（不触发备用处理）
