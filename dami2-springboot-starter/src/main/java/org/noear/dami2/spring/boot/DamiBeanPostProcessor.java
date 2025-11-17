@@ -24,9 +24,10 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
      */
     @Override
     public void postProcessBeforeDestruction(Object bean, String beanName) throws BeansException {
-        Class<?> proxyClass = AopProxyUtils.ultimateTargetClass(bean);
-        DamiTopic damiTopic = proxyClass.getAnnotation(DamiTopic.class);
-        if(damiTopic!=null) {
+        Class<?> unproxyClass = AopProxyUtils.ultimateTargetClass(bean);
+        DamiTopic damiTopic = unproxyClass.getAnnotation(DamiTopic.class);
+
+        if (damiTopic != null) {
             assertTopicMapping(damiTopic);
 
             String topicMapping = damiTopic.value()[0];
@@ -36,7 +37,7 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
                 Dami.bus().unlisten(topicMapping, (EventListener) bean);
             } else {
                 //否则使用api移除
-                Dami.lpc().unregisterProvider(topicMapping, bean);
+                Dami.lpc().unregisterProvider(topicMapping, unproxyClass, bean);
             }
         }
     }
@@ -53,8 +54,9 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         // DamiTopic damiTopic = bean.getClass().getAnnotation(DamiTopic.class);
-        Class<?> proxyClass = AopProxyUtils.ultimateTargetClass(bean);
-        DamiTopic damiTopic = proxyClass.getAnnotation(DamiTopic.class);
+        Class<?> unproxyClass = AopProxyUtils.ultimateTargetClass(bean);
+        DamiTopic damiTopic = unproxyClass.getAnnotation(DamiTopic.class);
+
         if (damiTopic != null) {
             assertTopicMapping(damiTopic);
 
@@ -65,7 +67,7 @@ public class DamiBeanPostProcessor implements DestructionAwareBeanPostProcessor 
                 Dami.bus().listen(topicMapping, damiTopic.index(), (EventListener) bean);
             } else {
                 //否则使用api注册
-                Dami.lpc().registerProvider(topicMapping, damiTopic.index(), bean);
+                Dami.lpc().registerProvider(topicMapping, damiTopic.index(), unproxyClass, bean);
             }
         }
 

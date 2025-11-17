@@ -41,7 +41,7 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
             if (EventListener.class.isAssignableFrom(clz)) {
                 Dami.bus().listen(anno.value(), anno.index(), (EventListener) bw.raw());
             } else {
-                Dami.lpc().registerProvider(anno.value(), anno.index(), bw.raw());
+                Dami.lpc().registerProvider(anno.value(), anno.index(), clz, bw.raw());
             }
 
             lifecycleWrap(bw, anno.value());
@@ -56,7 +56,7 @@ public class DamiTopicBeanBuilder implements BeanBuilder<DamiTopic> {
             //如果不是根容器，则停止时自动注销
             ListenerLifecycleWrap lifecycleWrap = ListenerLifecycleWrap.getOf(bw.context());
 
-            lifecycleWrap.add(topicMapping, bw.raw());
+            lifecycleWrap.add(topicMapping, bw.clz(), bw.raw());
         }
     }
 }

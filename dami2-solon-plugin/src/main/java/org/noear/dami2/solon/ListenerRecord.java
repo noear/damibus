@@ -23,15 +23,21 @@ package org.noear.dami2.solon;
  */
 public class ListenerRecord {
     private final String topicMapping;
+    private final Class<?> listenerClz;
     private final Object listenerObj;
 
-    public ListenerRecord(String topicMapping, Object listenerObj) {
+    public ListenerRecord(String topicMapping, Class<?> listenerClz, Object listenerObj) {
         this.topicMapping = topicMapping;
+        this.listenerClz = listenerClz;
         this.listenerObj = listenerObj;
     }
 
     public String getTopicMapping() {
         return topicMapping;
+    }
+
+    public Class<?> getListenerClz() {
+        return listenerClz;
     }
 
     public Object getListenerObj() {

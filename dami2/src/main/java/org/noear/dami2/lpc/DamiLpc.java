@@ -37,9 +37,9 @@ public interface DamiLpc extends DamiBusExtension {
      * 创建服务消费者（接口代理）
      *
      * @param topicMapping 主题映射
-     * @param consumerApi  消费者接口
+     * @param consumerClz  消费者接口
      */
-    <T> T createConsumer(String topicMapping, Class<T> consumerApi);
+    <T> T createConsumer(String topicMapping, Class<T> consumerClz);
 
     /**
      * 注册服务提供者（一个服务，只能监听一个主题）
@@ -48,7 +48,18 @@ public interface DamiLpc extends DamiBusExtension {
      * @param roviderObj   提供者对象
      */
     default void registerProvider(String topicMapping, Object roviderObj) {
-        registerProvider(topicMapping, 0, roviderObj);
+        registerProvider(topicMapping, 0, null, roviderObj);
+    }
+
+    /**
+     * 注册服务提供者（一个服务，只能监听一个主题）
+     *
+     * @param topicMapping 主题映射
+     * @param roviderClz   提供者类
+     * @param roviderObj   提供者对象
+     */
+    default void registerProvider(String topicMapping, Class<?> roviderClz, Object roviderObj) {
+        registerProvider(topicMapping, 0, roviderClz, roviderObj);
     }
 
     /**
@@ -58,7 +69,19 @@ public interface DamiLpc extends DamiBusExtension {
      * @param index        顺序位
      * @param roviderObj   提供者对象
      */
-    void registerProvider(String topicMapping, int index, Object roviderObj);
+    default void registerProvider(String topicMapping, int index, Object roviderObj) {
+        registerProvider(topicMapping, index, null, roviderObj);
+    }
+
+    /**
+     * 注册服务提供者（一个服务，只能监听一个主题）
+     *
+     * @param topicMapping 主题映射
+     * @param index        顺序位
+     * @param roviderClz   提供者类
+     * @param roviderObj   提供者对象
+     */
+    void registerProvider(String topicMapping, int index, Class<?> roviderClz, Object roviderObj);
 
     /**
      * 注销服务提供者
@@ -66,5 +89,16 @@ public interface DamiLpc extends DamiBusExtension {
      * @param topicMapping 主题映射
      * @param roviderObj   提供者对象
      */
-    void unregisterProvider(String topicMapping, Object roviderObj);
+    default void unregisterProvider(String topicMapping, Object roviderObj) {
+        unregisterProvider(topicMapping, null, roviderObj);
+    }
+
+    /**
+     * 注销服务提供者
+     *
+     * @param topicMapping 主题映射
+     * @param roviderClz   提供者类
+     * @param roviderObj   提供者对象
+     */
+    void unregisterProvider(String topicMapping, Class<?> roviderClz, Object roviderObj);
 }

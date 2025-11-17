@@ -101,14 +101,14 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
      * 创建服务消费者（接口代理）
      *
      * @param topicMapping 主题映射
-     * @param consumerApi  消费者接口
+     * @param consumerClz  消费者接口类
      */
     @Override
-    public <T> T createConsumer(String topicMapping, Class<T> consumerApi) {
-        Object tmp = Proxy.newProxyInstance(consumerApi.getClassLoader(), new Class[]{consumerApi}, new ConsumerInvocationHandler(this, consumerApi, topicMapping));
+    public <T> T createConsumer(String topicMapping, Class<T> consumerClz) {
+        Object tmp = Proxy.newProxyInstance(consumerClz.getClassLoader(), new Class[]{consumerClz}, new ConsumerInvocationHandler(this, consumerClz, topicMapping));
 
         if (log.isDebugEnabled()) {
-            log.debug("This consumer created successfully(@{}.*): {}", topicMapping, consumerApi.getName());
+            log.debug("This consumer created successfully(@{}.*): {}", topicMapping, consumerClz.getName());
         }
 
         return (T) tmp;
@@ -119,11 +119,14 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
      *
      * @param topicMapping 主题映射
      * @param index        顺序位
+     * @param roviderClz   提供者类
      * @param roviderObj   提供者对象
      */
     @Override
-    public void registerProvider(String topicMapping, int index, Object roviderObj) {
-        Class<?> roviderClz = roviderObj.getClass();
+    public void registerProvider(String topicMapping, int index, Class<?> roviderClz, Object roviderObj) {
+        if (roviderClz == null) {
+            roviderClz = roviderObj.getClass();
+        }
 
         PROVIDER_MAP_LOCK.lock();
         try {
@@ -153,7 +156,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("This provider registered successfully(@{}.*): {}", topicMapping, roviderObj.getClass().getName());
+            log.debug("This provider registered successfully(@{}.*): {}", topicMapping, roviderClz.getName());
         }
     }
 
@@ -164,10 +167,15 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
      * @param roviderObj   提供者对象
      */
     @Override
-    public void unregisterProvider(String topicMapping, Object roviderObj) {
+    public void unregisterProvider(String topicMapping, Class<?> roviderClz, Object roviderObj) {
+        if (roviderClz == null) {
+            roviderClz = roviderObj.getClass();
+        }
+
+
         PROVIDER_MAP_LOCK.lock();
         try {
-            List<TopicListenRecord> tmp = providerMap.remove(roviderObj.getClass());
+            List<TopicListenRecord> tmp = providerMap.remove(roviderClz);
 
             if (tmp != null) {
                 for (TopicListenRecord r1 : tmp) {
@@ -179,7 +187,7 @@ public class DamiLpcImpl implements DamiLpc, DamiLpcConfigurator {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("This provider unregistered successfully(@{}.*): {}", topicMapping, roviderObj.getClass().getName());
+            log.debug("This provider unregistered successfully(@{}.*): {}", topicMapping, roviderClz.getName());
         }
     }
 

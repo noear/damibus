@@ -33,8 +33,8 @@ import java.util.List;
 public class ListenerLifecycleWrap implements LifecycleBean {
     List<ListenerRecord> listenerRecords = new ArrayList<>();
 
-    public void add(String topicMapping, Object listener) {
-        listenerRecords.add(new ListenerRecord(topicMapping, listener));
+    public void add(String topicMapping, Class<?> listenerClz, Object listenerObj) {
+        listenerRecords.add(new ListenerRecord(topicMapping, listenerClz, listenerObj));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ListenerLifecycleWrap implements LifecycleBean {
             if (r1.getListenerObj() instanceof EventListener) {
                 Dami.bus().unlisten(r1.getTopicMapping(), (EventListener<Event<Object>>) r1.getListenerObj());
             } else {
-                Dami.lpc().unregisterProvider(r1.getTopicMapping(), r1.getListenerObj());
+                Dami.lpc().unregisterProvider(r1.getTopicMapping(), r1.getListenerClz(), r1.getListenerObj());
             }
         }
     }
