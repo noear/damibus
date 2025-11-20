@@ -50,4 +50,9 @@ public interface Event<P> extends Result<P>, Serializable {
      * 荷载
      */
     P getPayload();
+
+    /**
+     * 荷载转为
+     */
+    <A> A getPayloadAs();
 }

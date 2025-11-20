@@ -94,6 +94,11 @@ public class SimpleEvent<P> implements Event<P>, Serializable {
     }
 
     @Override
+    public <A> A getPayloadAs() {
+        return (A) payload;
+    }
+
+    @Override
     public String toString() {
         return "Event{" +
                 "topic='" + topic + '\'' +
