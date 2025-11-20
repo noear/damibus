@@ -15,10 +15,13 @@ public class UniEventListener implements EventListener<Object> {
     public void onEvent(Event<Object> event) throws Throwable {
         if (event.getPayload() instanceof CallPayload) {
             //is call
-            event.<CallPayload>getPayloadAs().getSink().complete("test");
+            System.err.println(event.<CallPayload>getPayloadAs().getData());
+            event.<CallPayload>getPayloadAs().getSink().complete("hi!");
         } else if (event.getPayload() instanceof StreamPayload) {
             //is stream
-            event.<StreamPayload>getPayloadAs().getSink().onNext("test");
+            System.err.println(event.<StreamPayload<String,String>>getPayloadAs().getData());
+            event.<StreamPayload<String,String>>getPayloadAs().getSink().onNext("hi");
+            event.<StreamPayload<String,String>>getPayloadAs().getSink().onComplete();
         } else {
             //is send
         }
