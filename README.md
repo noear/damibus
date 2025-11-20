@@ -89,7 +89,7 @@ DamiBus，专为本地（单体）多模块之间交互解耦而设计（尤其�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dami2</artifactId>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
 </dependency>
 ```
 
