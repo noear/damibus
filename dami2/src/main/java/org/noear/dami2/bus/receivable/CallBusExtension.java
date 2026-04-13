@@ -37,7 +37,7 @@ public interface CallBusExtension extends DamiBusExtension {
      * @return 接收器
      */
     default <D, R> CompletableFuture<R> call(String topic, D data) {
-        return call(topic, data, null);
+        return call(topic, data, f -> f.complete(null));
     }
 
     /**
@@ -60,7 +60,7 @@ public interface CallBusExtension extends DamiBusExtension {
      * @return 结果
      */
     default <D, R> Result<CallPayload<D, R>> callAsResult(String topic, D data) {
-        return callAsResult(topic, data, null);
+        return callAsResult(topic, data, f -> f.complete(null));
     }
 
     /**

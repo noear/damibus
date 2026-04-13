@@ -33,7 +33,7 @@ public interface StreamBusExtension extends DamiBusExtension {
      * 发送流事件
      */
     default <D, R> Publisher<R> stream(String topic, D data) {
-        return stream(topic, data, null);
+        return stream(topic, data, s -> s.onComplete());
     }
 
     /**
