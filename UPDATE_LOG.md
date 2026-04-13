@@ -1,3 +1,6 @@
+### v2.0.5
+
+* 添加 `call`，`stream` 方法 fallback 默认处理
 
 ### v2.0.4
 
